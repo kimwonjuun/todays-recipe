@@ -14,9 +14,6 @@ const GlobalStyles = createGlobalStyle`
   * {
     font-family: 'Pretendard-Regular', sans-serif;
   }
-  button {
-	cursor: pointer;
-  }
 
     /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
