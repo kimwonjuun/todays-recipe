@@ -4,10 +4,12 @@ import Search from '../pages/Search';
 import Recipe from '../pages/Recipe';
 import Detail from '../pages/Detail';
 import My from '../pages/My';
+import Header from '../components/Header';
 
 const Router = () => {
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/search" element={<Search />} />
@@ -18,5 +20,4 @@ const Router = () => {
     </BrowserRouter>
   );
 };
-
 export default Router;
