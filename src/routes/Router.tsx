@@ -1,0 +1,22 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Main from '../pages/Main';
+import Search from '../pages/Search';
+import Recipe from '../pages/Recipe';
+import Detail from '../pages/Detail';
+import My from '../pages/My';
+
+const Router = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/recipe" element={<Recipe />} />
+        <Route path="/detail" element={<Detail />} />
+        <Route path="/my" element={<My />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+export default Router;
