@@ -1,9 +1,81 @@
+import { styled } from 'styled-components';
+
 const Main = () => {
   return (
     <>
-      <h1>잘되니</h1>
+      <MainWrapper>
+        <BoxWrapper>
+          {/* <p>오늘 처리하고 싶은 재료 또는 하고 싶은 요리를 검색하세요.</p> */}
+          <InputWrapper>
+            <Input
+              type="text"
+              placeholder="오늘 처리하고 싶은 재료 또는 하고 싶은 요리를 검색하세요."
+            />
+            <SearchButton>검색</SearchButton>
+          </InputWrapper>
+          <CustomP>검색하지 않고 레시피를 구경하고 싶어요.</CustomP>
+        </BoxWrapper>
+      </MainWrapper>
     </>
   );
 };
 
 export default Main;
+
+const MainWrapper = styled.div`
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 12.7rem);
+`;
+
+const BoxWrapper = styled.div`
+  width: 60rem;
+  height: 25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 2rem;
+  white-space: pre-line;
+`;
+
+const InputWrapper = styled.div`
+  position: relative;
+`;
+
+const Input = styled.input`
+  width: 46.5rem;
+  height: 4rem;
+  border-radius: 1rem;
+  border: 0.25rem solid #c3caf5;
+  font-size: 1.5rem;
+  outline: none;
+  text-align: center;
+  padding-right: 8rem; // 검색 버튼 만큼 여백 추가
+  /* margin-bottom: 5rem; */
+`;
+
+const SearchButton = styled.button`
+  position: absolute;
+  right: 0rem;
+  width: 7rem;
+  height: 4.65rem;
+  border-radius: 1rem;
+  border: 0.25rem solid #c3caf5;
+  font-size: 2rem;
+  background-color: #c3caf5;
+  color: white;
+  cursor: pointer;
+  outline: none;
+`;
+
+const CustomP = styled.p`
+  cursor: pointer;
+  &:hover {
+    color: #c3caf5; // 원하는 색상으로 변경하세요
+  }
+`;
