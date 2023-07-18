@@ -1,7 +1,22 @@
+import { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 import COLORS from '../styles/colors';
+import { getRecipeData } from '../apis/api';
 
 const Recipe = () => {
+  const [recipeData, setRecipeData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getRecipeData();
+        setRecipeData(data);
+      } catch (error) {
+        console.error('데이터 불러오기 실패:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <>
       <PageWrapper>
@@ -12,10 +27,9 @@ const Recipe = () => {
             <p>가나다 순</p>
           </TypeWrapper>
           <RecipeWrapper>
-            <RecipeBox>s</RecipeBox>
-            <RecipeBox>s</RecipeBox>
-            <RecipeBox>s</RecipeBox>
-            <RecipeBox>s</RecipeBox>
+            {recipeData.map((recipe: any) => {
+              return <RecipeBox />;
+            })}
           </RecipeWrapper>
         </BoxWrapper>
       </PageWrapper>
