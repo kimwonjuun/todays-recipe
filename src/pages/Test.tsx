@@ -1,21 +1,22 @@
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 export default function Test() {
   const [data, setData] = useState([]);
-  const getData = () => {
+  const getRecipeData = async () => {
     const serviceKey = '7592613b754c46938b1e';
-    fetch(
-      `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1/10`
-    )
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log('response data: ', responseData);
-        setData(responseData);
-      })
-      .catch((error) => console.log('error: ', error));
+    try {
+      const response = await axios.get(
+        `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1/10`
+      );
+      console.log('총 데이터 건 수: ', response.data.COOKRCP01);
+      setData(response.data.COOKRCP01.row);
+    } catch (error) {
+      console.error('API 호출 실패:', error);
+    }
   };
   useEffect(() => {
-    getData();
+    getRecipeData();
   }, []);
   return <>{console.log('data: ', data)}</>;
 }
