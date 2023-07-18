@@ -41,6 +41,6 @@ const Text = styled.div`
   font-size: 2rem;
   cursor: pointer;
   &:hover {
-    color: ${COLORS.violet1};
+    color: ${COLORS.blue1};
   }
 `;

@@ -33,9 +33,10 @@ const Recipe = () => {
                   <RecipeImgWrapper>
                     <Img src={recipe.ATT_FILE_NO_MK} />
                   </RecipeImgWrapper>
-                  <RecipeTitleWrapper>
-                    <Title>{recipe.RCP_NM}</Title>
-                  </RecipeTitleWrapper>
+                  <RecipeTextWrapper>
+                    <p>{recipe.RCP_PAT2}</p>
+                    <h1>{recipe.RCP_NM}</h1>
+                  </RecipeTextWrapper>
                 </RecipeBox>
               </>
             ))}
@@ -49,16 +50,17 @@ const Recipe = () => {
 export default Recipe;
 
 const PageWrapper = styled.div`
+  /* background-color: yellow; */
   box-sizing: border-box;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: calc(100vh - 12.7rem);
+  min-height: calc(100vh - 12.7rem);
 `;
 
 const BoxWrapper = styled.div`
-  width: 100rem;
+  width: 90rem;
   /* height: 25rem; */
   /* display: flex; */
   flex-direction: column;
@@ -79,7 +81,7 @@ const TypeWrapper = styled.div`
     margin-right: 5rem;
     cursor: pointer;
     &:hover {
-      color: ${COLORS.violet1};
+      color: ${COLORS.blue1};
     }
   }
 `;
@@ -91,48 +93,58 @@ const RecipeWrapper = styled.div`
   justify-content: space-between;
   margin: 0 auto;
   padding: 5rem 0;
+  overflow: hidden;
 `;
 
 const RecipeBox = styled.div`
   border-radius: 1rem;
-  border: 0.25rem solid ${COLORS.blue2};
-  min-width: 20rem;
-  min-height: 25rem;
+  border: 0.2rem solid ${COLORS.blue2};
+  min-width: 28rem;
+  min-height: 30rem;
   position: relative;
   cursor: pointer;
   overflow: hidden;
   transition: color 300ms ease-in-out;
   &:hover {
-    color: ${COLORS.violet1};
+    color: ${COLORS.blue1};
   }
+  margin-bottom: 3rem;
+
+  align-items: center;
+  justify-content: center;
 `;
+
 const RecipeImgWrapper = styled.div`
-  width: inherit;
-  height: 230px;
+  width: 100%;
+  height: 22rem;
   overflow: hidden;
 `;
+
 const Img = styled.img`
   width: 100%;
   height: 100%;
-  transition: transform 300ms ease-in-out;
-  transition: -webkit-transform 0.2s ease-in-out;
-
+  /* transition: transform 100ms ease-in-out; */
+  transition: -webkit-transform 0.4s ease-in-out;
   &:hover {
     transform: scale(1.1);
   }
 `;
-const RecipeTitleWrapper = styled.div`
+
+const RecipeTextWrapper = styled.div`
   width: 100%;
-  height: 25%;
-  border-radius: 0px 0px 10px 10px;
-  background-color: white;
+  height: 8rem;
   box-sizing: border-box;
-  padding: 30px 0 50px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
 `;
+
 const Title = styled.h1`
-  width: 100%;
+  /* width: 100%;
   font-size: 20px;
   font-weight: bold;
-  line-height: 25px;
+  line-height: 25px; */
 `;
+
+const Text = styled.p``;

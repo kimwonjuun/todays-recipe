@@ -53,7 +53,7 @@ const Input = styled.input`
   width: 46.5rem;
   height: 4rem;
   border-radius: 1rem;
-  border: 0.25rem solid ${COLORS.violet1};
+  border: 0.25rem solid ${COLORS.blue2};
   font-size: 1.5rem;
   outline: none;
   text-align: center;
@@ -67,9 +67,9 @@ const SearchButton = styled.button`
   width: 7rem;
   height: 4.65rem;
   border-radius: 1rem;
-  border: 0.25rem solid ${COLORS.violet1};
+  border: 0.25rem solid ${COLORS.blue2};
   font-size: 2rem;
-  background-color: ${COLORS.violet1};
+  background-color: ${COLORS.blue2};
   color: white;
   cursor: pointer;
   outline: none;
@@ -78,6 +78,6 @@ const SearchButton = styled.button`
 const CustomP = styled.p`
   cursor: pointer;
   &:hover {
-    color: ${COLORS.violet1};
+    color: ${COLORS.blue1};
   }
 `;
