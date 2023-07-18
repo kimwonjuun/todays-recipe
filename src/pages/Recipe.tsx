@@ -49,11 +49,12 @@ const TypeWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: left;
+  flex-wrap: wrap;
   & > p {
     margin-right: 5rem;
     cursor: pointer;
     &:hover {
-      color: #205a93; // 원하는 색상으로 변경하세요
+      color: #205a93;
     }
   }
 `;
@@ -64,20 +65,21 @@ const RecipeWrapper = styled.div`
   display: flex;
   justify-content: center;
   margin: 0 auto;
-  padding: 4.5rem 3rem;
+  padding: 5rem 3rem;
 `;
 
 const RecipeBox = styled.div`
-  border-radius: 10px;
+  border-radius: 1rem;
   min-width: 22rem;
   height: 25rem;
-  margin: 0 3rem 3rem 3rem;
+  margin: 0 4rem 4rem 4rem;
   position: relative;
   cursor: pointer;
   overflow: hidden;
   transition: color 300ms ease-in-out;
-
   &:hover {
-    color: #6580b8;
+    color: #205a93;
   }
+
+  border: 1px solid black;
 `;

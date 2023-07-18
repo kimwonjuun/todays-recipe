@@ -7,7 +7,7 @@ const Header = () => {
       <HeaderWrapper>
         <Logo>
           <Link to={'/'}>
-            <LogoImg src="logo.png"></LogoImg>
+            <LogoImg src={require('../assets/logo.png')}></LogoImg>
           </Link>
         </Logo>
         <Text>로그인</Text>
@@ -39,4 +39,7 @@ const Text = styled.div`
   bottom: 1rem;
   font-size: 2rem;
   cursor: pointer;
+  &:hover {
+    color: #205a93;
+  }
 `;

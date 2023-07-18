@@ -75,6 +75,6 @@ const SearchButton = styled.button`
 const CustomP = styled.p`
   cursor: pointer;
   &:hover {
-    color: #205a93; // 원하는 색상으로 변경하세요
+    color: #205a93;
   }
 `;
