@@ -20,7 +20,7 @@ export default RecipeBox;
 
 const RecipeBoxWrapper = styled.div`
   border-radius: 1rem;
-  border: 0.2rem solid ${COLORS.blue2};
+  border: 0.35rem solid ${COLORS.blue2};
   min-width: 25rem;
   max-width: 25rem;
   min-height: 30rem;

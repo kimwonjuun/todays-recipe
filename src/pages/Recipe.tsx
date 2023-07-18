@@ -34,8 +34,12 @@ const Recipe = () => {
               <p onClick={toggleCategories}>분류</p>
               {showCategories && (
                 <>
-                  <p>좋아요 많은 순</p>
-                  <p>가나다 순</p>
+                  <p>밥</p>
+                  <p>일품</p>
+                  <p>국&찌개</p>
+                  <p>반찬</p>
+                  <p>후식</p>
+                  <p>기타</p>
                 </>
               )}
             </CategoriesParagraph>
