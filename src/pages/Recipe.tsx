@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { getRecipeData } from '../apis/api';
 
@@ -27,9 +27,18 @@ const Recipe = () => {
             <p>가나다 순</p>
           </TypeWrapper>
           <RecipeWrapper>
-            {recipeData.map((recipe: any) => {
-              return <RecipeBox />;
-            })}
+            {recipeData.map((recipe: any) => (
+              <>
+                <RecipeBox>
+                  <RecipeImgWrapper>
+                    <Img src={recipe.ATT_FILE_NO_MK} />
+                  </RecipeImgWrapper>
+                  <RecipeTitleWrapper>
+                    <Title>{recipe.RCP_NM}</Title>
+                  </RecipeTitleWrapper>
+                </RecipeBox>
+              </>
+            ))}
           </RecipeWrapper>
         </BoxWrapper>
       </PageWrapper>
@@ -96,4 +105,34 @@ const RecipeBox = styled.div`
   &:hover {
     color: ${COLORS.violet1};
   }
+`;
+const RecipeImgWrapper = styled.div`
+  width: inherit;
+  height: 230px;
+  overflow: hidden;
+`;
+const Img = styled.img`
+  width: 100%;
+  height: 100%;
+  transition: transform 300ms ease-in-out;
+  transition: -webkit-transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+const RecipeTitleWrapper = styled.div`
+  width: 100%;
+  height: 25%;
+  border-radius: 0px 0px 10px 10px;
+  background-color: white;
+  box-sizing: border-box;
+  padding: 30px 0 50px;
+  text-align: center;
+`;
+const Title = styled.h1`
+  width: 100%;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 25px;
 `;
