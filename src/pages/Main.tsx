@@ -1,9 +1,13 @@
-import { styled } from 'styled-components';
+import styled from 'styled-components';
+import COLORS from '../styles/colors';
+import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
+  const navigate = useNavigate();
+
   return (
     <>
-      <MainWrapper>
+      <PageWrapper>
         <BoxWrapper>
           {/* <p>오늘 처리하고 싶은 재료 또는 하고 싶은 요리를 검색하세요.</p> */}
           <InputWrapper>
@@ -13,23 +17,30 @@ const Main = () => {
             />
             <SearchButton>검색</SearchButton>
           </InputWrapper>
-          <CustomP>검색하지 않고 레시피를 구경하고 싶어요.</CustomP>
+          <CustomP
+            onClick={() => {
+              navigate('/recipe');
+            }}
+          >
+            검색하지 않고 레시피를 구경하고 싶어요.
+          </CustomP>
         </BoxWrapper>
-      </MainWrapper>
+      </PageWrapper>
     </>
   );
 };
 
 export default Main;
 
-const MainWrapper = styled.div`
+const PageWrapper = styled.div`
   box-sizing: border-box;
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: calc(100vh - 12.7rem);
+  height: calc(100vh - 12.8rem);
+
+  background-color: ${COLORS.backGround};
 `;
 
 const BoxWrapper = styled.div`
@@ -40,7 +51,7 @@ const BoxWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
   font-size: 2rem;
-  white-space: pre-line;
+  margin-top: 8rem;
 `;
 
 const InputWrapper = styled.div`
@@ -51,7 +62,7 @@ const Input = styled.input`
   width: 46.5rem;
   height: 4rem;
   border-radius: 1rem;
-  border: 0.25rem solid #c3caf5;
+  border: 0.25rem solid ${COLORS.blue2};
   font-size: 1.5rem;
   outline: none;
   text-align: center;
@@ -65,9 +76,9 @@ const SearchButton = styled.button`
   width: 7rem;
   height: 4.65rem;
   border-radius: 1rem;
-  border: 0.25rem solid #c3caf5;
+  border: 0.25rem solid ${COLORS.blue2};
   font-size: 2rem;
-  background-color: #c3caf5;
+  background-color: ${COLORS.blue2};
   color: white;
   cursor: pointer;
   outline: none;
@@ -76,6 +87,6 @@ const SearchButton = styled.button`
 const CustomP = styled.p`
   cursor: pointer;
   &:hover {
-    color: #c3caf5; // 원하는 색상으로 변경하세요
+    color: ${COLORS.blue1};
   }
 `;
