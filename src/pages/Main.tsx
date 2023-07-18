@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import COLORS from '../styles/colors';
 
 const Main = () => {
   return (
@@ -29,6 +30,8 @@ const PageWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   height: calc(100vh - 12.7rem);
+
+  background-color: ${COLORS.backGround};
 `;
 
 const BoxWrapper = styled.div`
@@ -50,7 +53,7 @@ const Input = styled.input`
   width: 46.5rem;
   height: 4rem;
   border-radius: 1rem;
-  border: 0.25rem solid #c3caf5;
+  border: 0.25rem solid ${COLORS.violet1};
   font-size: 1.5rem;
   outline: none;
   text-align: center;
@@ -64,9 +67,9 @@ const SearchButton = styled.button`
   width: 7rem;
   height: 4.65rem;
   border-radius: 1rem;
-  border: 0.25rem solid #c3caf5;
+  border: 0.25rem solid ${COLORS.violet1};
   font-size: 2rem;
-  background-color: #c3caf5;
+  background-color: ${COLORS.violet1};
   color: white;
   cursor: pointer;
   outline: none;
@@ -75,6 +78,6 @@ const SearchButton = styled.button`
 const CustomP = styled.p`
   cursor: pointer;
   &:hover {
-    color: #205a93;
+    color: ${COLORS.violet1};
   }
 `;

@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import COLORS from '../styles/colors';
 
 const Recipe = () => {
   return (
@@ -55,7 +56,7 @@ const TypeWrapper = styled.div`
     margin-right: 5rem;
     cursor: pointer;
     &:hover {
-      color: #205a93;
+      color: ${COLORS.violet1};
     }
   }
 `;
@@ -71,7 +72,7 @@ const RecipeWrapper = styled.div`
 
 const RecipeBox = styled.div`
   border-radius: 1rem;
-  border: 0.25rem solid #d4ceea;
+  border: 0.25rem solid ${COLORS.blue2};
   min-width: 20rem;
   min-height: 25rem;
   position: relative;
@@ -79,6 +80,6 @@ const RecipeBox = styled.div`
   overflow: hidden;
   transition: color 300ms ease-in-out;
   &:hover {
-    color: #205a93;
+    color: ${COLORS.violet1};
   }
 `;

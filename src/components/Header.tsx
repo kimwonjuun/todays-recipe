@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import COLORS from '../styles/colors';
 
 const Header = () => {
   return (
@@ -24,7 +25,7 @@ const HeaderWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border-bottom: 0.25rem solid #6580b8;
+  border-bottom: 0.25rem solid ${COLORS.blue2};
 `;
 const Logo = styled.div`
   width: 11rem;
@@ -40,6 +41,6 @@ const Text = styled.div`
   font-size: 2rem;
   cursor: pointer;
   &:hover {
-    color: #205a93;
+    color: ${COLORS.violet1};
   }
 `;
