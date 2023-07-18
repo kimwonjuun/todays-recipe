@@ -14,6 +14,7 @@ const Recipe = () => {
             <RecipeBox>s</RecipeBox>
             <RecipeBox>s</RecipeBox>
             <RecipeBox>s</RecipeBox>
+            <RecipeBox>s</RecipeBox>
           </RecipeWrapper>
         </BoxWrapper>
       </PageWrapper>
@@ -60,19 +61,19 @@ const TypeWrapper = styled.div`
 `;
 
 const RecipeWrapper = styled.div`
-  background-color: red;
+  /* background-color: red; */
   flex-wrap: wrap;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   margin: 0 auto;
-  padding: 5rem 3rem;
+  padding: 5rem 0;
 `;
 
 const RecipeBox = styled.div`
   border-radius: 1rem;
-  min-width: 22rem;
-  height: 25rem;
-  margin: 0 4rem 4rem 4rem;
+  border: 0.25rem solid #d4ceea;
+  min-width: 20rem;
+  min-height: 25rem;
   position: relative;
   cursor: pointer;
   overflow: hidden;
@@ -80,6 +81,4 @@ const RecipeBox = styled.div`
   &:hover {
     color: #205a93;
   }
-
-  border: 1px solid black;
 `;

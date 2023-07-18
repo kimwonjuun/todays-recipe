@@ -1,12 +1,9 @@
-import { useState } from 'react';
-
-export const getRecipeData = () => {
-  const [data, setData] = useState([]);
-};
+// import axios from 'axios';
+// import { useState, useEffect } from 'react';
 
 // export const getRecipeData = () => {
 //   const [data, setData] = useState([]);
-//   const getRecipeData = async () => {
+//   const getData = async () => {
 //     const serviceKey = '7592613b754c46938b1e';
 //     try {
 //       const response = await axios.get(
@@ -19,3 +16,4 @@ export const getRecipeData = () => {
 //     }
 //   };
 // };
+export {};

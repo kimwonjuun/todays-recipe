@@ -24,7 +24,7 @@ const HeaderWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border-bottom: 3px solid #a3abd9;
+  border-bottom: 0.25rem solid #6580b8;
 `;
 const Logo = styled.div`
   width: 11rem;

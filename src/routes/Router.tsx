@@ -5,7 +5,6 @@ import Recipe from '../pages/Recipe';
 import Detail from '../pages/Detail';
 import My from '../pages/My';
 import Header from '../components/Header';
-import Test from '../pages/Test';
 
 const Router = () => {
   return (
@@ -17,7 +16,6 @@ const Router = () => {
         <Route path="/recipe" element={<Recipe />} />
         <Route path="/detail" element={<Detail />} />
         <Route path="/my" element={<My />} />
-        <Route path="/test" element={<Test />} />
       </Routes>
     </BrowserRouter>
   );
