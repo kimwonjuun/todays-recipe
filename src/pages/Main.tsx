@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
+import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <PageWrapper>
@@ -14,7 +17,13 @@ const Main = () => {
             />
             <SearchButton>검색</SearchButton>
           </InputWrapper>
-          <CustomP>검색하지 않고 레시피를 구경하고 싶어요.</CustomP>
+          <CustomP
+            onClick={() => {
+              navigate('/recipe');
+            }}
+          >
+            검색하지 않고 레시피를 구경하고 싶어요.
+          </CustomP>
         </BoxWrapper>
       </PageWrapper>
     </>
