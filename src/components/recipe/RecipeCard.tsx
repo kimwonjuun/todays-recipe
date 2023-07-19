@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 
+// 타입스크립트필요
 const RecipeBox = ({ recipe }: { recipe: any }) => {
   return (
     <>
