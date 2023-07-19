@@ -20,7 +20,7 @@ export default RecipeBox;
 
 const RecipeBoxWrapper = styled.div`
   border-radius: 1rem;
-  border: 0.35rem solid ${COLORS.blue2};
+  border: 0.2rem solid ${COLORS.blue1};
   min-width: 25rem;
   max-width: 25rem;
   min-height: 30rem;
@@ -29,7 +29,7 @@ const RecipeBoxWrapper = styled.div`
   overflow: hidden;
   transition: color 300ms ease-in-out;
   &:hover {
-    color: ${COLORS.blue1};
+    color: ${COLORS.blue2};
   }
   margin-bottom: 5rem;
 

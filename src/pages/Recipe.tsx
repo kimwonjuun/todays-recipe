@@ -99,7 +99,7 @@ const CategoriesParagraph = styled.div`
     margin-right: 1.5rem;
     cursor: pointer;
     &:hover {
-      color: ${COLORS.blue1};
+      color: ${COLORS.blue2};
     }
   }
 `;
@@ -111,7 +111,7 @@ const SortParagraph = styled.div`
     margin-left: 1.5rem;
     cursor: pointer;
     &:hover {
-      color: ${COLORS.blue1};
+      color: ${COLORS.blue2};
     }
   }
 `;

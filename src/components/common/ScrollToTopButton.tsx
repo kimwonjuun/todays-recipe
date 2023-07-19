@@ -48,7 +48,7 @@ const Button = styled.div<{ showButton: boolean }>`
   opacity: ${(props) => (props.showButton ? 1 : 0)};
   transition: opacity 300ms ease-in-out;
 
-  background-color: ${COLORS.blue2};
+  background-color: ${COLORS.blue1};
 
   &:hover {
     opacity: 0.8;

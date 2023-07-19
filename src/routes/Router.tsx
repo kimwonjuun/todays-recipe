@@ -4,7 +4,7 @@ import Search from '../pages/Search';
 import Recipe from '../pages/Recipe';
 import Detail from '../pages/Detail';
 import My from '../pages/My';
-import Header from '../components/Header';
+import Header from '../components/common/Header';
 import ScrollToTopButton from '../components/common/ScrollToTopButton';
 
 const Router = () => {
