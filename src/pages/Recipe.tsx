@@ -45,11 +45,25 @@ const Recipe = () => {
         )
       : recipeData;
   // 가나다 순
-  const [sortType, setSortType] = useState<'가나다 순'>('가나다 순');
+  const [sortType, setSortType] = useState<'기존 정렬 상태' | '가나다 순'>(
+    '기존 정렬 상태'
+  );
+
   const sortedRecipes = (recipes: Category[]): Category[] => {
-    return [...recipes].sort((a: Category, b: Category) =>
-      a.RCP_NM.localeCompare(b.RCP_NM)
-    );
+    if (sortType === '가나다 순') {
+      return [...recipes].sort((a: Category, b: Category) =>
+        a.RCP_NM.localeCompare(b.RCP_NM)
+      );
+    }
+    return recipes;
+  };
+
+  const toggleSortType = () => {
+    if (sortType === '기존 정렬 상태') {
+      setSortType('가나다 순');
+    } else if (sortType === '가나다 순') {
+      setSortType('기존 정렬 상태');
+    }
   };
 
   return (
@@ -61,21 +75,79 @@ const Recipe = () => {
               <p onClick={showCategoryButton}>분류</p>
               {showCategories && (
                 <>
-                  <p onClick={() => handleCategoryButton('전체 레시피')}>
+                  <p
+                    onClick={() => handleCategoryButton('전체 레시피')}
+                    style={{
+                      color:
+                        selectedCategory === '전체 레시피'
+                          ? COLORS.blue2
+                          : 'inherit',
+                    }}
+                  >
                     전체 레시피
                   </p>
-                  <p onClick={() => handleCategoryButton('밥')}>밥</p>
-                  <p onClick={() => handleCategoryButton('일품')}>일품</p>
-                  <p onClick={() => handleCategoryButton('국&찌개')}>국&찌개</p>
-                  <p onClick={() => handleCategoryButton('반찬')}>반찬</p>
-                  <p onClick={() => handleCategoryButton('후식')}>후식</p>
-                  <p onClick={() => handleCategoryButton('기타')}>기타</p>
+                  <p
+                    onClick={() => handleCategoryButton('밥')}
+                    style={{
+                      color:
+                        selectedCategory === '밥' ? COLORS.blue2 : 'inherit',
+                    }}
+                  >
+                    밥
+                  </p>
+                  <p
+                    onClick={() => handleCategoryButton('일품')}
+                    style={{
+                      color:
+                        selectedCategory === '일품' ? COLORS.blue2 : 'inherit',
+                    }}
+                  >
+                    일품
+                  </p>
+                  <p
+                    onClick={() => handleCategoryButton('국&찌개')}
+                    style={{
+                      color:
+                        selectedCategory === '국&찌개'
+                          ? COLORS.blue2
+                          : 'inherit',
+                    }}
+                  >
+                    국&찌개
+                  </p>
+                  <p
+                    onClick={() => handleCategoryButton('반찬')}
+                    style={{
+                      color:
+                        selectedCategory === '반찬' ? COLORS.blue2 : 'inherit',
+                    }}
+                  >
+                    반찬
+                  </p>
+                  <p
+                    onClick={() => handleCategoryButton('후식')}
+                    style={{
+                      color:
+                        selectedCategory === '후식' ? COLORS.blue2 : 'inherit',
+                    }}
+                  >
+                    후식
+                  </p>
+                  <p
+                    onClick={() => handleCategoryButton('기타')}
+                    style={{
+                      color:
+                        selectedCategory === '기타' ? COLORS.blue2 : 'inherit',
+                    }}
+                  >
+                    기타
+                  </p>
                 </>
               )}
             </CategoriesParagraph>
             <SortParagraph>
               <p
-                onClick={() => setSortType('가나다 순')}
+                onClick={toggleSortType}
                 style={{
                   color: sortType === '가나다 순' ? COLORS.blue2 : 'inherit',
                 }}
