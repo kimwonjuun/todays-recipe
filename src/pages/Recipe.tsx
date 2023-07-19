@@ -4,8 +4,10 @@ import COLORS from '../styles/colors';
 import { getRecipeData } from '../apis/api';
 import RecipeBox from '../components/recipe/RecipeBox';
 
+// type Category = '밥' | '일품' | '국&찌개' | '반찬' | '후식' | '기타';
+
 const Recipe = () => {
-  // 레시피 data
+  // 레시피 데이터
   const [recipeData, setRecipeData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -19,11 +21,21 @@ const Recipe = () => {
     fetchData();
   }, []);
 
-  // 토글
-  const [showCategories, setShowCategories] = useState(false);
-  const toggleCategories = () => {
+  // 카테고리 선택 버튼
+  const [showCategories, setShowCategories] = useState<boolean>(false);
+  const showCategoryButton = () => {
     setShowCategories(!showCategories);
   };
+  // 카테고리 선택 ->
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const handleCategoryButton = (category: string) => {
+    setSelectedCategory(category);
+  };
+  // 필터링된 레시피 뿌려주기
+  const filteredRecipes =
+    selectedCategory && selectedCategory !== '전체 레시피'
+      ? recipeData.filter((recipe: any) => recipe.RCP_PAT2 === selectedCategory)
+      : recipeData;
 
   return (
     <>
@@ -31,27 +43,29 @@ const Recipe = () => {
         <BoxWrapper>
           <TypeWrapper>
             <CategoriesParagraph>
-              <p onClick={toggleCategories}>분류</p>
+              <p onClick={showCategoryButton}>분류</p>
               {showCategories && (
                 <>
-                  <p>밥</p>
-                  <p>일품</p>
-                  <p>국&찌개</p>
-                  <p>반찬</p>
-                  <p>후식</p>
-                  <p>기타</p>
+                  <p onClick={() => handleCategoryButton('전체 레시피')}>
+                    전체 레시피
+                  </p>
+                  <p onClick={() => handleCategoryButton('밥')}>밥</p>
+                  <p onClick={() => handleCategoryButton('일품')}>일품</p>
+                  <p onClick={() => handleCategoryButton('국&찌개')}>국&찌개</p>
+                  <p onClick={() => handleCategoryButton('반찬')}>반찬</p>
+                  <p onClick={() => handleCategoryButton('후식')}>후식</p>
+                  <p onClick={() => handleCategoryButton('기타')}>기타</p>
                 </>
               )}
             </CategoriesParagraph>
-
             <SortParagraph>
-              <p>좋아요 많은 순</p>
+              <p>좋아요 순</p>
               <p>가나다 순</p>
             </SortParagraph>
           </TypeWrapper>
           <RecipeWrapper>
-            {recipeData.map((recipe: any) => (
-              <RecipeBox recipe={recipe} />
+            {filteredRecipes.map((recipe: any) => (
+              <RecipeBox recipe={recipe} key={recipe.RCP_SEQ} />
             ))}
           </RecipeWrapper>
         </BoxWrapper>
