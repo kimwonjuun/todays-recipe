@@ -5,6 +5,7 @@ import Recipe from '../pages/Recipe';
 import Detail from '../pages/Detail';
 import My from '../pages/My';
 import Header from '../components/Header';
+import ScrollToTopButton from '../components/common/ScrollToTopButton';
 
 const Router = () => {
   return (
@@ -17,6 +18,7 @@ const Router = () => {
         <Route path="/detail" element={<Detail />} />
         <Route path="/my" element={<My />} />
       </Routes>
+      <ScrollToTopButton />
     </BrowserRouter>
   );
 };

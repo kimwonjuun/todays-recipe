@@ -24,7 +24,7 @@ const ScrollToTopButton = () => {
   return (
     <>
       <Button onClick={scrollToTop} showButton={showButton}>
-        위로
+        <img src={require('../../assets/top_button.png')} />
       </Button>
     </>
   );
