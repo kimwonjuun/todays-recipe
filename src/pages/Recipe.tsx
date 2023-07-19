@@ -5,6 +5,12 @@ import { getRecipeData } from '../apis/api';
 import RecipeBox from '../components/recipe/RecipeBox';
 
 // type Category = '밥' | '일품' | '국&찌개' | '반찬' | '후식' | '기타';
+interface Category {
+  RCP_SEQ: number;
+  RCP_NM: string;
+  RCP_PAT2: string;
+  likes: number;
+}
 
 const Recipe = () => {
   // 레시피 데이터
@@ -21,12 +27,12 @@ const Recipe = () => {
     fetchData();
   }, []);
 
-  // 카테고리 선택 버튼
+  // 분류 선택 여닫기
   const [showCategories, setShowCategories] = useState<boolean>(false);
   const showCategoryButton = () => {
     setShowCategories(!showCategories);
   };
-  // 카테고리 선택 ->
+  // 분류 선택 후 열기 후 고르기
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const handleCategoryButton = (category: string) => {
     setSelectedCategory(category);
@@ -34,8 +40,17 @@ const Recipe = () => {
   // 필터링된 레시피 뿌려주기
   const filteredRecipes =
     selectedCategory && selectedCategory !== '전체 레시피'
-      ? recipeData.filter((recipe: any) => recipe.RCP_PAT2 === selectedCategory)
+      ? recipeData.filter(
+          (recipe: Category) => recipe.RCP_PAT2 === selectedCategory
+        )
       : recipeData;
+  // 가나다 순
+  const [sortType, setSortType] = useState<'가나다 순'>('가나다 순');
+  const sortedRecipes = (recipes: Category[]): Category[] => {
+    return [...recipes].sort((a: Category, b: Category) =>
+      a.RCP_NM.localeCompare(b.RCP_NM)
+    );
+  };
 
   return (
     <>
@@ -59,12 +74,18 @@ const Recipe = () => {
               )}
             </CategoriesParagraph>
             <SortParagraph>
-              <p>좋아요 순</p>
-              <p>가나다 순</p>
+              <p
+                onClick={() => setSortType('가나다 순')}
+                style={{
+                  color: sortType === '가나다 순' ? COLORS.blue2 : 'inherit',
+                }}
+              >
+                가나다 순
+              </p>
             </SortParagraph>
           </TypeWrapper>
           <RecipeWrapper>
-            {filteredRecipes.map((recipe: any) => (
+            {sortedRecipes(filteredRecipes).map((recipe: Category) => (
               <RecipeBox recipe={recipe} key={recipe.RCP_SEQ} />
             ))}
           </RecipeWrapper>

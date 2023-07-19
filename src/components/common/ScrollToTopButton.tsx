@@ -5,7 +5,7 @@ import COLORS from '../../styles/colors';
 const ScrollToTopButton = () => {
   const [showButton, setShowButton] = useState<boolean>(false);
 
-  const scrollToTop = () => {
+  const HandleButton = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -23,7 +23,7 @@ const ScrollToTopButton = () => {
   }, []);
   return (
     <>
-      <Button onClick={scrollToTop} showButton={showButton}>
+      <Button onClick={HandleButton} showButton={showButton}>
         <img src={require('../../assets/top_button.png')} />
       </Button>
     </>
