@@ -23,7 +23,7 @@ const ScrollToTopButton = () => {
   }, []);
   return (
     <>
-      <Button onClick={HandleButton} showButton={showButton}>
+      <Button onClick={HandleButton} style={{ opacity: showButton ? 1 : 0 }}>
         <img src={require('../../assets/top_button.png')} />
       </Button>
     </>
@@ -32,7 +32,7 @@ const ScrollToTopButton = () => {
 
 export default ScrollToTopButton;
 
-const Button = styled.div<{ showButton: boolean }>`
+const Button = styled.div`
   width: 4.5rem;
   height: 4.5rem;
   border-radius: 50%;
@@ -45,7 +45,7 @@ const Button = styled.div<{ showButton: boolean }>`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  opacity: ${(props) => (props.showButton ? 1 : 0)};
+  // opacity를 여기에서 삭제하세요.
   transition: opacity 300ms ease-in-out;
 
   background-color: ${COLORS.blue1};

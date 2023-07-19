@@ -65,9 +65,7 @@ const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
     <>
       <TypeWrapper>
         <CategoriesWrapper>
-          <p onClick={showCategoryButton} style={{ marginLeft: '2.25rem' }}>
-            분류
-          </p>
+          <CategoryTitle onClick={showCategoryButton}>분류</CategoryTitle>
           {showCategories && (
             <>
               <CategoryButton
@@ -142,6 +140,7 @@ const TypeWrapper = styled.div`
   justify-content: left;
   flex-wrap: wrap;
 `;
+
 const CategoriesWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -153,6 +152,7 @@ const CategoriesWrapper = styled.div`
     }
   }
 `;
+
 const SortingWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -165,14 +165,20 @@ const SortingWrapper = styled.div`
     }
   }
 `;
+
+const CategoryTitle = styled.p`
+  margin-left: 2.25rem;
+`;
 const CategoryButton = styled.p<{ isSelected: boolean }>`
-  margin-right: 1.5rem;
+  font-size: 1.25rem;
+  margin-top: 0.5rem;
   cursor: pointer;
   color: ${({ isSelected }) => (isSelected ? COLORS.blue2 : 'inherit')};
   &:hover {
     color: ${COLORS.blue2};
   }
 `;
+
 const SortButton = styled.p<{ isSelected: boolean }>`
   cursor: pointer;
   color: ${({ isSelected }) => (isSelected ? COLORS.blue2 : 'inherit')};
