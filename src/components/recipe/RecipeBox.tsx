@@ -5,6 +5,7 @@ import COLORS from '../../styles/colors';
 
 // 타입스크립트필요
 // type Category = '밥' | '일품' | '국&찌개' | '반찬' | '후식' | '기타';
+// 데이터 타입 사용하기
 interface Category {
   RCP_SEQ: number;
   RCP_NM: string;
@@ -64,7 +65,9 @@ const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
     <>
       <TypeWrapper>
         <CategoriesWrapper>
-          <p onClick={showCategoryButton}>분류</p>
+          <p onClick={showCategoryButton} style={{ marginLeft: '2.25rem' }}>
+            분류
+          </p>
           {showCategories && (
             <>
               <CategoryButton
@@ -176,13 +179,13 @@ const SortButton = styled.p<{ isSelected: boolean }>`
   &:hover {
     color: ${COLORS.blue2};
   }
+  margin-right: 2.25rem;
 `;
 
 const RecipeWrapper = styled.div`
-  /* background-color: red; */
   flex-wrap: wrap;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   margin: 0 auto;
   padding: 5rem 0;
   overflow: hidden;

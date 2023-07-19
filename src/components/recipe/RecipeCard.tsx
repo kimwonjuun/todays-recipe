@@ -32,7 +32,7 @@ const RecipeCardWrapper = styled.div`
   &:hover {
     color: ${COLORS.blue2};
   }
-  margin-bottom: 5rem;
+  margin: 0 2.25rem 4.5rem 2.25rem;
 
   align-items: center;
   justify-content: center;

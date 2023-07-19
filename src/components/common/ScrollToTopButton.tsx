@@ -53,4 +53,8 @@ const Button = styled.div<{ showButton: boolean }>`
   &:hover {
     opacity: 0.8;
   }
+
+  & > img {
+    width: 35%;
+  }
 `;
