@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { getRecipeData } from '../apis/api';
-import RecipeBox from '../components/recipe/RecipeBox';
+import RecipeCard from '../components/recipe/RecipeCard';
 
 // type Category = '밥' | '일품' | '국&찌개' | '반찬' | '후식' | '기타';
 interface Category {
@@ -71,94 +71,67 @@ const Recipe = () => {
       <PageWrapper>
         <BoxWrapper>
           <TypeWrapper>
-            <CategoriesParagraph>
+            <CategoriesWrapper>
               <p onClick={showCategoryButton}>분류</p>
               {showCategories && (
                 <>
-                  <p
+                  <CategoryButton
                     onClick={() => handleCategoryButton('전체 레시피')}
-                    style={{
-                      color:
-                        selectedCategory === '전체 레시피'
-                          ? COLORS.blue2
-                          : 'inherit',
-                    }}
+                    isSelected={selectedCategory === '전체 레시피'}
                   >
                     전체 레시피
-                  </p>
-                  <p
+                  </CategoryButton>
+                  <CategoryButton
                     onClick={() => handleCategoryButton('밥')}
-                    style={{
-                      color:
-                        selectedCategory === '밥' ? COLORS.blue2 : 'inherit',
-                    }}
+                    isSelected={selectedCategory === '밥'}
                   >
                     밥
-                  </p>
-                  <p
+                  </CategoryButton>
+                  <CategoryButton
                     onClick={() => handleCategoryButton('일품')}
-                    style={{
-                      color:
-                        selectedCategory === '일품' ? COLORS.blue2 : 'inherit',
-                    }}
+                    isSelected={selectedCategory === '일품'}
                   >
                     일품
-                  </p>
-                  <p
+                  </CategoryButton>
+                  <CategoryButton
                     onClick={() => handleCategoryButton('국&찌개')}
-                    style={{
-                      color:
-                        selectedCategory === '국&찌개'
-                          ? COLORS.blue2
-                          : 'inherit',
-                    }}
+                    isSelected={selectedCategory === '국&찌개'}
                   >
                     국&찌개
-                  </p>
-                  <p
+                  </CategoryButton>
+                  <CategoryButton
                     onClick={() => handleCategoryButton('반찬')}
-                    style={{
-                      color:
-                        selectedCategory === '반찬' ? COLORS.blue2 : 'inherit',
-                    }}
+                    isSelected={selectedCategory === '반찬'}
                   >
                     반찬
-                  </p>
-                  <p
+                  </CategoryButton>
+                  <CategoryButton
                     onClick={() => handleCategoryButton('후식')}
-                    style={{
-                      color:
-                        selectedCategory === '후식' ? COLORS.blue2 : 'inherit',
-                    }}
+                    isSelected={selectedCategory === '후식'}
                   >
                     후식
-                  </p>
-                  <p
+                  </CategoryButton>
+                  <CategoryButton
                     onClick={() => handleCategoryButton('기타')}
-                    style={{
-                      color:
-                        selectedCategory === '기타' ? COLORS.blue2 : 'inherit',
-                    }}
+                    isSelected={selectedCategory === '기타'}
                   >
                     기타
-                  </p>
+                  </CategoryButton>
                 </>
               )}
-            </CategoriesParagraph>
-            <SortParagraph>
-              <p
+            </CategoriesWrapper>
+            <SortingWrapper>
+              <SortButton
                 onClick={toggleSortType}
-                style={{
-                  color: sortType === '가나다 순' ? COLORS.blue2 : 'inherit',
-                }}
+                isSelected={sortType === '가나다 순'}
               >
                 가나다 순
-              </p>
-            </SortParagraph>
+              </SortButton>
+            </SortingWrapper>
           </TypeWrapper>
           <RecipeWrapper>
             {sortedRecipes(filteredRecipes).map((recipe: Category) => (
-              <RecipeBox recipe={recipe} key={recipe.RCP_SEQ} />
+              <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
             ))}
           </RecipeWrapper>
         </BoxWrapper>
@@ -199,7 +172,7 @@ const TypeWrapper = styled.div`
   justify-content: left;
   flex-wrap: wrap;
 `;
-const CategoriesParagraph = styled.div`
+const CategoriesWrapper = styled.div`
   display: flex;
   flex-direction: row;
   & > p {
@@ -210,7 +183,7 @@ const CategoriesParagraph = styled.div`
     }
   }
 `;
-const SortParagraph = styled.div`
+const SortingWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -220,6 +193,21 @@ const SortParagraph = styled.div`
     &:hover {
       color: ${COLORS.blue2};
     }
+  }
+`;
+const CategoryButton = styled.p<{ isSelected: boolean }>`
+  margin-right: 1.5rem;
+  cursor: pointer;
+  color: ${({ isSelected }) => (isSelected ? COLORS.blue2 : 'inherit')};
+  &:hover {
+    color: ${COLORS.blue2};
+  }
+`;
+const SortButton = styled.p<{ isSelected: boolean }>`
+  cursor: pointer;
+  color: ${({ isSelected }) => (isSelected ? COLORS.blue2 : 'inherit')};
+  &:hover {
+    color: ${COLORS.blue2};
   }
 `;
 
