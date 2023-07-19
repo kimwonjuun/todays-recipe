@@ -39,7 +39,6 @@ const PageWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   height: calc(100vh - 12.8rem);
-
   background-color: ${COLORS.backGround};
 `;
 

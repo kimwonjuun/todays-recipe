@@ -20,8 +20,9 @@ export default RecipeBox;
 
 const RecipeBoxWrapper = styled.div`
   border-radius: 1rem;
-  border: 0.2rem solid ${COLORS.blue2};
-  min-width: 28rem;
+  border: 0.35rem solid ${COLORS.blue2};
+  min-width: 25rem;
+  max-width: 25rem;
   min-height: 30rem;
   position: relative;
   cursor: pointer;
@@ -37,8 +38,8 @@ const RecipeBoxWrapper = styled.div`
 `;
 
 const RecipeImgWrapper = styled.div`
-  width: 100%;
-  height: 22rem;
+  width: 30rem;
+  height: 25rem;
   overflow: hidden;
 `;
 
@@ -54,10 +55,14 @@ const Img = styled.img`
 
 const RecipeTextWrapper = styled.div`
   width: 100%;
-  height: 8rem;
+  height: 10rem;
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  text-align: center;
   justify-content: space-evenly;
   flex-direction: column;
+  & > p {
+    font-size: smaller;
+  }
 `;
