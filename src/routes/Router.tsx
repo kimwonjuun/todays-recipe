@@ -13,9 +13,9 @@ const Router = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/search" element={<Search />} />
+        <Route path="/search/:" element={<Search />} />
         <Route path="/recipe" element={<Recipe />} />
-        <Route path="/detail" element={<Detail />} />
+        <Route path="/detail/:id" element={<Detail />} />
         <Route path="/my" element={<My />} />
       </Routes>
       <ScrollToTopButton />
