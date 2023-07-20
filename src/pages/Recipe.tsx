@@ -44,10 +44,8 @@ const PageWrapper = styled.div`
 `;
 
 const BoxWrapper = styled.div`
-  /* background-color: yellow; */
   width: 90rem;
-  /* height: 25rem; */
-  /* display: flex; */
+  display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
