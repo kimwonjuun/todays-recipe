@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
+import { Recipe } from '../../apis/api';
 
-// 타입스크립트필요
-const RecipeBox = ({ recipe }: { recipe: any }) => {
+const RecipeBox = ({ recipe }: { recipe: Recipe }) => {
   return (
     <>
       <RecipeCardWrapper>

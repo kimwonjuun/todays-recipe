@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { getRecipeData } from '../apis/api';
+import { getRecipeData, Recipe } from '../apis/api';
 import RecipeBox from '../components/recipe/RecipeBox';
 
-const Recipe = () => {
+const RecipePage = () => {
   // 레시피 데이터
-  // 타입스크립트필요
-  const [recipeData, setRecipeData] = useState([]);
+  const [recipeData, setRecipeData] = useState<Recipe[]>([]);
+  // 데이터 뿌려주기
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,7 +31,7 @@ const Recipe = () => {
   );
 };
 
-export default Recipe;
+export default RecipePage;
 
 const PageWrapper = styled.div`
   box-sizing: border-box;

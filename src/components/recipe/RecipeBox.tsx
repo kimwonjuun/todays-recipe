@@ -2,18 +2,11 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import RecipeCard from './RecipeCard';
 import COLORS from '../../styles/colors';
+import { Recipe } from '../../apis/api';
 
-// 타입스크립트필요
-// type Category = '밥' | '일품' | '국&찌개' | '반찬' | '후식' | '기타';
-// 데이터 타입 사용하기
-interface Category {
-  RCP_SEQ: number;
-  RCP_NM: string;
-  RCP_PAT2: string;
-}
-
+// import해온 Recipe 타입
 interface RecipeBoxProps {
-  recipeData: any[];
+  recipeData: Recipe[];
 }
 
 const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
@@ -33,14 +26,12 @@ const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
   const filteredRecipes =
     selectedCategory && selectedCategory !== '전체 레시피'
       ? recipeData.filter(
-          (recipe: Category) => recipe.RCP_PAT2 === selectedCategory
+          (recipe: Recipe) => recipe.RCP_PAT2 === selectedCategory
         )
       : recipeData;
 
   // 기존 순 / 가나다 순 상태
-  const [sortType, setSortType] = useState<'기존 정렬 상태' | '가나다 순'>(
-    '기존 정렬 상태'
-  );
+  const [sortType, setSortType] = useState<string>('기존 정렬 상태');
 
   // 가나다 순 <-> 기존 정렬 상태간 전환
   const toggleSortType = () => {
@@ -52,9 +43,9 @@ const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
   };
 
   // 가나다 순 소팅
-  const sortedRecipes = (recipes: Category[]): Category[] => {
+  const sortedRecipes = (recipes: Recipe[]): Recipe[] => {
     if (sortType === '가나다 순') {
-      return [...recipes].sort((a: Category, b: Category) =>
+      return [...recipes].sort((a: Recipe, b: Recipe) =>
         a.RCP_NM.localeCompare(b.RCP_NM)
       );
     }
@@ -123,7 +114,7 @@ const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
         </SortingWrapper>
       </TypeWrapper>
       <RecipeWrapper>
-        {sortedRecipes(filteredRecipes).map((recipe: Category) => (
+        {sortedRecipes(filteredRecipes).map((recipe: Recipe) => (
           <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
         ))}
       </RecipeWrapper>
