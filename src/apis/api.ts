@@ -57,27 +57,53 @@ export interface Recipe {
   RCP_SEQ: string;
   RCP_WAY2: string;
 }
+// export const getRecipeData = async (): Promise<Recipe[]> => {
+//   const serviceKey = '7592613b754c46938b1e';
+//   try {
+//     const firstResponse = await axios.get(
+//       `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1/2`
+//     );
+//     const secondResponse = await axios.get(
+//       `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1001/1116`
+//     );
+//     console.log('총 데이터 건 수: ', firstResponse.data.COOKRCP01.total_count);
+//     console.log(
+//       '데이터: ',
+//       firstResponse.data.COOKRCP01.row.concat(secondResponse.data.COOKRCP01.row)
+//     );
+
+//     const allData = firstResponse.data.COOKRCP01.row.concat(
+//       secondResponse.data.COOKRCP01.row
+//     );
+//     return allData;
+//   } catch (error) {
+//     console.error('API 호출 실패:', error);
+//     throw error;
+//   }
+// };
+
 export const getRecipeData = async (): Promise<Recipe[]> => {
   const serviceKey = '7592613b754c46938b1e';
-  try {
-    const firstResponse = await axios.get(
-      `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1/1000`
-    );
-    const secondResponse = await axios.get(
-      `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1001/1100`
-    );
-    console.log(
-      '총 데이터 건 수: ',
-      firstResponse.data.COOKRCP01 + secondResponse.data.COOKRCP01
-    );
-    console.log(
-      '데이터: ',
-      firstResponse.data.COOKRCP01.row.concat(secondResponse.data.COOKRCP01.row)
-    );
 
-    const allData = firstResponse.data.COOKRCP01.row.concat(
-      secondResponse.data.COOKRCP01.row
-    );
+  try {
+    const responses = await axios.all([
+      axios.get(
+        `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1/10`
+      ),
+      axios.get(
+        `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1001/1116`
+      ),
+    ]);
+
+    const [res1, res2] = responses;
+    const firstData = res1.data.COOKRCP01.row;
+    const secondData = res2.data.COOKRCP01.row;
+
+    console.log('총 데이터 건 수:', res1.data.COOKRCP01.total_count);
+
+    const allData = [...firstData, ...secondData];
+    console.log('데이터:', allData);
+
     return allData;
   } catch (error) {
     console.error('API 호출 실패:', error);
