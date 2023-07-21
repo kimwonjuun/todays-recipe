@@ -6,6 +6,7 @@ import Detail from '../pages/Detail';
 import My from '../pages/My';
 import Header from '../components/common/Header';
 import ScrollToTopButton from '../components/common/ScrollToTopButton';
+import Admin from '../pages/Admin';
 
 const Router = () => {
   return (
@@ -17,6 +18,7 @@ const Router = () => {
         <Route path="/recipe" element={<Recipe />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/my" element={<My />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
       <ScrollToTopButton />
     </BrowserRouter>
