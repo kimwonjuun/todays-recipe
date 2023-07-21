@@ -4,7 +4,8 @@ import Search from '../pages/Search';
 import Recipe from '../pages/Recipe';
 import Detail from '../pages/Detail';
 import My from '../pages/My';
-import Header from '../components/Header';
+import Header from '../components/common/Header';
+import ScrollToTopButton from '../components/common/ScrollToTopButton';
 
 const Router = () => {
   return (
@@ -12,11 +13,12 @@ const Router = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/search" element={<Search />} />
+        <Route path="/search/:" element={<Search />} />
         <Route path="/recipe" element={<Recipe />} />
-        <Route path="/detail" element={<Detail />} />
+        <Route path="/detail/:id" element={<Detail />} />
         <Route path="/my" element={<My />} />
       </Routes>
+      <ScrollToTopButton />
     </BrowserRouter>
   );
 };

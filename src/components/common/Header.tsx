@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import COLORS from '../styles/colors';
+import COLORS from '../../styles/colors';
 
 const Header = () => {
   return (
@@ -8,7 +8,7 @@ const Header = () => {
       <HeaderWrapper>
         <Logo>
           <Link to={'/'}>
-            <LogoImg src={require('../assets/logo.png')}></LogoImg>
+            <LogoImg src={require('../../assets/logo.png')}></LogoImg>
           </Link>
         </Logo>
         <Text>로그인</Text>
@@ -25,7 +25,7 @@ const HeaderWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border-bottom: 0.25rem solid ${COLORS.blue2};
+  border-bottom: 0.25rem solid ${COLORS.blue1};
 `;
 const Logo = styled.div`
   width: 11rem;
@@ -41,6 +41,6 @@ const Text = styled.div`
   font-size: 2rem;
   cursor: pointer;
   &:hover {
-    color: ${COLORS.blue1};
+    color: ${COLORS.blue2};
   }
 `;

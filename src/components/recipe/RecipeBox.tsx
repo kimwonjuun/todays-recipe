@@ -1,63 +1,189 @@
+import { useState } from 'react';
 import styled from 'styled-components';
+import RecipeCard from './RecipeCard';
 import COLORS from '../../styles/colors';
+import { Recipe } from '../../apis/api';
 
-const RecipeBox = ({ recipe }: { recipe: any }) => {
+// import해온 Recipe 타입
+interface RecipeBoxProps {
+  recipeData: Recipe[];
+}
+
+const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
+  // 분류 선택 여닫기
+  const [showCategories, setShowCategories] = useState<boolean>(false);
+  const showCategoryButton = () => {
+    setShowCategories(!showCategories);
+  };
+
+  // 분류 선택 여닫기 후 선택하기
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const handleCategoryButton = (category: string) => {
+    setSelectedCategory(category);
+  };
+
+  // 필터링된 레시피 뿌려주기
+  const filteredRecipes =
+    selectedCategory && selectedCategory !== '전체 레시피'
+      ? recipeData.filter(
+          (recipe: Recipe) => recipe.RCP_PAT2 === selectedCategory
+        )
+      : recipeData;
+
+  // 기존 순 / 가나다 순 상태
+  const [sortType, setSortType] = useState<string>('기존 정렬 상태');
+
+  // 가나다 순 <-> 기존 정렬 상태간 전환
+  const toggleSortType = () => {
+    if (sortType === '기존 정렬 상태') {
+      setSortType('가나다 순');
+    } else if (sortType === '가나다 순') {
+      setSortType('기존 정렬 상태');
+    }
+  };
+
+  // 가나다 순 소팅
+  const sortedRecipes = (recipes: Recipe[]): Recipe[] => {
+    if (sortType === '가나다 순') {
+      return [...recipes].sort((a: Recipe, b: Recipe) =>
+        a.RCP_NM.localeCompare(b.RCP_NM)
+      );
+    }
+    return recipes;
+  };
+
   return (
     <>
-      <RecipeBoxWrapper>
-        <RecipeImgWrapper>
-          <Img src={recipe.ATT_FILE_NO_MK} />
-        </RecipeImgWrapper>
-        <RecipeTextWrapper>
-          <p>{recipe.RCP_PAT2}</p>
-          <h1>{recipe.RCP_NM}</h1>
-        </RecipeTextWrapper>
-      </RecipeBoxWrapper>
+      <TypeWrapper>
+        <CategoriesWrapper>
+          <CategoryTitle onClick={showCategoryButton}>분류</CategoryTitle>
+          {showCategories && (
+            <>
+              <CategoryButton
+                onClick={() => handleCategoryButton('전체 레시피')}
+                isSelected={selectedCategory === '전체 레시피'}
+              >
+                전체 레시피
+              </CategoryButton>
+              <CategoryButton
+                onClick={() => handleCategoryButton('밥')}
+                isSelected={selectedCategory === '밥'}
+              >
+                밥
+              </CategoryButton>
+              <CategoryButton
+                onClick={() => handleCategoryButton('일품')}
+                isSelected={selectedCategory === '일품'}
+              >
+                일품
+              </CategoryButton>
+              <CategoryButton
+                onClick={() => handleCategoryButton('국&찌개')}
+                isSelected={selectedCategory === '국&찌개'}
+              >
+                국&찌개
+              </CategoryButton>
+              <CategoryButton
+                onClick={() => handleCategoryButton('반찬')}
+                isSelected={selectedCategory === '반찬'}
+              >
+                반찬
+              </CategoryButton>
+              <CategoryButton
+                onClick={() => handleCategoryButton('후식')}
+                isSelected={selectedCategory === '후식'}
+              >
+                후식
+              </CategoryButton>
+              <CategoryButton
+                onClick={() => handleCategoryButton('기타')}
+                isSelected={selectedCategory === '기타'}
+              >
+                기타
+              </CategoryButton>
+            </>
+          )}
+        </CategoriesWrapper>
+        <SortingWrapper>
+          <SortButton
+            onClick={toggleSortType}
+            isSelected={sortType === '가나다 순'}
+          >
+            가나다 순
+          </SortButton>
+        </SortingWrapper>
+      </TypeWrapper>
+      <RecipeWrapper>
+        {sortedRecipes(filteredRecipes).map((recipe: Recipe) => (
+          <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
+        ))}
+      </RecipeWrapper>
     </>
   );
 };
 export default RecipeBox;
 
-const RecipeBoxWrapper = styled.div`
-  border-radius: 1rem;
-  border: 0.2rem solid ${COLORS.blue2};
-  min-width: 28rem;
-  min-height: 30rem;
-  position: relative;
-  cursor: pointer;
-  overflow: hidden;
-  transition: color 300ms ease-in-out;
-  &:hover {
-    color: ${COLORS.blue1};
-  }
-  margin-bottom: 5rem;
-
-  align-items: center;
-  justify-content: center;
-`;
-
-const RecipeImgWrapper = styled.div`
+const TypeWrapper = styled.div`
   width: 100%;
-  height: 22rem;
-  overflow: hidden;
-`;
-
-const Img = styled.img`
-  width: 100%;
-  height: 100%;
-  /* transition: transform 100ms ease-in-out; */
-  transition: -webkit-transform 0.4s ease-in-out;
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
-const RecipeTextWrapper = styled.div`
-  width: 100%;
-  height: 8rem;
-  box-sizing: border-box;
+  height: 2rem;
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
   flex-direction: column;
+  justify-content: left;
+  flex-wrap: wrap;
+`;
+
+const CategoriesWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  & > p {
+    margin-right: 1.5rem;
+    cursor: pointer;
+    &:hover {
+      color: ${COLORS.blue2};
+    }
+  }
+`;
+
+const SortingWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  & > p {
+    margin-left: 1.5rem;
+    cursor: pointer;
+    &:hover {
+      color: ${COLORS.blue2};
+    }
+  }
+`;
+
+const CategoryTitle = styled.p`
+  margin-left: 2.25rem;
+`;
+const CategoryButton = styled.p<{ isSelected: boolean }>`
+  font-size: 1.25rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  color: ${({ isSelected }) => (isSelected ? COLORS.blue2 : 'inherit')};
+  &:hover {
+    color: ${COLORS.blue2};
+  }
+`;
+
+const SortButton = styled.p<{ isSelected: boolean }>`
+  cursor: pointer;
+  color: ${({ isSelected }) => (isSelected ? COLORS.blue2 : 'inherit')};
+  &:hover {
+    color: ${COLORS.blue2};
+  }
+  margin-right: 2.25rem;
+`;
+
+const RecipeWrapper = styled.div`
+  flex-wrap: wrap;
+  display: flex;
+  /* justify-content: space-between; */
+  margin: 0 auto;
+  padding: 5rem 0;
+  overflow: hidden;
 `;
