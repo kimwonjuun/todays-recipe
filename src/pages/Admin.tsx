@@ -5,7 +5,7 @@ import axios from 'axios';
 import { addDoc, collection } from 'firebase/firestore';
 import { dbService } from '../apis/firebase';
 
-interface Recipe {
+export interface Recipe {
   ATT_FILE_NO_MAIN: string;
   ATT_FILE_NO_MK: string;
   HASH_TAG: string;

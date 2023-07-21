@@ -1,3 +1,4 @@
+export {};
 // import axios from 'axios';
 
 // Recipe 타입

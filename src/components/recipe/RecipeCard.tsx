@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import { Recipe } from '../../apis/api';
+import { Recipe } from '../../pages/Admin';
 
 const RecipeBox = ({ recipe }: { recipe: Recipe }) => {
   return (
