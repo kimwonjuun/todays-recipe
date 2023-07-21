@@ -22,7 +22,7 @@ const Main = () => {
               navigate('/recipe');
             }}
           >
-            검색하지 않고 레시피를 구경하고 싶어요.
+            검색하지 않고 레시피를 구경하고 싶다면?
           </CustomP>
         </BoxWrapper>
       </PageWrapper>
@@ -47,7 +47,7 @@ const BoxWrapper = styled.div`
   height: 25rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   font-size: 2rem;
   margin-top: 8rem;

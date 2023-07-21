@@ -60,12 +60,13 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - 12.7rem);
+  height: calc(100vh - 12.8rem);
   background-color: ${COLORS.backGround};
 `;
 
 const BoxWrapper = styled.div`
   width: 90rem;
+  /* height: inherit; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
