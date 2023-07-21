@@ -7,7 +7,7 @@ const RecipeBox = ({ recipe }: { recipe: Recipe }) => {
     <>
       <RecipeCardWrapper>
         <RecipeImgWrapper>
-          <Img src={recipe.ATT_FILE_NO_MK} />
+          <Img className="cardImg" src={recipe.ATT_FILE_NO_MK} />
         </RecipeImgWrapper>
         <RecipeTextWrapper>
           <p>{recipe.RCP_PAT2}</p>
@@ -21,7 +21,7 @@ export default RecipeBox;
 
 const RecipeCardWrapper = styled.div`
   border-radius: 1rem;
-  border: 0.25rem solid ${COLORS.blue1};
+  border: 0.3rem solid ${COLORS.blue1};
   min-width: 25rem;
   max-width: 25rem;
   min-height: 30rem;
@@ -33,9 +33,14 @@ const RecipeCardWrapper = styled.div`
     color: ${COLORS.blue2};
   }
   margin: 0 2.25rem 4.5rem 2.25rem;
+  background-color: #ffffff;
 
   align-items: center;
   justify-content: center;
+
+  &:hover .cardImg {
+    transform: scale(1.1);
+  }
 `;
 
 const RecipeImgWrapper = styled.div`
@@ -47,11 +52,7 @@ const RecipeImgWrapper = styled.div`
 const Img = styled.img`
   width: 100%;
   height: 100%;
-  /* transition: transform 100ms ease-in-out; */
-  transition: -webkit-transform 0.4s ease-in-out;
-  &:hover {
-    transform: scale(1.1);
-  }
+  transition: transform 0.4s ease-in-out;
 `;
 
 const RecipeTextWrapper = styled.div`
