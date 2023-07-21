@@ -4,12 +4,12 @@ import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyAUjaq5zxw7su8vIonhdoUy0ENoJGe47Jw',
-  authDomain: 'todays-recipe.firebaseapp.com',
-  projectId: 'todays-recipe',
-  storageBucket: 'todays-recipe.appspot.com',
-  messagingSenderId: '85150150047',
-  appId: '1:85150150047:web:746a39b9ac9dbfcfd6e1aa',
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  projectId: process.env.REACT_APP_projectId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  appId: process.env.REACT_APP_appId,
 };
 
 const app = initializeApp(firebaseConfig);
