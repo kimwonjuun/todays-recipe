@@ -103,10 +103,9 @@ export const getRecipeData = async (): Promise<Recipe[]> => {
       const [res1, res2] = responses;
       const firstData = res1.data.COOKRCP01.row;
       const secondData = res2.data.COOKRCP01.row;
+      const allData = [...firstData, ...secondData];
 
       console.log('총 데이터 건 수:', res1.data.COOKRCP01.total_count);
-
-      const allData = [...firstData, ...secondData];
       console.log('데이터:', allData);
 
       cachedData = allData; // 캐시 변수에 데이터 저장
