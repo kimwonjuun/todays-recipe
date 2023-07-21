@@ -21,11 +21,14 @@ const RecipePage = () => {
   //   };
   //   fetchData();
   // }, []);
+
   const getRecipeData = async () => {
     const querySnapshot = await getDocs(collection(dbService, 'recipe-list'));
-    const recipeDataBase: any = [];
+    const recipeDataBase: Recipe[] = [];
+
     querySnapshot.forEach((doc) => {
-      const newRecipe = {
+      // 일단 any 처리
+      const newRecipe: any = {
         id: doc.id,
         ...doc.data(),
       };
@@ -33,6 +36,10 @@ const RecipePage = () => {
     });
     setRecipeData(recipeDataBase);
   };
+
+  useEffect(() => {
+    getRecipeData();
+  }, []);
 
   return (
     <>
