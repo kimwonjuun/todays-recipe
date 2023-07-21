@@ -66,7 +66,7 @@ const Admin = () => {
   const [recipeList, setRecipeList] = useState<Recipe[]>([]);
   const getRecipeListHandler = async () => {
     try {
-      const serviceKey = '7592613b754c46938b1e';
+      const serviceKey = process.env.REACT_APP_FOODSAFETYKOREA_API_KEY;
       const responses = await axios.all([
         axios.get(
           `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1/1000`

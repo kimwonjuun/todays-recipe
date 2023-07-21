@@ -58,7 +58,7 @@ export interface Recipe {
   RCP_WAY2: string;
 }
 export const getRecipeData = async (): Promise<Recipe[]> => {
-  const serviceKey = '7592613b754c46938b1e';
+  const serviceKey = process.env.REACT_APP_FOODSAFETYKOREA_API_KEY;
   try {
     const firstResponse = await axios.get(
       `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1/2`
