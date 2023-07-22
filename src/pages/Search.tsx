@@ -30,7 +30,7 @@ const Search = () => {
 
   return (
     <>
-      <PageWrapper>
+      <PageWrapper isFiltered={filteredRecipes.length > 0}>
         <BoxWrapper>
           {filteredRecipes.length > 0 ? (
             <ResultWrapper>검색 결과: {filteredRecipes.length}건</ResultWrapper>
@@ -68,14 +68,14 @@ const Search = () => {
 
 export default Search;
 
-const PageWrapper = styled.div`
+const PageWrapper = styled.div<{ isFiltered: boolean }>`
   box-sizing: border-box;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* height: calc(100vh - 12.8rem); */
-  height: 100vh;
+  height: ${({ isFiltered }) =>
+    isFiltered ? '100vh' : 'calc(100vh - 12.8rem)'};
   background-color: ${COLORS.backGround};
 `;
 
