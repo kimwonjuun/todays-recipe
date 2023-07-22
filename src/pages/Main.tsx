@@ -87,7 +87,6 @@ const Main = () => {
         {filteredRecipeData.map((recipe) => (
           <div key={recipe.RCP_SEQ}>
             <p>{recipe.RCP_NM}</p>
-            {/* <p>{recipe.RCP_PARTS_DTLS}</p> */}
           </div>
         ))}
       </PageWrapper>
