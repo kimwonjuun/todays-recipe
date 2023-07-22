@@ -31,12 +31,6 @@ const Main = () => {
     setRecipeData(recipeDataBase);
   };
 
-  useEffect(() => {
-    if (showFilteredResults) {
-      getRecipeData(searchQuery);
-    }
-  }, [showFilteredResults]);
-
   // 검색 값을 변경하는 핸들러 생성
   const handleSearchQueryChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -44,10 +38,10 @@ const Main = () => {
     setSearchQuery(event.target.value);
   };
 
-  // 검색 버튼 클릭 시 실행되는 함수 생성
   const handleSearchButtonClick = () => {
     if (searchQuery.trim() !== '') {
       setShowFilteredResults(true);
+      console.log('검색 결과 건수:', filteredRecipeData.length); // 검색 결과 건수 출력
     } else {
       setShowFilteredResults(false);
       setRecipeData([]); // 검색어가 없을 때 빈 배열로 설정
@@ -61,6 +55,17 @@ const Main = () => {
 
   const hasNoResults = showFilteredResults && filteredRecipeData.length === 0;
 
+  useEffect(() => {
+    if (showFilteredResults) {
+      getRecipeData(searchQuery);
+    }
+  }, [showFilteredResults]);
+  // 변경 건수 출력을 위한 useEffect 추가
+  useEffect(() => {
+    if (showFilteredResults) {
+      console.log('검색 결과 건수:', filteredRecipeData.length);
+    }
+  }, [filteredRecipeData]);
   return (
     <>
       <PageWrapper>
