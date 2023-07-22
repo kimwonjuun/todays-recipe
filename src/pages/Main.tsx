@@ -3,7 +3,7 @@ import COLORS from '../styles/colors';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useRecipeData } from '../hooks/useRecipeData';
-import { Recipe } from './Admin';
+import { Recipe } from '../types/Recipe';
 
 const Main = () => {
   // 레시피 데이터

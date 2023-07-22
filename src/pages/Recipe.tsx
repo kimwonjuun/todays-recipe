@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { Recipe } from '../pages/Admin';
 import RecipeBox from '../components/recipe/RecipeBox';
 import { collection, getDocs } from 'firebase/firestore';
 import { dbService } from '../apis/firebase';
+import { Recipe } from '../types/Recipe';
 
 const RecipePage = () => {
   // 레시피 데이터

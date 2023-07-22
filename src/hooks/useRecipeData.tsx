@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { dbService } from '../apis/firebase';
-import { Recipe } from '../pages/Admin';
+import { Recipe } from '../types/Recipe';
 import { collection, getDocs } from 'firebase/firestore';
 
 export const useRecipeData = () => {
