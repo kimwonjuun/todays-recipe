@@ -10,6 +10,7 @@ const Main = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [recipeData, setRecipeData] = useState<Recipe[]>([]);
   const [showFilteredResults, setShowFilteredResults] = useState(false);
+
   const navigate = useNavigate();
 
   const getRecipeData = async (query: string) => {
@@ -34,7 +35,7 @@ const Main = () => {
     if (showFilteredResults) {
       getRecipeData(searchQuery);
     }
-  }, [searchQuery, showFilteredResults]);
+  }, [showFilteredResults]);
 
   // 검색 값을 변경하는 핸들러 생성
   const handleSearchQueryChange = (
@@ -49,6 +50,7 @@ const Main = () => {
       setShowFilteredResults(true);
     } else {
       setShowFilteredResults(false);
+      setRecipeData([]); // 검색어가 없을 때 빈 배열로 설정
     }
   };
 
@@ -56,11 +58,13 @@ const Main = () => {
   const filteredRecipeData = recipeData.filter((recipe) => {
     return recipe.RCP_NM.includes(searchQuery);
   });
+
+  const hasNoResults = showFilteredResults && filteredRecipeData.length === 0;
+
   return (
     <>
       <PageWrapper>
         <BoxWrapper>
-          {/* <p>오늘 처리하고 싶은 재료 또는 하고 싶은 요리를 검색하세요.</p> */}
           <InputWrapper>
             <Input
               type="text"
@@ -81,12 +85,16 @@ const Main = () => {
         </BoxWrapper>
         {showFilteredResults && (
           <ResultWrapper>
-            {filteredRecipeData.map((recipe) => (
-              <div key={recipe.RCP_SEQ}>
-                <h3>{recipe.RCP_NM}</h3>
-                <img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} />
-              </div>
-            ))}
+            {hasNoResults ? (
+              <p>검색 결과가 없습니다. 다른 검색어로 다시 검색해 주세요.</p>
+            ) : (
+              filteredRecipeData.map((recipe) => (
+                <div key={recipe.RCP_SEQ}>
+                  <h3>{recipe.RCP_NM}</h3>
+                  <img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} />
+                </div>
+              ))
+            )}
           </ResultWrapper>
         )}
       </PageWrapper>
@@ -115,6 +123,8 @@ const BoxWrapper = styled.div`
   align-items: center;
   font-size: 2rem;
   margin-top: 8rem;
+
+  background-color: yellow;
 `;
 
 const InputWrapper = styled.div`
