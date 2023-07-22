@@ -7,11 +7,15 @@ import { dbService } from '../apis/firebase';
 import { Recipe } from './Admin';
 
 const Main = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  // 레시피 데이터
   const [recipeData, setRecipeData] = useState<Recipe[]>([]);
-  const [filteredData, setFilteredData] = useState<Recipe[]>([]);
+  // 검색 결과
+  const [filteredRecipeData, setFilteredRecipeData] = useState<Recipe[]>([]);
+  // rj
+  const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
 
+  // 파이어스토어에서 레시피 데이터 가져오기
   const getRecipeData = async () => {
     const querySnapshot = await getDocs(collection(dbService, 'recipe-list'));
     const recipeDataBase: Recipe[] = [];
@@ -27,19 +31,19 @@ const Main = () => {
     setRecipeData(recipeDataBase);
   };
 
-  const filteredRecipeData = recipeData.filter((recipe) => {
-    return (
-      recipe.RCP_NM.includes(searchQuery) ||
-      recipe.RCP_PARTS_DTLS.includes(searchQuery)
-    );
-  });
-
+  // 검색 버튼 클릭
   const handleSearch = () => {
-    setFilteredData(filteredRecipeData);
-    console.log('레시피 수: ', filteredRecipeData.length);
-    filteredRecipeData.map((recipe) => {
-      console.log('레시피명 :', recipe.RCP_NM);
-    });
+    // 검색 결과로 필터링 된 레시피 데이터
+    const filteredData = recipeData.filter(
+      (recipe) =>
+        recipe.RCP_NM.includes(inputValue) ||
+        recipe.RCP_PARTS_DTLS.includes(inputValue)
+    );
+    setFilteredRecipeData(filteredData);
+    console.log('검색된 레시피: ', filteredData);
+    // filteredData.map((recipe) => {
+    //   console.log('검색된 레시피명 :', recipe.RCP_NM);
+    // });
   };
 
   useEffect(() => {
@@ -50,13 +54,12 @@ const Main = () => {
     <>
       <PageWrapper>
         <BoxWrapper>
-          {/* <p>오늘 처리하고 싶은 재료 또는 하고 싶은 요리를 검색하세요.</p> */}
           <InputWrapper>
             <Input
               type="text"
               placeholder="오늘 처리하고 싶은 재료(ex. 골뱅이) 또는 하고 싶은 요리(ex. 카프레제)를 검색하세요."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
             />
             <SearchButton onClick={handleSearch}>검색</SearchButton>
           </InputWrapper>
@@ -68,7 +71,7 @@ const Main = () => {
             검색하지 않고 레시피를 구경하고 싶다면?
           </CustomP>
         </BoxWrapper>
-        {filteredData.map((recipe) => (
+        {filteredRecipeData.map((recipe) => (
           <div key={recipe.RCP_SEQ}>
             <p>{recipe.RCP_NM}</p>
             {/* <p>{recipe.RCP_PARTS_DTLS}</p> */}
