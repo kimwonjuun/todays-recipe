@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useRecipeData } from '../hooks/useRecipeData';
 import { Recipe } from '../types/Recipe';
+import RecipeCard from '../components/recipe/RecipeCard';
 
 const Search = () => {
   // 레시피 데이터
@@ -50,9 +51,7 @@ const Search = () => {
           {filteredRecipes.length > 0 && (
             <RecipeWrapper>
               {filteredRecipes.map((recipe) => (
-                <div key={recipe.RCP_SEQ}>
-                  <p>{recipe.RCP_NM}</p>
-                </div>
+                <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
               ))}
             </RecipeWrapper>
           )}
@@ -107,7 +106,7 @@ const ResultWrapper = styled.div`
   display: flex;
 `;
 const RecipeWrapper = styled.div`
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   display: flex;
   margin: 0 auto;
   padding: 5rem 0;

@@ -114,7 +114,7 @@ const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
         </SortingWrapper>
       </TypeWrapper>
       <RecipeWrapper>
-        {sortedRecipes(filteredRecipes).map((recipe: Recipe) => (
+        {sortedRecipes(filteredRecipes).map((recipe) => (
           <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
         ))}
       </RecipeWrapper>
