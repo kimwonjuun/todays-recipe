@@ -15,10 +15,8 @@ const Search = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 검색 결과가 없을 경우 유저에게 에러 메시지 표시
-    if (!keyword) {
-      throw alert('검색 결과가 없습니다.');
-    }
+    if (recipeData.length === 0 || !keyword) return;
+
     const filteredData = recipeData.filter(
       (recipe) =>
         recipe.RCP_NM.includes(keyword) ||
