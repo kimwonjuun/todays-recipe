@@ -41,36 +41,42 @@ const Search = () => {
   };
   return (
     <>
-      <PageWrapper isFiltered={filteredRecipes.length > 0}>
-        <BoxWrapper>
+      <PageWrapper>
+        <BoxWrapper isFiltered={filteredRecipes.length > 0}>
           {filteredRecipes.length > 0 ? (
-            <ResultWrapper>검색 결과: {filteredRecipes.length}건</ResultWrapper>
+            <>
+              <ResultWrapper isFiltered={filteredRecipes.length > 0}>
+                검색 결과: {filteredRecipes.length}건
+              </ResultWrapper>
+              <RecipeWrapper>
+                {filteredRecipes.map((recipe) => (
+                  <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
+                ))}
+              </RecipeWrapper>
+            </>
           ) : (
-            <ResultWrapper>검색 결과가 없습니다 :( </ResultWrapper>
+            <>
+              <ResultWrapper isFiltered={filteredRecipes.length > 0}>
+                검색 결과가 없습니다 :(
+              </ResultWrapper>
+              <InputWrapper>
+                <Input
+                  type="text"
+                  placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                />
+                <SearchButton onClick={handleSearchClick}>검색</SearchButton>
+              </InputWrapper>
+              <CustomP
+                onClick={() => {
+                  navigate('/recipe');
+                }}
+              >
+                검색하지 않고 레시피를 구경하고 싶다면?
+              </CustomP>
+            </>
           )}
-          {filteredRecipes.length > 0 && (
-            <RecipeWrapper>
-              {filteredRecipes.map((recipe) => (
-                <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
-              ))}
-            </RecipeWrapper>
-          )}
-          <InputWrapper>
-            <Input
-              type="text"
-              placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-            <SearchButton onClick={handleSearchClick}>검색</SearchButton>
-          </InputWrapper>
-          <CustomP
-            onClick={() => {
-              navigate('/recipe');
-            }}
-          >
-            검색하지 않고 레시피를 구경하고 싶다면?
-          </CustomP>
         </BoxWrapper>
       </PageWrapper>
     </>
@@ -79,20 +85,18 @@ const Search = () => {
 
 export default Search;
 
-const PageWrapper = styled.div<{ isFiltered: boolean }>`
+const PageWrapper = styled.div`
   box-sizing: border-box;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: ${({ isFiltered }) =>
-    isFiltered ? '100vh' : 'calc(100vh - 12.8rem)'};
   background-color: ${COLORS.backGround};
 `;
 
-const BoxWrapper = styled.div`
+const BoxWrapper = styled.div<{ isFiltered: boolean }>`
   width: 90rem;
-  height: inherit;
+  height: ${({ isFiltered }) => (isFiltered ? '' : 'calc(100vh - 12.8rem)')};
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -101,18 +105,20 @@ const BoxWrapper = styled.div`
 
   position: relative;
 `;
-const ResultWrapper = styled.div`
+const ResultWrapper = styled.div<{ isFiltered: boolean }>`
   flex-wrap: wrap;
   display: flex;
+  /* color: ${COLORS.blue1}; */
+  margin-top: ${({ isFiltered }) => (isFiltered ? '5rem' : '')};
 `;
 const RecipeWrapper = styled.div`
-  /* flex-wrap: wrap; */
+  flex-wrap: wrap;
   display: flex;
   margin: 0 auto;
   padding: 5rem 0;
   overflow: hidden;
 
-  background-color: yellow;
+  /* background-color: yellow; */
 `;
 
 const InputWrapper = styled.div`
