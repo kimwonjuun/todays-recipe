@@ -32,14 +32,20 @@ const Search = () => {
     <>
       <PageWrapper>
         <BoxWrapper>
-          <ResultWrapper>검색 결과: {filteredRecipes.length}건</ResultWrapper>
-          <RecipeWrapper>
-            {filteredRecipes.map((recipe) => (
-              <div key={recipe.RCP_SEQ}>
-                <p>{recipe.RCP_NM}</p>
-              </div>
-            ))}
-          </RecipeWrapper>
+          {filteredRecipes.length > 0 ? (
+            <ResultWrapper>검색 결과: {filteredRecipes.length}건</ResultWrapper>
+          ) : (
+            <ResultWrapper>검색 결과가 없습니다 :( </ResultWrapper>
+          )}
+          {filteredRecipes.length > 0 && (
+            <RecipeWrapper>
+              {filteredRecipes.map((recipe) => (
+                <div key={recipe.RCP_SEQ}>
+                  <p>{recipe.RCP_NM}</p>
+                </div>
+              ))}
+            </RecipeWrapper>
+          )}
           <InputWrapper>
             <Input
               type="text"
@@ -74,28 +80,23 @@ const PageWrapper = styled.div`
 `;
 
 const BoxWrapper = styled.div`
-  width: 60rem;
+  width: 90rem;
   height: inherit;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   font-size: 2rem;
-  margin-top: 8rem;
 
   position: relative;
 `;
 const ResultWrapper = styled.div`
   flex-wrap: wrap;
   display: flex;
-  position: absolute;
-  top: 0;
-  left: 0;
 `;
 const RecipeWrapper = styled.div`
   flex-wrap: wrap;
   display: flex;
-  /* justify-content: space-between; */
   margin: 0 auto;
   padding: 5rem 0;
   overflow: hidden;
