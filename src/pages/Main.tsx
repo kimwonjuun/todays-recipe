@@ -46,7 +46,11 @@ const Main = () => {
         recipe.RCP_NM.includes(inputValue) ||
         recipe.RCP_PARTS_DTLS.includes(inputValue)
     );
-
+    // 검색 결과가 없을 경우 alert으로 사용자에게 메세지 표시
+    if (filteredData.length === 0) {
+      alert('검색 결과가 없습니다.');
+      return;
+    }
     setFilteredRecipeData(filteredData);
     console.log('검색 결과: ', filteredData);
     // filteredData.map((recipe) => {
