@@ -57,6 +57,8 @@ const Main = () => {
     }
     setFilteredRecipeData(filteredData);
     console.log('검색 결과: ', filteredData);
+
+    navigate(`/search/${inputValue}`);
   };
 
   useEffect(() => {
