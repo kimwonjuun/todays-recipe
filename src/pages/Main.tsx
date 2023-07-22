@@ -9,10 +9,12 @@ import { Recipe } from './Admin';
 const Main = () => {
   // 레시피 데이터
   const [recipeData, setRecipeData] = useState<Recipe[]>([]);
+  // 검색창
+  const [inputValue, setInputValue] = useState<string>('');
+  // 에러 메세지 상태
+  const [showError, setShowError] = useState<boolean>(false);
   // 검색 결과
   const [filteredRecipeData, setFilteredRecipeData] = useState<Recipe[]>([]);
-  // rj
-  const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
 
   // 파이어스토어에서 레시피 데이터 가져오기
@@ -31,16 +33,22 @@ const Main = () => {
     setRecipeData(recipeDataBase);
   };
 
-  // 검색 버튼 클릭
   const handleSearch = () => {
+    setShowError(false);
+    // 검색어가 없으면 에러 메세지를 표시하고 함수를 종료합니다.
+    if (!inputValue) {
+      alert('검색어 입력 후 버튼을 클릭해주세요.');
+      return;
+    }
     // 검색 결과로 필터링 된 레시피 데이터
     const filteredData = recipeData.filter(
       (recipe) =>
         recipe.RCP_NM.includes(inputValue) ||
         recipe.RCP_PARTS_DTLS.includes(inputValue)
     );
+
     setFilteredRecipeData(filteredData);
-    console.log('검색된 레시피: ', filteredData);
+    console.log('검색 결과: ', filteredData);
     // filteredData.map((recipe) => {
     //   console.log('검색된 레시피명 :', recipe.RCP_NM);
     // });
@@ -63,6 +71,9 @@ const Main = () => {
             />
             <SearchButton onClick={handleSearch}>검색</SearchButton>
           </InputWrapper>
+          {showError && (
+            <ErrorMessage>검색어를 입력 후 버튼을 클릭해주세요.</ErrorMessage>
+          )}
           <CustomP
             onClick={() => {
               navigate('/recipe');
@@ -140,4 +151,11 @@ const CustomP = styled.p`
   &:hover {
     color: ${COLORS.blue2};
   }
+`;
+
+const ErrorMessage = styled.p`
+  font-size: 24px;
+  color: red;
+  margin-top: 1rem;
+  margin-bottom: 0;
 `;
