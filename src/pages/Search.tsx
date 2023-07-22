@@ -15,6 +15,7 @@ const Search = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // 데이터가 없거나 !keyword 면 실행을 멈춤.
     if (recipeData.length === 0 || !keyword) return;
 
     const filteredData = recipeData.filter(
