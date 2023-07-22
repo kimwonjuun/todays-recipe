@@ -86,11 +86,11 @@ const Main = () => {
             검색하지 않고 레시피를 구경하고 싶다면?
           </CustomP>
         </BoxWrapper>
-        {filteredRecipeData.map((recipe) => (
+        {/* {filteredRecipeData.map((recipe) => (
           <div key={recipe.RCP_SEQ}>
             <p>{recipe.RCP_NM}</p>
           </div>
-        ))}
+        ))} */}
       </PageWrapper>
     </>
   );
