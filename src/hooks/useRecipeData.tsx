@@ -3,7 +3,7 @@ import { dbService } from '../apis/firebase';
 import { Recipe } from '../pages/Admin';
 import { collection, getDocs } from 'firebase/firestore';
 
-const useRecipeData = () => {
+export const useRecipeData = () => {
   const [recipeData, setRecipeData] = useState<Recipe[]>([]);
 
   // 파이어베이스에서 Recipe-list 데이터 가져오기

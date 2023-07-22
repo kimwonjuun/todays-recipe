@@ -2,34 +2,17 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { dbService } from '../apis/firebase';
+import { useRecipeData } from '../hooks/useRecipeData';
 import { Recipe } from './Admin';
 
 const Main = () => {
   // 레시피 데이터
-  const [recipeData, setRecipeData] = useState<Recipe[]>([]);
+  const recipeData = useRecipeData();
   // 검색창
   const [inputValue, setInputValue] = useState<string>('');
   // 검색 결과
   const [filteredRecipeData, setFilteredRecipeData] = useState<Recipe[]>([]);
   const navigate = useNavigate();
-
-  // 파이어스토어에서 레시피 데이터 가져오기
-  const getRecipeData = async () => {
-    const querySnapshot = await getDocs(collection(dbService, 'recipe-list'));
-    const recipeDataBase: Recipe[] = [];
-
-    querySnapshot.forEach((doc) => {
-      // 일단 any 처리
-      const newRecipe: any = {
-        id: doc.id,
-        ...doc.data(),
-      };
-      recipeDataBase.push(newRecipe);
-    });
-    setRecipeData(recipeDataBase);
-  };
 
   // 버튼 클릭 함수
   const handleSearchClick = () => {
@@ -60,10 +43,6 @@ const Main = () => {
 
     navigate(`/search/${inputValue}`);
   };
-
-  useEffect(() => {
-    getRecipeData();
-  }, []);
 
   return (
     <>
