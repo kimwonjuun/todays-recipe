@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import RecipeCard from './RecipeCard';
 import COLORS from '../../styles/colors';
-import { Recipe } from '../../pages/Admin';
+import { Recipe } from '../../types/Recipe';
 
 // import해온 Recipe 타입
 interface RecipeBoxProps {

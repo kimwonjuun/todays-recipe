@@ -1,68 +1,49 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { dbService } from '../apis/firebase';
-import { Recipe } from './Admin';
+import { useState } from 'react';
 
 const Main = () => {
-  // 레시피 데이터
-  const [recipeData, setRecipeData] = useState<Recipe[]>([]);
   // 검색창
   const [inputValue, setInputValue] = useState<string>('');
-  // 검색 결과
-  const [filteredRecipeData, setFilteredRecipeData] = useState<Recipe[]>([]);
   const navigate = useNavigate();
 
-  // 파이어스토어에서 레시피 데이터 가져오기
-  const getRecipeData = async () => {
-    const querySnapshot = await getDocs(collection(dbService, 'recipe-list'));
-    const recipeDataBase: Recipe[] = [];
+  // 버튼 클릭 함수
+  // const handleSearchClick = () => {
+  //   // 검색어가 없을 경우 유저에게 에러 메세지 표시
+  //   if (!inputValue.trim()) {
+  //     alert('검색어 입력 후 버튼을 클릭해주세요.');
+  //     return;
+  //   }
 
-    querySnapshot.forEach((doc) => {
-      // 일단 any 처리
-      const newRecipe: any = {
-        id: doc.id,
-        ...doc.data(),
-      };
-      recipeDataBase.push(newRecipe);
-    });
-    setRecipeData(recipeDataBase);
-  };
+  //   // 검색 결과로 필터링 된 레시피 데이터
+  //   const filteredData = recipeData.filter(
+  //     (recipe) =>
+  //       recipe.RCP_NM.includes(inputValue) ||
+  //       recipe.RCP_PARTS_DTLS.includes(inputValue)
+  //   );
+
+  //   // 검색 결과가 없을 경우 유저에게 에러 메세지 표시
+  //   if (filteredData.length === 0) {
+  //     alert('검색 결과가 없습니다.');
+  //     return;
+  //   }
+  //   setFilteredRecipeData(filteredData);
+  //   console.log('검색 결과: ', filteredData);
+
+  //   navigate(`/search/${inputValue}`);
+  // };
 
   // 버튼 클릭 함수
-  const handleSearch = () => {
+  const handleSearchClick = () => {
     // 검색어가 없을 경우 유저에게 에러 메세지 표시
-    // if (!inputValue) {
-    //   alert('검색어 입력 후 버튼을 클릭해주세요.');
-    //   return;
-    // }
     if (!inputValue.trim()) {
       alert('검색어 입력 후 버튼을 클릭해주세요.');
       return;
     }
 
-    // 검색 결과로 필터링 된 레시피 데이터
-    const filteredData = recipeData.filter(
-      (recipe) =>
-        recipe.RCP_NM.includes(inputValue) ||
-        recipe.RCP_PARTS_DTLS.includes(inputValue)
-    );
-
-    // 검색 결과가 없을 경우 유저에게 에러 메세지 표시
-    if (filteredData.length === 0) {
-      alert('검색 결과가 없습니다.');
-      return;
-    }
-    setFilteredRecipeData(filteredData);
-    console.log('검색 결과: ', filteredData);
+    navigate(`/search/${inputValue}`);
   };
-
-  useEffect(() => {
-    getRecipeData();
-  }, []);
-
   return (
     <>
       <PageWrapper>
@@ -74,7 +55,7 @@ const Main = () => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
             />
-            <SearchButton onClick={handleSearch}>검색</SearchButton>
+            <SearchButton onClick={handleSearchClick}>검색</SearchButton>
           </InputWrapper>
           <CustomP
             onClick={() => {
@@ -84,11 +65,6 @@ const Main = () => {
             검색하지 않고 레시피를 구경하고 싶다면?
           </CustomP>
         </BoxWrapper>
-        {filteredRecipeData.map((recipe) => (
-          <div key={recipe.RCP_SEQ}>
-            <p>{recipe.RCP_NM}</p>
-          </div>
-        ))}
       </PageWrapper>
     </>
   );

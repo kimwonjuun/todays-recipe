@@ -1,34 +1,13 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { Recipe } from '../pages/Admin';
 import RecipeBox from '../components/recipe/RecipeBox';
-import { collection, getDocs } from 'firebase/firestore';
-import { dbService } from '../apis/firebase';
+
+import { useRecipeData } from '../hooks/useRecipeData';
 
 const RecipePage = () => {
   // 레시피 데이터
-  const [recipeData, setRecipeData] = useState<Recipe[]>([]);
-
-  // 파이어스토어에서 레시피 데이터 가져오기
-  const getRecipeData = async () => {
-    const querySnapshot = await getDocs(collection(dbService, 'recipe-list'));
-    const recipeDataBase: Recipe[] = [];
-
-    querySnapshot.forEach((doc) => {
-      // 일단 any 처리
-      const newRecipe: any = {
-        id: doc.id,
-        ...doc.data(),
-      };
-      recipeDataBase.push(newRecipe);
-    });
-    setRecipeData(recipeDataBase);
-  };
-
-  useEffect(() => {
-    getRecipeData();
-  }, []);
+  const recipeData = useRecipeData();
 
   return (
     <>

@@ -14,9 +14,9 @@ const Router = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/search/:" element={<Search />} />
-        <Route path="/recipe" element={<Recipe />} />
+        <Route path="/search/:keyword" element={<Search />} />
         <Route path="/detail/:id" element={<Detail />} />
+        <Route path="/recipe" element={<Recipe />} />
         <Route path="/my" element={<My />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
