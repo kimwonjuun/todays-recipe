@@ -9,19 +9,8 @@ import { dbService } from '../apis/firebase';
 const RecipePage = () => {
   // 레시피 데이터
   const [recipeData, setRecipeData] = useState<Recipe[]>([]);
-  // 데이터 뿌려주기
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const data = await getRecipeData();
-  //       setRecipeData(data);
-  //     } catch (error) {
-  //       console.error('데이터 불러오기 실패:', error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
 
+  // 파이어스토어에서 레시피 데이터 가져오기
   const getRecipeData = async () => {
     const querySnapshot = await getDocs(collection(dbService, 'recipe-list'));
     const recipeDataBase: Recipe[] = [];
@@ -60,12 +49,13 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - 12.7rem);
+  height: calc(100vh - 12.8rem);
   background-color: ${COLORS.backGround};
 `;
 
 const BoxWrapper = styled.div`
   width: 90rem;
+  /* height: inherit; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
