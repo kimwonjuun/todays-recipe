@@ -28,6 +28,17 @@ const Search = () => {
     console.log('검색 결과: ', filteredData);
   }, [keyword, recipeData]);
 
+  // 검색창
+  const [inputValue, setInputValue] = useState<string>('');
+
+  const handleSearchClick = () => {
+    if (!inputValue.trim()) {
+      alert('검색어 입력 후 버튼을 클릭해주세요.');
+      return;
+    }
+
+    navigate(`/search/${inputValue}`);
+  };
   return (
     <>
       <PageWrapper isFiltered={filteredRecipes.length > 0}>
@@ -50,8 +61,10 @@ const Search = () => {
             <Input
               type="text"
               placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
             />
-            <SearchButton>검색</SearchButton>
+            <SearchButton onClick={handleSearchClick}>검색</SearchButton>
           </InputWrapper>
           <CustomP
             onClick={() => {
