@@ -1,9 +1,14 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 
 const Search = () => {
+  const { keyword } = useParams<{ keyword: string }>();
   const navigate = useNavigate();
+
+  const filteredRecipes = keyword;
+  console.log(filteredRecipes);
+
   return (
     <>
       <PageWrapper>

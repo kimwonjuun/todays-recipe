@@ -32,7 +32,7 @@ const Main = () => {
   };
 
   // 버튼 클릭 함수
-  const handleSearch = () => {
+  const handleSearchClick = () => {
     // 검색어가 없을 경우 유저에게 에러 메세지 표시
     // if (!inputValue) {
     //   alert('검색어 입력 후 버튼을 클릭해주세요.');
@@ -76,7 +76,7 @@ const Main = () => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
             />
-            <SearchButton onClick={handleSearch}>검색</SearchButton>
+            <SearchButton onClick={handleSearchClick}>검색</SearchButton>
           </InputWrapper>
           <CustomP
             onClick={() => {
