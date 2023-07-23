@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
 
-const RecipeBox = ({ recipe }: { recipe: Recipe }) => {
+const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   return (
     <>
       <RecipeCardWrapper>
@@ -17,7 +17,7 @@ const RecipeBox = ({ recipe }: { recipe: Recipe }) => {
     </>
   );
 };
-export default RecipeBox;
+export default RecipeCard;
 
 const RecipeCardWrapper = styled.div`
   border-radius: 1rem;

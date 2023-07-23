@@ -31,6 +31,7 @@ const Search = () => {
   // 검색창
   const [inputValue, setInputValue] = useState<string>('');
 
+  // 검색 버튼
   const handleSearchClick = () => {
     if (!inputValue.trim()) {
       alert('검색어 입력 후 버튼을 클릭해주세요.');
@@ -39,6 +40,7 @@ const Search = () => {
 
     navigate(`/search/${inputValue}`);
   };
+
   return (
     <>
       <PageWrapper>
