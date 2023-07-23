@@ -1,11 +1,17 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
 
 const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
+  const navigate = useNavigate();
+  const handleCardClick = () => {
+    navigate(`/detail/${recipe.RCP_SEQ}`);
+  };
+
   return (
     <>
-      <RecipeCardWrapper>
+      <RecipeCardWrapper onClick={handleCardClick}>
         <RecipeImgWrapper>
           <Img className="cardImg" src={recipe.ATT_FILE_NO_MK} />
         </RecipeImgWrapper>
