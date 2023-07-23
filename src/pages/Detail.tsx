@@ -6,7 +6,7 @@ import { Recipe } from '../types/Recipe';
 import { useRecipeData } from '../hooks/useRecipeData';
 
 const Detail = () => {
-  // Recipe/RecipeBox, Search에서 받아온 id
+  // Recipe/RecipeBox, Search에서 받아온 각 레시피가 가지고 있는 고유한 id
   const { id } = useParams<{ id: string }>();
   // 특정 레시피를 담아줄 state
   const [recipe, setRecipe] = useState<Recipe | null>(null);
@@ -23,24 +23,50 @@ const Detail = () => {
   }, [id, recipeData]);
 
   if (!recipe) {
-    return <div>안돼...</div>;
+    return <div>정보가 없음.</div>;
   }
+
   return (
     <>
       <PageWrapper>
-        <RCPWrapper>
+        <RecipeDetailWrapper>
           <ImgWrapper>
-            <img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} />
+            <Img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} />
           </ImgWrapper>
           <IngredientWrapper>
-            <h2>Ingredients:</h2>
-            <p>{recipe.RCP_PAT2}</p>
+            <h1>{recipe.RCP_NM}</h1>
+            <h2>재료:</h2>
+            <p>{recipe.RCP_PARTS_DTLS.split(',').join(', ')}</p>
+            <h3>요리 종류 : {recipe.RCP_PAT2}</h3>
+            <p>중량(1인분) : {recipe.INFO_WGT} g</p>
+            <p>열량 : {recipe.INFO_ENG} kcal</p>
+            <p>탄수화물 : {recipe.INFO_CAR} g</p>
+            <p>단백질 : {recipe.INFO_PRO} g</p>
+            <p>지방 : {recipe.INFO_FAT} g</p>
+            <p>나트륨 : {recipe.INFO_NA} mg</p>
           </IngredientWrapper>
           <OrderWrapper>
-            <h2>Instructions:</h2>
-            {/* Display instructions */}
+            <h2>조리법:</h2>
+            {Array.from({ length: 20 }, (_, i) => i + 1).map((step) => {
+              const manual = (recipe as any)[
+                `MANUAL${step.toString().padStart(2, '0')}`
+              ];
+              const manualImg = (recipe as any)[
+                `MANUAL_IMG${step.toString().padStart(2, '0')}`
+              ];
+              return manual ? (
+                <div key={`step-${step}`}>
+                  <p>
+                    Step {step}: {manual}
+                  </p>
+                  {manualImg && <img src={manualImg} alt={`Step ${step}`} />}
+                </div>
+              ) : null;
+            })}
+            <h2>저감 조리법 TIP:</h2>
+            <p>{recipe.RCP_NA_TIP}</p>
           </OrderWrapper>
-        </RCPWrapper>
+        </RecipeDetailWrapper>
         <CommynityWrapper>
           <BookmarkWrapper></BookmarkWrapper>
           <CommentWrapper></CommentWrapper>
@@ -61,7 +87,7 @@ const PageWrapper = styled.div`
   background-color: ${COLORS.backGround};
 `;
 
-const RCPWrapper = styled.div`
+const RecipeDetailWrapper = styled.div`
   width: 90rem;
   display: flex;
   flex-direction: column;
@@ -69,8 +95,17 @@ const RCPWrapper = styled.div`
   font-size: 2rem;
   position: relative;
   background-color: red;
+  margin: 3rem 0;
 `;
-const ImgWrapper = styled.div``;
+const ImgWrapper = styled.div`
+  width: 40rem;
+  height: 40rem;
+  overflow: hidden;
+`;
+const Img = styled.img`
+  width: 100%;
+  height: 100%;
+`;
 const IngredientWrapper = styled.div``;
 const OrderWrapper = styled.div``;
 const CommynityWrapper = styled.div``;
