@@ -121,21 +121,7 @@ const BoxWrapper = styled.div<{ isFiltered: boolean }>`
   justify-content: space-evenly;
   align-items: center;
   font-size: 2rem;
-
   position: relative;
-`;
-const ResultWrapper = styled.div<{ isFiltered: boolean }>`
-  flex-wrap: wrap;
-  display: flex;
-  /* color: ${COLORS.blue1}; */
-  margin-top: ${({ isFiltered }) => (isFiltered ? '5rem' : '')};
-`;
-const RecipeWrapper = styled.div`
-  flex-wrap: wrap;
-  display: flex;
-  margin: 0 auto;
-  padding: 5rem 0;
-  overflow: hidden;
 
   /* background-color: yellow; */
 `;
@@ -175,4 +161,21 @@ const CustomP = styled.p`
   &:hover {
     color: ${COLORS.blue2};
   }
+`;
+
+const ResultWrapper = styled.div<{ isFiltered: boolean }>`
+  flex-wrap: wrap;
+  display: flex;
+  /* color: ${COLORS.blue1}; */
+  margin-top: ${({ isFiltered }) => (isFiltered ? '5rem' : '')};
+`;
+
+const RecipeWrapper = styled.div`
+  flex-wrap: wrap;
+  display: flex;
+  margin: 0 auto;
+  padding: 5rem 0;
+  overflow: hidden;
+
+  /* background-color: yellow; */
 `;
