@@ -13,7 +13,11 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
     <>
       <RecipeCardWrapper onClick={handleCardClick}>
         <RecipeImgWrapper>
-          <Img className="cardImg" src={recipe.ATT_FILE_NO_MK} />
+          <Img
+            className="cardImg"
+            src={recipe.ATT_FILE_NO_MK}
+            alt={recipe.RCP_NM}
+          />
         </RecipeImgWrapper>
         <RecipeTextWrapper>
           <p>{recipe.RCP_PAT2}</p>

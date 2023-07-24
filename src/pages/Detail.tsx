@@ -23,30 +23,42 @@ const Detail = () => {
   }, [id, recipeData]);
 
   if (!recipe) {
-    return <div>정보가 없음.</div>;
+    return <div>로딩중</div>;
   }
 
   return (
     <>
       <PageWrapper>
         <RecipeDetailWrapper>
-          <ImgWrapper>
-            <Img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} />
-          </ImgWrapper>
+          <ImgTitleWrapper>
+            <ImgWrapper>
+              <Img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} />
+            </ImgWrapper>
+            <TItle>
+              {recipe.RCP_PAT2} / {recipe.RCP_NM}
+            </TItle>
+          </ImgTitleWrapper>
+
           <IngredientWrapper>
-            <h1>{recipe.RCP_NM}</h1>
-            <h2>재료:</h2>
-            <p>{recipe.RCP_PARTS_DTLS.split(',').join(', ')}</p>
-            <h3>요리 종류 : {recipe.RCP_PAT2}</h3>
-            <p>중량(1인분) : {recipe.INFO_WGT} g</p>
-            <p>열량 : {recipe.INFO_ENG} kcal</p>
-            <p>탄수화물 : {recipe.INFO_CAR} g</p>
-            <p>단백질 : {recipe.INFO_PRO} g</p>
-            <p>지방 : {recipe.INFO_FAT} g</p>
-            <p>나트륨 : {recipe.INFO_NA} mg</p>
+            <Ingredient>
+              <h1>재료</h1>
+              <p>{recipe.RCP_PARTS_DTLS.split(',').join(', ')}</p>
+            </Ingredient>
+            <Ingredient>
+              <h1>성분</h1>
+              <p>
+                중량(1인분):{' '}
+                {recipe.INFO_WGT ? `${recipe.INFO_WGT} g` : '정보 없음'}
+              </p>
+              <p>열량: {recipe.INFO_ENG} kcal</p>
+              <p>탄수화물: {recipe.INFO_CAR} g</p>
+              <p>단백질: {recipe.INFO_PRO} g</p>
+              <p>지방: {recipe.INFO_FAT} g</p>
+              <p>나트륨: {recipe.INFO_NA} mg</p>
+            </Ingredient>
           </IngredientWrapper>
           <OrderWrapper>
-            <h2>조리법:</h2>
+            <h1>조리법</h1>
             {Array.from({ length: 20 }, (_, i) => i + 1).map((step) => {
               const manual = (recipe as any)[
                 `MANUAL${step.toString().padStart(2, '0')}`
@@ -88,26 +100,62 @@ const PageWrapper = styled.div`
 `;
 
 const RecipeDetailWrapper = styled.div`
-  width: 90rem;
+  width: 80rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: 2rem;
   position: relative;
-  background-color: red;
+  /* background-color: red; */
   margin: 3rem 0;
 `;
+
+const ImgTitleWrapper = styled.div`
+  border: 0.25rem solid ${COLORS.blue1};
+  border-radius: 1rem;
+  background-color: #ffffff;
+`;
+
 const ImgWrapper = styled.div`
   width: 40rem;
   height: 40rem;
+
   overflow: hidden;
 `;
+
 const Img = styled.img`
   width: 100%;
   height: 100%;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1;
 `;
-const IngredientWrapper = styled.div``;
-const OrderWrapper = styled.div``;
+
+const TItle = styled.div`
+  margin: 2rem 0;
+  text-align: center;
+  font-weight: bold;
+`;
+
+const IngredientWrapper = styled.div`
+  width: inherit;
+  margin: 1rem 0;
+`;
+
+const Ingredient = styled.div`
+  margin: 3rem 0;
+  padding: 1rem;
+  border: 0.25rem solid ${COLORS.blue2};
+  border-radius: 1rem;
+  text-align: center;
+  background-color: #ffffff;
+
+  h1 {
+    margin-bottom: 1.5rem;
+  }
+`;
+const OrderWrapper = styled.div`
+  width: inherit;
+`;
 const CommynityWrapper = styled.div``;
 const BookmarkWrapper = styled.div``;
 const CommentWrapper = styled.div``;
