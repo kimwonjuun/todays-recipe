@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import RecipeBox from '../components/recipe/RecipeBox';

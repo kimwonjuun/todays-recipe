@@ -1,13 +1,23 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
 
-const RecipeBox = ({ recipe }: { recipe: Recipe }) => {
+const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
+  const navigate = useNavigate();
+  const handleCardClick = () => {
+    navigate(`/detail/${recipe.RCP_SEQ}`);
+  };
+
   return (
     <>
-      <RecipeCardWrapper>
+      <RecipeCardWrapper onClick={handleCardClick}>
         <RecipeImgWrapper>
-          <Img className="cardImg" src={recipe.ATT_FILE_NO_MK} />
+          <Img
+            className="cardImg"
+            src={recipe.ATT_FILE_NO_MK}
+            alt={recipe.RCP_NM}
+          />
         </RecipeImgWrapper>
         <RecipeTextWrapper>
           <p>{recipe.RCP_PAT2}</p>
@@ -17,7 +27,7 @@ const RecipeBox = ({ recipe }: { recipe: Recipe }) => {
     </>
   );
 };
-export default RecipeBox;
+export default RecipeCard;
 
 const RecipeCardWrapper = styled.div`
   border-radius: 1rem;

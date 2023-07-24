@@ -7,30 +7,35 @@ import { Recipe } from '../types/Recipe';
 import RecipeCard from '../components/recipe/RecipeCard';
 
 const Search = () => {
+  const navigate = useNavigate();
   // 레시피 데이터
   const recipeData = useRecipeData();
   // main.tsx에서 넘어온 keyword
   const { keyword } = useParams<{ keyword: string }>();
   // 검색 결과
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
-  const navigate = useNavigate();
+  // 검색창
+  const [inputValue, setInputValue] = useState<string>('');
+  // 로딩 상태
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     // 데이터가 없거나 !keyword 면 실행을 멈춤.
-    if (recipeData.length === 0 || !keyword) return;
-
+    if (recipeData.length === 0 || !keyword) {
+      setLoading(false);
+      return;
+    }
     const filteredData = recipeData.filter(
       (recipe) =>
-        recipe.RCP_NM.includes(keyword) ||
-        recipe.RCP_PARTS_DTLS.includes(keyword)
+        (recipe.RCP_NM ?? '').includes(keyword) ||
+        (recipe.RCP_PARTS_DTLS ?? '').includes(keyword)
     );
     setFilteredRecipes(filteredData);
+    setLoading(false);
     console.log('검색 결과: ', filteredData);
   }, [keyword, recipeData]);
 
-  // 검색창
-  const [inputValue, setInputValue] = useState<string>('');
-
+  // 검색 버튼
   const handleSearchClick = () => {
     if (!inputValue.trim()) {
       alert('검색어 입력 후 버튼을 클릭해주세요.');
@@ -39,45 +44,59 @@ const Search = () => {
 
     navigate(`/search/${inputValue}`);
   };
+
   return (
     <>
       <PageWrapper>
-        <BoxWrapper isFiltered={filteredRecipes.length > 0}>
-          {filteredRecipes.length > 0 ? (
-            <>
-              <ResultWrapper isFiltered={filteredRecipes.length > 0}>
-                검색 결과: {filteredRecipes.length}건
-              </ResultWrapper>
-              <RecipeWrapper>
-                {filteredRecipes.map((recipe) => (
-                  <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
-                ))}
-              </RecipeWrapper>
-            </>
-          ) : (
-            <>
-              <ResultWrapper isFiltered={filteredRecipes.length > 0}>
-                검색 결과가 없습니다 :(
-              </ResultWrapper>
-              <InputWrapper>
-                <Input
-                  type="text"
-                  placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                />
-                <SearchButton onClick={handleSearchClick}>검색</SearchButton>
-              </InputWrapper>
-              <CustomP
-                onClick={() => {
-                  navigate('/recipe');
-                }}
-              >
-                검색하지 않고 레시피를 구경하고 싶다면?
-              </CustomP>
-            </>
-          )}
-        </BoxWrapper>
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <BoxWrapper isFiltered={filteredRecipes.length > 0}>
+            {filteredRecipes.length > 0 ? (
+              <>
+                <ResultWrapper isFiltered={filteredRecipes.length > 0}>
+                  "{keyword}" 검색 결과: {filteredRecipes.length}건
+                </ResultWrapper>
+                <InputWrapper style={{ marginTop: '3rem' }}>
+                  <Input
+                    type="text"
+                    placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                  />
+                  <SearchButton onClick={handleSearchClick}>검색</SearchButton>
+                </InputWrapper>
+                <RecipeWrapper>
+                  {filteredRecipes.map((recipe) => (
+                    <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
+                  ))}
+                </RecipeWrapper>
+              </>
+            ) : (
+              <>
+                <ResultWrapper isFiltered={filteredRecipes.length > 0}>
+                  검색 결과가 없습니다 :(
+                </ResultWrapper>
+                <InputWrapper>
+                  <Input
+                    type="text"
+                    placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                  />
+                  <SearchButton onClick={handleSearchClick}>검색</SearchButton>
+                </InputWrapper>
+                <CustomP
+                  onClick={() => {
+                    navigate('/recipe');
+                  }}
+                >
+                  검색하지 않고 레시피를 구경하고 싶다면?
+                </CustomP>
+              </>
+            )}
+          </BoxWrapper>
+        )}
       </PageWrapper>
     </>
   );
