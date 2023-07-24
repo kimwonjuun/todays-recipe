@@ -13,6 +13,7 @@ const Detail = () => {
   // useRecipeData를 사용하여 레시피 데이터 받아오기
   const recipeData = useRecipeData();
 
+  // 전체 레시피와 선택한 레시피의 고유한 id가 같다면 출력
   useEffect(() => {
     const selectedRecipe = recipeData.find(
       (recipe: Recipe) => recipe.RCP_SEQ === id
@@ -57,27 +58,31 @@ const Detail = () => {
               <p>나트륨: {recipe.INFO_NA} mg</p>
             </Ingredient>
           </IngredientWrapper>
-          <OrderWrapper>
+          <CookingStepWrapper>
             <h1>조리법</h1>
             {Array.from({ length: 20 }, (_, i) => i + 1).map((step) => {
               const manual = (recipe as any)[
                 `MANUAL${step.toString().padStart(2, '0')}`
-              ];
+              ]
+                .replace(/^\d+\./g, '')
+                .replace('-', ':');
               const manualImg = (recipe as any)[
                 `MANUAL_IMG${step.toString().padStart(2, '0')}`
               ];
               return manual ? (
-                <div key={`step-${step}`}>
+                <CookingStep key={`step-${step}`}>
+                  {manualImg && (
+                    <img src={manualImg} alt={`Step ${step}`} width="50%" />
+                  )}
                   <p>
                     Step {step}: {manual}
                   </p>
-                  {manualImg && <img src={manualImg} alt={`Step ${step}`} />}
-                </div>
+                </CookingStep>
               ) : null;
             })}
             <h2>저감 조리법 TIP:</h2>
             <p>{recipe.RCP_NA_TIP}</p>
-          </OrderWrapper>
+          </CookingStepWrapper>
         </RecipeDetailWrapper>
         <CommynityWrapper>
           <BookmarkWrapper></BookmarkWrapper>
@@ -106,7 +111,6 @@ const RecipeDetailWrapper = styled.div`
   align-items: center;
   font-size: 2rem;
   position: relative;
-  /* background-color: red; */
   margin: 3rem 0;
 `;
 
@@ -119,7 +123,6 @@ const ImgTitleWrapper = styled.div`
 const ImgWrapper = styled.div`
   width: 40rem;
   height: 40rem;
-
   overflow: hidden;
 `;
 
@@ -153,9 +156,41 @@ const Ingredient = styled.div`
     margin-bottom: 1.5rem;
   }
 `;
-const OrderWrapper = styled.div`
+
+const CookingStepWrapper = styled.div`
   width: inherit;
+  /* margin: 3rem 0; */
+  background-color: #ffffff;
+  border: 0.25rem solid ${COLORS.blue2};
+  border-radius: 1rem;
+  text-align: center;
+  padding: 1rem;
+
+  h1 {
+    margin-bottom: 1.5rem;
+  }
 `;
+
+const CookingStep = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 1rem;
+  background-color: #ffffff;
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  img {
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+  }
+`;
+
 const CommynityWrapper = styled.div``;
 const BookmarkWrapper = styled.div``;
 const CommentWrapper = styled.div``;
