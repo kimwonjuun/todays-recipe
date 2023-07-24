@@ -51,7 +51,7 @@ const Main = () => {
           <InputWrapper>
             <Input
               type="text"
-              placeholder="오늘 처리하고 싶은 재료(ex. 골뱅이) 또는 하고 싶은 요리(ex. 카프레제)를 검색하세요."
+              placeholder="처리하고 싶은 재료(ex. 연두부) 또는 하고 싶은 요리(ex. 카프레제)를 검색하세요."
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
             />

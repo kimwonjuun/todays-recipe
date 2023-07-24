@@ -48,7 +48,7 @@ const Search = () => {
           {filteredRecipes.length > 0 ? (
             <>
               <ResultWrapper isFiltered={filteredRecipes.length > 0}>
-                검색 결과: {filteredRecipes.length}건
+                "{keyword}" 검색 결과: {filteredRecipes.length}건
               </ResultWrapper>
               <RecipeWrapper>
                 {filteredRecipes.map((recipe) => (
