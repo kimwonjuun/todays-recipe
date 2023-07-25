@@ -117,6 +117,7 @@ const RecipeDetailWrapper = styled.div`
   font-size: 2rem;
   position: relative;
   margin: 4rem 0;
+  overflow: hidden;
 `;
 
 const Wrapper = styled.div`
