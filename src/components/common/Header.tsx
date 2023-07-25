@@ -35,10 +35,10 @@ const Header = () => {
   };
 
   // 회원가입
-  const [email, setEmail] = useState(''); // 이메일
-  const [emailMessage, setEmailMessage] = useState(''); // 이메일 오류 메시지
-  const [isEmail, setIsEmail] = useState(false); // 이메일 유효성 검사
-  const changeEmail = (e: any) => {
+  const [email, setEmail] = useState<string>(''); // 이메일
+  const [emailMessage, setEmailMessage] = useState<string>(''); // 이메일 오류 메시지
+  const [isEmail, setIsEmail] = useState<boolean>(false); // 이메일 유효성 검사
+  const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     if (!emailRegex.test(e.target.value)) {
@@ -49,10 +49,10 @@ const Header = () => {
       setIsEmail(true);
     }
   };
-  const [password, setPassword] = useState(''); // 패스워드
-  const [passwordMessage, setPasswordMessage] = useState(''); // 패스워드 오류 메시지
-  const [isPassword, setIsPassword] = useState(false); // 패스워드 유효성 검사
-  const changePassword = (e: any) => {
+  const [password, setPassword] = useState<string>(''); // 패스워드
+  const [passwordMessage, setPasswordMessage] = useState<string>(''); // 패스워드 오류 메시지
+  const [isPassword, setIsPassword] = useState<boolean>(false); // 패스워드 유효성 검사
+  const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
@@ -66,10 +66,11 @@ const Header = () => {
       setIsPassword(true);
     }
   };
-  const [confirmPassword, setConfirmPassword] = useState(''); // 재입력
-  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState(''); // 재입력 오류메시지
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false); // 재입력 유효성 검사
-  const changeConfirmPassword = (e: any) => {
+  const [confirmPassword, setConfirmPassword] = useState<string>(''); // 재입력
+  const [passwordConfirmMessage, setPasswordConfirmMessage] =
+    useState<string>(''); // 재입력 오류메시지
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false); // 재입력 유효성 검사
+  const changeConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentPasswordConfirm = e.target.value;
     setConfirmPassword(currentPasswordConfirm);
     if (password === currentPasswordConfirm) {
@@ -80,20 +81,22 @@ const Header = () => {
       setIsPasswordConfirm(false);
     }
   };
-  const [nickname, setNickname] = useState(''); // 닉네임
-  const [nicknameMessage, setNickameMessage] = useState(''); // 닉네임 오류 메시지
-  const [isNickname, setIsNickame] = useState(false); // 닉네임 유효성 거맛
+  const [nickname, setNickname] = useState<string>(''); // 닉네임
+  const [nicknameMessage, setNicknameMessage] = useState<string>(''); // 닉네임 오류 메시지
+  const [isNickname, setIsNickname] = useState<boolean>(false); // 닉네임 유효성 검사
   const changeNickname = (e: any) => {
     const currentNickname = e.target.value;
     setNickname(currentNickname);
-    if (currentNickname.length < 1 || currentNickname > 4) {
-      setNickameMessage('닉네임은 1글자 이상, 6글자 미만으로 입력해주세요.');
-      setIsNickame(false);
+    if (currentNickname.length < 2 || currentNickname.length > 4) {
+      setNicknameMessage('닉네임은 2글자 이상, 4글자 미만으로 입력해주세요.');
+      setIsNickname(false);
     } else {
-      setNickameMessage('사용 가능한 닉네임 형식입니다.');
-      setIsNickame(true);
+      setNicknameMessage('사용 가능한 닉네임 형식입니다.');
+      setIsNickname(true);
     }
   };
+
+  // 회원가입 버튼
   const submitSignUp = () => {
     setPersistence(authService, browserSessionPersistence)
       .then(() => createUserWithEmailAndPassword(authService, email, password))
@@ -116,12 +119,11 @@ const Header = () => {
         if (err.message.includes('already-in-use')) {
           alert('이미 가입된 계정입니다.');
           setEmail('');
-          setPassword('');
-          setConfirmPassword('');
-          setNickname('');
         }
       });
   };
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
   return (
     <>
       <HeaderWrapper>
@@ -166,6 +168,11 @@ const Header = () => {
                 value={email}
                 onChange={changeEmail}
               />
+              {email.length > 0 && (
+                <CustomSpan className={isEmail ? 'success' : 'error'}>
+                  {emailMessage}
+                </CustomSpan>
+              )}
               <Input
                 id="password"
                 type="password"
@@ -173,6 +180,11 @@ const Header = () => {
                 value={password}
                 onChange={changePassword}
               />
+              {password.length > 0 && (
+                <CustomSpan className={isPassword ? 'success' : 'error'}>
+                  {passwordMessage}
+                </CustomSpan>
+              )}
               <Input
                 id="confirm-password"
                 type="password"
@@ -180,13 +192,24 @@ const Header = () => {
                 value={confirmPassword}
                 onChange={changeConfirmPassword}
               />
+              {confirmPassword.length > 0 && (
+                <CustomSpan className={isPasswordConfirm ? 'success' : 'error'}>
+                  {passwordConfirmMessage}
+                </CustomSpan>
+              )}
               <Input
                 id="nickname"
                 type="text"
+                maxLength={4}
                 placeholder="사용하실 닉네임을 입력해주세요."
                 value={nickname}
                 onChange={changeNickname}
               />
+              {nickname.length > 0 && (
+                <CustomSpan className={isNickname ? 'success' : 'error'}>
+                  {nicknameMessage}
+                </CustomSpan>
+              )}
             </InputWrapper>
             <BottomWrapper>
               <Button onClick={submitSignUp}>회원가입하기</Button>
@@ -325,5 +348,16 @@ const CloseButton = styled.button`
   z-index: 10;
   &:hover {
     color: ${COLORS.blue2};
+  }
+`;
+
+const CustomSpan = styled.p`
+  font-size: 1rem;
+  margin: -2.2rem 0;
+  &.success {
+    color: ${COLORS.blue1};
+  }
+  &.error {
+    color: ${COLORS.red};
   }
 `;
