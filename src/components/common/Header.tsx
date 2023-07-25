@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
@@ -13,7 +12,6 @@ import {
 import { authService } from '../../apis/firebase';
 
 const Header = () => {
-  const navigate = useNavigate();
   // 로그인 모달 상태
   const [modalIsOpen, setModalIsOpen] = useState(false);
   // 회원가입 모달 상태
@@ -42,12 +40,17 @@ const Header = () => {
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-    if (!emailRegex.test(e.target.value)) {
-      setEmailMessage('이메일 형식을 확인해주세요');
-      setIsEmail(false);
+    const isValid = emailRegex.test(e.target.value);
+    if (modalIsOpen) {
+      setEmailValid(isValid);
     } else {
-      setEmailMessage('사용 가능한 이메일 형식입니다.');
-      setIsEmail(true);
+      if (!isValid) {
+        setEmailMessage('이메일 형식을 확인해주세요');
+        setIsEmail(false);
+      } else {
+        setEmailMessage('사용 가능한 이메일 형식입니다.');
+        setIsEmail(true);
+      }
     }
   };
   const [password, setPassword] = useState<string>(''); // 패스워드
@@ -57,14 +60,19 @@ const Header = () => {
     setPassword(e.target.value);
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-    if (!passwordRegex.test(e.target.value)) {
-      setPasswordMessage(
-        '대소문자, 특수문자를 포함하여 8자리 이상 입력해주세요.'
-      );
-      setIsPassword(false);
+    const isValid = passwordRegex.test(e.target.value);
+    if (modalIsOpen) {
+      setPasswordValid(isValid);
     } else {
-      setPasswordMessage('사용 가능한 비밀번호 형식입니다.');
-      setIsPassword(true);
+      if (!isValid) {
+        setPasswordMessage(
+          '대소문자, 특수문자를 포함하여 8자리 이상 입력해주세요.'
+        );
+        setIsPassword(false);
+      } else {
+        setPasswordMessage('사용 가능한 비밀번호 형식입니다.');
+        setIsPassword(true);
+      }
     }
   };
   const [confirmPassword, setConfirmPassword] = useState<string>(''); // 재입력
@@ -96,6 +104,7 @@ const Header = () => {
       setIsNickname(true);
     }
   };
+
   // 회원가입 버튼
   const submitSignUp = () => {
     setPersistence(authService, browserSessionPersistence)
@@ -122,10 +131,12 @@ const Header = () => {
         }
       });
   };
+
   // 로그인 버튼
-  const { state } = useLocation();
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
   const submitLogin = () => {
     setPersistence(authService, browserSessionPersistence)
       .then(() => signInWithEmailAndPassword(authService, email, password))
@@ -174,17 +185,32 @@ const Header = () => {
                 <LogoImg src={require('../../assets/logo.png')}></LogoImg>
               </Logo>
               <Input
-                type="text"
+                id="email"
+                type="email"
                 placeholder="이메일을 입력해주세요."
+                value={email}
+                onChange={changeEmail}
                 ref={emailRef}
-                onChange={(e) => setEmail(e.target.value)}
               />
+              {!emailValid && email.length > 0 && (
+                <CustomSpan className={emailValid ? 'success' : 'error'}>
+                  이메일 양식을 확인해주세요.
+                </CustomSpan>
+              )}
+
               <Input
+                id="password"
                 type="password"
                 placeholder="비밀번호를 입력해주세요."
+                value={password}
+                onChange={changePassword}
                 ref={passwordRef}
-                onChange={(e) => setPassword(e.target.value)}
               />
+              {!passwordValid && password.length > 0 && (
+                <CustomSpan className={passwordValid ? 'success' : 'error'}>
+                  비밀번호 양식을 확인해주세요.
+                </CustomSpan>
+              )}
             </InputWrapper>
             <BottomWrapper>
               <Button onClick={submitLogin}>로그인하기</Button>
