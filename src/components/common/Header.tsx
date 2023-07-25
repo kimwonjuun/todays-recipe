@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
@@ -8,6 +8,7 @@ import {
   createUserWithEmailAndPassword,
   setPersistence,
   updateProfile,
+  signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { authService } from '../../apis/firebase';
 
@@ -95,7 +96,6 @@ const Header = () => {
       setIsNickname(true);
     }
   };
-
   // 회원가입 버튼
   const submitSignUp = () => {
     setPersistence(authService, browserSessionPersistence)
@@ -122,8 +122,38 @@ const Header = () => {
         }
       });
   };
-  const [emailValid, setEmailValid] = useState(false);
-  const [passwordValid, setPasswordValid] = useState(false);
+  // 로그인 버튼
+  const { state } = useLocation();
+  const emailRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const submitLogin = () => {
+    setPersistence(authService, browserSessionPersistence)
+      .then(() => signInWithEmailAndPassword(authService, email, password))
+      .then(() => {
+        alert('환영합니다!');
+        setEmail('');
+        setPassword('');
+        setModalIsOpen(false);
+        // if (state) {
+        //   navigate(state);
+        // } else {
+        //   navigate('/', { replace: true });
+        // }
+      })
+      .catch((err) => {
+        if (err.message.includes('user-not-found')) {
+          alert('가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.');
+          emailRef?.current?.focus();
+          setEmail('');
+          setPassword('');
+        }
+        if (err.message.includes('wrong-password')) {
+          alert('잘못된 비밀번호 입니다.');
+          passwordRef?.current?.focus();
+          setPassword('');
+        }
+      });
+  };
   return (
     <>
       <HeaderWrapper>
@@ -143,11 +173,21 @@ const Header = () => {
               <Logo>
                 <LogoImg src={require('../../assets/logo.png')}></LogoImg>
               </Logo>
-              <Input type="text" placeholder="이메일을 입력해주세요." />
-              <Input type="password" placeholder="비밀번호를 입력해주세요." />
+              <Input
+                type="text"
+                placeholder="이메일을 입력해주세요."
+                ref={emailRef}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Input
+                type="password"
+                placeholder="비밀번호를 입력해주세요."
+                ref={passwordRef}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </InputWrapper>
             <BottomWrapper>
-              <Button>로그인하기</Button>
+              <Button onClick={submitLogin}>로그인하기</Button>
               <LoginText onClick={openSignUpModal}>
                 아직 회원이 아니신가요?
               </LoginText>
