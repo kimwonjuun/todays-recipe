@@ -4,14 +4,25 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 
 const Header = () => {
+  // 로그인 모달 상태
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const openModal = () => {
+  // 회원가입 모달 상태
+  const [registerModalIsOpen, setRegisterModalIsOpen] = useState(false);
+  // 로그인 모달
+  const openLoginModal = () => {
+    setRegisterModalIsOpen(false);
     setModalIsOpen(true);
   };
-
-  const closeModal = () => {
+  const closeLoginModal = () => {
     setModalIsOpen(false);
+  };
+  // 회원가입 모달
+  const openSignUpModal = () => {
+    setModalIsOpen(false);
+    setRegisterModalIsOpen(true);
+  };
+  const closeSignUpModal = () => {
+    setRegisterModalIsOpen(false);
   };
 
   return (
@@ -22,20 +33,42 @@ const Header = () => {
             <LogoImg src={require('../../assets/logo.png')}></LogoImg>
           </Link>
         </Logo>
-        <Text onClick={openModal}>로그인</Text>
+        <Text onClick={openLoginModal}>로그인</Text>
       </HeaderWrapper>
       {modalIsOpen && (
         <ModalWrapper>
           <Modal>
-            <CloseButton onClick={closeModal}>&times;</CloseButton>
+            <CloseButton onClick={closeLoginModal}>&times;</CloseButton>
             <TitleWrapper>로그인</TitleWrapper>
             <InputWrapper>
               <Input type="text" placeholder="이메일을 입력해주세요." />
               <Input type="password" placeholder="비밀번호를 입력해주세요." />
             </InputWrapper>
             <BottomWrapper>
-              <Button onClick={closeModal}>로그인하기</Button>
-              <LoginText>아직 회원이 아니신가요?</LoginText>
+              <Button onClick={closeLoginModal}>로그인하기</Button>
+              <LoginText onClick={openSignUpModal}>
+                아직 회원이 아니신가요?
+              </LoginText>
+            </BottomWrapper>
+          </Modal>
+        </ModalWrapper>
+      )}
+      {registerModalIsOpen && (
+        <ModalWrapper>
+          <Modal>
+            <CloseButton onClick={closeSignUpModal}>&times;</CloseButton>
+            <TitleWrapper>회원가입</TitleWrapper>
+            <InputWrapper>
+              <Input type="text" placeholder="이메일을 입력해주세요." />
+              <Input type="password" placeholder="비밀번호를 입력해주세요." />
+              <Input
+                type="password"
+                placeholder="비밀번호를 한 번 더 입력해주세요."
+              />
+            </InputWrapper>
+            <BottomWrapper>
+              <Button onClick={closeSignUpModal}>회원가입하기</Button>
+              <LoginText onClick={openLoginModal}>이미 회원이신가요?</LoginText>
             </BottomWrapper>
           </Modal>
         </ModalWrapper>
@@ -134,7 +167,7 @@ const BottomWrapper = styled.div`
   height: 10rem;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
   flex-direction: column;
 `;
 
