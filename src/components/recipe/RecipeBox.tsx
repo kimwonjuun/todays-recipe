@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import RecipeCard from './RecipeCard';
+import RecipeCard from '../common/RecipeCard';
 import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
 

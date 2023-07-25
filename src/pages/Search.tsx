@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useRecipeData } from '../hooks/useRecipeData';
 import { Recipe } from '../types/Recipe';
-import RecipeCard from '../components/recipe/RecipeCard';
+import RecipeCard from '../components/common/RecipeCard';
 
 const Search = () => {
   const navigate = useNavigate();
