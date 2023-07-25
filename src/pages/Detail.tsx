@@ -131,7 +131,7 @@ const ImgTitleWrapper = styled.div`
   width: 50%;
   border: 0.25rem solid ${COLORS.blue2};
   border-radius: 1rem;
-  background-color: #ffffff;
+  background-color: #fff;
 `;
 
 const ImgWrapper = styled.div`
@@ -169,7 +169,7 @@ const Ingredient = styled.div`
   border: 0.25rem solid ${COLORS.blue2};
   border-radius: 1rem;
   text-align: center;
-  background-color: #ffffff;
+  background-color: #fff;
 
   &:first-child {
     margin-bottom: 1rem;
@@ -185,7 +185,7 @@ const Ingredient = styled.div`
 `;
 
 const CookingStepWrapper = styled.div`
-  background-color: #ffffff;
+  background-color: #fff;
   border: 0.25rem solid ${COLORS.blue2};
   border-radius: 1rem;
   text-align: center;
@@ -205,7 +205,7 @@ const CookingStep = styled.div`
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
     0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
   border-radius: 1rem;
-  background-color: #ffffff;
+  background-color: #fff;
 
   p {
     margin-bottom: 1rem;
@@ -225,8 +225,8 @@ const TipWrapper = styled.div`
   padding: 1rem;
   border: 0.25rem solid ${COLORS.violet1};
   border-radius: 1rem;
-  background-color: #ffffff;
-  margin-bottom: 0; // 수정된 부분
+  background-color: #fff;
+  margin-bottom: 0;
 `;
 
 const CommynityWrapper = styled.div``;

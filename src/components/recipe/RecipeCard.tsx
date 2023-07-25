@@ -43,7 +43,7 @@ const RecipeCardWrapper = styled.div`
     color: ${COLORS.blue2};
   }
   margin: 0 2.25rem 4.5rem 2.25rem;
-  background-color: #ffffff;
+  background-color: #fff;
 
   align-items: center;
   justify-content: center;

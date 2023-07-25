@@ -279,7 +279,14 @@ const Header = () => {
               )}
             </InputWrapper>
             <BottomWrapper>
-              <Button onClick={submitSignUp}>회원가입하기</Button>
+              <Button
+                onClick={submitSignUp}
+                disabled={
+                  !isEmail || !isPassword || !isPasswordConfirm || !isNickname
+                }
+              >
+                회원가입하기
+              </Button>
               <LoginText onClick={openLoginModal}>이미 회원이신가요?</LoginText>
             </BottomWrapper>
           </Modal>
@@ -387,17 +394,14 @@ const Button = styled.button`
   width: 31.5rem;
   height: 4.5rem;
   border-radius: 1rem;
-  border: 0.25rem solid ${COLORS.blue1};
+  border: ${({ disabled }) =>
+    disabled ? 'none' : `0.25rem solid ${COLORS.blue1}`};
   font-size: 2rem;
-  background-color: ${COLORS.blue1};
   color: #fff;
-  cursor: pointer;
+  background-color: ${({ disabled }) =>
+    disabled ? COLORS.gray : COLORS.blue1};
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   outline: none;
-
-  :disabled {
-    background-color: ${COLORS.backGround};
-    color: #fff;
-  }
 `;
 
 const LoginText = styled.div`
