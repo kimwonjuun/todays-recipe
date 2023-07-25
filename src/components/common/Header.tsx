@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
@@ -12,10 +12,26 @@ import {
 import { authService } from '../../apis/firebase';
 
 const Header = () => {
-  // 로그인 모달 상태
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  // 회원가입 모달 상태
-  const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false); // 로그인 모달 상태
+  const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false); // 회원가입 모달 상태
+  const [email, setEmail] = useState<string>(''); // 이메일 입력값
+  const [emailMessage, setEmailMessage] = useState<string>(''); // 이메일 오류 메시지
+  const [isEmail, setIsEmail] = useState<boolean>(false); // 이메일 유효성 검사
+  const [password, setPassword] = useState<string>(''); // 패스워드 입력값
+  const [passwordMessage, setPasswordMessage] = useState<string>(''); // 패스워드 오류 메시지
+  const [isPassword, setIsPassword] = useState<boolean>(false); // 패스워드 유효성 검사
+  const [confirmPassword, setConfirmPassword] = useState<string>(''); // 패스워드 재입력
+  const [passwordConfirmMessage, setPasswordConfirmMessage] =
+    useState<string>(''); // 패스워드 재입력 오류메시지
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false); // 패스워드 재입력 유효성 검사
+  const [nickname, setNickname] = useState<string>(''); // 닉네임 입력값
+  const [nicknameMessage, setNicknameMessage] = useState<string>(''); // 닉네임 오류 메시지
+  const [isNickname, setIsNickname] = useState<boolean>(false); // 닉네임 유효성 검사
+  const emailRef = useRef<HTMLInputElement | null>(null); // 이메일 입력창 참조
+  const passwordRef = useRef<HTMLInputElement | null>(null); // 패스워드 입력창 참조
+  const [emailValid, setEmailValid] = useState(false); // 로그인 시 이메일 유효성 결과
+  const [passwordValid, setPasswordValid] = useState(false); // 로그인 시 패스워드 유효성 결과
+
   // 로그인 모달
   const openLoginModal = () => {
     setSignUpModalIsOpen(false);
@@ -33,10 +49,7 @@ const Header = () => {
     setSignUpModalIsOpen(false);
   };
 
-  // 회원가입
-  const [email, setEmail] = useState<string>(''); // 이메일
-  const [emailMessage, setEmailMessage] = useState<string>(''); // 이메일 오류 메시지
-  const [isEmail, setIsEmail] = useState<boolean>(false); // 이메일 유효성 검사
+  // 이메일 인풋, 유효성 검사
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -53,9 +66,8 @@ const Header = () => {
       }
     }
   };
-  const [password, setPassword] = useState<string>(''); // 패스워드
-  const [passwordMessage, setPasswordMessage] = useState<string>(''); // 패스워드 오류 메시지
-  const [isPassword, setIsPassword] = useState<boolean>(false); // 패스워드 유효성 검사
+
+  // 비밀번호 인풋, 유효성 검사
   const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
     const passwordRegex =
@@ -75,10 +87,8 @@ const Header = () => {
       }
     }
   };
-  const [confirmPassword, setConfirmPassword] = useState<string>(''); // 재입력
-  const [passwordConfirmMessage, setPasswordConfirmMessage] =
-    useState<string>(''); // 재입력 오류메시지
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false); // 재입력 유효성 검사
+
+  // 비밀번호 확인 인풋, 유효성 검사
   const changeConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentPasswordConfirm = e.target.value;
     setConfirmPassword(currentPasswordConfirm);
@@ -90,9 +100,8 @@ const Header = () => {
       setIsPasswordConfirm(false);
     }
   };
-  const [nickname, setNickname] = useState<string>(''); // 닉네임
-  const [nicknameMessage, setNicknameMessage] = useState<string>(''); // 닉네임 오류 메시지
-  const [isNickname, setIsNickname] = useState<boolean>(false); // 닉네임 유효성 검사
+
+  // 닉네임 인풋, 유효성 검사
   const changeNickname = (e: any) => {
     const currentNickname = e.target.value;
     setNickname(currentNickname);
@@ -133,10 +142,6 @@ const Header = () => {
   };
 
   // 로그인 버튼
-  const emailRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
-  const [emailValid, setEmailValid] = useState(false);
-  const [passwordValid, setPasswordValid] = useState(false);
   const submitLogin = () => {
     setPersistence(authService, browserSessionPersistence)
       .then(() => signInWithEmailAndPassword(authService, email, password))
@@ -145,11 +150,6 @@ const Header = () => {
         setEmail('');
         setPassword('');
         setModalIsOpen(false);
-        // if (state) {
-        //   navigate(state);
-        // } else {
-        //   navigate('/', { replace: true });
-        // }
       })
       .catch((err) => {
         if (err.message.includes('user-not-found')) {
@@ -165,6 +165,7 @@ const Header = () => {
         }
       });
   };
+
   return (
     <>
       <HeaderWrapper>
@@ -383,15 +384,20 @@ const BottomWrapper = styled.div`
 `;
 
 const Button = styled.button`
-  width: 20rem;
-  height: 4rem;
+  width: 31.5rem;
+  height: 4.5rem;
   border-radius: 1rem;
   border: 0.25rem solid ${COLORS.blue1};
   font-size: 2rem;
   background-color: ${COLORS.blue1};
-  color: white;
+  color: #fff;
   cursor: pointer;
   outline: none;
+
+  :disabled {
+    background-color: ${COLORS.backGround};
+    color: #fff;
+  }
 `;
 
 const LoginText = styled.div`
