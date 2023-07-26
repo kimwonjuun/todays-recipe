@@ -37,8 +37,8 @@ export const SignUpModal = ({
   const [nickname, setNickname] = useState<string>(''); // 닉네임 입력값
   const [nicknameMessage, setNicknameMessage] = useState<string>(''); // 닉네임 오류 메시지
   const [isNickname, setIsNickname] = useState<boolean>(false); // 닉네임 유효성 검사
-  const [emailValid, setEmailValid] = useState(false); // 로그인 시 이메일 유효성 결과
-  const [passwordValid, setPasswordValid] = useState(false); // 로그인 시 패스워드 유효성 결과
+  const [emailValid, setEmailValid] = useState(false); // 회원가입 시 이메일 유효성 결과
+  const [passwordValid, setPasswordValid] = useState(false); // 회원가입 시 패스워드 유효성 결과
 
   // 회원가입 모달 닫기
   const closeSignUpModal = () => {
