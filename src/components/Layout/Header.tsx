@@ -1,17 +1,28 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { LoginModal } from '../login/LoginModal';
 import { SignUpModal } from '../login/SignUpModal';
+import { getAuth } from 'firebase/auth';
 
 const Header = () => {
+  const navigate = useNavigate();
   const [LoginModalIsOpen, setLoginModalIsOpen] = useState(false); // 로그인 모달 상태
   const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false); // 회원가입 모달 상태
+
   // 로그인 모달
   const openLoginModal = () => {
     setSignUpModalIsOpen(false);
     setLoginModalIsOpen(true);
+  };
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+  console.log('user: ', user);
+
+  const goToMy = (): void => {
+    navigate('/my');
   };
 
   return (
@@ -22,7 +33,13 @@ const Header = () => {
             <LogoImg src={require('../../assets/logo.png')}></LogoImg>
           </Link>
         </Logo>
-        <Text onClick={openLoginModal}>로그인</Text>
+        {user ? (
+          <>
+            <Text onClick={goToMy}>마이페이지</Text>
+          </>
+        ) : (
+          <Text onClick={openLoginModal}>로그인</Text>
+        )}
       </HeaderWrapper>
       {LoginModalIsOpen && (
         <ModalWrapper>
