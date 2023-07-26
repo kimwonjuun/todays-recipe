@@ -17,7 +17,6 @@ import {
   Modal,
   TitleWrapper,
 } from '../../styles/modalStyles';
-
 export const SignUpModal = ({
   setLoginModalIsOpen,
   setSignUpModalIsOpen,
@@ -55,7 +54,7 @@ export const SignUpModal = ({
   // 이메일 인풋, 유효성 검사
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
     const isValid = emailRegex.test(e.target.value);
     if (email.length > 0) {
       setEmailValid(isValid);
@@ -109,7 +108,7 @@ export const SignUpModal = ({
     const currentNickname = e.target.value;
     setNickname(currentNickname);
     if (currentNickname.length < 2 || currentNickname.length > 4) {
-      setNicknameMessage('닉네임은 2글자 이상, 4글자 미만으로 입력해주세요.');
+      setNicknameMessage('닉네임은 2글자 이상, 4글자 이하로 입력해주세요.');
       setIsNickname(false);
     } else {
       setNicknameMessage('사용 가능한 닉네임 형식입니다.');
@@ -147,7 +146,7 @@ export const SignUpModal = ({
   return (
     <>
       <Modal>
-        <CloseButton onClick={closeSignUpModal}>&times;</CloseButton>
+        <CloseButton onClick={closeSignUpModal}>×</CloseButton>
         <TitleWrapper>회원가입</TitleWrapper>
         <InputWrapper>
           <Input

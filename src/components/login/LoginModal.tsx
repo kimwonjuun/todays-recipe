@@ -18,7 +18,6 @@ import {
   Modal,
   TitleWrapper,
 } from '../../styles/modalStyles';
-import { validateEmail, validatePassword } from '../../utils/validationUtil';
 
 export const LoginModal = ({
   setLoginModalIsOpen,
@@ -49,7 +48,8 @@ export const LoginModal = ({
 
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    const isValid = validateEmail(e.target.value);
+    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const isValid = emailRegex.test(e.target.value);
     if (email.length > 0) {
       setEmailValid(isValid);
     } else {
@@ -65,7 +65,9 @@ export const LoginModal = ({
 
   const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    const isValid = validatePassword(e.target.value);
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+    const isValid = passwordRegex.test(e.target.value);
     if (password.length > 0) {
       setPasswordValid(isValid);
     } else {
