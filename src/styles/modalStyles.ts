@@ -97,3 +97,12 @@ export const CustomSpan = styled.p`
     color: ${COLORS.red};
   }
 `;
+
+export const Logo = styled.div`
+  width: 11rem;
+  height: 11rem;
+`;
+
+export const LogoImg = styled.img`
+  width: 100%;
+`;
