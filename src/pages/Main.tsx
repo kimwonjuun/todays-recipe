@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { SearchInput } from '../components/common/SearchInput';
 
 const Main = () => {
   // 검색창
@@ -48,15 +49,12 @@ const Main = () => {
     <>
       <PageWrapper>
         <BoxWrapper>
-          <InputWrapper>
-            <Input
-              type="text"
-              placeholder="처리하고 싶은 재료(ex. 연두부) 또는 하고 싶은 요리(ex. 카프레제)를 검색하세요."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-            <SearchButton onClick={handleSearchClick}>검색</SearchButton>
-          </InputWrapper>
+          <SearchInput
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onSearchButtonClick={handleSearchClick}
+            placeholder="처리하고 싶은 재료(ex. 연두부) 또는 하고 싶은 요리(ex. 카프레제)를 검색하세요."
+          />
           <CustomP
             onClick={() => {
               navigate('/recipe');

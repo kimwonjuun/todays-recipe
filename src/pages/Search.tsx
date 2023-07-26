@@ -5,6 +5,7 @@ import COLORS from '../styles/colors';
 import { useRecipeData } from '../hooks/useRecipeData';
 import { Recipe } from '../types/Recipe';
 import RecipeCard from '../components/common/RecipeCard';
+import { SearchInput } from '../components/common/SearchInput';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -54,18 +55,18 @@ const Search = () => {
           <BoxWrapper isFiltered={filteredRecipes.length > 0}>
             {filteredRecipes.length > 0 ? (
               <>
-                <ResultWrapper isFiltered={filteredRecipes.length > 0}>
+                <ResultWrapper
+                  isFiltered={filteredRecipes.length > 0}
+                  style={{ marginBottom: '3rem' }}
+                >
                   "{keyword}" 검색 결과: {filteredRecipes.length}건
                 </ResultWrapper>
-                <InputWrapper style={{ marginTop: '3rem' }}>
-                  <Input
-                    type="text"
-                    placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                  />
-                  <SearchButton onClick={handleSearchClick}>검색</SearchButton>
-                </InputWrapper>
+                <SearchInput
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onSearchButtonClick={handleSearchClick}
+                  placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
+                />
                 <RecipeWrapper>
                   {filteredRecipes.map((recipe) => (
                     <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
@@ -77,15 +78,12 @@ const Search = () => {
                 <ResultWrapper isFiltered={filteredRecipes.length > 0}>
                   검색 결과가 없습니다 :(
                 </ResultWrapper>
-                <InputWrapper>
-                  <Input
-                    type="text"
-                    placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                  />
-                  <SearchButton onClick={handleSearchClick}>검색</SearchButton>
-                </InputWrapper>
+                <SearchInput
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onSearchButtonClick={handleSearchClick}
+                  placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
+                />
                 <CustomP
                   onClick={() => {
                     navigate('/recipe');
