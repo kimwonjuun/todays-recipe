@@ -86,7 +86,7 @@ const Text = styled.div`
   position: absolute;
   right: 2rem;
   bottom: 1rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
   cursor: pointer;
   &:hover {
     color: ${COLORS.blue2};
