@@ -12,7 +12,7 @@ import {
 import { authService } from '../../apis/firebase';
 
 const Header = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false); // 로그인 모달 상태
+  const [LoginModalIsOpen, setLoginModalIsOpen] = useState(false); // 로그인 모달 상태
   const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false); // 회원가입 모달 상태
   const [email, setEmail] = useState<string>(''); // 이메일 입력값
   const [emailMessage, setEmailMessage] = useState<string>(''); // 이메일 오류 메시지
@@ -35,14 +35,14 @@ const Header = () => {
   // 로그인 모달
   const openLoginModal = () => {
     setSignUpModalIsOpen(false);
-    setModalIsOpen(true);
+    setLoginModalIsOpen(true);
   };
   const closeLoginModal = () => {
-    setModalIsOpen(false);
+    setLoginModalIsOpen(false);
   };
   // 회원가입 모달
   const openSignUpModal = () => {
-    setModalIsOpen(false);
+    setLoginModalIsOpen(false);
     setSignUpModalIsOpen(true);
   };
   const closeSignUpModal = () => {
@@ -54,7 +54,7 @@ const Header = () => {
     setEmail(e.target.value);
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     const isValid = emailRegex.test(e.target.value);
-    if (modalIsOpen) {
+    if (LoginModalIsOpen) {
       setEmailValid(isValid);
     } else {
       if (!isValid) {
@@ -73,7 +73,7 @@ const Header = () => {
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
     const isValid = passwordRegex.test(e.target.value);
-    if (modalIsOpen) {
+    if (LoginModalIsOpen) {
       setPasswordValid(isValid);
     } else {
       if (!isValid) {
@@ -149,7 +149,7 @@ const Header = () => {
         alert('환영합니다!');
         setEmail('');
         setPassword('');
-        setModalIsOpen(false);
+        setLoginModalIsOpen(false);
       })
       .catch((err) => {
         if (err.message.includes('user-not-found')) {
@@ -176,7 +176,7 @@ const Header = () => {
         </Logo>
         <Text onClick={openLoginModal}>로그인</Text>
       </HeaderWrapper>
-      {modalIsOpen && (
+      {LoginModalIsOpen && (
         <ModalWrapper>
           <Modal>
             <CloseButton onClick={closeLoginModal}>&times;</CloseButton>
