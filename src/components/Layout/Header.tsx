@@ -17,13 +17,10 @@ const Header = () => {
     setLoginModalIsOpen(true);
   };
 
+  // 현재 유저
   const auth = getAuth();
   const user = auth.currentUser;
   console.log('user: ', user);
-
-  const goToMy = (): void => {
-    navigate('/my');
-  };
 
   return (
     <>
@@ -35,10 +32,50 @@ const Header = () => {
         </Logo>
         {user ? (
           <>
-            <Text onClick={goToMy}>마이페이지</Text>
+            <TextWrapper>
+              <Text
+                onClick={() => {
+                  navigate('/');
+                }}
+              >
+                홈
+              </Text>
+              <Text
+                onClick={() => {
+                  navigate('/recipe');
+                }}
+              >
+                레시피
+              </Text>
+              <Text
+                onClick={() => {
+                  navigate('/my');
+                }}
+              >
+                마이페이지
+              </Text>
+            </TextWrapper>
           </>
         ) : (
-          <Text onClick={openLoginModal}>로그인</Text>
+          <>
+            <TextWrapper>
+              <Text
+                onClick={() => {
+                  navigate('/');
+                }}
+              >
+                홈
+              </Text>
+              <Text
+                onClick={() => {
+                  navigate('/recipe');
+                }}
+              >
+                레시피
+              </Text>
+              <Text onClick={openLoginModal}>로그인</Text>
+            </TextWrapper>
+          </>
         )}
       </HeaderWrapper>
       {LoginModalIsOpen && (
@@ -82,11 +119,16 @@ const LogoImg = styled.img`
   width: 100%;
 `;
 
-const Text = styled.div`
+const TextWrapper = styled.div`
   position: absolute;
   right: 2rem;
   bottom: 1rem;
   font-size: 1.5rem;
+  display: flex;
+  gap: 1.5rem;
+`;
+
+const Text = styled.div`
   cursor: pointer;
   &:hover {
     color: ${COLORS.blue2};
