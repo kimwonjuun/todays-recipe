@@ -1,6 +1,4 @@
 import { useState, useRef } from 'react';
-import styled from 'styled-components';
-import COLORS from '../../styles/colors';
 import {
   browserSessionPersistence,
   setPersistence,
@@ -20,6 +18,7 @@ import {
   Modal,
   TitleWrapper,
 } from '../../styles/modalStyles';
+import { validateEmail, validatePassword } from '../../utils/validationUtil';
 
 export const LoginModal = ({
   setLoginModalIsOpen,
@@ -39,20 +38,18 @@ export const LoginModal = ({
   const [emailValid, setEmailValid] = useState(false); // 로그인 시 이메일 유효성 결과
   const [passwordValid, setPasswordValid] = useState(false); // 로그인 시 패스워드 유효성 결과
 
-  // 로그인 모달 닫기
   const closeLoginModal = () => {
     setLoginModalIsOpen(false);
   };
-  // 회원가입 모달 열기
+
   const openSignUpModal = () => {
     setLoginModalIsOpen(false);
     setSignUpModalIsOpen(true);
   };
-  // 이메일 인풋, 유효성 검사
+
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-    const isValid = emailRegex.test(e.target.value);
+    const isValid = validateEmail(e.target.value);
     if (email.length > 0) {
       setEmailValid(isValid);
     } else {
@@ -66,12 +63,9 @@ export const LoginModal = ({
     }
   };
 
-  // 비밀번호 인풋, 유효성 검사
   const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-    const isValid = passwordRegex.test(e.target.value);
+    const isValid = validatePassword(e.target.value);
     if (password.length > 0) {
       setPasswordValid(isValid);
     } else {
@@ -87,7 +81,6 @@ export const LoginModal = ({
     }
   };
 
-  // 로그인 버튼
   const submitLogin = () => {
     setPersistence(authService, browserSessionPersistence)
       .then(() => signInWithEmailAndPassword(authService, email, password))
