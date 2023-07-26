@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import {
   browserSessionPersistence,
   createUserWithEmailAndPassword,
@@ -45,6 +45,7 @@ export const SignUpModal = ({
   const closeSignUpModal = () => {
     setSignUpModalIsOpen(false);
   };
+
   // 로그인 모달 열기
   const openLoginModal = () => {
     setSignUpModalIsOpen(false);
@@ -157,7 +158,7 @@ export const SignUpModal = ({
             onChange={changeEmail}
           />
           {email.length > 0 && (
-            <CustomSpan className={isEmail ? 'success' : 'error'}>
+            <CustomSpan className={emailValid ? 'success' : 'error'}>
               {emailMessage}
             </CustomSpan>
           )}
@@ -169,7 +170,7 @@ export const SignUpModal = ({
             onChange={changePassword}
           />
           {password.length > 0 && (
-            <CustomSpan className={isPassword ? 'success' : 'error'}>
+            <CustomSpan className={passwordValid ? 'success' : 'error'}>
               {passwordMessage}
             </CustomSpan>
           )}

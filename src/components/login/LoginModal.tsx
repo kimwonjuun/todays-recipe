@@ -1,6 +1,4 @@
 import { useState, useRef } from 'react';
-import styled from 'styled-components';
-import COLORS from '../../styles/colors';
 import {
   browserSessionPersistence,
   setPersistence,
@@ -43,11 +41,13 @@ export const LoginModal = ({
   const closeLoginModal = () => {
     setLoginModalIsOpen(false);
   };
+
   // 회원가입 모달 열기
   const openSignUpModal = () => {
     setLoginModalIsOpen(false);
     setSignUpModalIsOpen(true);
   };
+
   // 이메일 인풋, 유효성 검사
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
