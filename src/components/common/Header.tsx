@@ -10,6 +10,8 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { authService } from '../../apis/firebase';
+import { LoginModal } from '../login/LoginModal';
+import { SignUpModal } from '../login/SignUpModal';
 
 const Header = () => {
   const [LoginModalIsOpen, setLoginModalIsOpen] = useState(false); // 로그인 모달 상태
@@ -176,122 +178,8 @@ const Header = () => {
         </Logo>
         <Text onClick={openLoginModal}>로그인</Text>
       </HeaderWrapper>
-      {LoginModalIsOpen && (
-        <ModalWrapper>
-          <Modal>
-            <CloseButton onClick={closeLoginModal}>&times;</CloseButton>
-            <TitleWrapper>로그인</TitleWrapper>
-            <InputWrapper>
-              <Logo>
-                <LogoImg src={require('../../assets/logo.png')}></LogoImg>
-              </Logo>
-              <Input
-                id="email"
-                type="email"
-                placeholder="이메일을 입력해주세요."
-                value={email}
-                onChange={changeEmail}
-                ref={emailRef}
-              />
-              {!emailValid && email.length > 0 && (
-                <CustomSpan className={emailValid ? 'success' : 'error'}>
-                  이메일 양식을 확인해주세요.
-                </CustomSpan>
-              )}
-
-              <Input
-                id="password"
-                type="password"
-                placeholder="비밀번호를 입력해주세요."
-                value={password}
-                onChange={changePassword}
-                ref={passwordRef}
-              />
-              {!passwordValid && password.length > 0 && (
-                <CustomSpan className={passwordValid ? 'success' : 'error'}>
-                  비밀번호 양식을 확인해주세요.
-                </CustomSpan>
-              )}
-            </InputWrapper>
-            <BottomWrapper>
-              <Button onClick={submitLogin}>로그인하기</Button>
-              <LoginText onClick={openSignUpModal}>
-                아직 회원이 아니신가요?
-              </LoginText>
-            </BottomWrapper>
-          </Modal>
-        </ModalWrapper>
-      )}
-      {signUpModalIsOpen && (
-        <ModalWrapper>
-          <Modal>
-            <CloseButton onClick={closeSignUpModal}>&times;</CloseButton>
-            <TitleWrapper>회원가입</TitleWrapper>
-            <InputWrapper>
-              <Input
-                id="email"
-                type="email"
-                placeholder="사용하실 이메일을 입력해주세요."
-                value={email}
-                onChange={changeEmail}
-              />
-              {email.length > 0 && (
-                <CustomSpan className={isEmail ? 'success' : 'error'}>
-                  {emailMessage}
-                </CustomSpan>
-              )}
-              <Input
-                id="password"
-                type="password"
-                placeholder="사용하실 비밀번호를 입력해주세요."
-                value={password}
-                onChange={changePassword}
-              />
-              {password.length > 0 && (
-                <CustomSpan className={isPassword ? 'success' : 'error'}>
-                  {passwordMessage}
-                </CustomSpan>
-              )}
-              <Input
-                id="confirm-password"
-                type="password"
-                placeholder="사용하실 비밀번호를 한 번 더 입력해주세요."
-                value={confirmPassword}
-                onChange={changeConfirmPassword}
-              />
-              {confirmPassword.length > 0 && (
-                <CustomSpan className={isPasswordConfirm ? 'success' : 'error'}>
-                  {passwordConfirmMessage}
-                </CustomSpan>
-              )}
-              <Input
-                id="nickname"
-                type="text"
-                maxLength={4}
-                placeholder="사용하실 닉네임을 입력해주세요."
-                value={nickname}
-                onChange={changeNickname}
-              />
-              {nickname.length > 0 && (
-                <CustomSpan className={isNickname ? 'success' : 'error'}>
-                  {nicknameMessage}
-                </CustomSpan>
-              )}
-            </InputWrapper>
-            <BottomWrapper>
-              <Button
-                onClick={submitSignUp}
-                disabled={
-                  !isEmail || !isPassword || !isPasswordConfirm || !isNickname
-                }
-              >
-                회원가입하기
-              </Button>
-              <LoginText onClick={openLoginModal}>이미 회원이신가요?</LoginText>
-            </BottomWrapper>
-          </Modal>
-        </ModalWrapper>
-      )}
+      {LoginModalIsOpen && <LoginModal />}
+      {signUpModalIsOpen && <SignUpModal />}
     </>
   );
 };
