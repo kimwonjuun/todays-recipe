@@ -24,8 +24,18 @@ const Header = () => {
         </Logo>
         <Text onClick={openLoginModal}>로그인</Text>
       </HeaderWrapper>
-      {LoginModalIsOpen && <LoginModal />}
-      {signUpModalIsOpen && <SignUpModal />}
+      {LoginModalIsOpen && (
+        <LoginModal
+          setLoginModalIsOpen={setLoginModalIsOpen}
+          setSignUpModalIsOpen={setSignUpModalIsOpen}
+        />
+      )}
+      {signUpModalIsOpen && (
+        <SignUpModal
+          setLoginModalIsOpen={setLoginModalIsOpen}
+          setSignUpModalIsOpen={setSignUpModalIsOpen}
+        />
+      )}
     </>
   );
 };

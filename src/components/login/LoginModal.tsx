@@ -3,36 +3,34 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import {
   browserSessionPersistence,
-  createUserWithEmailAndPassword,
   setPersistence,
-  updateProfile,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { authService } from '../../apis/firebase';
 
-export const LoginModal = () => {
-  const [LoginModalIsOpen, setLoginModalIsOpen] = useState(false); // 로그인 모달 상태
-  const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false); // 회원가입 모달 상태
+export const LoginModal = ({
+  setLoginModalIsOpen,
+  setSignUpModalIsOpen,
+}: {
+  setLoginModalIsOpen: (state: boolean) => void;
+  setSignUpModalIsOpen: (state: boolean) => void;
+}) => {
   const [email, setEmail] = useState<string>(''); // 이메일 입력값
   const [emailMessage, setEmailMessage] = useState<string>(''); // 이메일 오류 메시지
   const [isEmail, setIsEmail] = useState<boolean>(false); // 이메일 유효성 검사
   const [password, setPassword] = useState<string>(''); // 패스워드 입력값
   const [passwordMessage, setPasswordMessage] = useState<string>(''); // 패스워드 오류 메시지
   const [isPassword, setIsPassword] = useState<boolean>(false); // 패스워드 유효성 검사
-  const [confirmPassword, setConfirmPassword] = useState<string>(''); // 패스워드 재입력
-  const [passwordConfirmMessage, setPasswordConfirmMessage] =
-    useState<string>(''); // 패스워드 재입력 오류메시지
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false); // 패스워드 재입력 유효성 검사
-  const [nickname, setNickname] = useState<string>(''); // 닉네임 입력값
-  const [nicknameMessage, setNicknameMessage] = useState<string>(''); // 닉네임 오류 메시지
-  const [isNickname, setIsNickname] = useState<boolean>(false); // 닉네임 유효성 검사
   const emailRef = useRef<HTMLInputElement | null>(null); // 이메일 입력창 참조
   const passwordRef = useRef<HTMLInputElement | null>(null); // 패스워드 입력창 참조
   const [emailValid, setEmailValid] = useState(false); // 로그인 시 이메일 유효성 결과
   const [passwordValid, setPasswordValid] = useState(false); // 로그인 시 패스워드 유효성 결과
+
+  // 로그인 모달 닫기
   const closeLoginModal = () => {
     setLoginModalIsOpen(false);
   };
+  // 회원가입 모달 열기
   const openSignUpModal = () => {
     setLoginModalIsOpen(false);
     setSignUpModalIsOpen(true);
@@ -42,7 +40,7 @@ export const LoginModal = () => {
     setEmail(e.target.value);
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     const isValid = emailRegex.test(e.target.value);
-    if (LoginModalIsOpen) {
+    if (email.length > 0) {
       setEmailValid(isValid);
     } else {
       if (!isValid) {
@@ -54,13 +52,14 @@ export const LoginModal = () => {
       }
     }
   };
+
   // 비밀번호 인풋, 유효성 검사
   const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
     const isValid = passwordRegex.test(e.target.value);
-    if (LoginModalIsOpen) {
+    if (password.length > 0) {
       setPasswordValid(isValid);
     } else {
       if (!isValid) {

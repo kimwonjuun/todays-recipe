@@ -1,5 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import {
@@ -11,9 +10,13 @@ import {
 } from 'firebase/auth';
 import { authService } from '../../apis/firebase';
 
-export const SignUpModal = () => {
-  const [LoginModalIsOpen, setLoginModalIsOpen] = useState(false); // 로그인 모달 상태
-  const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false); // 회원가입 모달 상태
+export const SignUpModal = ({
+  setLoginModalIsOpen,
+  setSignUpModalIsOpen,
+}: {
+  setLoginModalIsOpen: (state: boolean) => void;
+  setSignUpModalIsOpen: (state: boolean) => void;
+}) => {
   const [email, setEmail] = useState<string>(''); // 이메일 입력값
   const [emailMessage, setEmailMessage] = useState<string>(''); // 이메일 오류 메시지
   const [isEmail, setIsEmail] = useState<boolean>(false); // 이메일 유효성 검사
@@ -32,21 +35,14 @@ export const SignUpModal = () => {
   const [emailValid, setEmailValid] = useState(false); // 로그인 시 이메일 유효성 결과
   const [passwordValid, setPasswordValid] = useState(false); // 로그인 시 패스워드 유효성 결과
 
-  // 로그인 모달
+  // 회원가입 모달 닫기
+  const closeSignUpModal = () => {
+    setSignUpModalIsOpen(false);
+  };
+  // 로그인 모달 열기
   const openLoginModal = () => {
     setSignUpModalIsOpen(false);
     setLoginModalIsOpen(true);
-  };
-  const closeLoginModal = () => {
-    setLoginModalIsOpen(false);
-  };
-  // 회원가입 모달
-  const openSignUpModal = () => {
-    setLoginModalIsOpen(false);
-    setSignUpModalIsOpen(true);
-  };
-  const closeSignUpModal = () => {
-    setSignUpModalIsOpen(false);
   };
 
   // 이메일 인풋, 유효성 검사
@@ -54,7 +50,7 @@ export const SignUpModal = () => {
     setEmail(e.target.value);
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     const isValid = emailRegex.test(e.target.value);
-    if (LoginModalIsOpen) {
+    if (email.length > 0) {
       setEmailValid(isValid);
     } else {
       if (!isValid) {
@@ -73,7 +69,7 @@ export const SignUpModal = () => {
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
     const isValid = passwordRegex.test(e.target.value);
-    if (LoginModalIsOpen) {
+    if (password.length > 0) {
       setPasswordValid(isValid);
     } else {
       if (!isValid) {
@@ -137,31 +133,6 @@ export const SignUpModal = () => {
         if (err.message.includes('already-in-use')) {
           alert('이미 가입된 계정입니다.');
           setEmail('');
-        }
-      });
-  };
-
-  // 로그인 버튼
-  const submitLogin = () => {
-    setPersistence(authService, browserSessionPersistence)
-      .then(() => signInWithEmailAndPassword(authService, email, password))
-      .then(() => {
-        alert('환영합니다!');
-        setEmail('');
-        setPassword('');
-        setLoginModalIsOpen(false);
-      })
-      .catch((err) => {
-        if (err.message.includes('user-not-found')) {
-          alert('가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.');
-          emailRef?.current?.focus();
-          setEmail('');
-          setPassword('');
-        }
-        if (err.message.includes('wrong-password')) {
-          alert('잘못된 비밀번호 입니다.');
-          passwordRef?.current?.focus();
-          setPassword('');
         }
       });
   };
@@ -239,36 +210,6 @@ export const SignUpModal = () => {
     </>
   );
 };
-
-const HeaderWrapper = styled.div`
-  height: 12.5rem;
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 0.25rem solid ${COLORS.blue1};
-`;
-
-const Logo = styled.div`
-  width: 11rem;
-  height: 11rem;
-`;
-
-const LogoImg = styled.img`
-  width: 100%;
-`;
-
-const Text = styled.div`
-  position: absolute;
-  right: 2rem;
-  bottom: 1rem;
-  font-size: 2rem;
-  cursor: pointer;
-  &:hover {
-    color: ${COLORS.blue2};
-  }
-`;
 
 const ModalWrapper = styled.div`
   position: fixed;
