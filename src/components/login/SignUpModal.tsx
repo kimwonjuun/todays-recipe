@@ -56,16 +56,14 @@ export const SignUpModal = ({
     setEmail(e.target.value);
     const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
     const isValid = emailRegex.test(e.target.value);
-    if (email.length > 0) {
-      setEmailValid(isValid);
+    if (isValid) {
+      setEmailValid(true);
+      setEmailMessage('사용 가능한 이메일 형식입니다.');
+      setIsEmail(true);
     } else {
-      if (!isValid) {
-        setEmailMessage('이메일 형식을 확인해주세요');
-        setIsEmail(false);
-      } else {
-        setEmailMessage('사용 가능한 이메일 형식입니다.');
-        setIsEmail(true);
-      }
+      setEmailValid(false);
+      setEmailMessage('이메일 형식을 확인해주세요');
+      setIsEmail(false);
     }
   };
 
@@ -75,18 +73,16 @@ export const SignUpModal = ({
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
     const isValid = passwordRegex.test(e.target.value);
-    if (password.length > 0) {
-      setPasswordValid(isValid);
+    if (isValid) {
+      setPasswordValid(true);
+      setPasswordMessage('사용 가능한 비밀번호 형식입니다.');
+      setIsPassword(true);
     } else {
-      if (!isValid) {
-        setPasswordMessage(
-          '대소문자, 특수문자를 포함하여 8자리 이상 입력해주세요.'
-        );
-        setIsPassword(false);
-      } else {
-        setPasswordMessage('사용 가능한 비밀번호 형식입니다.');
-        setIsPassword(true);
-      }
+      setPasswordValid(false);
+      setPasswordMessage(
+        '대소문자, 특수문자를 포함하여 8자리 이상 입력해주세요.'
+      );
+      setIsPassword(false);
     }
   };
 
