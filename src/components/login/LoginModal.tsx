@@ -101,67 +101,51 @@ export const LoginModal = ({
 
   return (
     <>
-      <ModalWrapper>
-        <Modal>
-          <CloseButton onClick={closeLoginModal}>&times;</CloseButton>
-          <TitleWrapper>로그인</TitleWrapper>
-          <InputWrapper>
-            <Logo>
-              <LogoImg src={require('../../assets/logo.png')}></LogoImg>
-            </Logo>
-            <Input
-              id="email"
-              type="email"
-              placeholder="이메일을 입력해주세요."
-              value={email}
-              onChange={changeEmail}
-              ref={emailRef}
-            />
-            {!emailValid && email.length > 0 && (
-              <CustomSpan className={emailValid ? 'success' : 'error'}>
-                이메일 양식을 확인해주세요.
-              </CustomSpan>
-            )}
+      <Modal>
+        <CloseButton onClick={closeLoginModal}>&times;</CloseButton>
+        <TitleWrapper>로그인</TitleWrapper>
+        <InputWrapper>
+          <Logo>
+            <LogoImg src={require('../../assets/logo.png')}></LogoImg>
+          </Logo>
+          <Input
+            id="email"
+            type="email"
+            placeholder="이메일을 입력해주세요."
+            value={email}
+            onChange={changeEmail}
+            ref={emailRef}
+          />
+          {!emailValid && email.length > 0 && (
+            <CustomSpan className={emailValid ? 'success' : 'error'}>
+              이메일 양식을 확인해주세요.
+            </CustomSpan>
+          )}
 
-            <Input
-              id="password"
-              type="password"
-              placeholder="비밀번호를 입력해주세요."
-              value={password}
-              onChange={changePassword}
-              ref={passwordRef}
-            />
-            {!passwordValid && password.length > 0 && (
-              <CustomSpan className={passwordValid ? 'success' : 'error'}>
-                비밀번호 양식을 확인해주세요.
-              </CustomSpan>
-            )}
-          </InputWrapper>
-          <BottomWrapper>
-            <Button onClick={submitLogin}>로그인하기</Button>
-            <LoginText onClick={openSignUpModal}>
-              아직 회원이 아니신가요?
-            </LoginText>
-          </BottomWrapper>
-        </Modal>
-      </ModalWrapper>
-      ;
+          <Input
+            id="password"
+            type="password"
+            placeholder="비밀번호를 입력해주세요."
+            value={password}
+            onChange={changePassword}
+            ref={passwordRef}
+          />
+          {!passwordValid && password.length > 0 && (
+            <CustomSpan className={passwordValid ? 'success' : 'error'}>
+              비밀번호 양식을 확인해주세요.
+            </CustomSpan>
+          )}
+        </InputWrapper>
+        <BottomWrapper>
+          <Button onClick={submitLogin}>로그인하기</Button>
+          <LoginText onClick={openSignUpModal}>
+            아직 회원이 아니신가요?
+          </LoginText>
+        </BottomWrapper>
+      </Modal>
     </>
   );
 };
-
-const ModalWrapper = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-`;
 
 const Modal = styled.div`
   background-color: white;

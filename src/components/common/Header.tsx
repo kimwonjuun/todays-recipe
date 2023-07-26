@@ -25,16 +25,20 @@ const Header = () => {
         <Text onClick={openLoginModal}>로그인</Text>
       </HeaderWrapper>
       {LoginModalIsOpen && (
-        <LoginModal
-          setLoginModalIsOpen={setLoginModalIsOpen}
-          setSignUpModalIsOpen={setSignUpModalIsOpen}
-        />
+        <ModalWrapper>
+          <LoginModal
+            setLoginModalIsOpen={setLoginModalIsOpen}
+            setSignUpModalIsOpen={setSignUpModalIsOpen}
+          />
+        </ModalWrapper>
       )}
       {signUpModalIsOpen && (
-        <SignUpModal
-          setLoginModalIsOpen={setLoginModalIsOpen}
-          setSignUpModalIsOpen={setSignUpModalIsOpen}
-        />
+        <ModalWrapper>
+          <SignUpModal
+            setLoginModalIsOpen={setLoginModalIsOpen}
+            setSignUpModalIsOpen={setSignUpModalIsOpen}
+          />
+        </ModalWrapper>
       )}
     </>
   );
@@ -70,4 +74,17 @@ const Text = styled.div`
   &:hover {
     color: ${COLORS.blue2};
   }
+`;
+
+const ModalWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 `;
