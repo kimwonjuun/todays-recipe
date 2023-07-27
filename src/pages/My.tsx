@@ -43,66 +43,50 @@ const My = () => {
   };
 
   // 프로필 이미지 수정
-  const [photoURL, setPhotoURL] = useState<any>(user?.photoURL);
+  const [photoURL, setPhotoURL] = useState<any>(user?.photoURL); // 프로필 사진
+  const [tempPhotoURL, setTempPhotoURL] = useState<any>(null); // 임시 photoURL 상태
+  const [tempFileURL, setTempFileURL] = useState<any>(null); // 임시 file URL 상태
+
   const uploadFB = async (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setPhotoURL(reader.result);
+      setTempPhotoURL(reader.result);
     };
-
     const uploaded_file = await uploadBytes(
       ref(storage, `images/${e.target.files[0].name}`),
       e.target.files[0]
     );
-
-    const file_url = await getDownloadURL(uploaded_file.ref);
-
-    // if (user) {
-    //   updateProfile(user, {
-    //     photoURL: file_url,
-    //   })
-    //     .then(() => {})
-    //     .catch((error) => {
-    //       alert('이미지 업로드 실패');
-    //     });
-    // } else {
-    //   alert('사용자가 로그인되어 있지 않습니다.');
-    // }
+    setTempFileURL(await getDownloadURL(uploaded_file.ref));
   };
 
   // 프로필 닉네임 수정
   const [displayName, setDisplayName] = useState<string>(
     user?.displayName || ''
   );
-
   const onChangeDisplayName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDisplayName(e.target.value);
   };
 
-  const handleProfileUpdate = async () => {
+  // 프로필 수정하기 버튼
+  const handleProfileEdit = async () => {
     if (user) {
       await updateProfile(user, {
         displayName: displayName ? displayName : user.displayName,
-        photoURL: photoURL,
+        photoURL: tempFileURL || photoURL, // 사용자가 이미지를 업로드한 경우 tempFileURL을 사용
       })
         .then(() => {
           alert('프로필 수정 완료');
           closeModal();
-          setDisplayName(''); // 새로운 displayName을 저장합니다.
+          setPhotoURL(tempFileURL || photoURL); // photoURL 업데이트
+          setDisplayName(''); // 새로운 displayName을 저장
         })
         .catch((error) => {
           alert('프로필 수정 실패');
         });
     }
   };
-
-  //   // 기존 코드
-  // <Img src={require('../assets/default_image.png')} />
-
-  // // 변경 후
-  // <Img src={photoURL || '../assets/default_image.png'} />
 
   return (
     <>
@@ -137,7 +121,11 @@ const My = () => {
             <TopWrapper>
               <ModalTitle>프로필 수정</ModalTitle>
               <ModalImg>
-                <Img src={photoURL || '../assets/default_image.png'} />
+                <Img
+                  src={
+                    tempPhotoURL || photoURL || '../assets/default_image.png'
+                  }
+                />
                 <ModalCamImg src={require('../assets/camera.png')} />
                 <input
                   type="file"
@@ -161,9 +149,7 @@ const My = () => {
                 placeholder={user?.displayName ? user?.displayName : undefined}
                 onChange={onChangeDisplayName}
               />
-              <SubmitButton onClick={handleProfileUpdate}>
-                수정하기
-              </SubmitButton>
+              <SubmitButton onClick={handleProfileEdit}>수정하기</SubmitButton>
             </BottomWrapper>
           </Modal>
         </ModalWrapper>
