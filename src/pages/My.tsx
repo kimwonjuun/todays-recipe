@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { getAuth } from 'firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
 
 const My = () => {
   // 현재 유저
@@ -8,6 +8,16 @@ const My = () => {
   const user = auth.currentUser;
   console.log(user?.email);
   console.log(user?.displayName);
+
+  // 로그아웃
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      alert('로그아웃되었습니다.');
+    } catch (error) {
+      alert('로그아웃에 실패하였습니다.');
+    }
+  };
 
   return (
     <>
@@ -24,7 +34,7 @@ const My = () => {
               </ProfileText>
             </Profile>
             <LogoutBox>
-              <LogoutButton>로그아웃</LogoutButton>
+              <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
             </LogoutBox>
           </ProfileBox>
 

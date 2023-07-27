@@ -222,7 +222,7 @@ export const LoginModal = ({
   };
 
   // 로그인 버튼 클릭 이벤트 핸들러
-  const submitLogin = () => {
+  const handleLogin = () => {
     // 사용자 인증 및 로그인
     setPersistence(authService, browserSessionPersistence)
       .then(() => signInWithEmailAndPassword(authService, email, password))
@@ -286,7 +286,7 @@ export const LoginModal = ({
           )}
         </InputWrapper>
         <BottomWrapper>
-          <Button onClick={submitLogin}>로그인하기</Button>
+          <Button onClick={handleLogin}>로그인하기</Button>
           <LoginText onClick={openSignUpModal}>
             아직 회원이 아니신가요?
           </LoginText>
