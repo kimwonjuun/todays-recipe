@@ -8,8 +8,6 @@ const My = () => {
   // 현재 유저
   const auth = getAuth();
   const user = auth.currentUser;
-  console.log(user?.email);
-  console.log(user?.displayName);
 
   // 로그아웃
   const handleLogout = async () => {
@@ -17,6 +15,7 @@ const My = () => {
       try {
         await signOut(auth);
         alert('로그아웃되었습니다.');
+        navigate('/');
       } catch (error) {
         alert('로그아웃에 실패하였습니다.');
       }
@@ -29,7 +28,8 @@ const My = () => {
     if (!user) {
       navigate('/');
     }
-  }, [user, navigate]);
+  }, []);
+
   return (
     <>
       <PageWrapper>
