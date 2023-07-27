@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { LoginModal } from '../login/LoginModal';
@@ -17,6 +17,10 @@ const Header = () => {
     setLoginModalIsOpen(true);
   };
 
+  //
+  const location = useLocation();
+  const getHighlightedStyle = (path: string) =>
+    location.pathname === path ? { color: COLORS.blue2 } : {};
   // 현재 유저
   const auth = getAuth();
   const user = auth.currentUser;
@@ -34,20 +38,23 @@ const Header = () => {
           <>
             <TextWrapper>
               <Text
+                style={getHighlightedStyle('/')}
                 onClick={() => {
                   navigate('/');
                 }}
               >
-                홈
+                검색하기
               </Text>
               <Text
+                style={getHighlightedStyle('/recipe')}
                 onClick={() => {
                   navigate('/recipe');
                 }}
               >
-                레시피
+                레시피보러가기
               </Text>
               <Text
+                style={getHighlightedStyle('/my')}
                 onClick={() => {
                   navigate('/my');
                 }}
@@ -60,18 +67,20 @@ const Header = () => {
           <>
             <TextWrapper>
               <Text
+                style={getHighlightedStyle('/')}
                 onClick={() => {
                   navigate('/');
                 }}
               >
-                홈
+                검색하기
               </Text>
               <Text
+                style={getHighlightedStyle('/recipe')}
                 onClick={() => {
                   navigate('/recipe');
                 }}
               >
-                레시피
+                레시피보러가기
               </Text>
               <Text onClick={openLoginModal}>로그인</Text>
             </TextWrapper>
