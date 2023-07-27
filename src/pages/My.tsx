@@ -42,6 +42,8 @@ const My = () => {
     setIsModalOpen(false);
   };
 
+  const [isChanged, setIsChanged] = useState<boolean>(false); // 프로필 or 닉네임 변경 여부
+
   // 프로필 이미지 수정
   const [photoURL, setPhotoURL] = useState<any>(user?.photoURL); // 프로필 사진
   const [tempPhotoURL, setTempPhotoURL] = useState<any>(null); // 임시 photoURL 상태
@@ -59,6 +61,7 @@ const My = () => {
       e.target.files[0]
     );
     setTempFileURL(await getDownloadURL(uploaded_file.ref));
+    setIsChanged(true);
   };
 
   // 프로필 닉네임 수정
@@ -66,7 +69,13 @@ const My = () => {
     user?.displayName || ''
   );
   const onChangeDisplayName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDisplayName(e.target.value);
+    const editDispayName = e.target.value.trim();
+    if (editDispayName.length > 0 && editDispayName !== user?.displayName) {
+      setIsChanged(true);
+    } else {
+      setIsChanged(false);
+    }
+    setDisplayName(editDispayName);
   };
 
   // 프로필 수정하기 버튼
@@ -146,10 +155,13 @@ const My = () => {
             <BottomWrapper>
               <Input
                 type="text"
+                maxLength={4}
                 placeholder={user?.displayName ? user?.displayName : undefined}
                 onChange={onChangeDisplayName}
               />
-              <SubmitButton onClick={handleProfileEdit}>수정하기</SubmitButton>
+              <SubmitButton onClick={handleProfileEdit} disabled={!isChanged}>
+                수정하기
+              </SubmitButton>
             </BottomWrapper>
           </Modal>
         </ModalWrapper>
@@ -351,6 +363,17 @@ const SubmitButton = styled.button`
   /* &:hover {
     background-color: ${COLORS.blue2};
   } */
+
+  border: ${({ disabled }) =>
+    disabled ? 'none' : `0.25rem solid ${COLORS.blue1}`};
+  background-color: ${({ disabled }) =>
+    disabled ? COLORS.gray : COLORS.blue1};
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+  outline: none;
+  &:hover {
+    background-color: ${({ disabled }) =>
+      disabled ? COLORS.gray : COLORS.blue2};
+  }
 `;
 
 const CloseButton = styled.button`
