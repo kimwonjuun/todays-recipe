@@ -27,7 +27,9 @@ const My = () => {
         <BoxWrapper>
           <ProfileBox>
             <Profile>
-              <ProfileImg></ProfileImg>
+              <ProfileImg>
+                {<Img src={require('../assets/default_image.png')} />}
+              </ProfileImg>
               <ProfileText>
                 <p>{user?.displayName}</p>
               </ProfileText>
@@ -95,8 +97,11 @@ const ProfileImg = styled.div`
   width: 60%;
   height: 55%;
   border-radius: 50%;
-  background-color: black;
   margin: 1rem 0;
+`;
+
+const Img = styled.img`
+  width: 100%;
 `;
 
 const ProfileText = styled.div`
