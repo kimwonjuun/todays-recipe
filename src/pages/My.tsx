@@ -42,8 +42,6 @@ const My = () => {
     setIsModalOpen(false);
   };
 
-  const [isChanged, setIsChanged] = useState<boolean>(false); // 프로필 or 닉네임 변경 여부
-
   // 프로필 이미지 수정
   const [photoURL, setPhotoURL] = useState<any>(user?.photoURL); // 프로필 사진
   const [tempPhotoURL, setTempPhotoURL] = useState<any>(null); // 임시 photoURL 상태
@@ -61,7 +59,6 @@ const My = () => {
       e.target.files[0]
     );
     setTempFileURL(await getDownloadURL(uploaded_file.ref));
-    setIsChanged(true);
   };
   const onCameraClick = () => {
     if (fileInputRef.current) {
@@ -74,13 +71,8 @@ const My = () => {
     user?.displayName || ''
   );
   const onChangeDisplayName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const editDispayName = e.target.value.trim();
-    if (editDispayName.length > 0 && editDispayName !== user?.displayName) {
-      setIsChanged(true);
-    } else {
-      setIsChanged(false);
-    }
-    setDisplayName(editDispayName);
+    const editDisplayName = e.target.value.trim();
+    setDisplayName(editDisplayName);
   };
 
   // 프로필 수정하기 버튼
@@ -94,7 +86,7 @@ const My = () => {
           alert('프로필 수정 완료');
           closeModal();
           setPhotoURL(tempFileURL || photoURL); // photoURL 업데이트
-          setDisplayName(''); // 새로운 displayName을 저장
+          // setDisplayName(''); // 새로운 displayName을 저장
         })
         .catch((error) => {
           alert('프로필 수정 실패');
@@ -102,6 +94,11 @@ const My = () => {
     }
   };
 
+  useEffect(() => {
+    {
+      console.log(user?.displayName, displayName);
+    }
+  }, [user?.displayName, displayName]);
   return (
     <>
       <PageWrapper>
@@ -140,7 +137,6 @@ const My = () => {
                     tempPhotoURL || photoURL || '../assets/default_image.png'
                   }
                 />
-
                 <input
                   type="file"
                   ref={fileInputRef}
@@ -168,7 +164,10 @@ const My = () => {
                 placeholder={user?.displayName ? user?.displayName : undefined}
                 onChange={onChangeDisplayName}
               />
-              <SubmitButton onClick={handleProfileEdit} disabled={!isChanged}>
+              <SubmitButton
+                onClick={handleProfileEdit}
+                disabled={displayName === user?.displayName}
+              >
                 수정하기
               </SubmitButton>
             </BottomWrapper>
