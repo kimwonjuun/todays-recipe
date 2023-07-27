@@ -17,7 +17,7 @@ const Header = () => {
     setLoginModalIsOpen(true);
   };
 
-  // 내가 위치한 라우트에 따라 헤더 내비게이트 스타일링
+  // 내가 위치한 라우트에 따라 헤더 내비게이트 텍스트 스타일링
   const location = useLocation();
   const NaviSelectedStyle = (path: string) => {
     if (location.pathname.includes('/search') && path === '/') {

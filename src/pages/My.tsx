@@ -11,11 +11,13 @@ const My = () => {
 
   // 로그아웃
   const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      alert('로그아웃되었습니다.');
-    } catch (error) {
-      alert('로그아웃에 실패하였습니다.');
+    if (window.confirm('정말 로그아웃 하시겠습니까?')) {
+      try {
+        await signOut(auth);
+        alert('로그아웃되었습니다.');
+      } catch (error) {
+        alert('로그아웃에 실패하였습니다.');
+      }
     }
   };
 
