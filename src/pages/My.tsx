@@ -111,6 +111,7 @@ const My = () => {
               <ModalTitle>프로필 수정</ModalTitle>
               <ModalImg>
                 <Img src={require('../assets/default_image.png')} />
+                <ModalCamImg src={require('../assets/camera.png')} />
               </ModalImg>
             </TopWrapper>
             <BottomWrapper>
@@ -226,22 +227,6 @@ const LogoutButton = styled.button`
   }
 `;
 
-const UserHistoryBox = styled.div`
-  width: 70%;
-  height: 95%;
-
-  background-color: #fff;
-  border-radius: 1rem;
-
-  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
-    0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
-`;
-
-const UserHistory = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
 const ModalWrapper = styled.div`
   position: fixed;
   top: 0;
@@ -269,6 +254,7 @@ const Modal = styled.div`
 const CloseButtonWrapper = styled.div`
   height: 10%;
 `;
+
 const TopWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -286,23 +272,35 @@ const BottomWrapper = styled.div`
 `;
 
 const ModalTitle = styled.div`
-  font-size: 2rem;
+  font-size: 1.5rem;
 `;
 
 const ModalImg = styled.div`
   width: 45%;
   border-radius: 50%;
   margin-bottom: 1rem;
+  position: relative;
+`;
+
+const ModalCamImg = styled.img`
+  position: absolute;
+  width: 25%;
+  top: 80%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
 `;
 
 const Input = styled.input`
-  width: 17rem;
+  width: 16.75rem;
   height: 1.75rem;
   padding: 0.5rem;
   margin-bottom: 1rem;
   font-size: 1rem;
-  border: 1px solid ${COLORS.blue1};
+  border: 0.2rem solid ${COLORS.blue1};
   border-radius: 1rem;
+  text-align: center;
+  outline: none;
 `;
 
 const SubmitButton = styled.button`
@@ -313,11 +311,12 @@ const SubmitButton = styled.button`
   border: 0.175rem solid ${COLORS.blue1};
   border-radius: 1rem;
   background-color: ${COLORS.blue1};
+
   color: white;
   cursor: pointer;
-  &:hover {
+  /* &:hover {
     background-color: ${COLORS.blue2};
-  }
+  } */
 `;
 
 const CloseButton = styled.button`
@@ -333,4 +332,21 @@ const CloseButton = styled.button`
   &:hover {
     color: ${COLORS.blue2};
   }
+`;
+
+////////////////////
+const UserHistoryBox = styled.div`
+  width: 70%;
+  height: 95%;
+
+  background-color: #fff;
+  border-radius: 1rem;
+
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
+    0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
+`;
+
+const UserHistory = styled.div`
+  width: 100%;
+  height: 100%;
 `;
