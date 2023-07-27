@@ -17,10 +17,15 @@ const Header = () => {
     setLoginModalIsOpen(true);
   };
 
-  //
+  // 내가 위치한 라우트에 따라 헤더 내비게이트 스타일링
   const location = useLocation();
-  const getHighlightedStyle = (path: string) =>
-    location.pathname === path ? { color: COLORS.blue2 } : {};
+  const NaviSelectedStyle = (path: string) => {
+    if (location.pathname.includes('/search') && path === '/') {
+      return { color: COLORS.blue2 };
+    }
+    return location.pathname === path ? { color: COLORS.blue2 } : {};
+  };
+
   // 현재 유저
   const auth = getAuth();
   const user = auth.currentUser;
@@ -38,7 +43,7 @@ const Header = () => {
           <>
             <TextWrapper>
               <Text
-                style={getHighlightedStyle('/')}
+                style={NaviSelectedStyle('/')}
                 onClick={() => {
                   navigate('/');
                 }}
@@ -46,7 +51,7 @@ const Header = () => {
                 검색하기
               </Text>
               <Text
-                style={getHighlightedStyle('/recipe')}
+                style={NaviSelectedStyle('/recipe')}
                 onClick={() => {
                   navigate('/recipe');
                 }}
@@ -54,7 +59,7 @@ const Header = () => {
                 레시피보러가기
               </Text>
               <Text
-                style={getHighlightedStyle('/my')}
+                style={NaviSelectedStyle('/my')}
                 onClick={() => {
                   navigate('/my');
                 }}
@@ -67,7 +72,7 @@ const Header = () => {
           <>
             <TextWrapper>
               <Text
-                style={getHighlightedStyle('/')}
+                style={NaviSelectedStyle('/')}
                 onClick={() => {
                   navigate('/');
                 }}
@@ -75,7 +80,7 @@ const Header = () => {
                 검색하기
               </Text>
               <Text
-                style={getHighlightedStyle('/recipe')}
+                style={NaviSelectedStyle('/recipe')}
                 onClick={() => {
                   navigate('/recipe');
                 }}
