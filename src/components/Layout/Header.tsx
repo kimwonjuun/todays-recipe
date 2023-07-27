@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import { LoginModal } from '../login/LoginModal';
-import { SignUpModal } from '../login/SignUpModal';
+import { LoginModal } from '../Auth/LoginModal';
+import { SignUpModal } from '../Auth/SignUpModal';
 import { getAuth } from 'firebase/auth';
 
 const Header = () => {
