@@ -75,6 +75,10 @@ export const Button = styled.button`
     disabled ? COLORS.gray : COLORS.blue1};
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   outline: none;
+  &:hover {
+    background-color: ${({ disabled }) =>
+      disabled ? COLORS.gray : COLORS.blue2};
+  }
 `;
 
 export const LoginText = styled.div`

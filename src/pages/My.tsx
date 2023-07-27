@@ -32,6 +32,16 @@ const My = () => {
     }
   };
 
+  // 모달
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   // 프로필 이미지 수정
   const [photoURL, setPhotoURL] = useState<any>(user?.photoURL);
   const uploadFB = async (e: any) => {
@@ -61,6 +71,11 @@ const My = () => {
       alert('사용자가 로그인되어 있지 않습니다.');
     }
   };
+  //   // 기존 코드
+  // <Img src={require('../assets/default_image.png')} />
+
+  // // 변경 후
+  // <Img src={photoURL || '../assets/default_image.png'} />
 
   return (
     <>
@@ -72,14 +87,11 @@ const My = () => {
                 <Img src={require('../assets/default_image.png')} />
               </ProfileImg>
               <ProfileText>
-                <p>{user?.displayName}님 안녕하세요?</p>
+                <p>{user?.displayName}</p>
               </ProfileText>
-              {/* <ProfileText>
-                <p>{user?.email}</p>
-              </ProfileText> */}
             </Profile>
             <LogoutBox>
-              <EditButton onClick={handleLogout}>프로필 수정</EditButton>
+              <EditButton onClick={openModal}>프로필 수정</EditButton>
               <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
             </LogoutBox>
           </ProfileBox>
@@ -89,12 +101,33 @@ const My = () => {
           </UserHistoryBox>
         </BoxWrapper>
       </PageWrapper>
+      {isModalOpen && (
+        <ModalWrapper>
+          <Modal>
+            <CloseButtonWrapper>
+              <CloseButton onClick={closeModal}>&times;</CloseButton>
+            </CloseButtonWrapper>
+            <TopWrapper>
+              <ModalTitle>프로필 수정</ModalTitle>
+              <ModalImg>
+                <Img src={require('../assets/default_image.png')} />
+              </ModalImg>
+            </TopWrapper>
+            <BottomWrapper>
+              <Input
+                type="text"
+                placeholder={user?.displayName ? user?.displayName : undefined}
+              />
+              <SubmitButton>수정완료</SubmitButton>
+            </BottomWrapper>
+          </Modal>
+        </ModalWrapper>
+      )}
     </>
   );
 };
 
 export default My;
-
 const PageWrapper = styled.div`
   box-sizing: border-box;
   position: relative;
@@ -167,11 +200,14 @@ const EditButton = styled.button`
   width: 80%;
   height: 4.65rem;
   border-radius: 1rem;
-  border: 0.25rem solid ${COLORS.blue1};
+  border: 0.15rem solid ${COLORS.blue1};
   font-size: 1.5rem;
   background-color: ${COLORS.blue1};
   color: #fff;
   cursor: pointer;
+  &:hover {
+    background-color: ${COLORS.blue2};
+  }
 `;
 
 const LogoutButton = styled.button`
@@ -185,6 +221,9 @@ const LogoutButton = styled.button`
   color: ${COLORS.blue1};
   cursor: pointer;
   outline: none;
+  &:hover {
+    background-color: ${COLORS.gray};
+  }
 `;
 
 const UserHistoryBox = styled.div`
@@ -201,4 +240,97 @@ const UserHistoryBox = styled.div`
 const UserHistory = styled.div`
   width: 100%;
   height: 100%;
+`;
+
+const ModalWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const Modal = styled.div`
+  background-color: white;
+  /* padding: 4rem; */
+  border-radius: 1rem;
+  border: 0.25rem solid ${COLORS.blue1};
+  width: 23rem;
+  height: 28rem;
+  position: relative;
+  text-align: center;
+`;
+
+const CloseButtonWrapper = styled.div`
+  height: 10%;
+`;
+const TopWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 55%;
+`;
+
+const BottomWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 35%;
+`;
+
+const ModalTitle = styled.div`
+  font-size: 2rem;
+`;
+
+const ModalImg = styled.div`
+  width: 45%;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+`;
+
+const Input = styled.input`
+  width: 17rem;
+  height: 1.75rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border: 1px solid ${COLORS.blue1};
+  border-radius: 1rem;
+`;
+
+const SubmitButton = styled.button`
+  width: 18rem;
+  height: 3rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 0.175rem solid ${COLORS.blue1};
+  border-radius: 1rem;
+  background-color: ${COLORS.blue1};
+  color: white;
+  cursor: pointer;
+  &:hover {
+    background-color: ${COLORS.blue2};
+  }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  z-index: 10;
+  &:hover {
+    color: ${COLORS.blue2};
+  }
 `;

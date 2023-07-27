@@ -252,7 +252,6 @@ export const LoginModal = ({
   return (
     <>
       <ModalWrapper>
-        {' '}
         <Modal>
           <CloseButton onClick={closeLoginModal}>&times;</CloseButton>
           <TitleWrapper>로그인</TitleWrapper>
