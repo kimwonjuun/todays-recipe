@@ -59,17 +59,17 @@ const My = () => {
 
     const file_url = await getDownloadURL(uploaded_file.ref);
 
-    if (user) {
-      updateProfile(user, {
-        photoURL: file_url,
-      })
-        .then(() => {})
-        .catch((error) => {
-          alert('이미지 업로드 실패');
-        });
-    } else {
-      alert('사용자가 로그인되어 있지 않습니다.');
-    }
+    // if (user) {
+    //   updateProfile(user, {
+    //     photoURL: file_url,
+    //   })
+    //     .then(() => {})
+    //     .catch((error) => {
+    //       alert('이미지 업로드 실패');
+    //     });
+    // } else {
+    //   alert('사용자가 로그인되어 있지 않습니다.');
+    // }
   };
 
   // 프로필 닉네임 수정
@@ -84,18 +84,17 @@ const My = () => {
   const handleProfileUpdate = async () => {
     if (user) {
       await updateProfile(user, {
-        displayName: displayName,
+        displayName: displayName ? displayName : user.displayName,
         photoURL: photoURL,
       })
         .then(() => {
           alert('프로필 수정 완료');
           closeModal();
+          setDisplayName(''); // 새로운 displayName을 저장합니다.
         })
         .catch((error) => {
           alert('프로필 수정 실패');
         });
-    } else {
-      alert('사용자가 로그인되어 있지 않습니다.');
     }
   };
 
@@ -145,7 +144,7 @@ const My = () => {
                   id="fileInput"
                   accept="image/*"
                   style={{
-                    // opacity: 0,
+                    opacity: 0,
                     position: 'absolute',
                     width: '25%',
                     top: '80%',
@@ -163,7 +162,7 @@ const My = () => {
                 onChange={onChangeDisplayName}
               />
               <SubmitButton onClick={handleProfileUpdate}>
-                수정완료
+                수정하기
               </SubmitButton>
             </BottomWrapper>
           </Modal>
@@ -198,8 +197,8 @@ const BoxWrapper = styled.div`
 `;
 
 const ProfileBox = styled.div`
-  width: 25%;
-  height: 95%;
+  width: 25rem;
+  height: 37.5rem;
   background-color: #fff;
   border-radius: 1rem;
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
@@ -207,8 +206,8 @@ const ProfileBox = styled.div`
 `;
 
 const Profile = styled.div`
-  width: 100%;
-  height: 65%;
+  width: inherit;
+  height: 25rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -216,16 +215,19 @@ const Profile = styled.div`
 `;
 
 const ProfileImg = styled.div`
-  width: 55%;
+  width: 15rem;
+  height: 15rem;
   border-radius: 50%;
+  overflow: hidden;
 `;
 
 const Img = styled.img`
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const ProfileText = styled.div`
-  width: 90%;
   font-size: 1.8rem;
   display: flex;
   justify-content: center;
@@ -233,8 +235,8 @@ const ProfileText = styled.div`
 `;
 
 const LogoutBox = styled.div`
-  width: 100%;
-  height: 35%;
+  width: inherit;
+  height: 12.5rem;
   display: flex;
   justify-content: space-evenly;
 
@@ -286,8 +288,7 @@ const ModalWrapper = styled.div`
 `;
 
 const Modal = styled.div`
-  background-color: white;
-  /* padding: 4rem; */
+  background-color: #fff;
   border-radius: 1rem;
   border: 0.25rem solid ${COLORS.blue1};
   width: 23rem;
@@ -321,15 +322,17 @@ const ModalTitle = styled.div`
 `;
 
 const ModalImg = styled.div`
-  width: 45%;
+  width: 11rem;
+  height: 11rem;
   border-radius: 50%;
   margin-bottom: 1rem;
   position: relative;
+  overflow: hidden;
 `;
 
 const ModalCamImg = styled.img`
   position: absolute;
-  width: 25%;
+  width: 2.5rem;
   top: 80%;
   left: 90%;
   transform: translate(-50%, -50%);
@@ -381,8 +384,8 @@ const CloseButton = styled.button`
 
 ////////////////////
 const UserHistoryBox = styled.div`
-  width: 70%;
-  height: 95%;
+  width: 75rem;
+  height: 37.5rem;
 
   background-color: #fff;
   border-radius: 1rem;
