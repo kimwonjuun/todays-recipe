@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { getAuth, signOut } from 'firebase/auth';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const My = () => {
   // 현재 유저
@@ -11,7 +13,7 @@ const My = () => {
 
   // 로그아웃
   const handleLogout = async () => {
-    if (window.confirm('정말 로그아웃 하시겠습니까?')) {
+    if (window.confirm('로그아웃 하시겠습니까?')) {
       try {
         await signOut(auth);
         alert('로그아웃되었습니다.');
@@ -21,6 +23,13 @@ const My = () => {
     }
   };
 
+  // 비로그인시 마이페이지 접근 불가 -> 메인으로
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
   return (
     <>
       <PageWrapper>
