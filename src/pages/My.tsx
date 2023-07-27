@@ -66,7 +66,7 @@ const ProfileBox = styled.div`
   width: 25%;
   height: 95%;
   background-color: #fff;
-  border: 0.25rem solid ${COLORS.blue2};
+  border: 0.25rem solid ${COLORS.blue1};
   border-radius: 1rem;
 `;
 
@@ -119,7 +119,7 @@ const UserHistoryBox = styled.div`
   width: 50%;
   height: 95%;
   background-color: #fff;
-  border: 0.25rem solid ${COLORS.blue2};
+  border: 0.25rem solid ${COLORS.blue1};
   border-radius: 1rem;
 `;
 
