@@ -3,6 +3,12 @@ import COLORS from '../styles/colors';
 import { getAuth } from 'firebase/auth';
 
 const My = () => {
+  // 현재 유저
+  const auth = getAuth();
+  const user = auth.currentUser;
+  console.log(user?.email);
+  console.log(user?.displayName);
+
   return (
     <>
       <PageWrapper>
@@ -11,10 +17,10 @@ const My = () => {
             <Profile>
               <ProfileImg></ProfileImg>
               <ProfileText>
-                <p>이메일</p>
+                <p>{user?.displayName}</p>
               </ProfileText>
               <ProfileText>
-                <p>닉네임</p>
+                <p>{user?.email}</p>
               </ProfileText>
             </Profile>
             <LogoutBox>
