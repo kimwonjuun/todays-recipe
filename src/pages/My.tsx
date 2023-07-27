@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { getAuth, signOut, updateProfile } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../apis/firebase';
@@ -48,7 +48,7 @@ const My = () => {
   const [photoURL, setPhotoURL] = useState<any>(user?.photoURL); // 프로필 사진
   const [tempPhotoURL, setTempPhotoURL] = useState<any>(null); // 임시 photoURL 상태
   const [tempFileURL, setTempFileURL] = useState<any>(null); // 임시 file URL 상태
-
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadFB = async (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -62,6 +62,11 @@ const My = () => {
     );
     setTempFileURL(await getDownloadURL(uploaded_file.ref));
     setIsChanged(true);
+  };
+  const onCameraClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   // 프로필 닉네임 수정
@@ -135,10 +140,10 @@ const My = () => {
                     tempPhotoURL || photoURL || '../assets/default_image.png'
                   }
                 />
-                <ModalCamImg src={require('../assets/camera.png')} />
+
                 <input
                   type="file"
-                  id="fileInput"
+                  ref={fileInputRef}
                   accept="image/*"
                   style={{
                     opacity: 0,
@@ -149,6 +154,10 @@ const My = () => {
                     transform: 'translate(-50%, -50%)',
                   }}
                   onChange={uploadFB}
+                />
+                <ModalCamImg
+                  src={require('../assets/camera.png')}
+                  onClick={onCameraClick}
                 />
               </ModalImg>
             </TopWrapper>
@@ -217,12 +226,6 @@ const ProfileImg = styled.div`
   height: 15rem;
   border-radius: 50%;
   overflow: hidden;
-`;
-
-const Img = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 `;
 
 const ProfileText = styled.div`
@@ -322,19 +325,26 @@ const ModalTitle = styled.div`
 const ModalImg = styled.div`
   width: 11rem;
   height: 11rem;
-  border-radius: 50%;
   margin-bottom: 1rem;
   position: relative;
   overflow: hidden;
 `;
 
+const Img = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
 const ModalCamImg = styled.img`
   position: absolute;
   width: 2.5rem;
-  top: 80%;
-  left: 90%;
+  top: 78%;
+  left: 88%;
   transform: translate(-50%, -50%);
   cursor: pointer;
+  z-index: 10;
 `;
 
 const Input = styled.input`
