@@ -71,6 +71,34 @@ const My = () => {
       alert('사용자가 로그인되어 있지 않습니다.');
     }
   };
+
+  // 프로필 닉네임 수정
+  const [displayName, setDisplayName] = useState<string>(
+    user?.displayName || ''
+  );
+
+  const onChangeDisplayName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDisplayName(e.target.value);
+  };
+
+  const handleProfileUpdate = async () => {
+    if (user) {
+      await updateProfile(user, {
+        displayName: displayName,
+        photoURL: photoURL,
+      })
+        .then(() => {
+          alert('프로필 수정 완료');
+          closeModal();
+        })
+        .catch((error) => {
+          alert('프로필 수정 실패');
+        });
+    } else {
+      alert('사용자가 로그인되어 있지 않습니다.');
+    }
+  };
+
   //   // 기존 코드
   // <Img src={require('../assets/default_image.png')} />
 
@@ -84,7 +112,7 @@ const My = () => {
           <ProfileBox>
             <Profile>
               <ProfileImg>
-                <Img src={require('../assets/default_image.png')} />
+                <Img src={photoURL || '../assets/default_image.png'} />
               </ProfileImg>
               <ProfileText>
                 <p>{user?.displayName}</p>
@@ -110,16 +138,33 @@ const My = () => {
             <TopWrapper>
               <ModalTitle>프로필 수정</ModalTitle>
               <ModalImg>
-                <Img src={require('../assets/default_image.png')} />
+                <Img src={photoURL || '../assets/default_image.png'} />
                 <ModalCamImg src={require('../assets/camera.png')} />
+                <input
+                  type="file"
+                  id="fileInput"
+                  accept="image/*"
+                  style={{
+                    // opacity: 0,
+                    position: 'absolute',
+                    width: '25%',
+                    top: '80%',
+                    left: '90%',
+                    transform: 'translate(-50%, -50%)',
+                  }}
+                  onChange={uploadFB}
+                />
               </ModalImg>
             </TopWrapper>
             <BottomWrapper>
               <Input
                 type="text"
                 placeholder={user?.displayName ? user?.displayName : undefined}
+                onChange={onChangeDisplayName}
               />
-              <SubmitButton>수정완료</SubmitButton>
+              <SubmitButton onClick={handleProfileUpdate}>
+                수정완료
+              </SubmitButton>
             </BottomWrapper>
           </Modal>
         </ModalWrapper>
