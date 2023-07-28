@@ -13,7 +13,11 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
     <>
       <RecipeCardWrapper onClick={handleCardClick}>
         <RecipeImgWrapper>
-          <Img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} />
+          <Img
+            className="cardImg"
+            src={recipe.ATT_FILE_NO_MK}
+            alt={recipe.RCP_NM}
+          />
         </RecipeImgWrapper>
         <RecipeTextWrapper>
           <p>{recipe.RCP_PAT2}</p>
@@ -25,12 +29,6 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
 };
 export default RecipeCard;
 
-const Img = styled.img`
-  width: 100%;
-  height: 100%;
-  transition: transform 0.4s ease-in-out;
-`;
-
 const RecipeCardWrapper = styled.div`
   border-radius: 1rem;
   border: 0.3rem solid ${COLORS.blue1};
@@ -41,15 +39,16 @@ const RecipeCardWrapper = styled.div`
   cursor: pointer;
   overflow: hidden;
   transition: color 300ms ease-in-out;
-  margin: 0 2.25rem 4.5rem 2.25rem;
-  background-color: #ffffff;
-  align-items: center;
-  justify-content: center;
-
   &:hover {
     color: ${COLORS.blue2};
   }
-  &:hover ${Img} {
+  margin: 0 2.25rem 4.5rem 2.25rem;
+  background-color: #fff;
+
+  align-items: center;
+  justify-content: center;
+
+  &:hover .cardImg {
     transform: scale(1.1);
   }
 `;
@@ -58,6 +57,12 @@ const RecipeImgWrapper = styled.div`
   width: 30rem;
   height: 25rem;
   overflow: hidden;
+`;
+
+const Img = styled.img`
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s ease-in-out;
 `;
 
 const RecipeTextWrapper = styled.div`
