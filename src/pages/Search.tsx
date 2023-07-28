@@ -23,8 +23,12 @@ const Search = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // 데이터가 없거나 !keyword 면 실행을 멈춤.
-    if (recipeData.length === 0 || !keyword) {
+    // 아직 레시피 데이터가 없으면 실행하지 않음
+    if (recipeData.length === 0) {
+      return;
+    }
+    // 검색 키워드가 없으면 로딩 상태를 비활성화하고 실행하지 않음
+    if (!keyword) {
       setLoading(false);
       return;
     }
@@ -34,29 +38,9 @@ const Search = () => {
         (recipe.RCP_PARTS_DTLS ?? '').includes(keyword)
     );
     setFilteredRecipes(filteredData);
-    setLoading(false);
+    setLoading(false); // 검색 완료되면 로딩 상태를 비활성화
     console.log('검색 결과: ', filteredData);
   }, [keyword, recipeData]);
-
-  // useEffect(() => {
-  //   // 아직 레시피 데이터가 없으면 실행하지 않음
-  //   if (recipeData.length === 0) {
-  //     return;
-  //   }
-  //   // 검색 키워드가 없으면 로딩 상태를 비활성화하고 실행하지 않음
-  //   if (!keyword) {
-  //     setLoading(false);
-  //     return;
-  //   }
-  //   const filteredData = recipeData.filter(
-  //     (recipe) =>
-  //       (recipe.RCP_NM ?? '').includes(keyword) ||
-  //       (recipe.RCP_PARTS_DTLS ?? '').includes(keyword)
-  //   );
-  //   setFilteredRecipes(filteredData);
-  //   setLoading(false); // 검색 완료되면 로딩 상태를 비활성화
-  //   console.log('검색 결과: ', filteredData);
-  // }, [keyword, recipeData]);
 
   // 검색 버튼
   const handleSearchClick = () => {
