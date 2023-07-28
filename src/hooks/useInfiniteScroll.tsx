@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 
 type InfiniteScrollType = {
   currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  loadMorePage: () => void;
+  //   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  //   loadMorePage: () => void;
 };
 
 export const useInfiniteScroll = (): InfiniteScrollType => {
@@ -32,7 +32,8 @@ export const useInfiniteScroll = (): InfiniteScrollType => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  return { currentPage, setCurrentPage, loadMorePage };
+  //   return { currentPage, setCurrentPage, loadMorePage };
+  return { currentPage };
 };
 
 // 기존 컴포넌트에서의 infinite scroll

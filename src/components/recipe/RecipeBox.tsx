@@ -93,11 +93,7 @@ const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
   //   currentPage * itemsPerPage
   // );
   const { currentPage } = useInfiniteScroll();
-  const itemsPerPage = 8;
-  const showRecipes = sortedRecipes(filteredRecipes).slice(
-    0,
-    currentPage * itemsPerPage
-  );
+  const showRecipes = sortedRecipes(filteredRecipes).slice(0, currentPage * 8);
 
   return (
     <>

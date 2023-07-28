@@ -6,6 +6,7 @@ import { useRecipeData } from '../hooks/useRecipeData';
 import { Recipe } from '../types/Recipe';
 import RecipeCard from '../components/common/RecipeCard';
 import { SearchInput } from '../components/common/SearchInput';
+import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -46,6 +47,10 @@ const Search = () => {
     navigate(`/search/${inputValue}`);
   };
 
+  // 무한스크롤 추가
+  const { currentPage } = useInfiniteScroll();
+  const showRecipes = filteredRecipes.slice(0, currentPage * 8);
+
   return (
     <>
       <PageWrapper>
@@ -68,7 +73,7 @@ const Search = () => {
                   placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
                 />
                 <RecipeWrapper>
-                  {filteredRecipes.map((recipe) => (
+                  {showRecipes.map((recipe) => (
                     <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
                   ))}
                 </RecipeWrapper>
@@ -136,36 +141,6 @@ const RecipeWrapper = styled.div`
   overflow: hidden;
 
   /* background-color: yellow; */
-`;
-
-const InputWrapper = styled.div`
-  position: relative;
-`;
-
-const Input = styled.input`
-  width: 46.5rem;
-  height: 4rem;
-  border-radius: 1rem;
-  border: 0.25rem solid ${COLORS.blue1};
-  font-size: 1.3rem;
-  outline: none;
-  text-align: center;
-  padding-right: 8rem; // 검색 버튼 만큼 여백 추가
-  /* margin-bottom: 5rem; */
-`;
-
-const SearchButton = styled.button`
-  position: absolute;
-  right: 0rem;
-  width: 7rem;
-  height: 4.65rem;
-  border-radius: 1rem;
-  border: 0.25rem solid ${COLORS.blue1};
-  font-size: 2rem;
-  background-color: ${COLORS.blue1};
-  color: white;
-  cursor: pointer;
-  outline: none;
 `;
 
 const CustomP = styled.p`
