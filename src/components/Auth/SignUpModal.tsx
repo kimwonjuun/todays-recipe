@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import {
   browserSessionPersistence,
-  browserLocalPersistence,
   createUserWithEmailAndPassword,
   setPersistence,
   updateProfile,
@@ -114,38 +113,9 @@ export const SignUpModal = ({
     }
   };
 
-  // // 회원가입 버튼
-  // const submitSignUp = () => {
-  //   setPersistence(authService, browserSessionPersistence)
-  //     .then(() => createUserWithEmailAndPassword(authService, email, password))
-  //     .then(() => {
-  //       if (authService.currentUser) {
-  //         updateProfile(authService?.currentUser, {
-  //           displayName: nickname,
-  //         });
-  //       }
-  //     })
-  //     .then(() => {
-  //       alert('회원가입이 완료 되었습니다! 로그인 해주세요.');
-  //       setEmail('');
-  //       setPassword('');
-  //       setConfirmPassword('');
-  //       setNickname('');
-  //       setSignUpModalIsOpen(false);
-  //     })
-  //     .catch((err) => {
-  //       console.log('err: ', err);
-
-  //       if (err.message.includes('already-in-use')) {
-  //         alert('이미 가입된 계정입니다.');
-  //         setEmail('');
-  //       }
-  //     });
-  // };
-
   // 회원가입 버튼 - 로컬스토리지 저장
   const submitSignUp = () => {
-    setPersistence(authService, browserLocalPersistence)
+    setPersistence(authService, browserSessionPersistence)
       .then(() => createUserWithEmailAndPassword(authService, email, password))
       .then(() => {
         if (authService.currentUser) {
