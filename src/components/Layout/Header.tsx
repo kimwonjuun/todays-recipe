@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { LoginModal } from '../Auth/LoginModal';
 import { SignUpModal } from '../Auth/SignUpModal';
-import { getAuth } from 'firebase/auth';
+import { firebaseConfig } from '../../apis/firebase';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -26,10 +26,12 @@ const Header = () => {
     return location.pathname === path ? { color: COLORS.blue2 } : {};
   };
 
-  // 현재 유저
-  const auth = getAuth();
-  const user = auth.currentUser;
-  console.log('user: ', user);
+  // 로그인 상태 확인
+  // const auth = getAuth();
+  // const user = auth.currentUser;
+  const isLoggedIn = sessionStorage.getItem(
+    `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
+  );
 
   return (
     <>
@@ -39,7 +41,7 @@ const Header = () => {
             <LogoImg src={require('../../assets/logo.png')}></LogoImg>
           </Link>
         </Logo>
-        {user ? (
+        {isLoggedIn ? (
           <>
             <TextWrapper>
               <Text

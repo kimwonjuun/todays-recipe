@@ -4,31 +4,35 @@ import { getAuth, signOut, updateProfile } from 'firebase/auth';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { storage } from '../apis/firebase';
+import { authService, firebaseConfig, storage } from '../apis/firebase';
 
 const My = () => {
-  // 현재 유저
-  const auth = getAuth();
-  const user = auth.currentUser;
+  // 로그인 상태 확인
+  // const auth = getAuth();
+  // const user = auth.currentUser;
+  const user = authService?.currentUser;
+  const isLoggedIn = sessionStorage.getItem(
+    `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
+  );
 
   // 비로그인시 마이페이지 접근 불가 -> 메인으로
   const navigate = useNavigate();
   useEffect(() => {
-    if (!user) {
+    if (!isLoggedIn) {
       navigate('/');
     }
   }, []);
 
   // 로그아웃
-  const handleLogout = async () => {
+  const handleLogout = () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
-      try {
-        await signOut(auth);
-        alert('로그아웃되었습니다.');
-        navigate('/');
-      } catch (error) {
-        alert('로그아웃에 실패하였습니다.');
-      }
+      return authService.signOut().then(() => {
+        sessionStorage.clear();
+        alert('로그아웃 되었습니다.');
+        navigate('/', { replace: true });
+      });
+    } else {
+      return;
     }
   };
 
