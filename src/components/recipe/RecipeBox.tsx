@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import RecipeCard from '../common/RecipeCard';
 import COLORS from '../../styles/colors';
