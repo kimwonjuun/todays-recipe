@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
+import { useNavigate } from 'react-router-dom';
 
 const ErrorPage = () => {
+  const navigate = useNavigate();
   return (
     <>
       <PageWrapper>
@@ -14,8 +16,20 @@ const ErrorPage = () => {
               <p>페이지를 찾을 수 없습니다.</p>
             </TopText>
             <BottomText>
-              <Button>메인 페이지로 되돌아가기</Button>
-              <Button>이전 페이지로 되돌아가기</Button>
+              <Button
+                onClick={() => {
+                  navigate('/');
+                }}
+              >
+                메인 페이지로 되돌아가기
+              </Button>
+              <Button
+                onClick={() => {
+                  navigate(-1);
+                }}
+              >
+                이전 페이지로 되돌아가기
+              </Button>
             </BottomText>
           </TextBox>
         </BoxWrapper>
