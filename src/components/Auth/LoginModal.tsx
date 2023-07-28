@@ -20,7 +20,7 @@ import {
   TitleWrapper,
 } from '../../styles/modalStyles';
 
-const LoginModal = ({
+export const LoginModal = ({
   setLoginModalIsOpen,
   setSignUpModalIsOpen,
 }: {
@@ -136,5 +136,3 @@ const LoginModal = ({
     </>
   );
 };
-
-export default LoginModal;

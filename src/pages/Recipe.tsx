@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import RecipeBox from '../components/recipe/RecipeBox';
+import { RecipeBox } from '../components/recipe/RecipeBox';
 import { useState, useEffect } from 'react';
 import { useRecipeData } from '../hooks/useRecipeData';
 import { Loading } from '../components/common/Loading';

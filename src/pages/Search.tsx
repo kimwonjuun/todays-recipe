@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useRecipeData } from '../hooks/useRecipeData';
 import { Recipe } from '../types/Recipe';
-import RecipeCard from '../components/common/RecipeCard';
 import { SearchInput } from '../components/common/SearchInput';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 import { Loading } from '../components/common/Loading';
+import { RecipeCard } from '../components/common/RecipeCard';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -22,29 +22,9 @@ const Search = () => {
   // 로딩 상태
   const [loading, setLoading] = useState<boolean>(true);
 
-  // useEffect(() => {
-  //   // 데이터가 없거나 !keyword 면 실행을 멈춤.
-  //   if (recipeData.length === 0 || !keyword) {
-  //     setLoading(false);
-  //     return;
-  //   }
-  //   const filteredData = recipeData.filter(
-  //     (recipe) =>
-  //       (recipe.RCP_NM ?? '').includes(keyword) ||
-  //       (recipe.RCP_PARTS_DTLS ?? '').includes(keyword)
-  //   );
-  //   setFilteredRecipes(filteredData);
-  //   setLoading(false);
-  //   console.log('검색 결과: ', filteredData);
-  // }, [keyword, recipeData]);
-
   useEffect(() => {
-    // 아직 레시피 데이터가 없으면 실행하지 않음
-    if (recipeData.length === 0) {
-      return;
-    }
-    // 검색 키워드가 없으면 로딩 상태를 비활성화하고 실행하지 않음
-    if (!keyword) {
+    // 데이터가 없거나 !keyword 면 실행을 멈춤.
+    if (recipeData.length === 0 || !keyword) {
       setLoading(false);
       return;
     }
@@ -54,9 +34,29 @@ const Search = () => {
         (recipe.RCP_PARTS_DTLS ?? '').includes(keyword)
     );
     setFilteredRecipes(filteredData);
-    setLoading(false); // 검색 완료되면 로딩 상태를 비활성화
+    setLoading(false);
     console.log('검색 결과: ', filteredData);
   }, [keyword, recipeData]);
+
+  // useEffect(() => {
+  //   // 아직 레시피 데이터가 없으면 실행하지 않음
+  //   if (recipeData.length === 0) {
+  //     return;
+  //   }
+  //   // 검색 키워드가 없으면 로딩 상태를 비활성화하고 실행하지 않음
+  //   if (!keyword) {
+  //     setLoading(false);
+  //     return;
+  //   }
+  //   const filteredData = recipeData.filter(
+  //     (recipe) =>
+  //       (recipe.RCP_NM ?? '').includes(keyword) ||
+  //       (recipe.RCP_PARTS_DTLS ?? '').includes(keyword)
+  //   );
+  //   setFilteredRecipes(filteredData);
+  //   setLoading(false); // 검색 완료되면 로딩 상태를 비활성화
+  //   console.log('검색 결과: ', filteredData);
+  // }, [keyword, recipeData]);
 
   // 검색 버튼
   const handleSearchClick = () => {
@@ -89,7 +89,7 @@ const Search = () => {
                 <SearchInput
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  onSearchButtonClick={handleSearchClick}
+                  onClick={handleSearchClick}
                   placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
                 />
                 <RecipeWrapper>
@@ -106,7 +106,7 @@ const Search = () => {
                 <SearchInput
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  onSearchButtonClick={handleSearchClick}
+                  onClick={handleSearchClick}
                   placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
                 />
                 <CustomP

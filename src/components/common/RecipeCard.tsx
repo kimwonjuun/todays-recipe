@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
 
-const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
+export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   const navigate = useNavigate();
   const handleCardClick = () => {
     navigate(`/detail/${recipe.RCP_SEQ}`);
@@ -27,7 +27,6 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
     </>
   );
 };
-export default RecipeCard;
 
 const RecipeCardWrapper = styled.div`
   border-radius: 1rem;

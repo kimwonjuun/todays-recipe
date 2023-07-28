@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import RecipeCard from '../common/RecipeCard';
 import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import { Loading } from '../common/Loading';
+import { RecipeCard } from '../common/RecipeCard';
 
 // import해온 Recipe 타입
 interface RecipeBoxProps {
   recipeData: Recipe[];
 }
 
-const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
+export const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
   // // 로딩 상태
   // const [loading, setLoading] = useState<boolean>(true);
 
@@ -183,7 +183,6 @@ const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
     </>
   );
 };
-export default RecipeBox;
 
 const TypeWrapper = styled.div`
   width: 100%;

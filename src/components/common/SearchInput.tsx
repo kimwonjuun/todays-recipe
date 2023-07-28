@@ -4,14 +4,14 @@ import COLORS from '../../styles/colors';
 interface SearchInputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSearchButtonClick: () => void;
+  onClick: () => void;
   placeholder: string;
 }
 
 export const SearchInput = ({
   value,
   onChange,
-  onSearchButtonClick,
+  onClick,
   placeholder,
 }: SearchInputProps) => {
   return (
@@ -22,7 +22,7 @@ export const SearchInput = ({
         value={value}
         onChange={onChange}
       />
-      <SearchButton onClick={onSearchButtonClick}>검색</SearchButton>
+      <SearchButton onClick={onClick}>검색</SearchButton>
     </InputWrapper>
   );
 };
