@@ -81,4 +81,5 @@ const RecipeTextWrapper = styled.div`
   & > h1 {
     font-size: 1.6rem;
   }
+  padding: 1rem;
 `;
