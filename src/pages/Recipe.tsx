@@ -13,10 +13,6 @@ const RecipePage = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // 아직 레시피 데이터가 없으면 실행하지 않음
-    if (recipeData.length === 0) {
-      return;
-    }
     if (recipeData.length > 0) {
       setLoading(false);
     }

@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import RecipeCard from '../common/RecipeCard';
 import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
+import { Loading } from '../common/Loading';
 
 // import해온 Recipe 타입
 interface RecipeBoxProps {
@@ -11,6 +12,15 @@ interface RecipeBoxProps {
 }
 
 const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
+  // 로딩 상태
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (recipeData.length > 0) {
+      setLoading(false);
+    }
+  }, [recipeData]);
+
   // 분류 선택 여닫기
   const [showCategories, setShowCategories] = useState<boolean>(false);
   const showCategoryButton = () => {
@@ -156,11 +166,15 @@ const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
           </SortButton>
         </SortingWrapper>
       </TypeWrapper>
-      <RecipeWrapper>
-        {showRecipes.map((recipe) => (
-          <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
-        ))}
-      </RecipeWrapper>
+      {loading ? (
+        <Loading />
+      ) : (
+        <RecipeWrapper>
+          {showRecipes.map((recipe) => (
+            <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
+          ))}
+        </RecipeWrapper>
+      )}
     </>
   );
 };
