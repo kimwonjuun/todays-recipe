@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { LoginModal } from '../Auth/LoginModal';
 import { SignUpModal } from '../Auth/SignUpModal';
-import { getAuth } from 'firebase/auth';
 import { firebaseConfig } from '../../apis/firebase';
 
 const Header = () => {
