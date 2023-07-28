@@ -63,7 +63,6 @@ const Search = () => {
       alert('검색어 입력 후 버튼을 클릭해주세요.');
       return;
     }
-
     navigate(`/search/${inputValue}`);
   };
 
