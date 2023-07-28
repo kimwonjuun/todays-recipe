@@ -104,7 +104,7 @@ export const CloseButton = styled.button`
   }
 `;
 
-export const CustomSpan = styled.p`
+export const CustomSpan = styled.span`
   font-size: 1rem;
   margin: -2.2rem 0;
   &.success {
