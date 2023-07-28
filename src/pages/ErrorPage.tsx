@@ -14,8 +14,8 @@ const ErrorPage = () => {
               <p>페이지를 찾을 수 없습니다.</p>
             </TopText>
             <BottomText>
-              <CustomP>메인 페이지로 되돌아가기</CustomP>
-              <CustomP>이전 페이지로 되돌아가기</CustomP>
+              <Button>메인 페이지로 되돌아가기</Button>
+              <Button>이전 페이지로 되돌아가기</Button>
             </BottomText>
           </TextBox>
         </BoxWrapper>
@@ -38,7 +38,7 @@ const PageWrapper = styled.div`
 `;
 
 const BoxWrapper = styled.div`
-  width: 70rem;
+  width: 50rem;
   height: 35rem;
   display: flex;
   flex-direction: column;
@@ -47,7 +47,7 @@ const BoxWrapper = styled.div`
 `;
 
 const ImgBox = styled.div`
-  width: 25%;
+  width: 50%;
   height: 60%;
 `;
 
@@ -68,7 +68,7 @@ const TextBox = styled.div`
 
 const TopText = styled.div`
   width: inherit;
-  height: 50%;
+  height: 45%;
 
   display: flex;
   align-items: center;
@@ -77,18 +77,27 @@ const TopText = styled.div`
 `;
 const BottomText = styled.div`
   width: inherit;
-  height: 50%;
+  height: 55%;
 
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   flex-direction: row;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 `;
 
-const CustomP = styled.p`
+const Button = styled.button`
+  width: 40%;
+  height: 3.75rem;
+  border-radius: 1rem;
+  border: 0.15rem solid ${COLORS.blue1};
+  font-size: 1.5rem;
+  background-color: ${COLORS.blue1};
+  color: #fff;
   cursor: pointer;
   &:hover {
-    color: ${COLORS.blue2};
+    background-color: ${COLORS.blue2};
   }
+  padding: 0.5rem;
+  margin: 0 0.5rem;
 `;
