@@ -1,19 +1,37 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import RecipeBox from '../components/recipe/RecipeBox';
-
+import { useState, useEffect } from 'react';
 import { useRecipeData } from '../hooks/useRecipeData';
+import { Loading } from '../components/common/Loading';
 
 const RecipePage = () => {
   // 레시피 데이터
   const recipeData = useRecipeData();
 
+  // 로딩 상태
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    // 아직 레시피 데이터가 없으면 실행하지 않음
+    if (recipeData.length === 0) {
+      return;
+    }
+    if (recipeData.length > 0) {
+      setLoading(false);
+    }
+  }, [recipeData]);
+
   return (
     <>
       <PageWrapper>
-        <BoxWrapper>
-          <RecipeBox recipeData={recipeData} />
-        </BoxWrapper>
+        {loading ? (
+          <Loading />
+        ) : (
+          <BoxWrapper>
+            <RecipeBox recipeData={recipeData} />
+          </BoxWrapper>
+        )}
       </PageWrapper>
     </>
   );
