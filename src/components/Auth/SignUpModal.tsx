@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   browserSessionPersistence,
+  browserLocalPersistence,
   createUserWithEmailAndPassword,
   setPersistence,
   updateProfile,
@@ -15,6 +16,7 @@ import {
   InputWrapper,
   LoginText,
   Modal,
+  ModalWrapper,
   TitleWrapper,
 } from '../../styles/modalStyles';
 export const SignUpModal = ({
@@ -26,17 +28,17 @@ export const SignUpModal = ({
 }) => {
   const [email, setEmail] = useState<string>(''); // 이메일 입력값
   const [emailMessage, setEmailMessage] = useState<string>(''); // 이메일 오류 메시지
-  const [isEmail, setIsEmail] = useState<boolean>(false); // 이메일 유효성 검사
+  const [isEmail, setIsEmail] = useState<boolean>(false); // 이메일 유효성 검사 통과
   const [password, setPassword] = useState<string>(''); // 패스워드 입력값
   const [passwordMessage, setPasswordMessage] = useState<string>(''); // 패스워드 오류 메시지
-  const [isPassword, setIsPassword] = useState<boolean>(false); // 패스워드 유효성 검사
+  const [isPassword, setIsPassword] = useState<boolean>(false); // 패스워드 유효성 검사 통과
   const [confirmPassword, setConfirmPassword] = useState<string>(''); // 패스워드 재입력
   const [passwordConfirmMessage, setPasswordConfirmMessage] =
     useState<string>(''); // 패스워드 재입력 오류메시지
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false); // 패스워드 재입력 유효성 검사
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false); // 패스워드 재입력 유효성 검사 통과
   const [nickname, setNickname] = useState<string>(''); // 닉네임 입력값
   const [nicknameMessage, setNicknameMessage] = useState<string>(''); // 닉네임 오류 메시지
-  const [isNickname, setIsNickname] = useState<boolean>(false); // 닉네임 유효성 검사
+  const [isNickname, setIsNickname] = useState<boolean>(false); // 닉네임 유효성 검사 통과
   const [emailValid, setEmailValid] = useState(false); // 회원가입 시 이메일 유효성 결과
   const [passwordValid, setPasswordValid] = useState(false); // 회원가입 시 패스워드 유효성 결과
 
@@ -112,9 +114,38 @@ export const SignUpModal = ({
     }
   };
 
-  // 회원가입 버튼
+  // // 회원가입 버튼
+  // const submitSignUp = () => {
+  //   setPersistence(authService, browserSessionPersistence)
+  //     .then(() => createUserWithEmailAndPassword(authService, email, password))
+  //     .then(() => {
+  //       if (authService.currentUser) {
+  //         updateProfile(authService?.currentUser, {
+  //           displayName: nickname,
+  //         });
+  //       }
+  //     })
+  //     .then(() => {
+  //       alert('회원가입이 완료 되었습니다! 로그인 해주세요.');
+  //       setEmail('');
+  //       setPassword('');
+  //       setConfirmPassword('');
+  //       setNickname('');
+  //       setSignUpModalIsOpen(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log('err: ', err);
+
+  //       if (err.message.includes('already-in-use')) {
+  //         alert('이미 가입된 계정입니다.');
+  //         setEmail('');
+  //       }
+  //     });
+  // };
+
+  // 회원가입 버튼 - 로컬스토리지 저장
   const submitSignUp = () => {
-    setPersistence(authService, browserSessionPersistence)
+    setPersistence(authService, browserLocalPersistence)
       .then(() => createUserWithEmailAndPassword(authService, email, password))
       .then(() => {
         if (authService.currentUser) {
@@ -124,12 +155,13 @@ export const SignUpModal = ({
         }
       })
       .then(() => {
-        alert('회원가입이 완료 되었습니다.');
+        alert('회원가입이 완료 되었습니다! 로그인 해주세요.');
         setEmail('');
         setPassword('');
         setConfirmPassword('');
         setNickname('');
         setSignUpModalIsOpen(false);
+        setLoginModalIsOpen(true);
       })
       .catch((err) => {
         if (err.message.includes('already-in-use')) {
@@ -141,72 +173,74 @@ export const SignUpModal = ({
 
   return (
     <>
-      <Modal>
-        <CloseButton onClick={closeSignUpModal}>×</CloseButton>
-        <TitleWrapper>회원가입</TitleWrapper>
-        <InputWrapper>
-          <Input
-            id="email"
-            type="email"
-            placeholder="사용하실 이메일을 입력해주세요."
-            value={email}
-            onChange={changeEmail}
-          />
-          {email.length > 0 && (
-            <CustomSpan className={emailValid ? 'success' : 'error'}>
-              {emailMessage}
-            </CustomSpan>
-          )}
-          <Input
-            id="password"
-            type="password"
-            placeholder="사용하실 비밀번호를 입력해주세요."
-            value={password}
-            onChange={changePassword}
-          />
-          {password.length > 0 && (
-            <CustomSpan className={passwordValid ? 'success' : 'error'}>
-              {passwordMessage}
-            </CustomSpan>
-          )}
-          <Input
-            id="confirm-password"
-            type="password"
-            placeholder="사용하실 비밀번호를 한 번 더 입력해주세요."
-            value={confirmPassword}
-            onChange={changeConfirmPassword}
-          />
-          {confirmPassword.length > 0 && (
-            <CustomSpan className={isPasswordConfirm ? 'success' : 'error'}>
-              {passwordConfirmMessage}
-            </CustomSpan>
-          )}
-          <Input
-            id="nickname"
-            type="text"
-            maxLength={4}
-            placeholder="사용하실 닉네임을 입력해주세요."
-            value={nickname}
-            onChange={changeNickname}
-          />
-          {nickname.length > 0 && (
-            <CustomSpan className={isNickname ? 'success' : 'error'}>
-              {nicknameMessage}
-            </CustomSpan>
-          )}
-        </InputWrapper>
-        <BottomWrapper>
-          <Button
-            onClick={submitSignUp}
-            disabled={
-              !isEmail || !isPassword || !isPasswordConfirm || !isNickname
-            }
-          >
-            회원가입하기
-          </Button>
-          <LoginText onClick={openLoginModal}>이미 회원이신가요?</LoginText>
-        </BottomWrapper>
-      </Modal>
+      <ModalWrapper>
+        <Modal>
+          <CloseButton onClick={closeSignUpModal}>×</CloseButton>
+          <TitleWrapper>회원가입</TitleWrapper>
+          <InputWrapper>
+            <Input
+              id="email"
+              type="email"
+              placeholder="사용하실 이메일을 입력해주세요."
+              value={email}
+              onChange={changeEmail}
+            />
+            {email.length > 0 && (
+              <CustomSpan className={emailValid ? 'success' : 'error'}>
+                {emailMessage}
+              </CustomSpan>
+            )}
+            <Input
+              id="password"
+              type="password"
+              placeholder="사용하실 비밀번호를 입력해주세요."
+              value={password}
+              onChange={changePassword}
+            />
+            {password.length > 0 && (
+              <CustomSpan className={passwordValid ? 'success' : 'error'}>
+                {passwordMessage}
+              </CustomSpan>
+            )}
+            <Input
+              id="confirm-password"
+              type="password"
+              placeholder="사용하실 비밀번호를 한 번 더 입력해주세요."
+              value={confirmPassword}
+              onChange={changeConfirmPassword}
+            />
+            {confirmPassword.length > 0 && (
+              <CustomSpan className={isPasswordConfirm ? 'success' : 'error'}>
+                {passwordConfirmMessage}
+              </CustomSpan>
+            )}
+            <Input
+              id="nickname"
+              type="text"
+              maxLength={4}
+              placeholder="사용하실 닉네임을 입력해주세요."
+              value={nickname}
+              onChange={changeNickname}
+            />
+            {nickname.length > 0 && (
+              <CustomSpan className={isNickname ? 'success' : 'error'}>
+                {nicknameMessage}
+              </CustomSpan>
+            )}
+          </InputWrapper>
+          <BottomWrapper>
+            <Button
+              onClick={submitSignUp}
+              disabled={
+                !isEmail || !isPassword || !isPasswordConfirm || !isNickname
+              }
+            >
+              회원가입하기
+            </Button>
+            <LoginText onClick={openLoginModal}>이미 회원이신가요?</LoginText>
+          </BottomWrapper>
+        </Modal>
+      </ModalWrapper>
     </>
   );
 };

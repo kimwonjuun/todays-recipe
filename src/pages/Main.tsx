@@ -91,36 +91,6 @@ const BoxWrapper = styled.div`
   margin-top: 8rem;
 `;
 
-const InputWrapper = styled.div`
-  position: relative;
-`;
-
-const Input = styled.input`
-  width: 46.5rem;
-  height: 4rem;
-  border-radius: 1rem;
-  border: 0.25rem solid ${COLORS.blue1};
-  font-size: 1.3rem;
-  outline: none;
-  text-align: center;
-  padding-right: 8rem; // 검색 버튼 만큼 여백 추가
-  /* margin-bottom: 5rem; */
-`;
-
-const SearchButton = styled.button`
-  position: absolute;
-  right: 0rem;
-  width: 7rem;
-  height: 4.65rem;
-  border-radius: 1rem;
-  border: 0.25rem solid ${COLORS.blue1};
-  font-size: 2rem;
-  background-color: ${COLORS.blue1};
-  color: white;
-  cursor: pointer;
-  outline: none;
-`;
-
 const CustomP = styled.p`
   cursor: pointer;
   &:hover {

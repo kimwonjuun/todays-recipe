@@ -1,5 +1,18 @@
 import styled from 'styled-components';
-import COLORS from '.././styles/colors';
+import COLORS from './colors';
+
+export const ModalWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
 
 export const Modal = styled.div`
   background-color: white;
@@ -62,6 +75,10 @@ export const Button = styled.button`
     disabled ? COLORS.gray : COLORS.blue1};
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   outline: none;
+  &:hover {
+    background-color: ${({ disabled }) =>
+      disabled ? COLORS.gray : COLORS.blue2};
+  }
 `;
 
 export const LoginText = styled.div`

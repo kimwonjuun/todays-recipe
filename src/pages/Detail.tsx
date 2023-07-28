@@ -129,7 +129,7 @@ const Wrapper = styled.div`
 
 const ImgTitleWrapper = styled.div`
   width: 50%;
-  border: 0.25rem solid ${COLORS.blue2};
+  border: 0.25rem solid ${COLORS.blue1};
   border-radius: 1rem;
   background-color: #fff;
 `;
@@ -166,7 +166,7 @@ const Ingredient = styled.div`
   /* width: 50%; */
   /* margin: 3rem 0; */
   padding: 1rem;
-  border: 0.25rem solid ${COLORS.blue2};
+  border: 0.25rem solid ${COLORS.blue1};
   border-radius: 1rem;
   text-align: center;
   background-color: #fff;
@@ -186,7 +186,7 @@ const Ingredient = styled.div`
 
 const CookingStepWrapper = styled.div`
   background-color: #fff;
-  border: 0.25rem solid ${COLORS.blue2};
+  border: 0.25rem solid ${COLORS.blue1};
   border-radius: 1rem;
   text-align: center;
   padding: 1rem;
@@ -223,7 +223,7 @@ const TipWrapper = styled.div`
   align-items: center;
   margin-bottom: 2rem;
   padding: 1rem;
-  border: 0.25rem solid ${COLORS.violet1};
+  border: 0.25rem solid ${COLORS.blue2};
   border-radius: 1rem;
   background-color: #fff;
   margin-bottom: 0;
