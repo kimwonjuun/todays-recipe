@@ -37,9 +37,11 @@ const My = () => {
   const openModal = () => {
     setIsModalOpen(true);
   };
-
   const closeModal = () => {
     setIsModalOpen(false);
+    setDisplayName(user?.displayName || '');
+    setTempFileURL(null);
+    setTempPhotoURL(null);
   };
 
   // 프로필 이미지 수정
