@@ -16,9 +16,6 @@ const Detail = () => {
   // useRecipeData를 사용하여 레시피 데이터 받아오기
   const recipeData = useRecipeData();
 
-  // 로딩 상태
-  const [loading, setLoading] = useState<boolean>(true);
-
   // 전체 레시피와 선택한 레시피의 고유한 id가 같다면 출력
   useEffect(() => {
     const selectedRecipe = recipeData.find(
