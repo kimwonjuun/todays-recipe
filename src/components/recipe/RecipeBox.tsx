@@ -12,14 +12,14 @@ interface RecipeBoxProps {
 }
 
 const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
-  // 로딩 상태
-  const [loading, setLoading] = useState<boolean>(true);
+  // // 로딩 상태
+  // const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    if (recipeData.length > 0) {
-      setLoading(false);
-    }
-  }, [recipeData]);
+  // useEffect(() => {
+  //   if (recipeData.length > 0) {
+  //     setLoading(false);
+  //   }
+  // }, [recipeData]);
 
   // 분류 선택 여닫기
   const [showCategories, setShowCategories] = useState<boolean>(false);
@@ -166,7 +166,12 @@ const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
           </SortButton>
         </SortingWrapper>
       </TypeWrapper>
-      {loading ? (
+      <RecipeWrapper>
+        {showRecipes.map((recipe) => (
+          <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
+        ))}
+      </RecipeWrapper>
+      {/* {loading ? (
         <Loading />
       ) : (
         <RecipeWrapper>
@@ -174,7 +179,7 @@ const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
             <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
           ))}
         </RecipeWrapper>
-      )}
+      )} */}
     </>
   );
 };
