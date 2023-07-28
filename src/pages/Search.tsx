@@ -7,6 +7,7 @@ import { Recipe } from '../types/Recipe';
 import RecipeCard from '../components/common/RecipeCard';
 import { SearchInput } from '../components/common/SearchInput';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
+import { Loading } from '../components/common/Loading';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -74,7 +75,7 @@ const Search = () => {
     <>
       <PageWrapper>
         {loading ? (
-          <div>Loading...</div>
+          <Loading />
         ) : (
           <BoxWrapper isFiltered={filteredRecipes.length > 0}>
             {filteredRecipes.length > 0 ? (

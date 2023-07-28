@@ -30,7 +30,7 @@ const bounce = keyframes`
 `;
 
 const LoadingImage = styled.img`
-  width: 15rem;
-  height: 15rem;
+  width: 12.5rem;
+  height: 12.5rem;
   animation: ${bounce} 0.8s infinite ease-in-out;
 `;
