@@ -47,7 +47,7 @@ const My = () => {
   const [tempPhotoURL, setTempPhotoURL] = useState<any>(null); // 임시 photoURL 상태
   const [tempFileURL, setTempFileURL] = useState<any>(null); // 임시 file URL 상태
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const uploadFB = async (e: any) => {
+  const uploadFirebase = async (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -86,7 +86,6 @@ const My = () => {
           alert('프로필 수정 완료');
           closeModal();
           setPhotoURL(tempFileURL || photoURL); // photoURL 업데이트
-          // setDisplayName(''); // 새로운 displayName을 저장
         })
         .catch((error) => {
           alert('프로필 수정 실패');
@@ -94,11 +93,6 @@ const My = () => {
     }
   };
 
-  useEffect(() => {
-    {
-      console.log(user?.displayName, displayName);
-    }
-  }, [user?.displayName, displayName]);
   return (
     <>
       <PageWrapper>
@@ -149,7 +143,7 @@ const My = () => {
                     left: '90%',
                     transform: 'translate(-50%, -50%)',
                   }}
-                  onChange={uploadFB}
+                  onChange={uploadFirebase}
                 />
                 <ModalCamImg
                   src={require('../assets/camera.png')}
@@ -166,7 +160,10 @@ const My = () => {
               />
               <SubmitButton
                 onClick={handleProfileEdit}
-                disabled={displayName === user?.displayName}
+                disabled={
+                  (displayName === '' || displayName === user?.displayName) &&
+                  !tempFileURL
+                }
               >
                 수정하기
               </SubmitButton>
