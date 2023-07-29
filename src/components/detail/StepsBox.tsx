@@ -20,15 +20,11 @@ export const StepsBox = ({ recipe }: RecipeProps) => {
               const manualImg = (recipe as any)[
                 `MANUAL_IMG${step.toString().padStart(2, '0')}`
               ];
-              // manual에서 알파벳이 있다면 제거
-              const manualWithoutAlphabets = manual
-                ? manual.replace(/[a-zA-Z]/g, '')
-                : null;
 
-              return manualWithoutAlphabets || manualImg ? (
+              return manual || manualImg ? (
                 <StepWrapper key={`step-${step}`}>
                   {manualImg && <StepsImg src={manualImg} />}
-                  <div>{manualWithoutAlphabets}</div>
+                  <div>{manual}</div>
                 </StepWrapper>
               ) : null;
             })}

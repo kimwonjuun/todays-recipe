@@ -6,6 +6,12 @@ interface RecipeProps {
 }
 
 export const IngredientBox = ({ recipe }: RecipeProps) => {
+  // 재료 정규식
+  const ingredients = recipe.RCP_PARTS_DTLS.replace('재료', '')
+    .replace('[소스소개', '')
+    .split(',')
+    .join(', ');
+
   return (
     <>
       <TopWrapper>
@@ -60,7 +66,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           </Ingredient>
           <Ingredient>
             <h1>재료</h1>
-            <p>{recipe.RCP_PARTS_DTLS.split(',').join(', ')}</p>
+            <p>{ingredients}</p>
           </Ingredient>
         </IngredientWrapper>
       </TopWrapper>
