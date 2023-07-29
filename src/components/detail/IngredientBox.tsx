@@ -19,10 +19,12 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           <Img>
             <img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} />
           </Img>
-          <Title>
-            {recipe.RCP_PAT2} | {recipe.RCP_NM}
-          </Title>
-          <Like>냠냠</Like>
+          <Title>{recipe.RCP_NM}</Title>
+          <LikeWrapper>
+            <Like>
+              <img src={require('../../assets/empty-heart.png')} />
+            </Like>
+          </LikeWrapper>
         </CardWrapper>
         <IngredientWrapper>
           <Ingredient>
@@ -109,7 +111,7 @@ const Img = styled.div`
 `;
 
 const Title = styled.div`
-  height: 5rem;
+  height: 4.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -117,8 +119,22 @@ const Title = styled.div`
   font-weight: bold;
 `;
 
+const LikeWrapper = styled.div`
+  height: 5.5rem;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+`;
+
 const Like = styled.div`
-  height: 5rem;
+  width: 4.75rem;
+  height: 4.75rem;
+  cursor: pointer;
+
+  & > img {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const IngredientWrapper = styled.div`
