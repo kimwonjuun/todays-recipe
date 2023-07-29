@@ -49,7 +49,7 @@ const Detail = () => {
                     `MANUAL_IMG${step.toString().padStart(2, '0')}`
                   ];
 
-                  return manual ? (
+                  return manual || manualImg ? (
                     <StepWrapper key={`step-${step}`}>
                       {manualImg && <StepsImg src={manualImg} />}
                       <div>{manual}</div>
