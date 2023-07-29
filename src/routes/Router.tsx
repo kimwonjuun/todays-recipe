@@ -6,8 +6,8 @@ import Detail from '../pages/Detail';
 import My from '../pages/My';
 import Admin from '../pages/Admin';
 import ErrorPage from '../pages/ErrorPage';
-import { Header } from '../components/layout/Header';
-import { ScrollToTopButton } from '../components/layout/ScrollToTopButton';
+import { Header } from '../components/Layout/Header';
+import { ScrollToTopButton } from '../components/Layout/ScrollToTopButton';
 
 const Router = () => {
   return (
