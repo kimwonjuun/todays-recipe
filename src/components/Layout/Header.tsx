@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import { LoginModal } from '../Auth/LoginModal';
-import { SignUpModal } from '../Auth/SignUpModal';
 import { firebaseConfig } from '../../apis/firebase';
+import { LoginModal } from '../auth/LoginModal';
+import { SignUpModal } from '../auth/SignUpModal';
 
-const Header = () => {
+export const Header = () => {
   const navigate = useNavigate();
   const [LoginModalIsOpen, setLoginModalIsOpen] = useState(false); // 로그인 모달 상태
   const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false); // 회원가입 모달 상태
@@ -109,8 +109,6 @@ const Header = () => {
     </>
   );
 };
-
-export default Header;
 
 const HeaderWrapper = styled.div`
   height: 12.5rem;

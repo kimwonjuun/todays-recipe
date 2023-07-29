@@ -4,12 +4,15 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { Recipe } from '../types/Recipe';
 import { useRecipeData } from '../hooks/useRecipeData';
+import { Loading } from '../components/common/Loading';
 
 const Detail = () => {
   // Recipe/RecipeBox, Search에서 받아온 각 레시피가 가지고 있는 고유한 id
   const { id } = useParams<{ id: string }>();
+
   // 특정 레시피를 담아줄 state
   const [recipe, setRecipe] = useState<Recipe | null>(null);
+
   // useRecipeData를 사용하여 레시피 데이터 받아오기
   const recipeData = useRecipeData();
 
@@ -24,7 +27,7 @@ const Detail = () => {
   }, [id, recipeData]);
 
   if (!recipe) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
 
   return (

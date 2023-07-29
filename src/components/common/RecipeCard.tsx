@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
 
-const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
+export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   const navigate = useNavigate();
   const handleCardClick = () => {
     navigate(`/detail/${recipe.RCP_SEQ}`);
@@ -27,14 +27,14 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
     </>
   );
 };
-export default RecipeCard;
 
 const RecipeCardWrapper = styled.div`
   border-radius: 1rem;
   border: 0.3rem solid ${COLORS.blue1};
-  min-width: 25rem;
-  max-width: 25rem;
-  min-height: 30rem;
+
+  width: 17.5rem;
+  height: 30rem;
+  /* min-height: 22.5rem; */
   position: relative;
   cursor: pointer;
   overflow: hidden;
@@ -54,8 +54,8 @@ const RecipeCardWrapper = styled.div`
 `;
 
 const RecipeImgWrapper = styled.div`
-  width: 30rem;
-  height: 25rem;
+  width: inherit;
+  height: 20rem;
   overflow: hidden;
 `;
 
@@ -75,6 +75,10 @@ const RecipeTextWrapper = styled.div`
   justify-content: space-evenly;
   flex-direction: column;
   & > p {
-    font-size: smaller;
+    font-size: 1.5rem;
   }
+  & > h1 {
+    font-size: 1.6rem;
+  }
+  padding: 1rem;
 `;

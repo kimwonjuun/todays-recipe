@@ -18,6 +18,7 @@ import {
   ModalWrapper,
   TitleWrapper,
 } from '../../styles/modalStyles';
+
 export const SignUpModal = ({
   setLoginModalIsOpen,
   setSignUpModalIsOpen,
