@@ -58,10 +58,12 @@ const Detail = () => {
                 })}
               </StepsWrapper>
             </StepsWrapper>
-            <TipWrapper>
-              <h1>저감 조리법 TIP</h1>
-              <p>{recipe.RCP_NA_TIP}</p>
-            </TipWrapper>
+            {recipe.RCP_NA_TIP && (
+              <TipWrapper>
+                <h1>저감 조리법 TIP</h1>
+                <p>{recipe.RCP_NA_TIP}</p>
+              </TipWrapper>
+            )}
           </BottomWrapper>
         </DetailWrapper>
         <CommynityWrapper>
