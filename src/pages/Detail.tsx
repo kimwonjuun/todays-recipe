@@ -40,10 +40,6 @@ const Detail = () => {
           <IngredientBox recipe={recipe} />
           <StepsBox recipe={recipe} />
         </DetailWrapper>
-        <CommynityWrapper>
-          <BookmarkWrapper></BookmarkWrapper>
-          <CommentWrapper></CommentWrapper>
-        </CommynityWrapper>
       </PageWrapper>
     </>
   );
@@ -75,7 +71,6 @@ const DetailWrapper = styled.div`
 
 const CommynityWrapper = styled.div``;
 const BookmarkWrapper = styled.div``;
-const CommentWrapper = styled.div``;
 
 // <h1>조리법</h1>;
 // {

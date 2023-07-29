@@ -22,6 +22,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           <Title>
             {recipe.RCP_PAT2} | {recipe.RCP_NM}
           </Title>
+          <Like>냠냠</Like>
         </CardWrapper>
         <IngredientWrapper>
           <Ingredient>
@@ -95,7 +96,7 @@ const CardWrapper = styled.div`
 
 const Img = styled.div`
   width: inherit;
-  height: 30rem;
+  height: 25rem;
   overflow: hidden;
 
   border-top-left-radius: 1rem;
@@ -114,6 +115,10 @@ const Title = styled.div`
   justify-content: center;
   font-size: 1.75rem;
   font-weight: bold;
+`;
+
+const Like = styled.div`
+  height: 5rem;
 `;
 
 const IngredientWrapper = styled.div`
