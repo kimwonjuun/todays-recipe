@@ -209,7 +209,7 @@ const ItemText = styled.div`
   }
 
   p:last-child {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: bold;
   }
 `;
