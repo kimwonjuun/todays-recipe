@@ -48,7 +48,7 @@ const SearchButton = styled.button`
   width: 7rem;
   height: 4.65rem;
   border-radius: 1rem;
-  border: 0.15rem solid ${COLORS.blue1};
+  border: 0.25rem solid ${COLORS.blue1};
   font-size: 2rem;
   background-color: ${COLORS.blue1};
   color: white;

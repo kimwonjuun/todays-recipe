@@ -33,37 +33,72 @@ const Detail = () => {
   return (
     <>
       <PageWrapper>
-        <RecipeDetailWrapper>
-          <Wrapper>
-            <ImgTitleWrapper>
-              <ImgWrapper>
-                <Img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} />
-              </ImgWrapper>
-              <TItle>
-                {recipe.RCP_PAT2} / {recipe.RCP_NM}
-              </TItle>
-            </ImgTitleWrapper>
+        <DetailWrapper>
+          <TopWrapper>
+            <CardWrapper>
+              <Img>
+                <img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} />
+              </Img>
+              <Title>
+                {recipe.RCP_PAT2} | {recipe.RCP_NM}
+              </Title>
+            </CardWrapper>
             <IngredientWrapper>
+              <Ingredient>
+                <h1>성분</h1>
+                <List>
+                  <Item>
+                    <img src={require('../assets/ring1.png')} alt="Calories" />
+                    <ItemText>
+                      <p>열량</p>
+                      <p>{recipe.INFO_ENG} kcal</p>
+                    </ItemText>
+                  </Item>
+                  <Item>
+                    <img
+                      src={require('../assets/ring2.png')}
+                      alt="Carbohydrates"
+                    />
+                    <ItemText>
+                      <p>탄수화물</p>
+                      <p>{recipe.INFO_CAR} g</p>
+                    </ItemText>
+                  </Item>
+                  <Item>
+                    <img src={require('../assets/ring1.png')} alt="Protein" />
+                    <ItemText>
+                      <p>단백질</p>
+                      <p>{recipe.INFO_PRO} g</p>
+                    </ItemText>
+                  </Item>
+                  <Item>
+                    <img src={require('../assets/ring2.png')} alt="Fat" />
+                    <ItemText>
+                      <p>지방</p>
+                      <p>{recipe.INFO_FAT} g</p>
+                    </ItemText>
+                  </Item>
+                  <Item>
+                    <img src={require('../assets/ring1.png')} alt="Sodium" />
+                    <ItemText>
+                      <p>나트륨</p>
+                      <p>{recipe.INFO_NA} mg</p>
+                    </ItemText>
+                  </Item>
+                </List>
+                {/* <p>
+                  중량(1인분):{' '}
+                  {recipe.INFO_WGT ? `${recipe.INFO_WGT} g` : '해당 레시피는 중량이 따로 없습니다.'}
+                </p> */}
+              </Ingredient>
               <Ingredient>
                 <h1>재료</h1>
                 <p>{recipe.RCP_PARTS_DTLS.split(',').join(', ')}</p>
               </Ingredient>
-              <Ingredient>
-                <h1>성분</h1>
-                <p>
-                  중량(1인분):{' '}
-                  {recipe.INFO_WGT ? `${recipe.INFO_WGT} g` : '정보 없음'}
-                </p>
-                <p>열량: {recipe.INFO_ENG} kcal</p>
-                <p>탄수화물: {recipe.INFO_CAR} g</p>
-                <p>단백질: {recipe.INFO_PRO} g</p>
-                <p>지방: {recipe.INFO_FAT} g</p>
-                <p>나트륨: {recipe.INFO_NA} mg</p>
-              </Ingredient>
             </IngredientWrapper>
-          </Wrapper>
+          </TopWrapper>
 
-          <CookingStepWrapper>
+          <BottomWrapper>
             <h1>조리법</h1>
             {/* 만드는 방법 최대 길이 20 */}
             {Array.from({ length: 20 }, (_, i) => i + 1).map((step) => {
@@ -90,8 +125,8 @@ const Detail = () => {
               <h1>저감 조리법 TIP</h1>
               <p>{recipe.RCP_NA_TIP}</p>
             </TipWrapper>
-          </CookingStepWrapper>
-        </RecipeDetailWrapper>
+          </BottomWrapper>
+        </DetailWrapper>
         <CommynityWrapper>
           <BookmarkWrapper></BookmarkWrapper>
           <CommentWrapper></CommentWrapper>
@@ -112,53 +147,62 @@ const PageWrapper = styled.div`
   background-color: ${COLORS.backGround};
 `;
 
-const RecipeDetailWrapper = styled.div`
+const DetailWrapper = styled.div`
   width: 80rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  font-size: 2rem;
+  /* align-items: center; */
+  font-size: 1.6rem;
   position: relative;
   margin: 4rem 0;
   overflow: hidden;
 `;
 
-const Wrapper = styled.div`
+const TopWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
+  /* gap: 1rem; */
   margin-bottom: 1rem;
+
+  /* background-color: blue; */
 `;
 
-const ImgTitleWrapper = styled.div`
-  width: 50%;
-  border: 0.25rem solid ${COLORS.blue1};
+const CardWrapper = styled.div`
+  width: 25rem;
+  height: 35rem;
+  /* border: 0.25rem solid ${COLORS.blue1}; */
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
+    0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
   border-radius: 1rem;
+  position: relative;
   background-color: #fff;
 `;
 
-const ImgWrapper = styled.div`
-  /* width: 35rem; */
-  /* height: 40rem; */
-  width: 100%;
+const Img = styled.div`
+  width: inherit;
+  height: 30rem;
   overflow: hidden;
-`;
 
-const Img = styled.img`
-  width: 100%;
-  height: 100%;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
+
+  & > img {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
-const TItle = styled.div`
-  margin: 2rem 0;
-  text-align: center;
-  font-weight: bold;
+const Title = styled.div`
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
 `;
 
 const IngredientWrapper = styled.div`
-  width: 50%;
+  width: 53.5rem;
+  height: 35rem;
   /* margin: 1rem 0; */
   /* display: flex; */
   flex-direction: column;
@@ -166,14 +210,18 @@ const IngredientWrapper = styled.div`
 `;
 
 const Ingredient = styled.div`
-  /* width: 50%; */
+  width: inherit;
+  height: 15rem;
   /* margin: 3rem 0; */
-  padding: 1rem;
-  border: 0.25rem solid ${COLORS.blue1};
+  padding: 1.25rem;
+  /* border: 0.25rem solid ${COLORS.blue1}; */
   border-radius: 1rem;
+  box-sizing: border-box;
+  overflow: hidden;
   text-align: center;
   background-color: #fff;
-
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
+    0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
   &:first-child {
     margin-bottom: 1rem;
   }
@@ -187,7 +235,47 @@ const Ingredient = styled.div`
   }
 `;
 
-const CookingStepWrapper = styled.div`
+const List = styled.div`
+  width: 100%;
+  height: 9rem;
+
+  display: flex;
+  justify-content: space-between;
+
+  /* background-color: yellow; */
+`;
+
+const Item = styled.div`
+  width: 9rem;
+  position: relative;
+
+  & > img {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const ItemText = styled.div`
+  width: 7.5rem;
+  height: 3.5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 1.25rem;
+
+  p {
+    margin-bottom: 0.5rem;
+  }
+
+  p:last-child {
+    font-size: 1.6rem;
+    font-weight: bold;
+  }
+`;
+
+const BottomWrapper = styled.div`
   background-color: #fff;
   border: 0.25rem solid ${COLORS.blue1};
   border-radius: 1rem;
