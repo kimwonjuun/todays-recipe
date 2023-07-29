@@ -25,28 +25,28 @@ export const IngredientDiv = ({ recipe }: IngredientProps) => {
                 <img src={require('../../assets/ring1.png')} />
                 <ItemText>
                   <p>열량</p>
-                  <p>{recipe.INFO_ENG} kcal</p>
+                  <p>{recipe.INFO_ENG}kcal</p>
                 </ItemText>
               </Item>
               <Item>
                 <img src={require('../../assets/ring2.png')} />
                 <ItemText>
                   <p>탄수화물</p>
-                  <p>{recipe.INFO_CAR} g</p>
+                  <p>{recipe.INFO_CAR}g</p>
                 </ItemText>
               </Item>
               <Item>
                 <img src={require('../../assets/ring1.png')} />
                 <ItemText>
                   <p>단백질</p>
-                  <p>{recipe.INFO_PRO} g</p>
+                  <p>{recipe.INFO_PRO}g</p>
                 </ItemText>
               </Item>
               <Item>
                 <img src={require('../../assets/ring2.png')} />
                 <ItemText>
                   <p>지방</p>
-                  <p>{recipe.INFO_FAT} g</p>
+                  <p>{recipe.INFO_FAT}g</p>
                 </ItemText>
               </Item>
               <Item>
@@ -80,11 +80,11 @@ const TopWrapper = styled.div`
 const CardWrapper = styled.div`
   width: 25rem;
   height: 35rem;
+  background-color: #fff;
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
     0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
   border-radius: 1rem;
   position: relative;
-  background-color: #fff;
 `;
 
 const Img = styled.div`
