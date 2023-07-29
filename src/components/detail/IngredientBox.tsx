@@ -1,16 +1,54 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Recipe } from '../../types/Recipe';
+import { authService, dbService } from '../../apis/firebase';
+import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 
 interface RecipeProps {
   recipe: Recipe;
 }
 
 export const IngredientBox = ({ recipe }: RecipeProps) => {
+  const navigate = useNavigate();
+
   // 재료 정규식
   const ingredients = recipe.RCP_PARTS_DTLS.replace('재료', '')
     .replace('[소스소개', '')
     .split(',')
     .join(', ');
+
+  // 좋아요
+  const currentUserUid = authService.currentUser?.uid;
+  const [like, setLike] = useState(false);
+  const handleLikeButtonClick = async () => {
+    // 로그인 체크
+    if (!currentUserUid) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
+    // 북마크가 체크되어있지 않다면?
+    if (!like) {
+      await setDoc(doc(dbService, 'likes', currentUserUid), {
+        userId: currentUserUid, // user id
+        docId: recipe.RCP_SEQ, // filed id
+        RCP_NM: recipe.RCP_NM, // 레시피명
+        RCP_PAT2: recipe.RCP_PAT2, // 레시피 종류
+      });
+
+      // true가 되면서 북마크 더이상 못하게 막기
+      setLike(true);
+      console.log('좋아요 추가');
+    } else {
+      // 이미 좋아요가 되어 있는 상태이면 삭제
+      const isLiked = doc(dbService, 'likes', currentUserUid);
+      deleteDoc(isLiked);
+      // 다시 좋아요할 수 있는 상태
+      setLike(false);
+      console.log('좋아요 취소');
+    }
+  };
 
   return (
     <>
@@ -21,7 +59,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           </Img>
           <Title>{recipe.RCP_NM}</Title>
           <LikeWrapper>
-            <Like>
+            <Like onClick={handleLikeButtonClick}>
               <img src={require('../../assets/empty-heart.png')} />
             </Like>
           </LikeWrapper>
