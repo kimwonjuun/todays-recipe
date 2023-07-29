@@ -43,7 +43,6 @@ const Button = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  // opacity를 여기에서 삭제하세요.
   transition: opacity 300ms ease-in-out;
 
   background-color: ${COLORS.blue1};

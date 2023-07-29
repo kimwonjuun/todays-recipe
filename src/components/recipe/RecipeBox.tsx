@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
-import { Loading } from '../common/Loading';
 import { RecipeCard } from '../common/RecipeCard';
 
 // import해온 Recipe 타입
