@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { Recipe } from '../../types/Recipe';
 
-interface IngredientProps {
+interface RecipeProps {
   recipe: Recipe;
 }
 
-export const IngredientDiv = ({ recipe }: IngredientProps) => {
+export const IngredientBox = ({ recipe }: RecipeProps) => {
   return (
     <>
       <TopWrapper>
