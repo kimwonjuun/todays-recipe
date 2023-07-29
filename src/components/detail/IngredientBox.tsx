@@ -10,8 +10,6 @@ interface RecipeProps {
 }
 
 export const IngredientBox = ({ recipe }: RecipeProps) => {
-  const navigate = useNavigate();
-
   // 재료 정규식
   const ingredients = recipe.RCP_PARTS_DTLS.replace('재료', '')
     .replace('[소스소개', '')
@@ -59,7 +57,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
   };
   useEffect(() => {
     getLike();
-  }, [like]);
+  }, []);
 
   return (
     <>
@@ -71,7 +69,11 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           <Title>{recipe.RCP_NM}</Title>
           <LikeWrapper>
             <Like onClick={handleLikeButtonClick}>
-              <img src={require('../../assets/empty-heart.png')} />
+              {like ? (
+                <img src={require('../../assets/empty-heart.png')} />
+              ) : (
+                <img src={require('../../assets/heart.png')} />
+              )}
             </Like>
           </LikeWrapper>
         </CardWrapper>
