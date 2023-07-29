@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { Recipe } from '../../types/Recipe';
 import { authService, dbService } from '../../apis/firebase';
@@ -25,7 +24,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
       alert('로그인이 필요합니다.');
       return;
     }
-    // 북마크가 체크되어있지 않다면
+    // !좋아요인 경우
     if (!like) {
       await setDoc(doc(dbService, 'likes', currentUserUid), {
         userId: currentUserUid, // user id
@@ -33,7 +32,6 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
         RCP_NM: recipe.RCP_NM, // 레시피명
         RCP_PAT2: recipe.RCP_PAT2, // 레시피 종류
       });
-      // true가 되면서 북마크 더이상 못하게 막기
       setLike(true);
       console.log('좋아요 추가');
     } else {
@@ -60,7 +58,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
   };
   useEffect(() => {
     getLike();
-  }, []);
+  }, [getLike]);
 
   return (
     <>
