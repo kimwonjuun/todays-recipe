@@ -58,6 +58,10 @@ const Detail = () => {
                 })}
               </StepsWrapper>
             </StepsWrapper>
+            <TipWrapper>
+              <h1>저감 조리법 TIP</h1>
+              <p>{recipe.RCP_NA_TIP}</p>
+            </TipWrapper>
           </BottomWrapper>
         </DetailWrapper>
         <CommynityWrapper>
@@ -127,6 +131,22 @@ const StepsImg = styled.img`
   height: 17.5rem;
 `;
 
+const TipWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border: 0.25rem solid ${COLORS.blue1};
+  border-radius: 1rem;
+  background-color: #fff;
+  margin-bottom: 0;
+  font-size: 1.5rem;
+  h1 {
+    margin-bottom: 2rem;
+    font-size: 1.75rem;
+  }
+`;
+
 //
 
 const CommynityWrapper = styled.div``;
@@ -158,10 +178,12 @@ const CommentWrapper = styled.div``;
 //     ) : null;
 //   });
 // }
-// <TipWrapper>
-//   <h1>저감 조리법 TIP</h1>
-//   <p>{recipe.RCP_NA_TIP}</p>
-// </TipWrapper>;
+{
+  /* <TipWrapper>
+  <h1>저감 조리법 TIP</h1>
+  <p>{recipe.RCP_NA_TIP}</p>
+</TipWrapper>; */
+}
 //
 // const CookingStep = styled.div`
 //   display: flex;
@@ -182,16 +204,4 @@ const CommentWrapper = styled.div``;
 //     border-radius: 1rem;
 //     margin-bottom: 1rem;
 //   }
-// `;
-
-// const TipWrapper = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   margin-bottom: 2rem;
-//   padding: 1rem;
-//   border: 0.25rem solid ${COLORS.blue2};
-//   border-radius: 1rem;
-//   background-color: #fff;
-//   margin-bottom: 0;
 // `;
