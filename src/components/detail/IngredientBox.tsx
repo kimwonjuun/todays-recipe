@@ -27,8 +27,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
       alert('로그인이 필요합니다.');
       return;
     }
-
-    // 북마크가 체크되어있지 않다면?
+    // 북마크가 체크되어있지 않다면
     if (!like) {
       await setDoc(doc(dbService, 'likes', currentUserUid), {
         userId: currentUserUid, // user id
@@ -36,7 +35,6 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
         RCP_NM: recipe.RCP_NM, // 레시피명
         RCP_PAT2: recipe.RCP_PAT2, // 레시피 종류
       });
-
       // true가 되면서 북마크 더이상 못하게 막기
       setLike(true);
       console.log('좋아요 추가');
@@ -49,6 +47,19 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
       console.log('좋아요 취소');
     }
   };
+  // 북마크한 내역 출력하기
+  const getLike = async () => {
+    if (!currentUserUid) {
+      return;
+    }
+    const docSnap = await getDoc(doc(dbService, 'likes', currentUserUid));
+    if (docSnap.exists()) {
+      setLike(true);
+    }
+  };
+  useEffect(() => {
+    getLike();
+  }, [like]);
 
   return (
     <>
