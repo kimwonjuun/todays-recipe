@@ -198,6 +198,7 @@ const Title = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 1.75rem;
+  font-weight: bold;
 `;
 
 const IngredientWrapper = styled.div`
@@ -210,11 +211,13 @@ const IngredientWrapper = styled.div`
 `;
 
 const Ingredient = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: inherit;
-  height: 15rem;
-  /* margin: 3rem 0; */
+  height: 17rem;
   padding: 1.25rem;
-  /* border: 0.25rem solid ${COLORS.blue1}; */
   border-radius: 1rem;
   box-sizing: border-box;
   overflow: hidden;
@@ -226,8 +229,8 @@ const Ingredient = styled.div`
     margin-bottom: 1rem;
   }
 
-  /* &:last-child {
-    margin-left: 1rem;
+  /* &:nth-child(2) {
+    height: 19rem;
   } */
 
   h1 {
