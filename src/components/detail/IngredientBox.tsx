@@ -52,7 +52,10 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
     }
     const docSnap = await getDoc(doc(dbService, 'likes', currentUserUid));
     if (docSnap.exists()) {
-      setLike(true);
+      const likeData = docSnap.data();
+      if (likeData && likeData.docId === recipe.RCP_SEQ) {
+        setLike(true);
+      }
     }
   };
   useEffect(() => {
@@ -70,9 +73,9 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           <LikeWrapper>
             <Like onClick={handleLikeButtonClick}>
               {like ? (
-                <img src={require('../../assets/empty-heart.png')} />
-              ) : (
                 <img src={require('../../assets/heart.png')} />
+              ) : (
+                <img src={require('../../assets/empty-heart.png')} />
               )}
             </Like>
           </LikeWrapper>
