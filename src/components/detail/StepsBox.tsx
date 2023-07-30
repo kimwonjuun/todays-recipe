@@ -105,9 +105,9 @@ const TipWrapper = styled.div`
   border-radius: 1rem;
   background-color: #fff;
   margin-bottom: 0;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   h1 {
     margin-bottom: 2rem;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 `;
