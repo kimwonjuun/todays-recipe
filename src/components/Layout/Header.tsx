@@ -87,7 +87,7 @@ export const Header = () => {
                   navigate('/recipe');
                 }}
               >
-                레시피보러가기
+                레시피
               </Text>
               <Text onClick={openLoginModal}>로그인</Text>
             </TextWrapper>
