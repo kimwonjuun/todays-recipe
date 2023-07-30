@@ -36,7 +36,7 @@ const Input = styled.input`
   height: 4rem;
   border-radius: 1rem;
   border: 0.25rem solid ${COLORS.blue1};
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   outline: none;
   text-align: center;
   padding-right: 8rem; // 검색 버튼 만큼 여백 추가
