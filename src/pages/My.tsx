@@ -99,6 +99,25 @@ const My = () => {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    if (window.confirm('회원 탈퇴를 진행하시겠습니까?')) {
+      if (user) {
+        try {
+          await user.delete();
+          sessionStorage.clear();
+          alert('회원 탈퇴가 완료되었습니다.');
+          navigate('/', { replace: true });
+        } catch (error) {
+          alert(
+            '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후 탈퇴해주세요.'
+          );
+        }
+      }
+    } else {
+      return;
+    }
+  };
+
   return (
     <>
       <PageWrapper>
@@ -173,7 +192,9 @@ const My = () => {
               >
                 수정하기
               </SubmitButton>
-              <DeleteAccountBox>회원 탈퇴</DeleteAccountBox>
+              <DeleteAccountBox onClick={handleDeleteAccount}>
+                회원 탈퇴
+              </DeleteAccountBox>
             </BottomWrapper>
           </Modal>
         </ModalWrapper>
