@@ -141,7 +141,7 @@ export const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
         <SortingWrapper>
           <SortButton
             onClick={toggleSortCalorieType}
-            isSelected={sortCalorieType === '기존 정렬 상태'}
+            isSelected={sortCalorieType === '저칼로리 순'}
           >
             저칼로리 순
           </SortButton>
