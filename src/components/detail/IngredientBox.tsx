@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { Recipe } from '../../types/Recipe';
 import { authService, dbService } from '../../apis/firebase';
@@ -18,6 +18,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
   // 좋아요
   const currentUserUid = authService.currentUser?.uid;
   const [like, setLike] = useState(false);
+
   const handleLikeButtonClick = async () => {
     // 로그인 체크
     if (!currentUserUid) {
@@ -34,6 +35,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
       });
       setLike(true);
       console.log('좋아요 추가');
+      alert('레시피 찜 완료.');
     } else {
       // 이미 좋아요가 되어 있는 상태이면 삭제
       const isLiked = doc(dbService, 'likes', currentUserUid);
@@ -41,8 +43,10 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
       // 다시 좋아요할 수 있는 상태
       setLike(false);
       console.log('좋아요 취소');
+      alert('찜 목록에서 삭제했어요.');
     }
   };
+
   // 북마크한 내역 출력하기
   const getLike = async () => {
     if (!currentUserUid) {
