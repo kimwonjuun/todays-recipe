@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { getAuth, signOut, updateProfile } from 'firebase/auth';
+import { updateProfile } from 'firebase/auth';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -173,6 +173,7 @@ const My = () => {
               >
                 수정하기
               </SubmitButton>
+              <DeleteAccountBox>회원 탈퇴</DeleteAccountBox>
             </BottomWrapper>
           </Modal>
         </ModalWrapper>
@@ -295,9 +296,15 @@ const Modal = styled.div`
   border-radius: 1rem;
   border: 0.25rem solid ${COLORS.blue1};
   width: 23rem;
-  height: 28rem;
+  height: 30rem;
   position: relative;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  /* background-color: yellow; */
 `;
 
 const CloseButtonWrapper = styled.div`
@@ -305,19 +312,23 @@ const CloseButtonWrapper = styled.div`
 `;
 
 const TopWrapper = styled.div`
+  width: 20rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 55%;
+  height: 60%;
 `;
 
 const BottomWrapper = styled.div`
+  width: 18rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* margin-top: ; */
+  /* justify-content: center; */
   align-items: center;
-  height: 35%;
+  height: 40%;
+  position: relative;
 `;
 
 const ModalTitle = styled.div`
@@ -359,6 +370,7 @@ const Input = styled.input`
   border-radius: 1rem;
   text-align: center;
   outline: none;
+  margin-top: 1rem;
 `;
 
 const SubmitButton = styled.button`
@@ -401,6 +413,19 @@ const CloseButton = styled.button`
   &:hover {
     color: ${COLORS.blue2};
   }
+`;
+
+const DeleteAccountBox = styled.div`
+  position: absolute;
+  right: 0.25rem;
+  bottom: 0.75rem;
+  font-size: 0.8rem;
+  color: ${COLORS.gray};
+  text-decoration: underline;
+  &:hover {
+    color: ${COLORS.violet1};
+  }
+  cursor: pointer;
 `;
 
 ////////////////////
