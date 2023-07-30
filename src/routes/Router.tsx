@@ -8,7 +8,6 @@ import Admin from '../pages/Admin';
 import ErrorPage from '../pages/ErrorPage';
 import { Header } from '../components/layout/Header';
 import { ScrollToTopButton } from '../components/layout/ScrollToTopButton';
-
 const Router = () => {
   return (
     <BrowserRouter>

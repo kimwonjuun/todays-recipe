@@ -10,7 +10,7 @@ const My = () => {
   // 로그인 상태 확인
   // const auth = getAuth();
   // const user = auth.currentUser;
-  const user = authService?.currentUser;
+  const user = authService.currentUser;
   const isLoggedIn = sessionStorage.getItem(
     `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
   );

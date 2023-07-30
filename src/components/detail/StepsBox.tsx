@@ -12,23 +12,25 @@ export const StepsBox = ({ recipe }: RecipeProps) => {
       <BottomWrapper>
         <h1>조리 순서</h1>
         <StepsWrapper>
-          <StepsWrapper>
-            {Array.from({ length: 20 }, (_, i) => i + 1).map((step) => {
-              const manual = (recipe as any)[
-                `MANUAL${step.toString().padStart(2, '0')}`
-              ];
-              const manualImg = (recipe as any)[
-                `MANUAL_IMG${step.toString().padStart(2, '0')}`
-              ];
+          {Array.from({ length: 20 }, (_, i) => i + 1).map((step) => {
+            const manual = (recipe as any)[
+              `MANUAL${step.toString().padStart(2, '0')}`
+            ];
+            const manualImg = (recipe as any)[
+              `MANUAL_IMG${step.toString().padStart(2, '0')}`
+            ];
 
-              return manual || manualImg ? (
-                <StepWrapper key={`step-${step}`}>
-                  {manualImg && <StepsImg src={manualImg} />}
-                  <div>{manual}</div>
-                </StepWrapper>
-              ) : null;
-            })}
-          </StepsWrapper>
+            return manual || manualImg ? (
+              <StepWrapper key={`step-${step}`}>
+                {manualImg && (
+                  <StepsImg>
+                    <img src={manualImg} />
+                  </StepsImg>
+                )}
+                {manual && <StepsText>{manual}</StepsText>}
+              </StepWrapper>
+            ) : null;
+          })}
         </StepsWrapper>
         {recipe.RCP_NA_TIP && (
           <TipWrapper>
@@ -51,7 +53,6 @@ const BottomWrapper = styled.div`
 
   h1 {
     margin-bottom: 2.5rem;
-    font-size: xx-large;
   }
 `;
 
@@ -66,15 +67,33 @@ const StepWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
-  height: 25rem;
-  margin-bottom: 2.5rem;
-  padding: 1.25rem;
+  justify-content: space-around;
+  height: 30rem;
+  margin-bottom: 1rem;
+  /* padding: 1.25rem; */
+  /* gap: 2rem; */
+
+  /* background-color: ${COLORS.backGround}; */
 `;
 
-const StepsImg = styled.img`
-  width: 17.5rem;
-  height: 17.5rem;
+const StepsImg = styled.div`
+  width: 20em;
+  height: 20rem;
+
+  & > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+  }
+`;
+
+const StepsText = styled.div`
+  width: 30rem;
+  height: 8rem;
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: center; */
+  text-align: left;
 `;
 
 const TipWrapper = styled.div`

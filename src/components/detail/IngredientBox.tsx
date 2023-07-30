@@ -1,5 +1,8 @@
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { Recipe } from '../../types/Recipe';
+import { authService, dbService } from '../../apis/firebase';
+import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 
 interface RecipeProps {
   recipe: Recipe;
@@ -12,6 +15,55 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
     .split(',')
     .join(', ');
 
+  // 좋아요
+  const currentUserUid = authService.currentUser?.uid;
+  const [like, setLike] = useState(false);
+
+  const handleLikeButtonClick = async () => {
+    // 로그인 체크
+    if (!currentUserUid) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+    // !좋아요인 경우
+    if (!like) {
+      await setDoc(doc(dbService, 'likes', currentUserUid), {
+        userId: currentUserUid, // user id
+        docId: recipe.RCP_SEQ, // filed id
+        RCP_NM: recipe.RCP_NM, // 레시피명
+        RCP_PAT2: recipe.RCP_PAT2, // 레시피 종류
+      });
+      setLike(true);
+      console.log('좋아요 추가');
+      alert('레시피 찜 완료.');
+    } else {
+      // 이미 좋아요가 되어 있는 상태이면 삭제
+      const isLiked = doc(dbService, 'likes', currentUserUid);
+      deleteDoc(isLiked);
+      // 다시 좋아요할 수 있는 상태
+      setLike(false);
+      console.log('좋아요 취소');
+      alert('찜 목록에서 삭제했어요.');
+    }
+  };
+
+  // 북마크한 내역 출력하기
+  const getLike = async () => {
+    if (!currentUserUid) {
+      return;
+    }
+    const docSnap = await getDoc(doc(dbService, 'likes', currentUserUid));
+    if (docSnap.exists()) {
+      const likeData = docSnap.data();
+      if (likeData && likeData.docId === recipe.RCP_SEQ) {
+        setLike(true);
+      }
+    }
+  };
+  useEffect(() => {
+    getLike();
+  }, [getLike]);
+
   return (
     <>
       <TopWrapper>
@@ -19,9 +71,16 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           <Img>
             <img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} />
           </Img>
-          <Title>
-            {recipe.RCP_PAT2} | {recipe.RCP_NM}
-          </Title>
+          <Title>{recipe.RCP_NM}</Title>
+          <LikeWrapper>
+            <Like onClick={handleLikeButtonClick}>
+              {like ? (
+                <img src={require('../../assets/heart.png')} />
+              ) : (
+                <img src={require('../../assets/empty-heart.png')} />
+              )}
+            </Like>
+          </LikeWrapper>
         </CardWrapper>
         <IngredientWrapper>
           <Ingredient>
@@ -95,7 +154,7 @@ const CardWrapper = styled.div`
 
 const Img = styled.div`
   width: inherit;
-  height: 30rem;
+  height: 25rem;
   overflow: hidden;
 
   border-top-left-radius: 1rem;
@@ -108,12 +167,30 @@ const Img = styled.div`
 `;
 
 const Title = styled.div`
-  height: 5rem;
+  height: 4.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.75rem;
   font-weight: bold;
+`;
+
+const LikeWrapper = styled.div`
+  height: 5.5rem;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+`;
+
+const Like = styled.div`
+  width: 4.75rem;
+  height: 4.75rem;
+  cursor: pointer;
+
+  & > img {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const IngredientWrapper = styled.div`
@@ -188,7 +265,7 @@ const ItemText = styled.div`
   }
 
   p:last-child {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: bold;
   }
 `;

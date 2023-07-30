@@ -3,8 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { firebaseConfig } from '../../apis/firebase';
-import { LoginModal } from '../auth/LoginModal';
-import { SignUpModal } from '../auth/SignUpModal';
+import { LoginModal } from '../Auth/LoginModal';
+import { SignUpModal } from '../Auth/SignUpModal';
 
 export const Header = () => {
   const navigate = useNavigate();
