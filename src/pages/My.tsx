@@ -123,7 +123,7 @@ const My = () => {
           <ProfileBox>
             <Profile>
               <ProfileImg>
-                <Img src={photoURL || '../assets/default_image.png'} />
+                <Img src={photoURL || require('../assets/default_image.png')} />
               </ProfileImg>
               <ProfileText>
                 <p>{user?.displayName}</p>
@@ -151,7 +151,9 @@ const My = () => {
               <ModalImg>
                 <Img
                   src={
-                    tempPhotoURL || photoURL || '../assets/default_image.png'
+                    tempPhotoURL ||
+                    photoURL ||
+                    require('../assets/default_image.png')
                   }
                 />
                 <input
