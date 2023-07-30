@@ -11,15 +11,6 @@ interface RecipeBoxProps {
 }
 
 export const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
-  // // 로딩 상태
-  // const [loading, setLoading] = useState<boolean>(true);
-
-  // useEffect(() => {
-  //   if (recipeData.length > 0) {
-  //     setLoading(false);
-  //   }
-  // }, [recipeData]);
-
   // 분류 선택 여닫기
   const [showCategories, setShowCategories] = useState<boolean>(false);
   const showCategoryButton = () => {
@@ -40,21 +31,33 @@ export const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
         )
       : recipeData;
 
-  // 기존 순/가나다 순 상태
-  const [sortType, setSortType] = useState<string>('기존 정렬 상태');
+  // 기존 순/가나다 순 상태, 기존 순/저칼로리 순 상태
+  const [sortAlphabetsType, setSortAlphabetsType] =
+    useState<string>('기존 정렬 상태');
+  const [sortCalorieType, setSortCalorieType] =
+    useState<string>('기존 정렬 상태');
 
-  // 가나다 순 <-> 기존 정렬 상태간 전환
+  // 가나다 순 <-> 기존 정렬 상태 간 전환
   const toggleSortType = () => {
-    if (sortType === '기존 정렬 상태') {
-      setSortType('가나다 순');
-    } else if (sortType === '가나다 순') {
-      setSortType('기존 정렬 상태');
+    if (sortAlphabetsType === '기존 정렬 상태') {
+      setSortAlphabetsType('가나다 순');
+    } else if (sortAlphabetsType === '가나다 순') {
+      setSortAlphabetsType('기존 정렬 상태');
+    }
+  };
+
+  // 칼로리 순 <-> 기존 정렬 상태 간 전환
+  const toggleSortCalorieType = () => {
+    if (sortCalorieType === '기존 정렬 상태') {
+      setSortCalorieType('저칼로리 순');
+    } else if (sortCalorieType === '저칼로리 순') {
+      setSortCalorieType('기존 정렬 상태');
     }
   };
 
   // 가나다 순 소팅
-  const sortedRecipes = (recipes: Recipe[]): Recipe[] => {
-    if (sortType === '가나다 순') {
+  const sortedRecipesByAlphabets = (recipes: Recipe[]): Recipe[] => {
+    if (sortAlphabetsType === '가나다 순') {
       return [...recipes].sort((a: Recipe, b: Recipe) =>
         a.RCP_NM.localeCompare(b.RCP_NM)
       );
@@ -62,47 +65,26 @@ export const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
     return recipes;
   };
 
-  // 무한 스크롤
-  // // scrollTop: 맨 위 ~ 현재 보이는 부분까지
-  // // scrollHeight: 맨 위 ~ 맨 아래
-  // // clientHeight: 현재 보이는 부분(border 제외)
-  // // offsetHeight: 현재 보이는 부분(border 포함)
+  // 저칼로리 순 소팅
+  const sortRecipesByLowCalories = (recipes: Recipe[]): Recipe[] => {
+    if (sortCalorieType === '저칼로리 순') {
+      return [...recipes].sort(
+        (a: Recipe, b: Recipe) =>
+          parseFloat(a.INFO_ENG) - parseFloat(b.INFO_ENG)
+      );
+    }
+    return recipes;
+  };
 
-  // // 초기 표시할 페이지
-  // const [currentPage, setCurrentPage] = useState(1);
-
-  // // 페이지 당 표시할 아이템 수
-  // const itemsPerPage = 8;
-
-  // // 함수 호출 시 현재 페이지 +1
-  // const loadMorePage = () => {
-  //   setCurrentPage((prev) => prev + 1);
-  // };
-
-  // // 스크롤 이벤트 발생 시, 스크롤 위치 확인. 스크롤이 맨 아래 위치하면 loadMorePage 함수 호출해 페이지 로드
-  // const handleScroll = () => {
-  //   const scrollTop =
-  //     document.documentElement.scrollTop || document.body.scrollTop;
-  //   const scrollHeight =
-  //     document.documentElement.scrollHeight || document.body.scrollHeight;
-
-  //   if (scrollHeight - scrollTop === window.innerHeight) {
-  //     loadMorePage();
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener('scroll', handleScroll);
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  // }, []);
-
-  // // 기존 sortedRecipes(filteredRecipes)에서 slice 메서드를 통해 현재 페이지에 해당하는 레시피를 보여줌
-  // const showRecipes = sortedRecipes(filteredRecipes).slice(
-  //   0,
-  //   currentPage * itemsPerPage
-  // );
   const { currentPage } = useInfiniteScroll();
-  const showRecipes = sortedRecipes(filteredRecipes).slice(0, currentPage * 8);
+  // const showRecipes = sortedRecipesByAlphabets(filteredRecipes).slice(
+  //   0,
+  //   currentPage * 8
+  // );
+
+  const showRecipes = sortRecipesByLowCalories(
+    sortedRecipesByAlphabets(filteredRecipes)
+  ).slice(0, currentPage * 8);
 
   return (
     <>
@@ -158,8 +140,14 @@ export const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
         </CategoriesWrapper>
         <SortingWrapper>
           <SortButton
+            onClick={toggleSortCalorieType}
+            isSelected={sortCalorieType === '기존 정렬 상태'}
+          >
+            저칼로리 순
+          </SortButton>
+          <SortButton
             onClick={toggleSortType}
-            isSelected={sortType === '가나다 순'}
+            isSelected={sortAlphabetsType === '가나다 순'}
           >
             가나다 순
           </SortButton>
@@ -188,8 +176,11 @@ const TypeWrapper = styled.div`
   height: 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: left;
+  /* justify-content: left; */
   flex-wrap: wrap;
+  font-size: 1.75rem;
+
+  /* background-color: yellow; */
 `;
 
 const CategoriesWrapper = styled.div`
@@ -209,7 +200,7 @@ const SortingWrapper = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   & > p {
-    margin-left: 1.5rem;
+    /* margin-left: rem; */
     cursor: pointer;
     &:hover {
       color: ${COLORS.blue2};
