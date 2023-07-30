@@ -114,7 +114,7 @@ export const SignUpModal = ({
     }
   };
 
-  // 회원가입 버튼 - 로컬스토리지 저장
+  // 회원가입 버튼 - 세션스토리지 저장
   const submitSignUp = () => {
     setPersistence(authService, browserSessionPersistence)
       .then(() => createUserWithEmailAndPassword(authService, email, password))
@@ -126,6 +126,7 @@ export const SignUpModal = ({
         }
       })
       .then(() => {
+        authService.signOut();
         alert('회원가입이 완료 되었습니다! 로그인 해주세요.');
         setEmail('');
         setPassword('');
