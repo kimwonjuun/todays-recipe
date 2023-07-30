@@ -231,7 +231,7 @@ const ProfileImg = styled.div`
 `;
 
 const ProfileText = styled.div`
-  font-size: 1.8rem;
+  font-size: 1.75rem;
   display: flex;
   justify-content: center;
   align-items: center;

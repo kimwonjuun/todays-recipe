@@ -17,7 +17,7 @@ import {
   Modal,
   ModalWrapper,
   TitleWrapper,
-} from '../../styles/modalStyles';
+} from '../../styles/authModalStyles';
 
 export const SignUpModal = ({
   setLoginModalIsOpen,

@@ -50,7 +50,7 @@ export const Header = () => {
                   navigate('/');
                 }}
               >
-                검색하기
+                검색
               </Text>
               <Text
                 style={NaviSelectedStyle('/recipe')}
@@ -58,7 +58,7 @@ export const Header = () => {
                   navigate('/recipe');
                 }}
               >
-                레시피보러가기
+                전체 레시피
               </Text>
               <Text
                 style={NaviSelectedStyle('/my')}

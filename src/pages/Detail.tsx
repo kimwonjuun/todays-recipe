@@ -61,7 +61,7 @@ const DetailWrapper = styled.div`
   display: flex;
   flex-direction: column;
   /* align-items: center; */
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   position: relative;
   margin: 4rem 0;
   overflow: hidden;
