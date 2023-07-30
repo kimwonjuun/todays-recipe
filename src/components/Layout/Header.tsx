@@ -3,8 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { firebaseConfig } from '../../apis/firebase';
-import { LoginModal } from '../Auth/LoginModal';
-import { SignUpModal } from '../Auth/SignUpModal';
+import { LoginModal } from '../auth/LoginModal';
+import { SignUpModal } from '../auth/SignUpModal';
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export const Header = () => {
                   navigate('/');
                 }}
               >
-                검색하기
+                검색
               </Text>
               <Text
                 style={NaviSelectedStyle('/recipe')}
@@ -58,7 +58,7 @@ export const Header = () => {
                   navigate('/recipe');
                 }}
               >
-                레시피보러가기
+                전체 레시피
               </Text>
               <Text
                 style={NaviSelectedStyle('/my')}
@@ -87,7 +87,7 @@ export const Header = () => {
                   navigate('/recipe');
                 }}
               >
-                레시피보러가기
+                레시피
               </Text>
               <Text onClick={openLoginModal}>로그인</Text>
             </TextWrapper>

@@ -35,7 +35,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
       });
       setLike(true);
       console.log('좋아요 추가');
-      alert('레시피 찜 완료.');
+      alert('레시피 찜 완료!');
     } else {
       // 이미 좋아요가 되어 있는 상태이면 삭제
       const isLiked = doc(dbService, 'likes', currentUserUid);
@@ -171,7 +171,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: bold;
 `;
 
