@@ -36,10 +36,10 @@ const Detail = () => {
   return (
     <>
       <PageWrapper>
-        <DetailWrapper>
+        <BoxWrapper>
           <IngredientBox recipe={recipe} />
           <StepsBox recipe={recipe} />
-        </DetailWrapper>
+        </BoxWrapper>
       </PageWrapper>
     </>
   );
@@ -56,7 +56,7 @@ const PageWrapper = styled.div`
   background-color: ${COLORS.backGround};
 `;
 
-const DetailWrapper = styled.div`
+const BoxWrapper = styled.div`
   width: 80rem;
   display: flex;
   flex-direction: column;

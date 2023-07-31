@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 type InfiniteScrollType = {
   currentPage: number;
-  //   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  //   setCurrentPage: Function;
   //   loadMorePage: () => void;
 };
 
