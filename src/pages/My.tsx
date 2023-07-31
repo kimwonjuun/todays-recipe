@@ -28,7 +28,24 @@ const My = () => {
   };
 
   // 프로필 이미지
-  const [photoURL, setPhotoURL] = useState<any>(user?.photoURL); // 프로필 사진
+  const [photoURL, setPhotoURL] = useState<any>(user?.photoURL);
+
+  // 인풋
+  const [inputValue, setInputValue] = useState('');
+  const [storedWords, setStoredWords] = useState<string[]>([]);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+  const handleSaveWord = () => {
+    if (inputValue) {
+      setStoredWords([...storedWords, inputValue]);
+      setInputValue('');
+    }
+  };
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSaveWord();
+  };
 
   return (
     <>
@@ -36,9 +53,28 @@ const My = () => {
         <BoxWrapper>
           <ProfileBox openModal={openModal} photoURL={photoURL} user={user} />
 
-          <UserHistoryBox>
-            <UserHistory></UserHistory>
-          </UserHistoryBox>
+          <UserAccounttBox>
+            <UserItem>
+              <CategoriesWrapper>
+                <Category>나의 냉장고</Category>
+              </CategoriesWrapper>
+              <MyRefrigerator>
+                <form onSubmit={handleSubmit}>
+                  <input
+                    type="text"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                  />
+                  <input type="submit" value="저장" />
+                </form>
+                <div>
+                  {storedWords.map((word, index) => (
+                    <span key={index}>{word}</span>
+                  ))}
+                </div>
+              </MyRefrigerator>
+            </UserItem>
+          </UserAccounttBox>
         </BoxWrapper>
       </PageWrapper>
       {isModalOpen && (
@@ -52,6 +88,9 @@ const My = () => {
     </>
   );
 };
+{
+  /* <Category>저장한 레시피</Category> */
+}
 
 export default My;
 const PageWrapper = styled.div`
@@ -78,7 +117,7 @@ const BoxWrapper = styled.div`
 `;
 
 ////////////////////
-const UserHistoryBox = styled.div`
+const UserAccounttBox = styled.div`
   width: 75rem;
   height: 37.5rem;
 
@@ -87,9 +126,43 @@ const UserHistoryBox = styled.div`
 
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
     0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1.75rem;
 `;
 
-const UserHistory = styled.div`
+const UserItem = styled.div`
+  width: 70rem;
+  height: 35rem;
+
+  border: 1px solid black;
+
+  display: flex;
+  flex-direction: column;
+`;
+
+const CategoriesWrapper = styled.div`
+  height: 2rem;
+  display: flex;
+  gap: 1.5rem;
+
+  background-color: green;
+`;
+
+const Category = styled.div`
+  height: 2rem;
+  cursor: pointer;
+  &:hover {
+    color: ${COLORS.blue2};
+  }
+`;
+
+const MyRefrigerator = styled.div`
   width: 100%;
   height: 100%;
+  background-color: red;
 `;
+// const UserLikes = styled.div``;

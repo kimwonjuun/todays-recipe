@@ -186,8 +186,8 @@ const TypeWrapper = styled.div`
 const CategoriesWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  gap: 1.5rem;
   & > p {
-    margin-right: 1.5rem;
     cursor: pointer;
     &:hover {
       color: ${COLORS.blue2};
@@ -200,7 +200,6 @@ const SortingWrapper = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   & > p {
-    /* margin-left: rem; */
     cursor: pointer;
     &:hover {
       color: ${COLORS.blue2};
