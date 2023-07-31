@@ -22,19 +22,6 @@ const My = () => {
     }
   }, []);
 
-  // 로그아웃
-  const handleLogout = () => {
-    if (window.confirm('로그아웃 하시겠습니까?')) {
-      return authService.signOut().then(() => {
-        sessionStorage.clear();
-        alert('로그아웃 되었습니다.');
-        navigate('/', { replace: true });
-      });
-    } else {
-      return;
-    }
-  };
-
   // 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
@@ -121,21 +108,7 @@ const My = () => {
     <>
       <PageWrapper>
         <BoxWrapper>
-          <ProfileBox />
-          {/* <ProfileBox>
-            <Profile>
-              <ProfileImg>
-                <Img src={photoURL || require('../assets/default_image.png')} />
-              </ProfileImg>
-              <ProfileText>
-                <p>{user?.displayName}</p>
-              </ProfileText>
-            </Profile>
-            <LogoutBox>
-              <EditButton onClick={openModal}>프로필 수정</EditButton>
-              <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-            </LogoutBox>
-          </ProfileBox> */}
+          <ProfileBox openModal={openModal} photoURL={photoURL} user={user} />
 
           <UserHistoryBox>
             <UserHistory></UserHistory>

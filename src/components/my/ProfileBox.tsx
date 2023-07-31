@@ -1,17 +1,18 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { authService } from '../../apis/firebase';
+import { User } from 'firebase/auth';
 
-export const ProfileBox = () => {
+interface ProfileBoxProps {
+  openModal: () => void;
+  photoURL: string | undefined;
+  user: User | null;
+}
+
+export const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
   const navigate = useNavigate();
-  const user = authService.currentUser;
-  // 모달
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+
   // 로그아웃
   const handleLogout = () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
@@ -24,8 +25,6 @@ export const ProfileBox = () => {
       return;
     }
   };
-  // 프로필 이미지 수정
-  const [photoURL, setPhotoURL] = useState<any>(user?.photoURL); // 프로필 사진
 
   return (
     <>
