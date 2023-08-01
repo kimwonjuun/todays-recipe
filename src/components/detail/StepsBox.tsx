@@ -32,10 +32,10 @@ export const StepsBox = ({ recipe }: RecipeProps) => {
             ) : null;
           })}
         </StepsWrapper>
-        {recipe.RCP_NA_TIP && (
+        {recipe.tip && (
           <TipWrapper>
             <h1>저감 조리법 TIP</h1>
-            <p>{recipe.RCP_NA_TIP}</p>
+            <p>{recipe.tip}</p>
           </TipWrapper>
         )}
       </BottomWrapper>
