@@ -1,33 +1,33 @@
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 
-interface SearchInputProps {
+interface SearchFormProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClick: () => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   placeholder: string;
 }
 
 export const SearchInput = ({
   value,
   onChange,
-  onClick,
+  onSubmit,
   placeholder,
-}: SearchInputProps) => {
+}: SearchFormProps) => {
   return (
-    <InputWrapper>
+    <FormWrapper onSubmit={onSubmit}>
       <Input
         type="text"
         placeholder={placeholder}
         value={value}
         onChange={onChange}
       />
-      <SearchButton onClick={onClick}>검색</SearchButton>
-    </InputWrapper>
+      <SearchButton>검색</SearchButton>
+    </FormWrapper>
   );
 };
 
-const InputWrapper = styled.div`
+const FormWrapper = styled.form`
   position: relative;
 `;
 
@@ -39,7 +39,7 @@ const Input = styled.input`
   font-size: 1.25rem;
   outline: none;
   text-align: center;
-  padding-right: 8rem; // 검색 버튼 만큼 여백 추가
+  padding-right: 8rem;
 `;
 
 const SearchButton = styled.button`

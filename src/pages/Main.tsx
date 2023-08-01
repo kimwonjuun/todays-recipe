@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { SearchInput } from '../components/common/SearchInput';
+import { SearchInput } from '../components/common/SearchForm';
 
 const Main = () => {
   // 검색창
