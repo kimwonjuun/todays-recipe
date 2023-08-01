@@ -4,7 +4,7 @@ export interface Recipe {
   image: string;
   name: string;
   type: string;
-  calorie: string | null;
+  calorie: string;
   carbohydrate: string | null;
   protein: string | null;
   fat: string | null;

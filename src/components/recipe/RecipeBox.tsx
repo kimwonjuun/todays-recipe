@@ -29,9 +29,7 @@ export const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
   // 필터링된 레시피 뿌려주기
   const filteredRecipes =
     selectedCategory && selectedCategory !== '전체 레시피'
-      ? recipeData.filter(
-          (recipe: Recipe) => recipe.RCP_PAT2 === selectedCategory
-        )
+      ? recipeData.filter((recipe: Recipe) => recipe.type === selectedCategory)
       : recipeData;
 
   // 기존 순/가나다 순 상태, 기존 순/저칼로리 순 상태
@@ -62,7 +60,7 @@ export const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
   const sortedRecipesByAlphabets = (recipes: Recipe[]): Recipe[] => {
     if (sortAlphabetsType === '가나다 순') {
       return [...recipes].sort((a: Recipe, b: Recipe) =>
-        a.RCP_NM.localeCompare(b.RCP_NM)
+        a.name.localeCompare(b.name)
       );
     }
     return recipes;
@@ -72,8 +70,7 @@ export const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
   const sortRecipesByLowCalories = (recipes: Recipe[]): Recipe[] => {
     if (sortCalorieType === '저칼로리 순') {
       return [...recipes].sort(
-        (a: Recipe, b: Recipe) =>
-          parseFloat(a.INFO_ENG) - parseFloat(b.INFO_ENG)
+        (a: Recipe, b: Recipe) => parseFloat(a.calorie) - parseFloat(b.calorie)
       );
     }
     return recipes;
@@ -158,7 +155,7 @@ export const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
       </TypeWrapper>
       <RecipeWrapper>
         {showRecipes.map((recipe) => (
-          <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
+          <RecipeCard recipe={recipe} key={recipe.id} />
         ))}
       </RecipeWrapper>
       {/* {loading ? (
