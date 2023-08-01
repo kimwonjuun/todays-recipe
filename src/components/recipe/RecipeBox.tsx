@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
@@ -11,6 +11,9 @@ interface RecipeBoxProps {
 }
 
 export const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
+  useEffect(() => {
+    console.log(recipeData);
+  }, []);
   // 분류 선택 여닫기
   const [showCategories, setShowCategories] = useState<boolean>(false);
   const showCategoryButton = () => {

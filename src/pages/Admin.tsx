@@ -11,6 +11,7 @@ import { Recipe } from '../types/Recipe';
 const Admin = () => {
   // 파이어스토어 컬렉션에 데이터 넣기
   const [recipeList, setRecipeList] = useState<Recipe[]>([]);
+
   const handleGetRecipeList = async () => {
     if (window.confirm('API를 수정하시겠습니까?')) {
       try {
@@ -30,7 +31,7 @@ const Admin = () => {
         console.log('데이터: ', allData);
         setRecipeList(allData);
 
-        allData.map((recipe: Recipe) => {
+        allData.map((recipe: any) => {
           addDoc(collection(dbService, 'recipe-list'), {
             id: recipe.RCP_SEQ,
             image: recipe.ATT_FILE_NO_MK,
