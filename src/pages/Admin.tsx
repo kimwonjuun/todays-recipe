@@ -6,6 +6,7 @@ import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { dbService } from '../apis/firebase';
 import { Recipe } from '../types/Recipe';
 import { useEffect } from 'react';
+import { formatDate } from '../utils/date';
 
 const Admin = () => {
   // 파이어스토어 컬렉션에 데이터 넣기
@@ -151,7 +152,7 @@ const Admin = () => {
               {editHistoryList.map((history) => (
                 <div>
                   <p>{history.description}</p>
-                  <p>{history.updatedAt}</p>
+                  <p>{formatDate(history.updatedAt)}</p>
                 </div>
               ))}
             </Content>
