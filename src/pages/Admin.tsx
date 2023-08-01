@@ -5,6 +5,7 @@ import axios from 'axios';
 import { addDoc, collection } from 'firebase/firestore';
 import { dbService } from '../apis/firebase';
 import { Recipe } from '../types/Recipe';
+import { SearchForm } from '../components/common/SearchForm';
 
 const Admin = () => {
   const [recipeList, setRecipeList] = useState<Recipe[]>([]);
@@ -90,15 +91,51 @@ const Admin = () => {
         });
       });
     }
+    alert('레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.');
+  };
+
+  // Form
+  const [InputValue, setInputValue] = useState('');
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('검색어: ', InputValue);
   };
   return (
     <>
       <PageWrapper>
         <BoxWrapper>
-          <AdminBox>
+          {/* <AdminBox>
             <p onClick={getRecipeListHandler}>파이어스토어에 데이터 넣어주기</p>
-          </AdminBox>
-          <AdminBox></AdminBox>
+          </AdminBox> */}
+          <EditHistoryBox>
+            <div style={{ margin: '1.5rem 0' }}>수정 기록</div>
+            <div></div>
+          </EditHistoryBox>
+          <EditBox>
+            <div style={{ marginTop: '1.5rem' }}>수정 사항 기록</div>
+            <GuideBox>
+              <p>1. api를 수정한 후 버튼을 클릭해주세요.</p>
+              <p>2. 수정 기록을 인풋창에 작성 후 제출 버튼을 클릭해주세요.</p>
+            </GuideBox>
+            <EditApiButtonWrapper>
+              <img
+                src={require('../assets/default_image.png')}
+                onClick={getRecipeListHandler}
+              />
+            </EditApiButtonWrapper>
+            <FormWrapper onSubmit={handleSubmit}>
+              <Input
+                type="text"
+                placeholder="수정 사항을 입력하세요."
+                value={InputValue}
+                onChange={handleChange}
+              />
+              <SubmitButton type="submit">입력</SubmitButton>
+            </FormWrapper>
+          </EditBox>
         </BoxWrapper>
       </PageWrapper>
     </>
@@ -113,32 +150,109 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   height: calc(100vh - 12.8rem);
   background-color: ${COLORS.backGround};
 `;
 const BoxWrapper = styled.div`
-  width: 60rem;
-  height: 25rem;
+  /* width: 150rem; */
+  width: 100rem;
+  height: 40rem;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   font-size: 2rem;
-  margin-top: 8rem;
+  /* margin-top: 8rem; */
+
+  /* background-color: yellow; */
 `;
-const AdminBox = styled.div`
-  border: 0.1rem solid ${COLORS.blue1};
-  border-radius: 1rem;
-  width: 29rem;
-  height: 100%;
+const EditHistoryBox = styled.div`
+  width: 45rem;
+  height: 30rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  /* justify-content: space-around; */
   align-items: center;
-  p {
+  /* p {
     &:hover {
       color: ${COLORS.blue1};
       cursor: pointer;
     }
+  } */
+  background-color: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
+    0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
+`;
+
+const EditBox = styled.div`
+  width: 45rem;
+  height: 30rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  background-color: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
+    0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
+`;
+
+const GuideBox = styled.div`
+  width: 30rem;
+
+  p {
+    font-size: 1.25rem;
+  }
+`;
+const EditApiButtonWrapper = styled.div`
+  width: 7.5rem;
+  height: 7.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+`;
+
+const FormWrapper = styled.form`
+  position: relative;
+`;
+
+const Input = styled.input`
+  width: 35rem;
+  height: 2rem;
+  border-radius: 1rem;
+  border: 0.2rem solid ${COLORS.blue1};
+  font-size: 1rem;
+  outline: none;
+  text-align: center;
+  /* padding-right: 8rem; */
+`;
+
+const SubmitButton = styled.button`
+  position: absolute;
+  right: 0rem;
+  top: 10%;
+  width: 5rem;
+  height: 2.5rem;
+  border-radius: 1rem;
+  border: 0.2rem solid ${COLORS.blue1};
+  font-size: 1.25rem;
+  background-color: ${COLORS.blue1};
+  color: white;
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    background-color: ${COLORS.blue2};
   }
 `;
