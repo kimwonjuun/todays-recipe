@@ -6,22 +6,18 @@ import { Recipe } from '../../types/Recipe';
 export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   const navigate = useNavigate();
   const handleCardClick = () => {
-    navigate(`/detail/${recipe.RCP_SEQ}`);
+    navigate(`/detail/${recipe.id}`);
   };
 
   return (
     <>
       <RecipeCardWrapper onClick={handleCardClick}>
         <RecipeImgWrapper>
-          <Img
-            className="cardImg"
-            src={recipe.ATT_FILE_NO_MK}
-            alt={recipe.RCP_NM}
-          />
+          <Img className="cardImg" src={recipe.image} alt={recipe.name} />
         </RecipeImgWrapper>
         <RecipeTextWrapper>
-          <p>{recipe.RCP_PAT2}</p>
-          <h1>{recipe.RCP_NM}</h1>
+          <p>{recipe.type}</p>
+          <h1>{recipe.name}</h1>
         </RecipeTextWrapper>
       </RecipeCardWrapper>
     </>
