@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 
-type InfiniteScrollType = {
+interface InfiniteScrollType {
   currentPage: number;
   //   setCurrentPage: Function;
   //   loadMorePage: () => void;
-};
+}
 
 export const useInfiniteScroll = (): InfiniteScrollType => {
   // 초기 표시할 페이지

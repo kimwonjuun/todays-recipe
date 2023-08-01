@@ -10,8 +10,9 @@ interface RecipeProps {
 
 export const IngredientBox = ({ recipe }: RecipeProps) => {
   // 재료 정규식
-  const ingredients = recipe.RCP_PARTS_DTLS.replace('재료', '')
-    .replace('[소스소개', '')
+  const ingredients = recipe.ingredients
+    .replace('재료', '')
+    .replace('[소스소개]', '')
     .split(',')
     .join(', ');
 
@@ -29,9 +30,9 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
     if (!like) {
       await setDoc(doc(dbService, 'likes', currentUserUid), {
         userId: currentUserUid, // user id
-        docId: recipe.RCP_SEQ, // filed id
-        RCP_NM: recipe.RCP_NM, // 레시피명
-        RCP_PAT2: recipe.RCP_PAT2, // 레시피 종류
+        docId: recipe.id, // filed id
+        RCP_NM: recipe.name, // 레시피명
+        RCP_PAT2: recipe.type, // 레시피 종류
       });
       setLike(true);
       console.log('좋아요 추가');
@@ -55,7 +56,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
     const docSnap = await getDoc(doc(dbService, 'likes', currentUserUid));
     if (docSnap.exists()) {
       const likeData = docSnap.data();
-      if (likeData && likeData.docId === recipe.RCP_SEQ) {
+      if (likeData && likeData.docId === recipe.id) {
         setLike(true);
       }
     }
@@ -69,9 +70,9 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
       <TopWrapper>
         <CardWrapper>
           <Img>
-            <img src={recipe.ATT_FILE_NO_MK} alt={recipe.RCP_NM} />
+            <img src={recipe.image} alt={recipe.name} />
           </Img>
-          <Title>{recipe.RCP_NM}</Title>
+          <Title>{recipe.name}</Title>
           <LikeWrapper>
             <Like onClick={handleLikeButtonClick}>
               {like ? (
@@ -90,35 +91,35 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
                 <img src={require('../../assets/ring1.png')} />
                 <ItemText>
                   <p>열량</p>
-                  <p>{recipe.INFO_ENG}kcal</p>
+                  <p>{recipe.calorie}kcal</p>
                 </ItemText>
               </Item>
               <Item>
                 <img src={require('../../assets/ring2.png')} />
                 <ItemText>
                   <p>탄수화물</p>
-                  <p>{recipe.INFO_CAR}g</p>
+                  <p>{recipe.carbohydrate}g</p>
                 </ItemText>
               </Item>
               <Item>
                 <img src={require('../../assets/ring1.png')} />
                 <ItemText>
                   <p>단백질</p>
-                  <p>{recipe.INFO_PRO}g</p>
+                  <p>{recipe.protein}g</p>
                 </ItemText>
               </Item>
               <Item>
                 <img src={require('../../assets/ring2.png')} />
                 <ItemText>
                   <p>지방</p>
-                  <p>{recipe.INFO_FAT}g</p>
+                  <p>{recipe.fat}g</p>
                 </ItemText>
               </Item>
               <Item>
                 <img src={require('../../assets/ring1.png')} />
                 <ItemText>
                   <p>나트륨</p>
-                  <p>{recipe.INFO_NA} mg</p>
+                  <p>{recipe.sodium}mg</p>
                 </ItemText>
               </Item>
             </List>

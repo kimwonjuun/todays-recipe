@@ -34,8 +34,8 @@ const Search = () => {
     }
     const filteredData = recipeData.filter(
       (recipe) =>
-        (recipe.RCP_NM ?? '').includes(keyword) ||
-        (recipe.RCP_PARTS_DTLS ?? '').includes(keyword)
+        (recipe.name ?? '').includes(keyword) ||
+        (recipe.type ?? '').includes(keyword)
     );
     setFilteredRecipes(filteredData);
     setLoading(false); // 검색 완료되면 로딩 상태를 비활성화
@@ -43,8 +43,8 @@ const Search = () => {
   }, [keyword, recipeData]);
 
   // 검색 버튼
-  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!inputValue.trim()) {
       alert('검색어 입력 후 버튼을 클릭해주세요.');
       return;
@@ -79,7 +79,7 @@ const Search = () => {
                 />
                 <RecipeWrapper>
                   {showRecipes.map((recipe) => (
-                    <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
+                    <RecipeCard recipe={recipe} key={recipe.id} />
                   ))}
                 </RecipeWrapper>
               </>

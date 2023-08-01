@@ -36,8 +36,8 @@ const Main = () => {
   // };
 
   // 폼 제출 함수
-  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
     if (!inputValue.trim()) {
       alert('검색어 입력 후 버튼을 클릭해주세요.');

@@ -12,7 +12,6 @@ export const useRecipeData = () => {
     const recipeDataBase: Recipe[] = [];
 
     querySnapshot.forEach((doc) => {
-      // 일단 any 처리
       const newRecipe: any = {
         id: doc.id,
         ...doc.data(),

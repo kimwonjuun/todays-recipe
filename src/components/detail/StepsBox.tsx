@@ -7,35 +7,32 @@ interface RecipeProps {
 }
 
 export const StepsBox = ({ recipe }: RecipeProps) => {
+  const maxSteps = Math.max(recipe.make.length, recipe.makeImage.length);
   return (
     <>
       <BottomWrapper>
         <h1>조리 순서</h1>
-        <StepsWrapper>
-          {Array.from({ length: 20 }, (_, i) => i + 1).map((step) => {
-            const manual = (recipe as any)[
-              `MANUAL${step.toString().padStart(2, '0')}`
-            ];
-            const manualImg = (recipe as any)[
-              `MANUAL_IMG${step.toString().padStart(2, '0')}`
-            ];
 
-            return manual || manualImg ? (
-              <StepWrapper key={`step-${step}`}>
-                {manualImg && (
+        <StepsWrapper>
+          {recipe.make &&
+            recipe.make.map((step, index) => {
+              if (!step) {
+                return null;
+              }
+              return (
+                <StepWrapper key={index}>
                   <StepsImg>
-                    <img src={manualImg} />
+                    <img src={recipe.makeImage[index]} />
                   </StepsImg>
-                )}
-                {manual && <StepsText>{manual}</StepsText>}
-              </StepWrapper>
-            ) : null;
-          })}
+                  <StepsText>{step}</StepsText>
+                </StepWrapper>
+              );
+            })}
         </StepsWrapper>
-        {recipe.RCP_NA_TIP && (
+        {recipe.tip && (
           <TipWrapper>
             <h1>저감 조리법 TIP</h1>
-            <p>{recipe.RCP_NA_TIP}</p>
+            <p>{recipe.tip}</p>
           </TipWrapper>
         )}
       </BottomWrapper>

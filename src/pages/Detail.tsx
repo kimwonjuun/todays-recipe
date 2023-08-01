@@ -21,7 +21,7 @@ const Detail = () => {
   // 전체 레시피와 선택한 레시피의 고유한 id가 같다면 출력
   useEffect(() => {
     const selectedRecipe = recipeData.find(
-      (recipe: Recipe) => recipe.RCP_SEQ === id
+      (recipe: Recipe) => recipe.id === id
     );
     if (selectedRecipe) {
       setRecipe(selectedRecipe);
