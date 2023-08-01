@@ -8,7 +8,7 @@ import { Recipe } from '../types/Recipe';
 
 const Admin = () => {
   const [recipeList, setRecipeList] = useState<Recipe[]>([]);
-  const getRecipeListHandler = async () => {
+  const handleGetRecipeList = async () => {
     if (window.confirm('API를 수정하시겠습니까?')) {
       try {
         const serviceKey = process.env.REACT_APP_FOODSAFETYKOREA_API_KEY;
@@ -26,11 +26,8 @@ const Admin = () => {
         );
         console.log('데이터: ', allData);
         setRecipeList(allData);
-      } catch (error) {
-        console.error('레시피 리스트를 가져오지 못했어요. :', error);
-      }
-      {
-        recipeList.map((recipe) => {
+
+        allData.map((recipe: Recipe) => {
           addDoc(collection(dbService, 'recipe-list'), {
             ATT_FILE_NO_MAIN: recipe?.ATT_FILE_NO_MAIN,
             ATT_FILE_NO_MK: recipe?.ATT_FILE_NO_MK,
@@ -88,8 +85,10 @@ const Admin = () => {
             RCP_WAY2: recipe?.RCP_WAY2,
           });
         });
+        alert('레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.');
+      } catch (error) {
+        console.error('레시피 리스트를 가져오지 못했어요. :', error);
       }
-      alert('레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.');
     } else {
       return;
     }
@@ -104,6 +103,7 @@ const Admin = () => {
     e.preventDefault();
     console.log('검색어: ', InputValue);
   };
+
   return (
     <>
       <PageWrapper>
@@ -118,13 +118,13 @@ const Admin = () => {
           <EditBox>
             <div style={{ marginTop: '1.5rem' }}>수정 사항 기록</div>
             <GuideBox>
-              <p>1. api를 수정한 후 버튼을 클릭해주세요.</p>
+              <p>1. 데이터를 수정한 후 가운데 버튼을 클릭해주세요.</p>
               <p>2. 수정 기록을 인풋창에 작성 후 제출 버튼을 클릭해주세요.</p>
             </GuideBox>
             <EditApiButtonWrapper>
               <img
                 src={require('../assets/default_image.png')}
-                onClick={getRecipeListHandler}
+                onClick={handleGetRecipeList}
               />
             </EditApiButtonWrapper>
             <FormWrapper onSubmit={handleSubmit}>
