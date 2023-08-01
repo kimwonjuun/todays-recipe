@@ -7,6 +7,7 @@ import { dbService } from '../apis/firebase';
 import { Recipe } from '../types/Recipe';
 
 const Admin = () => {
+  // 파이어스토어 컬렉션에 데이터 넣기
   const [recipeList, setRecipeList] = useState<Recipe[]>([]);
   const handleGetRecipeList = async () => {
     if (window.confirm('API를 수정하시겠습니까?')) {
@@ -94,14 +95,25 @@ const Admin = () => {
     }
   };
 
-  // Form
-  const [InputValue, setInputValue] = useState('');
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // 수정 사항 기록 폼
+  const [inputValue, setInputValue] = useState('');
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setInputValue(e.target.value);
+  // };
+  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('검색어: ', InputValue);
+
+    try {
+      await addDoc(collection(dbService, 'edit-data-history'), {
+        description: inputValue,
+        updatedAt: new Date(),
+      });
+      setInputValue('');
+      alert('수정 사항이 저장되었습니다.');
+    } catch (error) {
+      console.error('수정 사항 저장에 실패했습니다.', error);
+      alert('수정 사항 저장에 실패했습니다.');
+    }
   };
 
   return (
@@ -127,12 +139,14 @@ const Admin = () => {
                 onClick={handleGetRecipeList}
               />
             </EditApiButtonWrapper>
-            <FormWrapper onSubmit={handleSubmit}>
+            <FormWrapper onSubmit={handleEditSubmit}>
               <Input
                 type="text"
                 placeholder="수정 사항을 입력하세요."
-                value={InputValue}
-                onChange={handleChange}
+                value={inputValue}
+                onChange={(e) => {
+                  setInputValue(e.target.value);
+                }}
               />
               <SubmitButton type="submit">입력</SubmitButton>
             </FormWrapper>
@@ -230,21 +244,19 @@ const FormWrapper = styled.form`
 
 const Input = styled.input`
   width: 35rem;
-  height: 2rem;
+  height: 2.5rem;
   border-radius: 1rem;
   border: 0.2rem solid ${COLORS.blue1};
-  font-size: 1rem;
+  font-size: 1.25rem;
   outline: none;
   text-align: center;
-  /* padding-right: 8rem; */
 `;
 
 const SubmitButton = styled.button`
   position: absolute;
   right: 0rem;
-  top: 10%;
   width: 5rem;
-  height: 2.5rem;
+  height: 3rem;
   border-radius: 1rem;
   border: 0.2rem solid ${COLORS.blue1};
   font-size: 1.25rem;
