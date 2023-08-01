@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useRecipeData } from '../hooks/useRecipeData';
 import { Recipe } from '../types/Recipe';
-import { SearchInput } from '../components/common/SearchForm';
+import { SearchInput } from '../components/common/SearchInput';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 import { Loading } from '../components/common/Loading';
 import { RecipeCard } from '../components/common/RecipeCard';
