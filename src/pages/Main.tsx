@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { SearchInput } from '../components/common/SearchInput';
+import { SearchForm } from '../components/common/SearchForm';
 
 const Main = () => {
   // 검색창
@@ -35,9 +35,10 @@ const Main = () => {
   //   navigate(`/search/${inputValue}`);
   // };
 
-  // 버튼 클릭 함수
-  const handleSearchClick = () => {
-    // 검색어가 없을 경우 유저에게 에러 메세지 표시
+  // 폼 제출 함수
+  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (!inputValue.trim()) {
       alert('검색어 입력 후 버튼을 클릭해주세요.');
       return;
@@ -45,14 +46,15 @@ const Main = () => {
 
     navigate(`/search/${inputValue}`);
   };
+
   return (
     <>
       <PageWrapper>
         <BoxWrapper>
-          <SearchInput
+          <SearchForm
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            onClick={handleSearchClick}
+            onSubmit={handleSearchSubmit}
             placeholder="처리하고 싶은 재료(ex. 연두부) 또는 하고 싶은 요리(ex. 카프레제)를 검색하세요."
           />
           {/* <CustomP
