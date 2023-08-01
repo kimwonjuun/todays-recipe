@@ -148,18 +148,19 @@ const Admin = () => {
         <BoxWrapper>
           <EditHistoryBox>
             <Title>수정 기록</Title>
-            <Content>
-              {editHistoryList.map((history) => (
-                <div>
+            <Contents>
+              {editHistoryList.map((history, index) => (
+                <History>
+                  <p>{index + 1}.</p>
                   <p>{history.description}</p>
                   <p>{formatDate(history.updatedAt)}</p>
-                </div>
+                </History>
               ))}
-            </Content>
+            </Contents>
           </EditHistoryBox>
           <EditFormBox>
             <Title>수정 사항 기록</Title>
-            <Content>
+            <Contents>
               <GuideBox>
                 <p>1. 데이터를 수정한 후 가운데 버튼을 클릭해주세요.</p>
                 <p>2. 수정 기록을 인풋창에 작성 후 제출 버튼을 클릭해주세요.</p>
@@ -182,7 +183,7 @@ const Admin = () => {
                 />
                 <SubmitButton type="submit">입력</SubmitButton>
               </FormWrapper>
-            </Content>
+            </Contents>
           </EditFormBox>
         </BoxWrapper>
       </PageWrapper>
@@ -258,20 +259,33 @@ const Title = styled.div`
   margin-top: 1.5rem;
 `;
 
-const Content = styled.div`
+const Contents = styled.div`
+  width: inherit;
   height: 27rem;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   flex-direction: column;
 `;
+
+const History = styled.div`
+  width: 38rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+
+  & > p:last-child {
+    margin-left: auto;
+  }
+`;
+
 const GuideBox = styled.div`
   width: 30rem;
 
-  p {
-    font-size: 1.25rem;
-  }
+  font-size: 1.25rem;
 `;
+
 const EditApiButtonWrapper = styled.div`
   width: 7.5rem;
   height: 7.5rem;
