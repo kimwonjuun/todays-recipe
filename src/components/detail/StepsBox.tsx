@@ -12,22 +12,22 @@ export const StepsBox = ({ recipe }: RecipeProps) => {
     <>
       <BottomWrapper>
         <h1>조리 순서</h1>
+
         <StepsWrapper>
-          {Array.from({ length: maxSteps }).map((_, index) => {
-            const step = recipe.make[index];
-            const image = recipe.makeImage[index];
-            if (step === undefined && !image) {
-              return null;
-            }
-            return (
-              <StepWrapper key={index}>
-                <StepsImg>
-                  {image && <img src={image} alt={`step-${index}`} />}
-                </StepsImg>
-                <StepsText>{step}</StepsText>
-              </StepWrapper>
-            );
-          })}
+          {recipe.make &&
+            recipe.make.map((step, index) => {
+              if (!step) {
+                return null;
+              }
+              return (
+                <StepWrapper key={index}>
+                  <StepsImg>
+                    <img src={recipe.makeImage[index]} />
+                  </StepsImg>
+                  <StepsText>{step}</StepsText>
+                </StepWrapper>
+              );
+            })}
         </StepsWrapper>
         {recipe.tip && (
           <TipWrapper>
