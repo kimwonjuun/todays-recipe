@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useRecipeData } from '../hooks/useRecipeData';
 import { Recipe } from '../types/Recipe';
-import { SearchInput } from '../components/common/SearchInput';
+import { SearchForm } from '../components/common/SearchForm';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 import { Loading } from '../components/common/Loading';
 import { RecipeCard } from '../components/common/RecipeCard';
@@ -43,7 +43,8 @@ const Search = () => {
   }, [keyword, recipeData]);
 
   // 검색 버튼
-  const handleSearchClick = () => {
+  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (!inputValue.trim()) {
       alert('검색어 입력 후 버튼을 클릭해주세요.');
       return;
@@ -70,10 +71,10 @@ const Search = () => {
                 >
                   "{keyword}" 검색 결과: {filteredRecipes.length}건
                 </ResultWrapper>
-                <SearchInput
+                <SearchForm
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  onClick={handleSearchClick}
+                  onSubmit={handleSearchSubmit}
                   placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
                 />
                 <RecipeWrapper>
@@ -87,10 +88,10 @@ const Search = () => {
                 <ResultWrapper isFiltered={filteredRecipes.length > 0}>
                   검색 결과가 없습니다 :(
                 </ResultWrapper>
-                <SearchInput
+                <SearchForm
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  onClick={handleSearchClick}
+                  onSubmit={handleSearchSubmit}
                   placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
                 />
                 <CustomP
