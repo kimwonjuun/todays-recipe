@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useState } from 'react';
 import axios from 'axios';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { dbService } from '../apis/firebase';
 import { Recipe } from '../types/Recipe';
+import { useEffect } from 'react';
 
 const Admin = () => {
   // 파이어스토어 컬렉션에 데이터 넣기
@@ -97,16 +98,13 @@ const Admin = () => {
 
   // 수정 사항 기록 폼
   const [inputValue, setInputValue] = useState('');
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setInputValue(e.target.value);
-  // };
   const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       await addDoc(collection(dbService, 'edit-data-history'), {
         description: inputValue,
-        updatedAt: new Date(),
+        updatedAt: new Date().toString(),
       });
       setInputValue('');
       alert('수정 사항이 저장되었습니다.');
@@ -116,41 +114,75 @@ const Admin = () => {
     }
   };
 
+  // 수정 사항 가져오기
+  interface EditHistory {
+    description: string;
+    updatedAt: string;
+  }
+
+  const [editHistoryList, setEditHistoryList] = useState<EditHistory[]>([]);
+
+  const getEditDataHistory = async () => {
+    const querySnapshot = await getDocs(
+      collection(dbService, 'edit-data-history')
+    );
+    const historyList: any = [];
+
+    querySnapshot.forEach((doc) => {
+      const newRecipe: any = {
+        id: doc.id,
+        ...doc.data(),
+      };
+      historyList.push(newRecipe);
+    });
+    setEditHistoryList(historyList);
+  };
+  useEffect(() => {
+    getEditDataHistory();
+  }, []);
+
   return (
     <>
       <PageWrapper>
         <BoxWrapper>
-          {/* <AdminBox>
-            <p onClick={getRecipeListHandler}>파이어스토어에 데이터 넣어주기</p>
-          </AdminBox> */}
           <EditHistoryBox>
-            <div style={{ margin: '1.5rem 0' }}>수정 기록</div>
-            <div></div>
+            <Title>수정 기록</Title>
+            <Content>
+              {editHistoryList.map((history) => (
+                <div>
+                  <p>{history.description}</p>
+                  <p>{history.updatedAt}</p>
+                </div>
+              ))}
+            </Content>
           </EditHistoryBox>
-          <EditBox>
-            <div style={{ marginTop: '1.5rem' }}>수정 사항 기록</div>
-            <GuideBox>
-              <p>1. 데이터를 수정한 후 가운데 버튼을 클릭해주세요.</p>
-              <p>2. 수정 기록을 인풋창에 작성 후 제출 버튼을 클릭해주세요.</p>
-            </GuideBox>
-            <EditApiButtonWrapper>
-              <img
-                src={require('../assets/default_image.png')}
-                onClick={handleGetRecipeList}
-              />
-            </EditApiButtonWrapper>
-            <FormWrapper onSubmit={handleEditSubmit}>
-              <Input
-                type="text"
-                placeholder="수정 사항을 입력하세요."
-                value={inputValue}
-                onChange={(e) => {
-                  setInputValue(e.target.value);
-                }}
-              />
-              <SubmitButton type="submit">입력</SubmitButton>
-            </FormWrapper>
-          </EditBox>
+          <EditFormBox>
+            <Title>수정 사항 기록</Title>
+            <Content>
+              <GuideBox>
+                <p>1. 데이터를 수정한 후 가운데 버튼을 클릭해주세요.</p>
+                <p>2. 수정 기록을 인풋창에 작성 후 제출 버튼을 클릭해주세요.</p>
+              </GuideBox>
+              <EditApiButtonWrapper>
+                <img
+                  src={require('../assets/default_image.png')}
+                  onClick={handleGetRecipeList}
+                />
+              </EditApiButtonWrapper>
+              <FormWrapper onSubmit={handleEditSubmit}>
+                <Input
+                  type="text"
+                  maxLength={30}
+                  placeholder="수정 사항을 입력하세요."
+                  value={inputValue}
+                  onChange={(e) => {
+                    setInputValue(e.target.value);
+                  }}
+                />
+                <SubmitButton type="submit">입력</SubmitButton>
+              </FormWrapper>
+            </Content>
+          </EditFormBox>
         </BoxWrapper>
       </PageWrapper>
     </>
@@ -201,13 +233,13 @@ const EditHistoryBox = styled.div`
     0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
 `;
 
-const EditBox = styled.div`
+const EditFormBox = styled.div`
   width: 45rem;
   height: 30rem;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  /* justify-content: space-around; */
   align-items: center;
 
   background-color: #fff;
@@ -216,6 +248,22 @@ const EditBox = styled.div`
     0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
 `;
 
+const Title = styled.div`
+  width: inherit;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.5rem;
+`;
+
+const Content = styled.div`
+  height: 27rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+`;
 const GuideBox = styled.div`
   width: 30rem;
 
