@@ -6,11 +6,11 @@ import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import { RecipeCard } from '../common/RecipeCard';
 
 // import해온 Recipe 타입
-interface RecipeBoxProps {
+interface RecipeProps {
   recipeData: Recipe[];
 }
 
-export const RecipeBox = ({ recipeData }: RecipeBoxProps) => {
+export const RecipeBox = ({ recipeData }: RecipeProps) => {
   useEffect(() => {
     console.log(recipeData);
   }, []);

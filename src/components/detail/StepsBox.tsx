@@ -7,29 +7,26 @@ interface RecipeProps {
 }
 
 export const StepsBox = ({ recipe }: RecipeProps) => {
+  const maxSteps = Math.max(recipe.make.length, recipe.makeImage.length);
   return (
     <>
       <BottomWrapper>
         <h1>조리 순서</h1>
         <StepsWrapper>
-          {Array.from({ length: 20 }, (_, i) => i + 1).map((step) => {
-            const manual = (recipe as any)[
-              `MANUAL${step.toString().padStart(2, '0')}`
-            ];
-            const manualImg = (recipe as any)[
-              `MANUAL_IMG${step.toString().padStart(2, '0')}`
-            ];
-
-            return manual || manualImg ? (
-              <StepWrapper key={`step-${step}`}>
-                {manualImg && (
-                  <StepsImg>
-                    <img src={manualImg} />
-                  </StepsImg>
-                )}
-                {manual && <StepsText>{manual}</StepsText>}
+          {Array.from({ length: maxSteps }).map((_, index) => {
+            const step = recipe.make[index];
+            const image = recipe.makeImage[index];
+            if (step === undefined && !image) {
+              return null;
+            }
+            return (
+              <StepWrapper key={index}>
+                <StepsImg>
+                  {image && <img src={image} alt={`step-${index}`} />}
+                </StepsImg>
+                <StepsText>{step}</StepsText>
               </StepWrapper>
-            ) : null;
+            );
           })}
         </StepsWrapper>
         {recipe.tip && (

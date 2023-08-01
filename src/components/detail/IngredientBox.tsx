@@ -12,7 +12,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
   // 재료 정규식
   const ingredients = recipe.ingredients
     .replace('재료', '')
-    .replace('[소스소개', '')
+    .replace('[소스소개]', '')
     .split(',')
     .join(', ');
 

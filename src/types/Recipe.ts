@@ -1,14 +1,13 @@
-// types/Recipe.ts
 export interface Recipe {
   id: string;
   image: string;
   name: string;
   type: string;
   calorie: string;
-  carbohydrate: string | null;
-  protein: string | null;
-  fat: string | null;
-  sodium: string | null;
+  carbohydrate: string;
+  protein: string;
+  fat: string;
+  sodium: string;
   ingredients: string;
   tip: string;
   make: Array<string>;
