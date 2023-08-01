@@ -113,6 +113,7 @@ const Admin = () => {
       };
       historyList.push(newRecipe);
     });
+    historyList.reverse();
     setEditHistoryList(historyList);
   };
   useEffect(() => {
