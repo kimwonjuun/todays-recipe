@@ -8,7 +8,7 @@ interface SearchFormProps {
   placeholder: string;
 }
 
-export const SearchInput = ({
+export const SearchForm = ({
   value,
   onChange,
   onSubmit,
