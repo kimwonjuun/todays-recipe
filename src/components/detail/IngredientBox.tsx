@@ -19,6 +19,13 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
     /(\d+g|\d+ml|\d+G|\d+ML)\s([가-힣]+)/g,
     '$1, $2'
   );
+  // const reg = /([가-힣]{1,10}[ ][가-힣]{1,10}|[가-힣]{1,10})/g;
+  // const recipeNM = recipe.ingredients
+  //   .replace(
+  //     /인분|컵|송송 썬|불린 것|줄기부분|삶은것|주재료|주 재료|육수|마른것|양념|다진|부순|뿌리|으깬|데친|두 가지 색|재료|갈은것|다진것|개|적당량|소스|소스소개/g,
+  //     ''
+  //   )
+  //   .match(/([가-힣]{1,10}[ ][가-힣]{1,10}|[가-힣]{1,10})/g);
 
   // 좋아요
   const currentUserUid = authService.currentUser?.uid;
@@ -35,8 +42,8 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
       await setDoc(doc(dbService, 'likes', currentUserUid), {
         userId: currentUserUid, // user id
         docId: recipe.id, // filed id
-        RCP_NM: recipe.name, // 레시피명
-        RCP_PAT2: recipe.type, // 레시피 종류
+        name: recipe.name, // 레시피명
+        type: recipe.type, // 레시피 종류
       });
       setLike(true);
       console.log('좋아요 추가');
@@ -130,7 +137,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           </Ingredient>
           <Ingredient>
             <h1>재료</h1>
-            <p>{formattedIngredients}</p>
+            <p>{ingredients}</p>
           </Ingredient>
         </IngredientWrapper>
       </TopWrapper>

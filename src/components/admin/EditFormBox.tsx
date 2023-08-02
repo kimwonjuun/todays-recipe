@@ -77,8 +77,6 @@ export const EditFormBox = () => {
       } catch (error) {
         console.error('레시피 리스트를 가져오지 못했어요. :', error);
       }
-    } else {
-      return;
     }
   };
 
