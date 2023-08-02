@@ -6,6 +6,7 @@ import { dbService } from '../../apis/firebase';
 import { useEffect } from 'react';
 import { Recipe } from '../../types/Recipe';
 import axios from 'axios';
+import { SubmitForm } from '../common/SubmitForm';
 
 // 수정 사항 가져오기
 
@@ -136,18 +137,14 @@ export const EditFormBox = () => {
               onClick={handleGetRecipeList}
             />
           </EditApiButtonWrapper>
-          <FormWrapper onSubmit={handleEditSubmit}>
-            <Input
-              type="text"
-              maxLength={30}
-              placeholder="수정 사항을 입력하세요."
-              value={inputValue}
-              onChange={(e) => {
-                setInputValue(e.target.value);
-              }}
-            />
-            <SubmitButton type="submit">입력</SubmitButton>
-          </FormWrapper>
+          <SubmitForm
+            value={inputValue}
+            onChange={(e) => {
+              setInputValue(e.target.value);
+            }}
+            onSubmit={handleEditSubmit}
+            placeholder="수정하신 기록을 입력해주세요."
+          />
         </Contents>
       </BoxWrapper>
     </>

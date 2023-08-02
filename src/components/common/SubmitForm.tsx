@@ -1,29 +1,31 @@
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 
-interface SearchFormProps {
+interface SubmitFormProps {
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
 }
 
-export const SearchForm = ({
+export const SubmitForm = ({
   value,
-  onChange,
   onSubmit,
+  onChange,
   placeholder,
-}: SearchFormProps) => {
+}: SubmitFormProps) => {
   return (
-    <FormWrapper onSubmit={onSubmit}>
-      <Input
-        type="text"
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-      />
-      <SearchButton>검색</SearchButton>
-    </FormWrapper>
+    <>
+      <FormWrapper onSubmit={onSubmit}>
+        <Input
+          type="text"
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+        />
+        <SubmitButton type="submit">입력</SubmitButton>
+      </FormWrapper>
+    </>
   );
 };
 
@@ -32,24 +34,23 @@ const FormWrapper = styled.form`
 `;
 
 const Input = styled.input`
-  width: 46.5rem;
-  height: 4rem;
+  width: 35rem;
+  height: 2.5rem;
   border-radius: 1rem;
-  border: 0.25rem solid ${COLORS.blue1};
+  border: 0.2rem solid ${COLORS.blue1};
   font-size: 1.25rem;
   outline: none;
   text-align: center;
-  padding-right: 8rem;
 `;
 
-const SearchButton = styled.button`
+const SubmitButton = styled.button`
   position: absolute;
   right: 0rem;
-  width: 7rem;
-  height: 4.65rem;
+  width: 5rem;
+  height: 3rem;
   border-radius: 1rem;
-  border: 0.25rem solid ${COLORS.blue1};
-  font-size: 2rem;
+  border: 0.2rem solid ${COLORS.blue1};
+  font-size: 1.25rem;
   background-color: ${COLORS.blue1};
   color: white;
   cursor: pointer;
