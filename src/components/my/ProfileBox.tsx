@@ -33,8 +33,10 @@ export const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
           <ProfileImg>
             <Img src={photoURL || require('../../assets/default_image.png')} />
           </ProfileImg>
+
           <ProfileText>
             <p>{user?.displayName}</p>
+            <p>{user?.email}</p>
           </ProfileText>
         </Profile>
         <LogoutBox>
@@ -47,8 +49,8 @@ export const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
 };
 
 const ProfileWrapper = styled.div`
-  width: 25rem;
-  height: 37.5rem;
+  width: 20rem;
+  height: 30rem;
   background-color: #fff;
   border-radius: 1rem;
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
@@ -57,7 +59,7 @@ const ProfileWrapper = styled.div`
 
 const Profile = styled.div`
   width: inherit;
-  height: 25rem;
+  height: 20rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -65,22 +67,28 @@ const Profile = styled.div`
 `;
 
 const ProfileImg = styled.div`
-  width: 15rem;
-  height: 15rem;
+  width: 12.5rem;
+  height: 12.5rem;
   border-radius: 50%;
   overflow: hidden;
 `;
 
 const ProfileText = styled.div`
-  font-size: 1.75rem;
+  font-size: 1.25rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  & > p:last-child {
+    font-size: 1rem;
+    color: gray;
+  }
 `;
 
 const LogoutBox = styled.div`
   width: inherit;
-  height: 12.5rem;
+  height: 10rem;
   display: flex;
   justify-content: space-evenly;
 
@@ -89,11 +97,11 @@ const LogoutBox = styled.div`
 `;
 
 const EditButton = styled.button`
-  width: 80%;
-  height: 4.65rem;
+  width: 17.5rem;
+  height: 3.5rem;
   border-radius: 1rem;
   border: 0.15rem solid ${COLORS.blue1};
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   background-color: ${COLORS.blue1};
   color: #fff;
   cursor: pointer;
@@ -104,11 +112,11 @@ const EditButton = styled.button`
 
 const LogoutButton = styled.button`
   outline: none;
-  width: 80%;
-  height: 4.65rem;
+  width: 17.5rem;
+  height: 3.5rem;
   border-radius: 1rem;
   border: 0.15rem solid ${COLORS.blue1};
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   background-color: ${COLORS.backGround};
   color: ${COLORS.blue1};
   cursor: pointer;

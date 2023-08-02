@@ -2,9 +2,11 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService, firebaseConfig } from '../apis/firebase';
+import { authService, dbService, firebaseConfig } from '../apis/firebase';
 import { ProfileBox } from '../components/my/ProfileBox';
 import { EditProfileModal } from '../components/my/EditProfileModal';
+import { SubmitForm } from '../components/common/SubmitForm';
+import { addDoc, collection } from 'firebase/firestore';
 
 const My = () => {
   // 로그인 상태 확인
@@ -36,15 +38,21 @@ const My = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
-  const handleSaveWord = () => {
-    if (inputValue) {
-      setStoredWords([...storedWords, inputValue]);
-      setInputValue('');
-    }
-  };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // 제출
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleSaveWord();
+
+    try {
+      await addDoc(collection(dbService, 'edit-data-history'), {
+        description: inputValue,
+        updatedAt: new Date().toString(),
+      });
+      setInputValue('');
+      alert('수정 사항이 저장되었습니다.');
+    } catch (error) {
+      console.error('수정 사항 저장에 실패했습니다.', error);
+      alert('수정 사항 저장에 실패했습니다.');
+    }
   };
 
   return (
@@ -58,21 +66,22 @@ const My = () => {
               <CategoriesWrapper>
                 <Category>나의 냉장고</Category>
               </CategoriesWrapper>
-              <MyRefrigerator>
-                <form onSubmit={handleSubmit}>
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                  />
-                  <input type="submit" value="저장" />
-                </form>
-                <div>
+              <MyRefrigeratorWrapper>
+                <MyRefrigerator>
                   {storedWords.map((word, index) => (
                     <span key={index}>{word}</span>
                   ))}
-                </div>
-              </MyRefrigerator>
+                </MyRefrigerator>
+              </MyRefrigeratorWrapper>
+              <FormWarpper>
+                <SubmitForm
+                  value={inputValue}
+                  onSubmit={handleSubmit}
+                  onChange={handleInputChange}
+                  placeholder="처리하고 싶은 재료를 입력히세요."
+                  maxLength={8}
+                />
+              </FormWarpper>
             </UserItem>
           </UserAccounttBox>
         </BoxWrapper>
@@ -105,11 +114,11 @@ const PageWrapper = styled.div`
 
 const BoxWrapper = styled.div`
   width: 90%;
-  height: 100%;
+  /* height: 100%; */
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  align-items: center;
+  /* align-items: center; */
   font-size: 2rem;
   margin: 3rem;
 
@@ -131,17 +140,17 @@ const UserAccounttBox = styled.div`
   align-items: center;
   justify-content: center;
 
-  font-size: 1.75rem;
+  font-size: 1.5rem;
 `;
 
 const UserItem = styled.div`
-  width: 70rem;
-  height: 35rem;
-
-  border: 1px solid black;
+  width: 69rem;
+  height: 33rem;
 
   display: flex;
   flex-direction: column;
+
+  /* background-color: yellow; */
 `;
 
 const CategoriesWrapper = styled.div`
@@ -149,7 +158,15 @@ const CategoriesWrapper = styled.div`
   display: flex;
   gap: 1.5rem;
 
-  background-color: green;
+  /* background-color: green; */
+  /* border: 1px solid; */
+`;
+
+const FormWarpper = styled.div`
+  /* height: 4rem; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Category = styled.div`
@@ -160,9 +177,13 @@ const Category = styled.div`
   }
 `;
 
-const MyRefrigerator = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: red;
+const MyRefrigeratorWrapper = styled.div`
+  height: 25rem;
+  border-radius: 1rem;
+  border: 0.2rem solid ${COLORS.blue1};
+  margin: 1.5rem 0;
 `;
+
+const MyRefrigerator = styled.div``;
+
 // const UserLikes = styled.div``;

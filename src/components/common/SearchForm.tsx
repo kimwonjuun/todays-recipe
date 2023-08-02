@@ -18,9 +18,9 @@ export const SearchForm = ({
     <FormWrapper onSubmit={onSubmit}>
       <Input
         type="text"
-        placeholder={placeholder}
         value={value}
         onChange={onChange}
+        placeholder={placeholder}
       />
       <SearchButton>검색</SearchButton>
     </FormWrapper>

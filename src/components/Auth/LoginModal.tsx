@@ -66,7 +66,7 @@ export const LoginModal = ({
     setPersistence(authService, browserSessionPersistence)
       .then(() => signInWithEmailAndPassword(authService, email, password))
       .then(() => {
-        alert('환영합니다!');
+        alert('로그인 되었습니다.');
         setEmail('');
         setPassword('');
         setLoginModalIsOpen(false);

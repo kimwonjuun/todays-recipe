@@ -9,13 +9,6 @@ interface RecipeProps {
 }
 
 export const IngredientBox = ({ recipe }: RecipeProps) => {
-  // 재료 정규식
-  const ingredients = recipe.ingredients
-    .replace('재료', '')
-    .replace('[소스소개]', '')
-    .split(',')
-    .join(', ');
-
   // 좋아요
   const currentUserUid = authService.currentUser?.uid;
   const [like, setLike] = useState(false);
@@ -31,8 +24,8 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
       await setDoc(doc(dbService, 'likes', currentUserUid), {
         userId: currentUserUid, // user id
         docId: recipe.id, // filed id
-        RCP_NM: recipe.name, // 레시피명
-        RCP_PAT2: recipe.type, // 레시피 종류
+        name: recipe.name, // 레시피명
+        type: recipe.type, // 레시피 종류
       });
       setLike(true);
       console.log('좋아요 추가');
@@ -126,7 +119,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           </Ingredient>
           <Ingredient>
             <h1>재료</h1>
-            <p>{ingredients}</p>
+            <p>{recipe.ingredients}</p>
           </Ingredient>
         </IngredientWrapper>
       </TopWrapper>
@@ -266,7 +259,7 @@ const ItemText = styled.div`
   }
 
   p:last-child {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
   }
 `;

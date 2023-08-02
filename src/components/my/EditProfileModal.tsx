@@ -84,7 +84,7 @@ export const EditProfileModal = ({
           navigate('/', { replace: true });
         } catch (error) {
           alert(
-            '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후 탈퇴해주세요.'
+            '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
           );
         }
       }
@@ -220,8 +220,8 @@ const ModalTitle = styled.div`
 `;
 
 const ModalImg = styled.div`
-  width: 11rem;
-  height: 11rem;
+  width: 12.5rem;
+  height: 12.5rem;
   margin-bottom: 1rem;
   position: relative;
   overflow: hidden;
@@ -249,7 +249,7 @@ const Input = styled.input`
   height: 1.75rem;
   padding: 0.5rem;
   margin-bottom: 1rem;
-  font-size: 1rem;
+  font-size: 1.25rem;
   border: 0.2rem solid ${COLORS.blue1};
   border-radius: 1rem;
   text-align: center;
@@ -261,7 +261,7 @@ const SubmitButton = styled.button`
   width: 18rem;
   height: 3rem;
   padding: 0.5rem;
-  font-size: 1rem;
+  font-size: 1.25rem;
   border: 0.175rem solid ${COLORS.blue1};
   border-radius: 1rem;
   background-color: ${COLORS.blue1};
