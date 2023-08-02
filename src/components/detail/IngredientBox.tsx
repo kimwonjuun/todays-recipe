@@ -11,10 +11,11 @@ interface RecipeProps {
 export const IngredientBox = ({ recipe }: RecipeProps) => {
   // 재료 정규식
   const ingredients = recipe.ingredients
-    .replace(/재료|소스\s?:\s?/g, '')
+    .replace(/재료|소스\s?:\s?|•/g, '')
     .replace('파슬리가루(1g)', '파슬리가루(1g),')
     .split(',')
     .join(', ');
+
   const formattedIngredients = ingredients.replace(
     /(\d+g|\d+ml|\d+G|\d+ML)\s([가-힣]+)/g,
     '$1, $2'

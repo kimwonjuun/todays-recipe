@@ -17,7 +17,7 @@ interface EditHistory {
 
 export const EditFormBox = () => {
   // 파이어스토어 컬렉션에 데이터 넣기
-  const [recipeList, setRecipeList] = useState<Recipe[]>([]);
+  // const [recipeList, setRecipeList] = useState<Recipe[]>([]);
 
   const handleGetRecipeList = async () => {
     if (window.confirm('API를 수정하시겠습니까?')) {
@@ -35,9 +35,8 @@ export const EditFormBox = () => {
         const allData = firstResponse.data.COOKRCP01.row.concat(
           secondResponse.data.COOKRCP01.row
         );
-        console.log('데이터: ', allData);
-        setRecipeList(allData);
-
+        // console.log('데이터: ', allData);
+        // setRecipeList(allData);
         allData.map((recipe: any) => {
           addDoc(collection(dbService, 'recipe-list'), {
             id: recipe.RCP_SEQ,
@@ -49,8 +48,14 @@ export const EditFormBox = () => {
             protein: recipe.INFO_PRO,
             fat: recipe.INFO_FAT,
             sodium: recipe.INFO_NA,
-            ingredients: recipe.RCP_PARTS_DTLS,
-            tip: recipe.RCP_NA_TIP,
+            ingredients: recipe.RCP_PARTS_DTLS.replace(
+              /재료|소스\s?:\s?|•/g,
+              ''
+            )
+              .replace('파슬리가루(1g)', '파슬리가루(1g),')
+              .split(',')
+              .join(', '),
+            tip: recipe.RCP_NA_TIP.replace(/•/g, ''),
             make: [
               recipe.MANUAL01,
               recipe.MANUAL02,

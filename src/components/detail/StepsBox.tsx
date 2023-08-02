@@ -7,7 +7,6 @@ interface RecipeProps {
 }
 
 export const StepsBox = ({ recipe }: RecipeProps) => {
-  const maxSteps = Math.max(recipe.make.length, recipe.makeImage.length);
   return (
     <>
       <BottomWrapper>
