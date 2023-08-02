@@ -114,11 +114,11 @@ const PageWrapper = styled.div`
 
 const BoxWrapper = styled.div`
   width: 90%;
-  height: 100%;
+  /* height: 100%; */
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  align-items: center;
+  /* align-items: center; */
   font-size: 2rem;
   margin: 3rem;
 
