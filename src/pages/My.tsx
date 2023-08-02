@@ -57,7 +57,7 @@ const My = () => {
               <CategoriesWrapper>
                 <Category>나의 냉장고</Category>
               </CategoriesWrapper>
-              <MyRefrigerator>
+              <FormWarpper>
                 <SubmitForm
                   value={inputValue}
                   onSubmit={handleSubmit}
@@ -65,7 +65,9 @@ const My = () => {
                   placeholder="처리하고 싶은 재료를 입력히세요."
                   maxLength={8}
                 />
+              </FormWarpper>
 
+              <MyRefrigerator>
                 <div>
                   {storedWords.map((word, index) => (
                     <span key={index}>{word}</span>
@@ -130,17 +132,17 @@ const UserAccounttBox = styled.div`
   align-items: center;
   justify-content: center;
 
-  font-size: 1.75rem;
+  font-size: 1.5rem;
 `;
 
 const UserItem = styled.div`
-  width: 70rem;
-  height: 35rem;
-
-  border: 1px solid black;
+  width: 71rem;
+  height: 34rem;
 
   display: flex;
   flex-direction: column;
+
+  /* background-color: yellow; */
 `;
 
 const CategoriesWrapper = styled.div`
@@ -148,7 +150,15 @@ const CategoriesWrapper = styled.div`
   display: flex;
   gap: 1.5rem;
 
-  background-color: green;
+  /* background-color: green; */
+  /* border: 1px solid; */
+`;
+
+const FormWarpper = styled.div`
+  height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Category = styled.div`
@@ -162,6 +172,8 @@ const Category = styled.div`
 const MyRefrigerator = styled.div`
   width: 100%;
   height: 100%;
-  background-color: red;
+
+  border-radius: 1rem;
+  border: 0.2rem solid ${COLORS.blue1};
 `;
 // const UserLikes = styled.div``;
