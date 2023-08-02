@@ -1,18 +1,10 @@
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { useState } from 'react';
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { dbService } from '../../apis/firebase';
-import { useEffect } from 'react';
 import axios from 'axios';
 import { SubmitForm } from '../common/SubmitForm';
-
-// 수정 사항 가져오기
-
-interface EditHistory {
-  description: string;
-  updatedAt: string;
-}
 
 export const EditFormBox = () => {
   // 파이어스토어 컬렉션에 데이터 넣기

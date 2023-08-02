@@ -26,7 +26,7 @@ export const EditHistoryBox = () => {
         id: doc.id,
         ...doc.data(),
       };
-      historyList.push(newRecipe);
+      historyList.unshift(newRecipe);
     });
     historyList.reverse();
     setEditHistoryList(historyList);
@@ -42,9 +42,9 @@ export const EditHistoryBox = () => {
         <Contents>
           {editHistoryList.map((history, index) => (
             <History>
-              <p>{index + 1}.</p>
+              <p style={{ width: '1rem' }}>{index + 1}.</p>
               <p>{history.description}</p>
-              <p>{formatDate(history.updatedAt)}</p>
+              <p style={{ width: '11rem' }}>{formatDate(history.updatedAt)}</p>
             </History>
           ))}
         </Contents>
@@ -82,11 +82,12 @@ const Title = styled.div`
 `;
 
 const Contents = styled.div`
-  width: inherit;
+  /* width: inherit; */
+  margin: 1rem 0;
   height: 27rem;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
   flex-direction: column;
 `;
 
