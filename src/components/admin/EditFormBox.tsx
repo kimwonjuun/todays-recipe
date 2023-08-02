@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { dbService } from '../../apis/firebase';
 import { useEffect } from 'react';
-import { Recipe } from '../../types/Recipe';
 import axios from 'axios';
 import { SubmitForm } from '../common/SubmitForm';
 
@@ -17,8 +16,6 @@ interface EditHistory {
 
 export const EditFormBox = () => {
   // 파이어스토어 컬렉션에 데이터 넣기
-  // const [recipeList, setRecipeList] = useState<Recipe[]>([]);
-
   const handleGetRecipeList = async () => {
     if (window.confirm('API를 수정하시겠습니까?')) {
       try {
@@ -35,8 +32,6 @@ export const EditFormBox = () => {
         const allData = firstResponse.data.COOKRCP01.row.concat(
           secondResponse.data.COOKRCP01.row
         );
-        // console.log('데이터: ', allData);
-        // setRecipeList(allData);
         allData.map((recipe: any) => {
           addDoc(collection(dbService, 'recipe-list'), {
             id: recipe.RCP_SEQ,
@@ -105,28 +100,6 @@ export const EditFormBox = () => {
       alert('수정 사항 저장에 실패했습니다.');
     }
   };
-
-  const [editHistoryList, setEditHistoryList] = useState<EditHistory[]>([]);
-
-  const getEditDataHistory = async () => {
-    const querySnapshot = await getDocs(
-      collection(dbService, 'edit-data-history')
-    );
-    const historyList: any = [];
-
-    querySnapshot.forEach((doc) => {
-      const newRecipe: any = {
-        id: doc.id,
-        ...doc.data(),
-      };
-      historyList.push(newRecipe);
-    });
-    historyList.reverse();
-    setEditHistoryList(historyList);
-  };
-  useEffect(() => {
-    getEditDataHistory();
-  }, []);
 
   return (
     <>
