@@ -84,6 +84,9 @@ export const EditFormBox = () => {
 
   // 수정 사항 기록 폼
   const [inputValue, setInputValue] = useState('');
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
   const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -139,11 +142,10 @@ export const EditFormBox = () => {
           </EditApiButtonWrapper>
           <SubmitForm
             value={inputValue}
-            onChange={(e) => {
-              setInputValue(e.target.value);
-            }}
+            onChange={handleInputChange}
             onSubmit={handleEditSubmit}
             placeholder="수정하신 기록을 입력해주세요."
+            maxLength={50}
           />
         </Contents>
       </BoxWrapper>

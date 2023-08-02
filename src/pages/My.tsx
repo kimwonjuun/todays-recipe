@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { authService, firebaseConfig } from '../apis/firebase';
 import { ProfileBox } from '../components/my/ProfileBox';
 import { EditProfileModal } from '../components/my/EditProfileModal';
+import { SubmitForm } from '../components/common/SubmitForm';
 
 const My = () => {
   // 로그인 상태 확인
@@ -36,15 +37,13 @@ const My = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
-  const handleSaveWord = () => {
+  // 제출
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (inputValue) {
       setStoredWords([...storedWords, inputValue]);
       setInputValue('');
     }
-  };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    handleSaveWord();
   };
 
   return (
@@ -59,14 +58,14 @@ const My = () => {
                 <Category>나의 냉장고</Category>
               </CategoriesWrapper>
               <MyRefrigerator>
-                <form onSubmit={handleSubmit}>
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                  />
-                  <input type="submit" value="저장" />
-                </form>
+                <SubmitForm
+                  value={inputValue}
+                  onSubmit={handleSubmit}
+                  onChange={handleInputChange}
+                  placeholder="처리하고 싶은 재료를 입력히세요."
+                  maxLength={8}
+                />
+
                 <div>
                   {storedWords.map((word, index) => (
                     <span key={index}>{word}</span>

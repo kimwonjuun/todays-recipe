@@ -6,6 +6,7 @@ interface SubmitFormProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
+  maxLength: number;
 }
 
 export const SubmitForm = ({
@@ -13,6 +14,7 @@ export const SubmitForm = ({
   onSubmit,
   onChange,
   placeholder,
+  maxLength,
 }: SubmitFormProps) => {
   return (
     <>
@@ -22,6 +24,7 @@ export const SubmitForm = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          maxLength={maxLength}
         />
         <SubmitButton type="submit">입력</SubmitButton>
       </FormWrapper>

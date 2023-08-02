@@ -42,7 +42,10 @@ const Search = () => {
     console.log('검색 결과: ', filteredData);
   }, [keyword, recipeData]);
 
-  // 검색 버튼
+  // 검색
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!inputValue.trim()) {
@@ -73,7 +76,7 @@ const Search = () => {
                 </ResultWrapper>
                 <SearchForm
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  onChange={handleInputChange}
                   onSubmit={handleSearchSubmit}
                   placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
                 />
@@ -90,7 +93,7 @@ const Search = () => {
                 </ResultWrapper>
                 <SearchForm
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  onChange={handleInputChange}
                   onSubmit={handleSearchSubmit}
                   placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
                 />

@@ -9,32 +9,9 @@ const Main = () => {
   const [inputValue, setInputValue] = useState<string>('');
   const navigate = useNavigate();
 
-  // 버튼 클릭 함수
-  // const handleSearchClick = () => {
-  //   // 검색어가 없을 경우 유저에게 에러 메세지 표시
-  //   if (!inputValue.trim()) {
-  //     alert('검색어 입력 후 버튼을 클릭해주세요.');
-  //     return;
-  //   }
-
-  //   // 검색 결과로 필터링 된 레시피 데이터
-  //   const filteredData = recipeData.filter(
-  //     (recipe) =>
-  //       recipe.RCP_NM.includes(inputValue) ||
-  //       recipe.RCP_PARTS_DTLS.includes(inputValue)
-  //   );
-
-  //   // 검색 결과가 없을 경우 유저에게 에러 메세지 표시
-  //   if (filteredData.length === 0) {
-  //     alert('검색 결과가 없습니다.');
-  //     return;
-  //   }
-  //   setFilteredRecipeData(filteredData);
-  //   console.log('검색 결과: ', filteredData);
-
-  //   navigate(`/search/${inputValue}`);
-  // };
-
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
   // 폼 제출 함수
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -53,7 +30,7 @@ const Main = () => {
         <BoxWrapper>
           <SearchForm
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={handleInputChange}
             onSubmit={handleSearchSubmit}
             placeholder="처리하고 싶은 재료(ex. 연두부) 또는 하고 싶은 요리(ex. 카프레제)를 검색하세요."
           />
