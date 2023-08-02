@@ -83,7 +83,7 @@ const Title = styled.div`
 
 const Contents = styled.div`
   /* width: inherit; */
-  margin: 1rem 0;
+  margin: 3.5rem 0;
   height: 27rem;
   display: flex;
   align-items: center;
