@@ -30,7 +30,9 @@ export const SubmitForm = ({
 };
 
 const FormWrapper = styled.form`
+  width: 35.6rem;
   position: relative;
+  display: flex;
 `;
 
 const Input = styled.input`
@@ -44,8 +46,7 @@ const Input = styled.input`
 `;
 
 const SubmitButton = styled.button`
-  position: absolute;
-  right: 0rem;
+  margin-left: -5rem;
   width: 5rem;
   height: 3rem;
   border-radius: 1rem;
