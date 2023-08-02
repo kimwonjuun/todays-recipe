@@ -9,25 +9,6 @@ interface RecipeProps {
 }
 
 export const IngredientBox = ({ recipe }: RecipeProps) => {
-  // 재료 정규식
-  const ingredients = recipe.ingredients
-    .replace(/재료|소스\s?:\s?|•/g, '')
-    .replace('파슬리가루(1g)', '파슬리가루(1g),')
-    .split(',')
-    .join(', ');
-
-  const formattedIngredients = ingredients.replace(
-    /(\d+g|\d+ml|\d+G|\d+ML)\s([가-힣]+)/g,
-    '$1, $2'
-  );
-  // const reg = /([가-힣]{1,10}[ ][가-힣]{1,10}|[가-힣]{1,10})/g;
-  // const recipeNM = recipe.ingredients
-  //   .replace(
-  //     /인분|컵|송송 썬|불린 것|줄기부분|삶은것|주재료|주 재료|육수|마른것|양념|다진|부순|뿌리|으깬|데친|두 가지 색|재료|갈은것|다진것|개|적당량|소스|소스소개/g,
-  //     ''
-  //   )
-  //   .match(/([가-힣]{1,10}[ ][가-힣]{1,10}|[가-힣]{1,10})/g);
-
   // 좋아요
   const currentUserUid = authService.currentUser?.uid;
   const [like, setLike] = useState(false);
@@ -138,7 +119,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           </Ingredient>
           <Ingredient>
             <h1>재료</h1>
-            <p>{ingredients}</p>
+            <p>{recipe.ingredients}</p>
           </Ingredient>
         </IngredientWrapper>
       </TopWrapper>
