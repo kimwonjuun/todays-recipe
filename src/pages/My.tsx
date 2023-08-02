@@ -2,10 +2,11 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService, firebaseConfig } from '../apis/firebase';
+import { authService, dbService, firebaseConfig } from '../apis/firebase';
 import { ProfileBox } from '../components/my/ProfileBox';
 import { EditProfileModal } from '../components/my/EditProfileModal';
 import { SubmitForm } from '../components/common/SubmitForm';
+import { addDoc, collection } from 'firebase/firestore';
 
 const My = () => {
   // 로그인 상태 확인
@@ -38,11 +39,19 @@ const My = () => {
     setInputValue(e.target.value);
   };
   // 제출
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (inputValue) {
-      setStoredWords([...storedWords, inputValue]);
+
+    try {
+      await addDoc(collection(dbService, 'edit-data-history'), {
+        description: inputValue,
+        updatedAt: new Date().toString(),
+      });
       setInputValue('');
+      alert('수정 사항이 저장되었습니다.');
+    } catch (error) {
+      console.error('수정 사항 저장에 실패했습니다.', error);
+      alert('수정 사항 저장에 실패했습니다.');
     }
   };
 
@@ -57,6 +66,13 @@ const My = () => {
               <CategoriesWrapper>
                 <Category>나의 냉장고</Category>
               </CategoriesWrapper>
+              <MyRefrigeratorWrapper>
+                <MyRefrigerator>
+                  {storedWords.map((word, index) => (
+                    <span key={index}>{word}</span>
+                  ))}
+                </MyRefrigerator>
+              </MyRefrigeratorWrapper>
               <FormWarpper>
                 <SubmitForm
                   value={inputValue}
@@ -66,14 +82,6 @@ const My = () => {
                   maxLength={8}
                 />
               </FormWarpper>
-
-              <MyRefrigerator>
-                <div>
-                  {storedWords.map((word, index) => (
-                    <span key={index}>{word}</span>
-                  ))}
-                </div>
-              </MyRefrigerator>
             </UserItem>
           </UserAccounttBox>
         </BoxWrapper>
@@ -136,8 +144,8 @@ const UserAccounttBox = styled.div`
 `;
 
 const UserItem = styled.div`
-  width: 71rem;
-  height: 34rem;
+  width: 69rem;
+  height: 33rem;
 
   display: flex;
   flex-direction: column;
@@ -155,7 +163,7 @@ const CategoriesWrapper = styled.div`
 `;
 
 const FormWarpper = styled.div`
-  height: 10rem;
+  height: 8rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -169,11 +177,13 @@ const Category = styled.div`
   }
 `;
 
-const MyRefrigerator = styled.div`
-  width: 100%;
-  height: 100%;
-
+const MyRefrigeratorWrapper = styled.div`
+  height: 20rem;
   border-radius: 1rem;
   border: 0.2rem solid ${COLORS.blue1};
+  margin-top: 3rem;
 `;
+
+const MyRefrigerator = styled.div``;
+
 // const UserLikes = styled.div``;
