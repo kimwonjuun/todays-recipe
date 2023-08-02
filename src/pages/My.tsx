@@ -163,7 +163,7 @@ const CategoriesWrapper = styled.div`
 `;
 
 const FormWarpper = styled.div`
-  height: 8rem;
+  /* height: 4rem; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -178,10 +178,10 @@ const Category = styled.div`
 `;
 
 const MyRefrigeratorWrapper = styled.div`
-  height: 20rem;
+  height: 25rem;
   border-radius: 1rem;
   border: 0.2rem solid ${COLORS.blue1};
-  margin-top: 3rem;
+  margin: 1.5rem 0;
 `;
 
 const MyRefrigerator = styled.div``;
