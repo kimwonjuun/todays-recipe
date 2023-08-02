@@ -84,7 +84,7 @@ export const EditProfileModal = ({
           navigate('/', { replace: true });
         } catch (error) {
           alert(
-            '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후 탈퇴해주세요.'
+            '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
           );
         }
       }
