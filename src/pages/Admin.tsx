@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { EditHistoryBox } from '../components/admin/EditHistoryBox';
-import { EditFormBox } from '../components/admin/EditFomBox';
+import { EditFormBox } from '../components/admin/EditFormBox';
 
 const Admin = () => {
   return (
