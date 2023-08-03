@@ -225,7 +225,7 @@ const My = () => {
                         </IngredientItem>
                       ))
                     ) : (
-                      <p>아직 냉장고에 넣은 재료가 없습니다! 😅</p>
+                      <p>아직 냉장고에 넣은 재료가 없습니다! 🫤</p>
                     )}
                   </MyRefrigerator>
                   <Img>
@@ -249,9 +249,16 @@ const My = () => {
                 }}
               >
                 <MyLikes>
-                  {likedRecipes.map((recipe, index) => (
+                  {/* {likedRecipes.map((recipe, index) => (
                     <RecipeCard key={index} recipe={recipe} />
-                  ))}
+                  ))} */}
+                  {likedRecipes.length > 0 ? (
+                    likedRecipes.map((recipe, index) => (
+                      <RecipeCard key={index} recipe={recipe} />
+                    ))
+                  ) : (
+                    <p>아직 보관한 레시피가 없습니다! 🫤</p>
+                  )}
                 </MyLikes>
               </MyLikesWrapper>
             </UserItem>
@@ -436,6 +443,12 @@ const MyLikes = styled.div`
   margin-top: 2.5rem;
   padding: 0 1.25rem;
 
+  > p {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   /* background-color: blue; */
 `;
 
