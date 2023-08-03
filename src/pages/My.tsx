@@ -1,19 +1,12 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService, dbService, firebaseConfig } from '../apis/firebase';
 import { ProfileBox } from '../components/my/ProfileBox';
 import { EditProfileModal } from '../components/my/EditProfileModal';
 import { SubmitForm } from '../components/common/SubmitForm';
-import {
-  addDoc,
-  collection,
-  doc,
-  updateDoc,
-  getDoc,
-  setDoc,
-} from 'firebase/firestore';
+import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 
 const My = () => {
   // 로그인 상태 확인
@@ -44,7 +37,6 @@ const My = () => {
 
   // 인풋
   const [inputValue, setInputValue] = useState<string>('');
-  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -56,6 +48,15 @@ const My = () => {
 
     if (!currentUserUid) {
       alert('유저 정보를 불러오지 못했습니다.');
+      return;
+    }
+
+    const koreanOnly = /^[가-힣]*$/;
+
+    // 한글만 입력되었는지 검사
+    if (!koreanOnly.test(inputValue)) {
+      alert('재료는 한글만 입력 가능합니다.');
+      setInputValue('');
       return;
     }
 
@@ -74,7 +75,6 @@ const My = () => {
         } else {
           alert('이미 등록된 재료입니다.');
           setInputValue('');
-          inputRef.current?.focus();
           return;
         }
 
@@ -255,7 +255,7 @@ const MyRefrigeratorWrapper = styled.div`
 const MyRefrigerator = styled.div`
   flex: 1.2;
   display: flex;
-  align-content: flex-start;
+  align-content: center;
   flex-wrap: wrap;
   padding: 2rem;
   gap: 1rem;
@@ -268,7 +268,7 @@ const IngredientItem = styled.div`
   padding: 0.5rem 1rem;
   height: 2.5rem;
   border-radius: 1rem;
-  background-color: ${COLORS.blue2};
+  background-color: ${COLORS.blue1};
   display: flex;
   align-items: center;
   justify-content: center;
