@@ -34,17 +34,24 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
 
         if (!like) {
           // 좋아요일 경우
-          if (!likes.includes(recipe.name)) {
-            likes.push(recipe.name);
-          }
-          await updateDoc(userRef, { 'users-likes': likes });
+          const updatedLikes = [
+            ...likes,
+            // RecipeCard에 필요한 정보들
+            {
+              id: recipe.id,
+              type: recipe.type,
+              name: recipe.name,
+              image: recipe.image,
+            },
+          ];
+          await updateDoc(userRef, { 'users-likes': updatedLikes });
           setLike(true);
           console.log('좋아요 추가');
           alert('레시피 찜 완료!');
         } else {
           // 좋아요 취소
           const updatedLikes = likes.filter(
-            (item: string) => item !== recipe.name
+            (item: Recipe) => item.name !== recipe.name
           );
           await updateDoc(userRef, { 'users-likes': updatedLikes });
           setLike(false);

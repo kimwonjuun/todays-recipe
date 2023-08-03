@@ -7,6 +7,7 @@ import { ProfileBox } from '../components/my/ProfileBox';
 import { EditProfileModal } from '../components/my/EditProfileModal';
 import { SubmitForm } from '../components/common/SubmitForm';
 import { doc, updateDoc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
+import { RecipeCard } from '../components/common/RecipeCard';
 
 const My = () => {
   // 로그인 상태 확인
@@ -244,8 +245,8 @@ const My = () => {
                 }}
               >
                 <MyLikes>
-                  {likedRecipes.map((recipeName, index) => (
-                    <LikedRecipeItem key={index}>{recipeName}</LikedRecipeItem>
+                  {likedRecipes.map((recipe, index) => (
+                    <RecipeCard key={index} recipe={recipe} />
                   ))}
                 </MyLikes>
               </MyLikesWrapper>
