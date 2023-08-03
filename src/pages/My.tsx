@@ -122,7 +122,11 @@ const My = () => {
                 <Category>나의 냉장고</Category>
               </CategoriesWrapper>
               <MyRefrigeratorWrapper>
-                <MyRefrigerator></MyRefrigerator>
+                <MyRefrigerator>
+                  {myIngredients.map((item, index) => (
+                    <div key={index}>{item}</div>
+                  ))}
+                </MyRefrigerator>
               </MyRefrigeratorWrapper>
               <FormWarpper>
                 <SubmitForm
