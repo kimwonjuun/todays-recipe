@@ -55,21 +55,21 @@ const My = () => {
 
     // 한글만 입력되었는지 검사
     if (!koreanOnly.test(inputValue)) {
-      alert('재료는 한글만 입력 가능합니다.');
+      alert('재료는 한글 단어만 입력 가능합니다.');
       setInputValue('');
       return;
     }
 
     try {
       // 문서 가져오기
-      const userRef = doc(dbService, 'my-refrigerator', currentUserUid);
+      const userRef = doc(dbService, 'users', currentUserUid);
 
       // 문서 데이터 가져오기
       const userDoc = await getDoc(userRef);
 
       // 문서가 존재하면 기존 데이터에 재료 추가
       if (userDoc.exists()) {
-        const ingredients = userDoc.data().ingredients || [];
+        const ingredients = userDoc.data()['users-ingredients'] || [];
 
         if (ingredients.length >= 20) {
           alert('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
@@ -85,14 +85,13 @@ const My = () => {
           return;
         }
 
-        await updateDoc(userRef, { ingredients });
+        await updateDoc(userRef, { 'users-ingredients': ingredients });
       } else {
         // 문서가 존재하지 않으면 새 문서를 생성 후 재료 추가
         const ingredients = [inputValue];
 
         await setDoc(userRef, {
-          userId: currentUserUid,
-          ingredients,
+          'users-ingredients': ingredients,
         });
       }
 
@@ -105,19 +104,17 @@ const My = () => {
     }
   };
 
-  // 내가 저장한 재료 출력
+  // 내가 입력한 재료 출력
   const [myIngredients, setMyIngredients] = useState([]);
   const getMyIngredients = async () => {
     if (!currentUserUid) {
       return;
     }
-    const docSnap = await getDoc(
-      doc(dbService, 'my-refrigerator', currentUserUid)
-    );
+    const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
     if (docSnap.exists()) {
       const ingredientData = docSnap.data();
-      if (ingredientData && ingredientData.ingredients) {
-        setMyIngredients(ingredientData.ingredients);
+      if (ingredientData && ingredientData['users-ingredients']) {
+        setMyIngredients(ingredientData['users-ingredients']);
       }
     }
   };
@@ -137,25 +134,20 @@ const My = () => {
 
     try {
       // 문서 가져오기
-      const userRef = doc(dbService, 'my-refrigerator', currentUserUid);
+      const userRef = doc(dbService, 'users', currentUserUid);
 
       //문서 데이터 가져오기
       const userDoc = await getDoc(userRef);
 
       // 문서가 존재하면 선택한 재료를 제외한 나머지 재료로 업데이트
       if (userDoc.exists()) {
-        const ingredients = userDoc.data().ingredients || [];
+        const ingredients = userDoc.data()['users-ingredients'] || [];
         const updatedIngredients = ingredients.filter(
           (item: string) => item !== ingredient
         );
 
-        if (updatedIngredients.length === 0) {
-          // 재료가 모두 삭제된 경우, 문서 자체를 삭제하기
-          await deleteDoc(userRef);
-        } else {
-          // 선택한 재료만 삭제하기
-          await updateDoc(userRef, { ingredients: updatedIngredients });
-        }
+        // 선택한 재료만 삭제하기
+        await updateDoc(userRef, { 'users-ingredients': updatedIngredients });
 
         // 재료 리스트 갱신
         getMyIngredients();
@@ -166,11 +158,28 @@ const My = () => {
     }
   };
 
-  // 기존 나의 냉장고 상태
+  // 탭
   const [currentTab, setCurrentTab] = useState<string>('나의 냉장고');
   const handleTabChange = (tabName: string) => {
     setCurrentTab(tabName);
   };
+
+  // // 내가 찜한 레시피 목록 출력
+  // const [likedRecipes, setLikedRecipes] = useState([]);
+
+  // const getLikedRecipes = async () => {
+  //   if (!currentUserUid) {
+  //     return;
+  //   }
+  //   const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
+  //   if (docSnap.exists()) {
+  //     const likedRecipesData = docSnap.data();
+  //     if (likedRecipesData && likedRecipesData.likedRecipes) {
+  //       setLikedRecipes(likedRecipesData.likedRecipes);
+  //     }
+  //   }
+  // };
+
   return (
     <>
       <PageWrapper>
@@ -228,9 +237,11 @@ const My = () => {
 
               <MyLikesWrapper
                 style={{
-                  display: currentTab === '찜한 레시피' ? 'block' : 'none',
+                  display: currentTab === '찜한 레시피' ? 'flex' : 'none',
                 }}
-              ></MyLikesWrapper>
+              >
+                <MyLikes></MyLikes>
+              </MyLikesWrapper>
             </UserItem>
           </UserAccounttBox>
         </BoxWrapper>
@@ -246,9 +257,6 @@ const My = () => {
     </>
   );
 };
-{
-  /* <Category>저장한 레시피</Category> */
-}
 
 export default My;
 const PageWrapper = styled.div`
@@ -391,8 +399,9 @@ const Img = styled.div`
 `;
 
 const MyLikesWrapper = styled.div`
-  height: 25rem;
+  height: 31rem;
 
-  margin: 1.5rem 0;
   display: flex;
 `;
+
+const MyLikes = styled.div``;

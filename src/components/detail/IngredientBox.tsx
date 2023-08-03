@@ -41,7 +41,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
     }
   };
 
-  // 좋아요 내역 출력하기
+  // 디테일 페이지에서 좋아요 내역 출력하기
   const getLike = async () => {
     if (!currentUserUid) {
       return;
