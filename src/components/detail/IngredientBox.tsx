@@ -41,7 +41,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
     }
   };
 
-  // 북마크한 내역 출력하기
+  // 좋아요 내역 출력하기
   const getLike = async () => {
     if (!currentUserUid) {
       return;

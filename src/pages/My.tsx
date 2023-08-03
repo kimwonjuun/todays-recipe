@@ -43,27 +43,13 @@ const My = () => {
   const [photoURL, setPhotoURL] = useState<any>(user?.photoURL);
 
   // 인풋
-  const [inputValue, setInputValue] = useState('');
-  const [storedWords, setStoredWords] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState<string>('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
-  // 제출
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
 
-  //   try {
-  //     await addDoc(collection(dbService, 'my-refrigerator'), {
-  //       userId: currentUserUid,
-  //       ingredient: inputValue,
-  //     });
-  //     setInputValue('');
-  //   } catch (error) {
-  //     console.error('냉장고에 재료를 넣지 못했어요.', error);
-  //     alert('냉장고에 재료를 넣지 못했어요.');
-  //   }
-  // };
+  // 재료 입력
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -104,6 +90,26 @@ const My = () => {
     }
   };
 
+  // 내가 저장한 재료 출력
+  const [myIngredients, setMyIngredients] = useState([]);
+  const getMyIngredients = async () => {
+    if (!currentUserUid) {
+      return;
+    }
+    const docSnap = await getDoc(
+      doc(dbService, 'my-refrigerator', currentUserUid)
+    );
+    if (docSnap.exists()) {
+      const ingredientData = docSnap.data();
+      if (ingredientData && ingredientData.ingredients) {
+        setMyIngredients(ingredientData.ingredients);
+      }
+    }
+  };
+  useEffect(() => {
+    getMyIngredients();
+  }, []);
+
   return (
     <>
       <PageWrapper>
@@ -116,11 +122,7 @@ const My = () => {
                 <Category>나의 냉장고</Category>
               </CategoriesWrapper>
               <MyRefrigeratorWrapper>
-                <MyRefrigerator>
-                  {storedWords.map((word, index) => (
-                    <span key={index}>{word}</span>
-                  ))}
-                </MyRefrigerator>
+                <MyRefrigerator></MyRefrigerator>
               </MyRefrigeratorWrapper>
               <FormWarpper>
                 <SubmitForm
