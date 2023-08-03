@@ -166,6 +166,11 @@ const My = () => {
     }
   };
 
+  // 기존 나의 냉장고 상태
+  const [currentTab, setCurrentTab] = useState<string>('나의 냉장고');
+  const handleTabChange = (tabName: string) => {
+    setCurrentTab(tabName);
+  };
   return (
     <>
       <PageWrapper>
@@ -175,9 +180,18 @@ const My = () => {
           <UserAccounttBox>
             <UserItem>
               <CategoriesWrapper>
-                <Category>나의 냉장고</Category>
+                <Category onClick={() => handleTabChange('나의 냉장고')}>
+                  나의 냉장고
+                </Category>
+                <Category onClick={() => handleTabChange('찜한 레시피')}>
+                  찜한 레시피
+                </Category>
               </CategoriesWrapper>
-              <MyRefrigeratorWrapper>
+              <MyRefrigeratorWrapper
+                style={{
+                  display: currentTab === '나의 냉장고' ? 'flex' : 'none',
+                }}
+              >
                 <MyRefrigerator>
                   {myIngredients.map((ingredient, index) => (
                     <IngredientItem
@@ -194,6 +208,11 @@ const My = () => {
                   <img src={require('../assets/refrigerator.png')} />
                 </Img>
               </MyRefrigeratorWrapper>
+              <MyLikesWrapper
+                style={{
+                  display: currentTab === '찜한 레시피' ? 'block' : 'none',
+                }}
+              ></MyLikesWrapper>
               <FormWarpper>
                 <SubmitForm
                   value={inputValue}
@@ -309,15 +328,18 @@ const MyRefrigeratorWrapper = styled.div`
 `;
 
 const MyRefrigerator = styled.div`
-  flex: 1.2;
+  width: 40rem;
   display: flex;
   align-content: center;
   flex-wrap: wrap;
   padding: 2rem;
   gap: 1rem;
+  margin: 2rem 0;
 
   border-radius: 1rem;
   border: 0.2rem solid ${COLORS.blue1};
+
+  /* background-color: yellow; */
 `;
 
 const IngredientItem = styled.div`
@@ -335,7 +357,7 @@ const IngredientItem = styled.div`
 `;
 
 const Img = styled.div`
-  flex: 0.8;
+  width: 30rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -346,4 +368,9 @@ const Img = styled.div`
   }
 `;
 
-// const UserLikes = styled.div``;
+const MyLikesWrapper = styled.div`
+  height: 25rem;
+
+  margin: 1.5rem 0;
+  display: flex;
+`;

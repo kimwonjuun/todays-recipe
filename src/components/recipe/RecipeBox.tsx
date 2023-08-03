@@ -11,9 +11,8 @@ interface RecipeProps {
 }
 
 export const RecipeBox = ({ recipeData }: RecipeProps) => {
-  useEffect(() => {
-    console.log(recipeData);
-  }, []);
+  console.log(recipeData);
+
   // 분류 선택 여닫기
   const [showCategories, setShowCategories] = useState<boolean>(false);
   const showCategoryButton = () => {
@@ -76,6 +75,7 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
     return recipes;
   };
 
+  // 무한스크롤
   const { currentPage } = useInfiniteScroll();
   // const showRecipes = sortedRecipesByAlphabets(filteredRecipes).slice(
   //   0,
