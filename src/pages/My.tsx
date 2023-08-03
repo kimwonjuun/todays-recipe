@@ -47,7 +47,7 @@ const My = () => {
     e.preventDefault();
 
     if (!currentUserUid) {
-      alert('유저 정보를 불러오지 못했습니다.');
+      alert('유저 정보를 불러오지 못했어요.');
       return;
     }
 
@@ -55,7 +55,7 @@ const My = () => {
 
     // 한글만 입력되었는지 검사
     if (!koreanOnly.test(inputValue)) {
-      alert('재료는 한글만 입력 가능합니다.');
+      alert('재료는 한글만 입력 가능해요.');
       setInputValue('');
       return;
     }
@@ -70,10 +70,17 @@ const My = () => {
       // 문서가 존재하면 기존 데이터에 재료 추가
       if (userDoc.exists()) {
         const ingredients = userDoc.data().ingredients || [];
+
+        if (ingredients.length >= 20) {
+          alert('냉장고에는 최대 20개의 재료만 추가할 수 있어요.');
+          setInputValue('');
+          return;
+        }
+
         if (!ingredients.includes(inputValue)) {
           ingredients.push(inputValue);
         } else {
-          alert('이미 등록된 재료입니다.');
+          alert('이미 등록된 재료에요.');
           setInputValue('');
           return;
         }
@@ -143,7 +150,7 @@ const My = () => {
                   value={inputValue}
                   onSubmit={handleSubmit}
                   onChange={handleInputChange}
-                  placeholder="처리하고 싶은 재료를 입력히세요."
+                  placeholder="처리하고 싶은 냉장고 안의 재료들을 입력히세요."
                   maxLength={6}
                 />
               </FormWarpper>
