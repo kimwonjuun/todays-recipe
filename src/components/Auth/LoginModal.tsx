@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+
 import {
   browserSessionPersistence,
   setPersistence,
@@ -19,6 +20,7 @@ import {
   ModalWrapper,
   TitleWrapper,
 } from '../../styles/authModalStyles';
+import { emailRegex, passwordRegex } from '../../utils/regex';
 
 export const LoginModal = ({
   setLoginModalIsOpen,
@@ -48,20 +50,19 @@ export const LoginModal = ({
   // 이메일 인풋, 유효성 검사
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
     setEmailValid(emailRegex.test(e.target.value));
   };
 
   // 비밀번호 인풋, 유효성 검사
   const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
     setPasswordValid(passwordRegex.test(e.target.value));
   };
 
-  // 로그인 버튼 클릭 이벤트 핸들러
-  const handleLogin = () => {
+  // 로그인
+  const handleLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
     // 사용자 인증 및 로그인
     setPersistence(authService, browserSessionPersistence)
       .then(() => signInWithEmailAndPassword(authService, email, password))
@@ -87,50 +88,56 @@ export const LoginModal = ({
       });
   };
 
+  useEffect(() => {
+    emailRef.current?.focus();
+  }, []);
+
   return (
     <>
       <ModalWrapper>
         <Modal>
           <CloseButton onClick={closeLoginModal}>&times;</CloseButton>
           <TitleWrapper>로그인</TitleWrapper>
-          <InputWrapper>
-            <Logo>
-              <LogoImg src={require('../../assets/logo.png')}></LogoImg>
-            </Logo>
-            <Input
-              id="email"
-              type="email"
-              placeholder="이메일을 입력해주세요."
-              value={email}
-              onChange={changeEmail}
-              ref={emailRef}
-            />
-            {!emailValid && email.length > 0 && (
-              <CustomSpan className={emailValid ? 'success' : 'error'}>
-                이메일 양식을 확인해주세요.
-              </CustomSpan>
-            )}
+          <form onSubmit={handleLoginSubmit}>
+            <InputWrapper>
+              <Logo>
+                <LogoImg src={require('../../assets/logo.png')}></LogoImg>
+              </Logo>
+              <Input
+                id="email"
+                type="email"
+                placeholder="이메일을 입력해주세요."
+                value={email}
+                onChange={changeEmail}
+                ref={emailRef}
+              />
+              {!emailValid && email.length > 0 && (
+                <CustomSpan className={emailValid ? 'success' : 'error'}>
+                  이메일 양식을 확인해주세요.
+                </CustomSpan>
+              )}
 
-            <Input
-              id="password"
-              type="password"
-              placeholder="비밀번호를 입력해주세요."
-              value={password}
-              onChange={changePassword}
-              ref={passwordRef}
-            />
-            {!passwordValid && password.length > 0 && (
-              <CustomSpan className={passwordValid ? 'success' : 'error'}>
-                비밀번호 양식을 확인해주세요.
-              </CustomSpan>
-            )}
-          </InputWrapper>
-          <BottomWrapper>
-            <Button onClick={handleLogin}>로그인하기</Button>
-            <LoginText onClick={openSignUpModal}>
-              아직 회원이 아니신가요?
-            </LoginText>
-          </BottomWrapper>
+              <Input
+                id="password"
+                type="password"
+                placeholder="비밀번호를 입력해주세요."
+                value={password}
+                onChange={changePassword}
+                ref={passwordRef}
+              />
+              {!passwordValid && password.length > 0 && (
+                <CustomSpan className={passwordValid ? 'success' : 'error'}>
+                  비밀번호 양식을 확인해주세요.
+                </CustomSpan>
+              )}
+            </InputWrapper>
+            <BottomWrapper>
+              <Button type="submit">로그인하기</Button>
+              <LoginText onClick={openSignUpModal}>
+                아직 회원이 아니신가요?
+              </LoginText>
+            </BottomWrapper>
+          </form>
         </Modal>
       </ModalWrapper>
     </>
