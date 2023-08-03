@@ -6,25 +6,35 @@ import { authService, dbService, firebaseConfig } from '../apis/firebase';
 import { ProfileBox } from '../components/my/ProfileBox';
 import { EditProfileModal } from '../components/my/EditProfileModal';
 import { SubmitForm } from '../components/common/SubmitForm';
-import { addDoc, collection } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  updateDoc,
+  getDoc,
+  setDoc,
+} from 'firebase/firestore';
 
 const My = () => {
   // 로그인 상태 확인
   const user = authService.currentUser;
+  const currentUserUid = user?.uid;
   const isLoggedIn = sessionStorage.getItem(
     `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
   );
 
   // 비로그인시 마이페이지 접근 불가 -> 메인으로
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!isLoggedIn) {
       navigate('/');
     }
   }, []);
 
-  // 모달 열기
+  // 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -35,23 +45,62 @@ const My = () => {
   // 인풋
   const [inputValue, setInputValue] = useState('');
   const [storedWords, setStoredWords] = useState<string[]>([]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
   // 제출
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     await addDoc(collection(dbService, 'my-refrigerator'), {
+  //       userId: currentUserUid,
+  //       ingredient: inputValue,
+  //     });
+  //     setInputValue('');
+  //   } catch (error) {
+  //     console.error('냉장고에 재료를 넣지 못했어요.', error);
+  //     alert('냉장고에 재료를 넣지 못했어요.');
+  //   }
+  // };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!currentUserUid) {
+      alert('유저 정보를 불러오지 못했습니다.');
+      return;
+    }
+
     try {
-      await addDoc(collection(dbService, 'edit-data-history'), {
-        description: inputValue,
-        updatedAt: new Date().toString(),
-      });
+      // 문서 가져오기
+      const userRef = doc(dbService, 'my-refrigerator', currentUserUid);
+
+      // 문서 데이터 가져오기
+      const userDoc = await getDoc(userRef);
+
+      // 문서가 존재하면 기존 데이터에 재료 추가
+      if (userDoc.exists()) {
+        const ingredients = userDoc.data().ingredients || [];
+        if (!ingredients.includes(inputValue)) {
+          ingredients.push(inputValue);
+        }
+
+        await updateDoc(userRef, { ingredients });
+      } else {
+        // 문서가 존재하지 않으면 새 문서를 생성 후 재료 추가
+        const ingredients = [inputValue];
+
+        await setDoc(userRef, {
+          userId: currentUserUid,
+          ingredients,
+        });
+      }
+
       setInputValue('');
-      alert('수정 사항이 저장되었습니다.');
     } catch (error) {
-      console.error('수정 사항 저장에 실패했습니다.', error);
-      alert('수정 사항 저장에 실패했습니다.');
+      console.error('냉장고에 재료를 넣지 못했어요.', error);
+      alert('냉장고에 재료를 넣지 못했어요.');
     }
   };
 
