@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   browserSessionPersistence,
   createUserWithEmailAndPassword,
@@ -42,7 +42,7 @@ export const SignUpModal = ({
   const [isNickname, setIsNickname] = useState<boolean>(false); // 닉네임 유효성 검사 통과
   const [emailValid, setEmailValid] = useState(false); // 회원가입 시 이메일 유효성 결과
   const [passwordValid, setPasswordValid] = useState(false); // 회원가입 시 패스워드 유효성 결과
-
+  const emailRef = useRef<HTMLInputElement | null>(null); // 이메일 입력창 참조
   // 회원가입 모달 닫기
   const closeSignUpModal = () => {
     setSignUpModalIsOpen(false);
@@ -142,6 +142,10 @@ export const SignUpModal = ({
       });
   };
 
+  useEffect(() => {
+    emailRef.current?.focus();
+  }, []);
+
   return (
     <>
       <ModalWrapper>
@@ -156,6 +160,7 @@ export const SignUpModal = ({
                 placeholder="사용하실 이메일을 입력해주세요."
                 value={email}
                 onChange={changeEmail}
+                ref={emailRef}
               />
               {email.length > 0 && (
                 <CustomSpan className={emailValid ? 'success' : 'error'}>
