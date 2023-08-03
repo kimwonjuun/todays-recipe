@@ -6,7 +6,7 @@ import { authService, dbService, firebaseConfig } from '../apis/firebase';
 import { ProfileBox } from '../components/my/ProfileBox';
 import { EditProfileModal } from '../components/my/EditProfileModal';
 import { SubmitForm } from '../components/common/SubmitForm';
-import { doc, updateDoc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
+import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { RecipeCard } from '../components/common/RecipeCard';
 
 const My = () => {
@@ -225,7 +225,7 @@ const My = () => {
                     ))}
                   </MyRefrigerator>
                   <Img>
-                    <img src={require('../assets/refrigerator.png')} />
+                    <img src={require('../assets/refrigerator.gif')} />
                   </Img>
                 </TopWrapper>
                 <FormWarpper>
@@ -373,7 +373,7 @@ const MyRefrigerator = styled.div`
   flex-wrap: wrap;
   padding: 2rem;
   gap: 1rem;
-  margin: 2rem 0;
+  margin: 5rem 2.5rem;
 
   border-radius: 1rem;
   border: 0.2rem solid ${COLORS.blue1};
@@ -399,14 +399,14 @@ const IngredientItem = styled.div`
 `;
 
 const Img = styled.div`
-  width: 30rem;
+  width: 35rem;
   display: flex;
   align-items: center;
   justify-content: end;
 
   img {
-    width: 75%;
-    height: 90%;
+    width: 100%;
+    height: 100%;
   }
 `;
 
