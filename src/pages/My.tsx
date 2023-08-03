@@ -125,9 +125,12 @@ const My = () => {
               <MyRefrigeratorWrapper>
                 <MyRefrigerator>
                   {myIngredients.map((item, index) => (
-                    <div key={index}>{item}</div>
+                    <IngredientItem key={index}>{item}</IngredientItem>
                   ))}
                 </MyRefrigerator>
+                <Img>
+                  <img src={require('../assets/refrigerator.png')} />
+                </Img>
               </MyRefrigeratorWrapper>
               <FormWarpper>
                 <SubmitForm
@@ -200,7 +203,7 @@ const UserAccounttBox = styled.div`
 `;
 
 const UserItem = styled.div`
-  width: 69rem;
+  width: 70rem;
   height: 33rem;
 
   display: flex;
@@ -213,6 +216,7 @@ const CategoriesWrapper = styled.div`
   height: 2rem;
   display: flex;
   gap: 1.5rem;
+  align-items: center;
 
   /* background-color: green; */
   /* border: 1px solid; */
@@ -235,11 +239,45 @@ const Category = styled.div`
 
 const MyRefrigeratorWrapper = styled.div`
   height: 25rem;
-  border-radius: 1rem;
-  border: 0.2rem solid ${COLORS.blue1};
+  /* border-radius: 1rem; */
+  /* border: 0.2rem solid ${COLORS.blue1}; */
   margin: 1.5rem 0;
+  display: flex;
 `;
 
-const MyRefrigerator = styled.div``;
+const MyRefrigerator = styled.div`
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 2rem;
+`;
+
+const Img = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 75%;
+    height: 90%;
+  }
+`;
+
+const IngredientItem = styled.div`
+  padding: 0.5rem 1rem;
+  height: 2.5rem;
+  border-radius: 1rem;
+  background-color: ${COLORS.blue2};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #fff;
+`;
 
 // const UserLikes = styled.div``;
