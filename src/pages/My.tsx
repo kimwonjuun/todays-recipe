@@ -150,7 +150,7 @@ const My = () => {
                   value={inputValue}
                   onSubmit={handleSubmit}
                   onChange={handleInputChange}
-                  placeholder="처리하고 싶은 냉장고 안의 재료들을 입력히세요."
+                  placeholder="처리하고 싶은 냉장고 안의 재료들을 입력하세요."
                   maxLength={6}
                 />
               </FormWarpper>

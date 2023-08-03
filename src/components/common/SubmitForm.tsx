@@ -46,10 +46,11 @@ const Input = styled.input`
   font-size: 1.25rem;
   outline: none;
   text-align: center;
+  padding-right: 5rem;
 `;
 
 const SubmitButton = styled.button`
-  margin-left: -5rem;
+  margin-left: -4.5rem;
   width: 5rem;
   height: 3rem;
   border-radius: 1rem;
