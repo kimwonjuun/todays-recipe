@@ -84,6 +84,7 @@ const My = () => {
       }
 
       setInputValue('');
+      getMyIngredients();
     } catch (error) {
       console.error('냉장고에 재료를 넣지 못했어요.', error);
       alert('냉장고에 재료를 넣지 못했어요.');
