@@ -19,6 +19,7 @@ import {
   ModalWrapper,
   TitleWrapper,
 } from '../../styles/authModalStyles';
+import { emailRegex, passwordRegex } from '../../utils/regex';
 
 export const LoginModal = ({
   setLoginModalIsOpen,
@@ -48,15 +49,12 @@ export const LoginModal = ({
   // 이메일 인풋, 유효성 검사
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
     setEmailValid(emailRegex.test(e.target.value));
   };
 
   // 비밀번호 인풋, 유효성 검사
   const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
     setPasswordValid(passwordRegex.test(e.target.value));
   };
 
