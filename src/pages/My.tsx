@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService, dbService, firebaseConfig } from '../apis/firebase';
 import { ProfileBox } from '../components/my/ProfileBox';
@@ -44,6 +44,7 @@ const My = () => {
 
   // 인풋
   const [inputValue, setInputValue] = useState<string>('');
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -70,6 +71,11 @@ const My = () => {
         const ingredients = userDoc.data().ingredients || [];
         if (!ingredients.includes(inputValue)) {
           ingredients.push(inputValue);
+        } else {
+          alert('이미 등록된 재료입니다.');
+          setInputValue('');
+          inputRef.current?.focus();
+          return;
         }
 
         await updateDoc(userRef, { ingredients });
@@ -250,7 +256,7 @@ const MyRefrigerator = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  padding: 2rem;
+  padding: 1rem;
 `;
 
 const Img = styled.div`
