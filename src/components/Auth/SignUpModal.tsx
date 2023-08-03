@@ -114,8 +114,9 @@ export const SignUpModal = ({
     }
   };
 
-  // 회원가입 버튼 - 세션스토리지 저장
-  const submitSignUp = () => {
+  // 회원가입 - 세션스토리지 저장
+  const handleSignupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setPersistence(authService, browserSessionPersistence)
       .then(() => createUserWithEmailAndPassword(authService, email, password))
       .then(() => {
@@ -149,68 +150,70 @@ export const SignUpModal = ({
         <Modal>
           <CloseButton onClick={closeSignUpModal}>×</CloseButton>
           <TitleWrapper>회원가입</TitleWrapper>
-          <InputWrapper>
-            <Input
-              id="email"
-              type="email"
-              placeholder="사용하실 이메일을 입력해주세요."
-              value={email}
-              onChange={changeEmail}
-            />
-            {email.length > 0 && (
-              <CustomSpan className={emailValid ? 'success' : 'error'}>
-                {emailMessage}
-              </CustomSpan>
-            )}
-            <Input
-              id="password"
-              type="password"
-              placeholder="사용하실 비밀번호를 입력해주세요."
-              value={password}
-              onChange={changePassword}
-            />
-            {password.length > 0 && (
-              <CustomSpan className={passwordValid ? 'success' : 'error'}>
-                {passwordMessage}
-              </CustomSpan>
-            )}
-            <Input
-              id="confirm-password"
-              type="password"
-              placeholder="사용하실 비밀번호를 한 번 더 입력해주세요."
-              value={confirmPassword}
-              onChange={changeConfirmPassword}
-            />
-            {confirmPassword.length > 0 && (
-              <CustomSpan className={isPasswordConfirm ? 'success' : 'error'}>
-                {passwordConfirmMessage}
-              </CustomSpan>
-            )}
-            <Input
-              id="nickname"
-              type="text"
-              maxLength={4}
-              placeholder="사용하실 닉네임을 입력해주세요."
-              value={nickname}
-              onChange={changeNickname}
-            />
-            {nickname.length > 0 && (
-              <CustomSpan className={isNickname ? 'success' : 'error'}>
-                {nicknameMessage}
-              </CustomSpan>
-            )}
-          </InputWrapper>
-          <BottomWrapper>
-            <Button
-              onClick={submitSignUp}
-              disabled={
-                !isEmail || !isPassword || !isPasswordConfirm || !isNickname
-              }
-            >
-              회원가입하기
-            </Button>
-            <LoginText onClick={openLoginModal}>이미 회원이신가요?</LoginText>
-          </BottomWrapper>
+          <form onSubmit={handleSignupSubmit}>
+            <InputWrapper>
+              <Input
+                id="email"
+                type="email"
+                placeholder="사용하실 이메일을 입력해주세요."
+                value={email}
+                onChange={changeEmail}
+              />
+              {email.length > 0 && (
+                <CustomSpan className={emailValid ? 'success' : 'error'}>
+                  {emailMessage}
+                </CustomSpan>
+              )}
+              <Input
+                id="password"
+                type="password"
+                placeholder="사용하실 비밀번호를 입력해주세요."
+                value={password}
+                onChange={changePassword}
+              />
+              {password.length > 0 && (
+                <CustomSpan className={passwordValid ? 'success' : 'error'}>
+                  {passwordMessage}
+                </CustomSpan>
+              )}
+              <Input
+                id="confirm-password"
+                type="password"
+                placeholder="사용하실 비밀번호를 한 번 더 입력해주세요."
+                value={confirmPassword}
+                onChange={changeConfirmPassword}
+              />
+              {confirmPassword.length > 0 && (
+                <CustomSpan className={isPasswordConfirm ? 'success' : 'error'}>
+                  {passwordConfirmMessage}
+                </CustomSpan>
+              )}
+              <Input
+                id="nickname"
+                type="text"
+                maxLength={4}
+                placeholder="사용하실 닉네임을 입력해주세요."
+                value={nickname}
+                onChange={changeNickname}
+              />
+              {nickname.length > 0 && (
+                <CustomSpan className={isNickname ? 'success' : 'error'}>
+                  {nicknameMessage}
+                </CustomSpan>
+              )}
+            </InputWrapper>
+            <BottomWrapper>
+              <Button
+                type="submit"
+                disabled={
+                  !isEmail || !isPassword || !isPasswordConfirm || !isNickname
+                }
+              >
+                회원가입하기
+              </Button>
+              <LoginText onClick={openLoginModal}>이미 회원이신가요?</LoginText>
+            </BottomWrapper>
+          </form>
         </Modal>
       </ModalWrapper>
     </>

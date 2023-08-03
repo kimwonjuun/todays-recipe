@@ -60,8 +60,8 @@ export const LoginModal = ({
     setPasswordValid(passwordRegex.test(e.target.value));
   };
 
-  // 로그인 버튼 submit 이벤트 핸들러
-  const handleSubmit = (e: React.FormEvent) => {
+  // 로그인
+  const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     // 사용자 인증 및 로그인
@@ -95,7 +95,7 @@ export const LoginModal = ({
         <Modal>
           <CloseButton onClick={closeLoginModal}>&times;</CloseButton>
           <TitleWrapper>로그인</TitleWrapper>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleLoginSubmit}>
             <InputWrapper>
               <Logo>
                 <LogoImg src={require('../../assets/logo.png')}></LogoImg>
