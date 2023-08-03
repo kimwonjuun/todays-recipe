@@ -213,16 +213,20 @@ const My = () => {
               >
                 <TopWrapper>
                   <MyRefrigerator>
-                    {myIngredients.map((ingredient, index) => (
-                      <IngredientItem
-                        onClick={() => {
-                          removeIngredient(ingredient);
-                        }}
-                        key={index}
-                      >
-                        {ingredient}
-                      </IngredientItem>
-                    ))}
+                    {myIngredients.length > 0 ? (
+                      myIngredients.map((ingredient, index) => (
+                        <IngredientItem
+                          onClick={() => {
+                            removeIngredient(ingredient);
+                          }}
+                          key={index}
+                        >
+                          {ingredient}
+                        </IngredientItem>
+                      ))
+                    ) : (
+                      <p>아직 냉장고에 넣은 재료가 없습니다! 😅</p>
+                    )}
                   </MyRefrigerator>
                   <Img>
                     <img src={require('../assets/refrigerator.gif')} />
@@ -378,6 +382,10 @@ const MyRefrigerator = styled.div`
   border-radius: 1rem;
   border: 0.2rem solid ${COLORS.blue1};
 
+  > p {
+    width: 100%;
+    text-align: center;
+  }
   /* background-color: yellow; */
 `;
 
