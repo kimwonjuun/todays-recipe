@@ -180,10 +180,16 @@ const My = () => {
           <UserAccounttBox>
             <UserItem>
               <CategoriesWrapper>
-                <Category onClick={() => handleTabChange('나의 냉장고')}>
+                <Category
+                  onClick={() => handleTabChange('나의 냉장고')}
+                  isSelected={currentTab === '나의 냉장고'}
+                >
                   나의 냉장고
                 </Category>
-                <Category onClick={() => handleTabChange('찜한 레시피')}>
+                <Category
+                  onClick={() => handleTabChange('찜한 레시피')}
+                  isSelected={currentTab === '찜한 레시피'}
+                >
                   찜한 레시피
                 </Category>
               </CategoriesWrapper>
@@ -192,36 +198,39 @@ const My = () => {
                   display: currentTab === '나의 냉장고' ? 'flex' : 'none',
                 }}
               >
-                <MyRefrigerator>
-                  {myIngredients.map((ingredient, index) => (
-                    <IngredientItem
-                      onClick={() => {
-                        removeIngredient(ingredient);
-                      }}
-                      key={index}
-                    >
-                      {ingredient}
-                    </IngredientItem>
-                  ))}
-                </MyRefrigerator>
-                <Img>
-                  <img src={require('../assets/refrigerator.png')} />
-                </Img>
+                <TopWrapper>
+                  <MyRefrigerator>
+                    {myIngredients.map((ingredient, index) => (
+                      <IngredientItem
+                        onClick={() => {
+                          removeIngredient(ingredient);
+                        }}
+                        key={index}
+                      >
+                        {ingredient}
+                      </IngredientItem>
+                    ))}
+                  </MyRefrigerator>
+                  <Img>
+                    <img src={require('../assets/refrigerator.png')} />
+                  </Img>
+                </TopWrapper>
+                <FormWarpper>
+                  <SubmitForm
+                    value={inputValue}
+                    onSubmit={handleSubmit}
+                    onChange={handleInputChange}
+                    placeholder="처리하고 싶은 냉장고 안의 재료들을 입력하세요."
+                    maxLength={6}
+                  />
+                </FormWarpper>
               </MyRefrigeratorWrapper>
+
               <MyLikesWrapper
                 style={{
                   display: currentTab === '찜한 레시피' ? 'block' : 'none',
                 }}
               ></MyLikesWrapper>
-              <FormWarpper>
-                <SubmitForm
-                  value={inputValue}
-                  onSubmit={handleSubmit}
-                  onChange={handleInputChange}
-                  placeholder="처리하고 싶은 냉장고 안의 재료들을 입력하세요."
-                  maxLength={6}
-                />
-              </FormWarpper>
             </UserItem>
           </UserAccounttBox>
         </BoxWrapper>
@@ -289,8 +298,7 @@ const UserItem = styled.div`
 
   display: flex;
   flex-direction: column;
-
-  /* background-color: yellow; */
+  /* background-color: green; */
 `;
 
 const CategoriesWrapper = styled.div`
@@ -310,19 +318,33 @@ const FormWarpper = styled.div`
   justify-content: center;
 `;
 
-const Category = styled.div`
+const TopWrapper = styled.div`
+  display: flex;
+`;
+
+const Category = styled.div<{ isSelected: boolean }>`
+  position: relative;
   height: 2rem;
   cursor: pointer;
+  color: ${({ isSelected }) => (isSelected ? COLORS.blue2 : 'inherit')};
   &:hover {
     color: ${COLORS.blue2};
   }
+
+  /* ${({ isSelected }) =>
+    isSelected &&
+    `
+      border-bottom: 0.25rem solid ${COLORS.blue1};
+    `} */
 `;
 
 const MyRefrigeratorWrapper = styled.div`
-  height: 25rem;
+  height: 31rem;
 
-  margin: 1.5rem 0;
+  /* margin: 1.5rem 0; */
   display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 
   /* background-color: yellow; */
 `;
@@ -360,7 +382,7 @@ const Img = styled.div`
   width: 30rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: end;
 
   img {
     width: 75%;
