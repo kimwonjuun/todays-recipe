@@ -267,6 +267,7 @@ const My = () => {
 };
 
 export default My;
+
 const PageWrapper = styled.div`
   box-sizing: border-box;
   position: relative;
@@ -293,7 +294,7 @@ const BoxWrapper = styled.div`
 ////////////////////
 const UserAccounttBox = styled.div`
   width: 75rem;
-  height: 37.5rem;
+  height: 40rem;
 
   background-color: #fff;
   border-radius: 1rem;
@@ -310,7 +311,7 @@ const UserAccounttBox = styled.div`
 
 const UserItem = styled.div`
   width: 70rem;
-  height: 33rem;
+  height: 37rem;
 
   display: flex;
   flex-direction: column;
@@ -355,7 +356,7 @@ const Category = styled.div<{ isSelected: boolean }>`
 `;
 
 const MyRefrigeratorWrapper = styled.div`
-  height: 31rem;
+  height: 35rem;
 
   /* margin: 1.5rem 0; */
   display: flex;
@@ -410,12 +411,25 @@ const Img = styled.div`
 `;
 
 const MyLikesWrapper = styled.div`
-  height: 31rem;
-
+  width: 70rem;
+  height: 35rem;
   display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  /* background-color: yellow; */
 `;
 
-const MyLikes = styled.div``;
+const MyLikes = styled.div`
+  width: 70rem;
+  display: flex;
+  /* justify-content: center; */
+  flex-wrap: wrap;
+  /* height: 100rem; */
+  margin-top: 2.5rem;
+  padding: 0 1.25rem;
+
+  /* background-color: blue; */
+`;
 
 const LikedRecipeItem = styled.div`
   padding: 0.5rem 1rem;

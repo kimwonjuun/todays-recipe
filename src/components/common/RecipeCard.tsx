@@ -61,12 +61,6 @@ const RecipeImgWrapper = styled.div`
   }
 `;
 
-// const Img = styled.img`
-//   width: 100%;
-//   height: 100%;
-//   transition: transform 0.4s ease-in-out;
-// `;
-
 const RecipeTextWrapper = styled.div`
   width: 100%;
   height: 10rem;
