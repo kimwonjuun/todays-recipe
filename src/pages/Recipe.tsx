@@ -4,10 +4,15 @@ import { RecipeBox } from '../components/recipe/RecipeBox';
 import { useState, useEffect } from 'react';
 import { useRecipeData } from '../hooks/useRecipeData';
 import { Loading } from '../components/common/Loading';
+// import { useRecoilValueLoadable } from 'recoil';
+// import { fetchRecipeData } from '../recoil/recipeState';
 
 const RecipePage = () => {
   // 레시피 데이터
   const recipeData = useRecipeData();
+  // const recipeDataLoadable = useRecoilValueLoadable(fetchRecipeData(null));
+  // const recipeData =
+  //   recipeDataLoadable.state === 'hasValue' ? recipeDataLoadable.contents : [];
 
   // 로딩 상태
   const [loading, setLoading] = useState<boolean>(true);
