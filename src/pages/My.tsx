@@ -144,7 +144,7 @@ const My = () => {
                   onSubmit={handleSubmit}
                   onChange={handleInputChange}
                   placeholder="처리하고 싶은 재료를 입력히세요."
-                  maxLength={8}
+                  maxLength={6}
                 />
               </FormWarpper>
             </UserItem>
@@ -245,30 +245,23 @@ const Category = styled.div`
 
 const MyRefrigeratorWrapper = styled.div`
   height: 25rem;
-  /* border-radius: 1rem; */
-  /* border: 0.2rem solid ${COLORS.blue1}; */
+
   margin: 1.5rem 0;
   display: flex;
+
+  /* background-color: yellow; */
 `;
 
 const MyRefrigerator = styled.div`
-  flex: 1;
+  flex: 1.2;
   display: flex;
+  align-content: flex-start;
   flex-wrap: wrap;
+  padding: 2rem;
   gap: 1rem;
-  padding: 1rem;
-`;
 
-const Img = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  img {
-    width: 75%;
-    height: 90%;
-  }
+  border-radius: 1rem;
+  border: 0.2rem solid ${COLORS.blue1};
 `;
 
 const IngredientItem = styled.div`
@@ -281,9 +274,21 @@ const IngredientItem = styled.div`
   justify-content: center;
   font-size: 1.25rem;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* text-overflow: ellipsis;
+  white-space: nowrap; */
   color: #fff;
+`;
+
+const Img = styled.div`
+  flex: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 75%;
+    height: 90%;
+  }
 `;
 
 // const UserLikes = styled.div``;
