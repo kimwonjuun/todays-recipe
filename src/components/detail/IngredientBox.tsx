@@ -9,11 +9,11 @@ interface RecipeProps {
 }
 
 export const IngredientBox = ({ recipe }: RecipeProps) => {
-  // 좋아요
   const user = authService.currentUser;
   const currentUserUid = user?.uid;
   const [like, setLike] = useState(false);
 
+  // 좋아요
   const handleLikeButtonClick = async () => {
     // 로그인 체크
     if (!currentUserUid) {
@@ -42,7 +42,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           console.log('좋아요 추가');
           alert('레시피 찜 완료!');
         } else {
-          // 좋아요 취소 경우
+          // 좋아요 취소
           const updatedLikes = likes.filter(
             (item: string) => item !== recipe.name
           );

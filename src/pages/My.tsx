@@ -164,21 +164,24 @@ const My = () => {
     setCurrentTab(tabName);
   };
 
-  // // 내가 찜한 레시피 목록 출력
-  // const [likedRecipes, setLikedRecipes] = useState([]);
+  // 내가 찜한 레시피 목록 출력
+  const [likedRecipes, setLikedRecipes] = useState([]);
 
-  // const getLikedRecipes = async () => {
-  //   if (!currentUserUid) {
-  //     return;
-  //   }
-  //   const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
-  //   if (docSnap.exists()) {
-  //     const likedRecipesData = docSnap.data();
-  //     if (likedRecipesData && likedRecipesData.likedRecipes) {
-  //       setLikedRecipes(likedRecipesData.likedRecipes);
-  //     }
-  //   }
-  // };
+  const getMyLikedRecipes = async () => {
+    if (!currentUserUid) {
+      return;
+    }
+    const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
+    if (docSnap.exists()) {
+      const likedRecipesData = docSnap.data();
+      if (likedRecipesData && likedRecipesData['users-likes']) {
+        setLikedRecipes(likedRecipesData['users-likes']);
+      }
+    }
+  };
+  useEffect(() => {
+    getMyLikedRecipes();
+  }, []);
 
   return (
     <>
@@ -240,7 +243,11 @@ const My = () => {
                   display: currentTab === '찜한 레시피' ? 'flex' : 'none',
                 }}
               >
-                <MyLikes></MyLikes>
+                <MyLikes>
+                  {likedRecipes.map((recipeName, index) => (
+                    <LikedRecipeItem key={index}>{recipeName}</LikedRecipeItem>
+                  ))}
+                </MyLikes>
               </MyLikesWrapper>
             </UserItem>
           </UserAccounttBox>
@@ -377,6 +384,9 @@ const IngredientItem = styled.div`
   height: 2.5rem;
   border-radius: 1rem;
   background-color: ${COLORS.blue1};
+  &:hover {
+    background-color: ${COLORS.blue2};
+  }
   display: flex;
   align-items: center;
   justify-content: center;
@@ -405,3 +415,16 @@ const MyLikesWrapper = styled.div`
 `;
 
 const MyLikes = styled.div``;
+
+const LikedRecipeItem = styled.div`
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  background-color: ${COLORS.blue1};
+  color: #fff;
+  border-radius: 1rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+  &:hover {
+    background-color: ${COLORS.blue2};
+  }
+`;
