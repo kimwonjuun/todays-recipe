@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   browserSessionPersistence,
   setPersistence,
@@ -60,8 +60,10 @@ export const LoginModal = ({
     setPasswordValid(passwordRegex.test(e.target.value));
   };
 
-  // 로그인 버튼 클릭 이벤트 핸들러
-  const handleLogin = () => {
+  // 로그인 버튼 submit 이벤트 핸들러
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
     // 사용자 인증 및 로그인
     setPersistence(authService, browserSessionPersistence)
       .then(() => signInWithEmailAndPassword(authService, email, password))
@@ -93,44 +95,46 @@ export const LoginModal = ({
         <Modal>
           <CloseButton onClick={closeLoginModal}>&times;</CloseButton>
           <TitleWrapper>로그인</TitleWrapper>
-          <InputWrapper>
-            <Logo>
-              <LogoImg src={require('../../assets/logo.png')}></LogoImg>
-            </Logo>
-            <Input
-              id="email"
-              type="email"
-              placeholder="이메일을 입력해주세요."
-              value={email}
-              onChange={changeEmail}
-              ref={emailRef}
-            />
-            {!emailValid && email.length > 0 && (
-              <CustomSpan className={emailValid ? 'success' : 'error'}>
-                이메일 양식을 확인해주세요.
-              </CustomSpan>
-            )}
+          <form onSubmit={handleSubmit}>
+            <InputWrapper>
+              <Logo>
+                <LogoImg src={require('../../assets/logo.png')}></LogoImg>
+              </Logo>
+              <Input
+                id="email"
+                type="email"
+                placeholder="이메일을 입력해주세요."
+                value={email}
+                onChange={changeEmail}
+                ref={emailRef}
+              />
+              {!emailValid && email.length > 0 && (
+                <CustomSpan className={emailValid ? 'success' : 'error'}>
+                  이메일 양식을 확인해주세요.
+                </CustomSpan>
+              )}
 
-            <Input
-              id="password"
-              type="password"
-              placeholder="비밀번호를 입력해주세요."
-              value={password}
-              onChange={changePassword}
-              ref={passwordRef}
-            />
-            {!passwordValid && password.length > 0 && (
-              <CustomSpan className={passwordValid ? 'success' : 'error'}>
-                비밀번호 양식을 확인해주세요.
-              </CustomSpan>
-            )}
-          </InputWrapper>
-          <BottomWrapper>
-            <Button onClick={handleLogin}>로그인하기</Button>
-            <LoginText onClick={openSignUpModal}>
-              아직 회원이 아니신가요?
-            </LoginText>
-          </BottomWrapper>
+              <Input
+                id="password"
+                type="password"
+                placeholder="비밀번호를 입력해주세요."
+                value={password}
+                onChange={changePassword}
+                ref={passwordRef}
+              />
+              {!passwordValid && password.length > 0 && (
+                <CustomSpan className={passwordValid ? 'success' : 'error'}>
+                  비밀번호 양식을 확인해주세요.
+                </CustomSpan>
+              )}
+            </InputWrapper>
+            <BottomWrapper>
+              <Button type="submit">로그인하기</Button>
+              <LoginText onClick={openSignUpModal}>
+                아직 회원이 아니신가요?
+              </LoginText>
+            </BottomWrapper>
+          </form>
         </Modal>
       </ModalWrapper>
     </>
