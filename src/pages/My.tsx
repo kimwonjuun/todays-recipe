@@ -6,7 +6,7 @@ import { authService, dbService, firebaseConfig } from '../apis/firebase';
 import { ProfileBox } from '../components/my/ProfileBox';
 import { EditProfileModal } from '../components/my/EditProfileModal';
 import { SubmitForm } from '../components/common/SubmitForm';
-import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, updateDoc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
 
 const My = () => {
   // 로그인 상태 확인
@@ -55,7 +55,7 @@ const My = () => {
 
     // 한글만 입력되었는지 검사
     if (!koreanOnly.test(inputValue)) {
-      alert('재료는 한글만 입력 가능해요.');
+      alert('재료는 한글만 입력 가능합니다.');
       setInputValue('');
       return;
     }
@@ -72,7 +72,7 @@ const My = () => {
         const ingredients = userDoc.data().ingredients || [];
 
         if (ingredients.length >= 20) {
-          alert('냉장고에는 최대 20개의 재료만 추가할 수 있어요.');
+          alert('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
           setInputValue('');
           return;
         }
@@ -80,7 +80,7 @@ const My = () => {
         if (!ingredients.includes(inputValue)) {
           ingredients.push(inputValue);
         } else {
-          alert('이미 등록된 재료에요.');
+          alert('이미 등록된 재료입니다.');
           setInputValue('');
           return;
         }
@@ -97,10 +97,11 @@ const My = () => {
       }
 
       setInputValue('');
+      // 재료 리스트 갱신
       getMyIngredients();
     } catch (error) {
-      console.error('냉장고에 재료를 넣지 못했어요.', error);
-      alert('냉장고에 재료를 넣지 못했어요.');
+      console.error('냉장고에 재료를 추가하지 못했습니다.', error);
+      alert('냉장고에 재료를 추가하지 못했습니다.');
     }
   };
 
@@ -124,6 +125,47 @@ const My = () => {
     getMyIngredients();
   }, []);
 
+  // 재료 삭제
+  const removeIngredient = async (ingredient: string) => {
+    const confirmDelete = window.confirm(
+      `선택한 재료 '${ingredient}'을(를) 삭제하시겠습니까?`
+    );
+
+    if (!confirmDelete || !currentUserUid) {
+      return;
+    }
+
+    try {
+      // 문서 가져오기
+      const userRef = doc(dbService, 'my-refrigerator', currentUserUid);
+
+      //문서 데이터 가져오기
+      const userDoc = await getDoc(userRef);
+
+      // 문서가 존재하면 선택한 재료를 제외한 나머지 재료로 업데이트
+      if (userDoc.exists()) {
+        const ingredients = userDoc.data().ingredients || [];
+        const updatedIngredients = ingredients.filter(
+          (item: string) => item !== ingredient
+        );
+
+        if (updatedIngredients.length === 0) {
+          // 재료가 모두 삭제된 경우, 문서 자체를 삭제하기
+          await deleteDoc(userRef);
+        } else {
+          // 선택한 재료만 삭제하기
+          await updateDoc(userRef, { ingredients: updatedIngredients });
+        }
+
+        // 재료 리스트 갱신
+        getMyIngredients();
+      }
+    } catch (error) {
+      console.error('냉장고에서 재료를 삭제하지 못했습니다.', error);
+      alert('냉장고에서 재료를 삭제하지 못했습니다.');
+    }
+  };
+
   return (
     <>
       <PageWrapper>
@@ -137,8 +179,15 @@ const My = () => {
               </CategoriesWrapper>
               <MyRefrigeratorWrapper>
                 <MyRefrigerator>
-                  {myIngredients.map((item, index) => (
-                    <IngredientItem key={index}>{item}</IngredientItem>
+                  {myIngredients.map((ingredient, index) => (
+                    <IngredientItem
+                      onClick={() => {
+                        removeIngredient(ingredient);
+                      }}
+                      key={index}
+                    >
+                      {ingredient}
+                    </IngredientItem>
                   ))}
                 </MyRefrigerator>
                 <Img>
