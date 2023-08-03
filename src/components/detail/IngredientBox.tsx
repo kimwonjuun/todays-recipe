@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { Recipe } from '../../types/Recipe';
 import { authService, dbService } from '../../apis/firebase';
-import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
+import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 
 interface RecipeProps {
   recipe: Recipe;
@@ -10,7 +10,8 @@ interface RecipeProps {
 
 export const IngredientBox = ({ recipe }: RecipeProps) => {
   // 좋아요
-  const currentUserUid = authService.currentUser?.uid;
+  const user = authService.currentUser;
+  const currentUserUid = user?.uid;
   const [like, setLike] = useState(false);
 
   const handleLikeButtonClick = async () => {
@@ -19,25 +20,45 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
       alert('로그인이 필요합니다.');
       return;
     }
-    // !좋아요인 경우
-    if (!like) {
-      await setDoc(doc(dbService, 'likes', currentUserUid), {
-        userId: currentUserUid, // user id
-        docId: recipe.id, // filed id
-        name: recipe.name, // 레시피명
-        type: recipe.type, // 레시피 종류
-      });
-      setLike(true);
-      console.log('좋아요 추가');
-      alert('레시피 찜 완료!');
-    } else {
-      // 이미 좋아요가 되어 있는 상태이면 삭제
-      const isLiked = doc(dbService, 'likes', currentUserUid);
-      deleteDoc(isLiked);
-      // 다시 좋아요할 수 있는 상태
-      setLike(false);
-      console.log('좋아요 취소');
-      alert('찜 목록에서 삭제했어요.');
+
+    try {
+      // 문서 가져오기
+      const userRef = doc(dbService, 'users', currentUserUid);
+
+      // 문서 데이터 가져오기
+      const userDoc = await getDoc(userRef);
+
+      // 문서가 존재하면 기존 데이터에 레시피명 추가 또는 삭제
+      if (userDoc.exists()) {
+        const likes = userDoc.data()['users-likes'] || [];
+
+        if (!like) {
+          // 좋아요일 경우
+          if (!likes.includes(recipe.name)) {
+            likes.push(recipe.name);
+          }
+          await updateDoc(userRef, { 'users-likes': likes });
+          setLike(true);
+          console.log('좋아요 추가');
+          alert('레시피 찜 완료!');
+        } else {
+          // 좋아요 취소 경우
+          const updatedLikes = likes.filter(
+            (item: string) => item !== recipe.name
+          );
+          await updateDoc(userRef, { 'users-likes': updatedLikes });
+          setLike(false);
+          console.log('좋아요 취소');
+          alert('찜 목록에서 삭제했어요.');
+        }
+      } else {
+        // 문서가 존재하지 않으면 새 문서 생성 후 레시피명 추가
+        const likes = [recipe.name];
+        await setDoc(userRef, { 'users-likes': likes });
+        setLike(true);
+      }
+    } catch (error) {
+      console.error('레시피 찜 처리에 실패했습니다.', error);
     }
   };
 
@@ -46,14 +67,20 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
     if (!currentUserUid) {
       return;
     }
-    const docSnap = await getDoc(doc(dbService, 'likes', currentUserUid));
-    if (docSnap.exists()) {
-      const likeData = docSnap.data();
-      if (likeData && likeData.docId === recipe.id) {
+    // 문서 가져오기
+    const userRef = doc(dbService, 'users', currentUserUid);
+
+    // 문서 데이터 가져오기
+    const userDoc = await getDoc(userRef);
+
+    if (userDoc.exists()) {
+      const likes = userDoc.data()['users-likes'] || [];
+      if (likes.includes(recipe.name)) {
         setLike(true);
       }
     }
   };
+
   useEffect(() => {
     getLike();
   }, [getLike]);
