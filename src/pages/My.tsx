@@ -330,9 +330,8 @@ const IngredientItem = styled.div`
   justify-content: center;
   font-size: 1.25rem;
   overflow: hidden;
-  /* text-overflow: ellipsis;
-  white-space: nowrap; */
   color: #fff;
+  cursor: pointer;
 `;
 
 const Img = styled.div`
