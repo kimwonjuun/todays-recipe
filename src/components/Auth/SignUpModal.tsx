@@ -132,15 +132,15 @@ export const SignUpModal = ({
       })
       .then(() => {
         authService.signOut();
+        openAlertModal(
+          '회원가입이 완료 되었습니다! 🎉 로그인 창으로 이동합니다.'
+        );
         setEmail('');
         setPassword('');
         setConfirmPassword('');
         setNickname('');
         setSignUpModalIsOpen(false);
         setLoginModalIsOpen(true);
-        openAlertModal(
-          '회원가입이 완료 되었습니다! 🎉 로그인 창으로 이동합니다.'
-        );
       })
       .catch((err) => {
         if (err.message.includes('already-in-use')) {
