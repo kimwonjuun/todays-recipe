@@ -8,7 +8,8 @@ import {
 import { authService } from '../../apis/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
-import { styled } from 'styled-components';
+import styled from 'styled-components';
+import { AlertModal } from '../common/AlertModal';
 
 export const SignUpModal = ({
   setLoginModalIsOpen,
@@ -102,6 +103,21 @@ export const SignUpModal = ({
     }
   };
 
+  // 얼럿 모달
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [alertModalMessage, setAlertModalMessage] = useState('');
+
+  // 얼럿 모달 열기
+  const openAlertModal = (message: string) => {
+    setAlertModalOpen(true);
+    setAlertModalMessage(message);
+  };
+
+  // 얼럿 모달 닫기
+  const closeAlertModal = () => {
+    setAlertModalOpen(false);
+  };
+
   // 회원가입 - 세션스토리지 저장
   const handleSignupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -116,17 +132,19 @@ export const SignUpModal = ({
       })
       .then(() => {
         authService.signOut();
-        alert('회원가입이 완료 되었습니다! 로그인 해주세요.');
         setEmail('');
         setPassword('');
         setConfirmPassword('');
         setNickname('');
         setSignUpModalIsOpen(false);
         setLoginModalIsOpen(true);
+        openAlertModal(
+          '회원가입이 완료 되었습니다! 🎉 로그인 창으로 이동합니다.'
+        );
       })
       .catch((err) => {
         if (err.message.includes('already-in-use')) {
-          alert('이미 가입된 계정입니다.');
+          openAlertModal('이미 가입된 계정입니다.');
           setEmail('');
         }
       });
@@ -208,6 +226,9 @@ export const SignUpModal = ({
             </BottomWrapper>
           </form>
         </Modal>
+        {alertModalOpen && (
+          <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
+        )}
       </ModalWrapper>
     </>
   );

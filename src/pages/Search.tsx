@@ -12,19 +12,36 @@ import { AlertModal } from '../components/common/AlertModal';
 
 const Search = () => {
   const navigate = useNavigate();
+
   // 레시피 데이터
   const recipeData = useRecipeData();
+
   // main.tsx에서 넘어온 keyword
   const { keyword } = useParams<{ keyword: string }>();
+
   // 검색 결과
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
+
   // 검색창
   const [inputValue, setInputValue] = useState<string>('');
+
   // 로딩 상태
   const [loading, setLoading] = useState<boolean>(true);
+
   // 얼럿 모달
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [alertModalMessage, setAlertModalMessage] = useState('');
+
+  // 얼럿 모달 열기
+  const openAlertModal = (message: string) => {
+    setAlertModalOpen(true);
+    setAlertModalMessage(message);
+  };
+
+  // 얼럿 모달 닫기
+  const closeAlertModal = () => {
+    setAlertModalOpen(false);
+  };
 
   useEffect(() => {
     // 아직 레시피 데이터가 없으면 실행하지 않음
@@ -62,17 +79,6 @@ const Search = () => {
   // 무한스크롤 추가
   const { currentPage } = useInfiniteScroll();
   const showRecipes = filteredRecipes.slice(0, currentPage * 8);
-
-  // 얼럿 모달 열기
-  const openAlertModal = (message: string) => {
-    setAlertModalOpen(true);
-    setAlertModalMessage(message);
-  };
-
-  // 얼럿 모달 닫기
-  const closeAlertModal = () => {
-    setAlertModalOpen(false);
-  };
 
   return (
     <>
