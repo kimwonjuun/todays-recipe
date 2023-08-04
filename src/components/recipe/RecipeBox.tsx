@@ -17,8 +17,8 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
   const isLoggedIn = sessionStorage.getItem(
     `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
   );
-  const user = JSON.parse(isLoggedIn ?? '');
-  const currentUserUid = user.uid;
+  const user = JSON.parse(isLoggedIn ?? '{}');
+  const currentUserUid = user.uid ?? undefined;
 
   // 내가 입력한 재료 출력
   const [myIngredients, setMyIngredients] = useState([]);
@@ -193,7 +193,11 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
         </SortingWrapper>
       </TypeWrapper>
       <RecipeWrapper>
-        {noRecipeMessage ? (
+        {!isLoggedIn ? (
+          <NoRecipeMessage>
+            로그인 후 냉장고에 재료를 넣은 후 사용할 수 있는 기능입니다.
+          </NoRecipeMessage>
+        ) : noRecipeMessage ? (
           <NoRecipeMessage>{noRecipeMessage}</NoRecipeMessage>
         ) : (
           showRecipes.map((recipe) => (

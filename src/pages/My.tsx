@@ -14,8 +14,8 @@ const My = () => {
   const isLoggedIn = sessionStorage.getItem(
     `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
   );
-  const user = JSON.parse(isLoggedIn ?? '');
-  const currentUserUid = user.uid;
+  const user = JSON.parse(isLoggedIn ?? '{}');
+  const currentUserUid = user.uid ?? undefined;
 
   // 비로그인시 마이페이지 접근 불가 -> 메인으로
   const navigate = useNavigate();
@@ -23,7 +23,6 @@ const My = () => {
   useEffect(() => {
     if (!isLoggedIn) {
       navigate('/');
-      alert('마이페이지는 로그인 후 접근 가능합니다.');
     }
   }, []);
 

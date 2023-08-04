@@ -10,12 +10,11 @@ const Admin = () => {
   const isLoggedIn = sessionStorage.getItem(
     `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
   );
-  const user = JSON.parse(isLoggedIn ?? '');
+  const user = JSON.parse(isLoggedIn ?? '{}');
 
   const navigate = useNavigate();
   useEffect(() => {
     user.email === 'test@test.com' ? navigate('/admin') : navigate('/');
-    alert('접근 불가능한 페이지입니다.');
   }, []);
 
   return (
