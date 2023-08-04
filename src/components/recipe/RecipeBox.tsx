@@ -82,7 +82,7 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
 
   const noRecipeMessage =
     selectedCategory === '나의 냉장고' && filteredRecipes.length === 0
-      ? '냉장고에 보관된 재료들을 전부 포함해서 만들 수 있는 레시피가 없어요.'
+      ? '냉장고에 보관된 재료들을 전부 포함해서 만들 수 있는 레시피가 없어요. 🫤'
       : null;
 
   // 저칼로리 순/가나다 순 전 기존 정렬 상태
@@ -194,7 +194,7 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
       </TypeWrapper>
       <RecipeWrapper>
         {noRecipeMessage ? (
-          <p>{noRecipeMessage}</p>
+          <NoRecipeMessage>{noRecipeMessage}</NoRecipeMessage>
         ) : (
           showRecipes.map((recipe) => (
             <RecipeCard recipe={recipe} key={recipe.id} />
@@ -270,4 +270,14 @@ const RecipeWrapper = styled.div`
   margin: 0 auto;
   padding: 5rem 0;
   overflow: hidden;
+`;
+
+const NoRecipeMessage = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 33rem);
+  background-color: ${COLORS.backGround};
 `;
