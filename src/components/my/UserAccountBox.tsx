@@ -257,7 +257,6 @@ const UserItem = styled.div`
 
   display: flex;
   flex-direction: column;
-  /* background-color: green; */
 `;
 
 const CategoriesWrapper = styled.div`
@@ -265,9 +264,6 @@ const CategoriesWrapper = styled.div`
   display: flex;
   gap: 1.5rem;
   align-items: center;
-
-  /* background-color: green; */
-  /* border: 1px solid; */
 `;
 
 const FormWarpper = styled.div`
@@ -289,23 +285,13 @@ const Category = styled.div<{ isSelected: boolean }>`
   &:hover {
     color: ${COLORS.blue2};
   }
-
-  /* ${({ isSelected }) =>
-    isSelected &&
-    `
-      border-bottom: 0.25rem solid ${COLORS.blue1};
-    `} */
 `;
 
 const MyRefrigeratorWrapper = styled.div`
   height: 35rem;
-
-  /* margin: 1.5rem 0; */
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-
-  /* background-color: yellow; */
 `;
 
 const MyRefrigerator = styled.div`
@@ -324,7 +310,6 @@ const MyRefrigerator = styled.div`
     width: 100%;
     text-align: center;
   }
-  /* background-color: yellow; */
 `;
 
 const IngredientItem = styled.div`
@@ -362,15 +347,12 @@ const MyLikesWrapper = styled.div`
   display: flex;
   justify-content: center;
   overflow-y: auto;
-  /* background-color: yellow; */
 `;
 
 const MyLikes = styled.div`
   width: 70rem;
   display: flex;
-  /* justify-content: center; */
   flex-wrap: wrap;
-  /* height: 100rem; */
   margin-top: 2.5rem;
   padding: 0 1.25rem;
 
@@ -380,7 +362,6 @@ const MyLikes = styled.div`
     align-items: center;
     justify-content: center;
   }
-  /* background-color: blue; */
 `;
 
 const LikedRecipeItem = styled.div`
