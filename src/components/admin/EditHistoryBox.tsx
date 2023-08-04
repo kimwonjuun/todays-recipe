@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, orderBy, query, onSnapshot } from 'firebase/firestore';
 import { dbService } from '../../apis/firebase';
 import { useEffect } from 'react';
 import { formatDate } from '../../utils/date';
@@ -15,22 +15,28 @@ export const EditHistoryBox = () => {
   const [editHistoryList, setEditHistoryList] = useState<EditHistory[]>([]);
 
   // 수정 사항 가져오기
-  const getEditDataHistory = async () => {
-    const querySnapshot = await getDocs(
-      collection(dbService, 'edit-data-history')
-    );
-    const historyList: any = [];
 
-    querySnapshot.forEach((doc) => {
-      const newRecipe: any = {
-        id: doc.id,
-        ...doc.data(),
-      };
-      historyList.unshift(newRecipe);
+  const getEditDataHistory = async () => {
+    const editHistoryRef = collection(dbService, 'edit-data-history');
+    const sortedEditHistory = query(
+      editHistoryRef,
+      orderBy('updatedAt', 'asc')
+    );
+    onSnapshot(sortedEditHistory, (querySnapshot) => {
+      const historyList: any = [];
+
+      querySnapshot.forEach((doc) => {
+        const newRecipe: any = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        historyList.push(newRecipe);
+      });
+
+      setEditHistoryList(historyList);
     });
-    historyList.reverse();
-    setEditHistoryList(historyList);
   };
+
   useEffect(() => {
     getEditDataHistory();
   }, []);
@@ -58,6 +64,7 @@ const BoxWrapper = styled.div`
   height: 30rem;
   display: flex;
   flex-direction: column;
+  /* justify-content: space-around; */
   align-items: center;
   background-color: #fff;
   border-radius: 1rem;
