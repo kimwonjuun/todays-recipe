@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { RecipeCard } from '../common/RecipeCard';
 
 interface UserAccountBoxProps {
-  currentUserUid: string | null;
+  currentUserUid: string | undefined;
 }
 
 export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {

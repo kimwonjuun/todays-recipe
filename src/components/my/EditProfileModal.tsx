@@ -80,15 +80,17 @@ export const EditProfileModal = ({
         photoURL: tempFileURL || photoURL, // 사용자가 이미지를 업로드한 경우 tempFileURL을 사용
       })
         .then(() => {
-          openAlertModal('프로필 수정 완료');
           closeModal();
           setPhotoURL(tempFileURL || photoURL); // photoURL 업데이트
+          openAlertModal('프로필 수정 완료');
         })
         .catch((error) => {
+          console.log(error);
           openAlertModal('프로필 수정 실패');
         });
     }
   };
+
   // 회원 탈퇴
   const handleDeleteAccount = async () => {
     if (window.confirm('회원 탈퇴를 진행하시겠습니까?')) {
@@ -99,6 +101,7 @@ export const EditProfileModal = ({
           openAlertModal('회원 탈퇴가 완료되었습니다.');
           navigate('/', { replace: true });
         } catch (error) {
+          console.log(error);
           openAlertModal(
             '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
           );
@@ -108,6 +111,7 @@ export const EditProfileModal = ({
       return;
     }
   };
+
   // 모달 닫기
   const closeModal = () => {
     setIsModalOpen(false);

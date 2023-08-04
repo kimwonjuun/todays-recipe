@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { firebaseConfig } from '../apis/firebase';
+import { authService, firebaseConfig } from '../apis/firebase';
 import { ProfileBox } from '../components/my/ProfileBox';
 import { EditProfileModal } from '../components/my/EditProfileModal';
 import { UserAccountBox } from '../components/my/UserAccountBox';
@@ -12,8 +12,9 @@ const My = () => {
   const isLoggedIn = sessionStorage.getItem(
     `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
   );
-  const user = JSON.parse(isLoggedIn ?? '{}');
-  const currentUserUid = user.uid ?? undefined;
+  // const user = JSON.parse(isLoggedIn ?? ''); 이 코드로 props 내려줄 시 프로필 수정 및 회원 탈퇴 안됨.
+  const user = authService.currentUser;
+  const currentUserUid = user?.uid ?? undefined;
 
   // 비로그인시 마이페이지 접근 불가 -> 메인으로
   const navigate = useNavigate();
