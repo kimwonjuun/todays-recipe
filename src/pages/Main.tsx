@@ -83,10 +83,3 @@ const BoxWrapper = styled.div`
   font-size: 2rem;
   margin-top: 8rem;
 `;
-
-const CustomP = styled.p`
-  cursor: pointer;
-  &:hover {
-    color: ${COLORS.blue2};
-  }
-`;

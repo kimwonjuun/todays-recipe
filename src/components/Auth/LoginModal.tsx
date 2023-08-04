@@ -8,6 +8,7 @@ import { authService } from '../../apis/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
 import { styled } from 'styled-components';
+import { AlertModal } from '../common/AlertModal';
 
 export const LoginModal = ({
   setLoginModalIsOpen,
@@ -46,6 +47,21 @@ export const LoginModal = ({
     setPasswordValid(passwordRegex.test(e.target.value));
   };
 
+  // 얼럿 모달
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [alertModalMessage, setAlertModalMessage] = useState('');
+
+  // 얼럿 모달 열기
+  const openAlertModal = (message: string) => {
+    setAlertModalOpen(true);
+    setAlertModalMessage(message);
+  };
+
+  // 얼럿 모달 닫기
+  const closeAlertModal = () => {
+    setAlertModalOpen(false);
+  };
+
   // 로그인
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,7 +70,7 @@ export const LoginModal = ({
     setPersistence(authService, browserSessionPersistence)
       .then(() => signInWithEmailAndPassword(authService, email, password))
       .then(() => {
-        alert('로그인 되었습니다.');
+        openAlertModal('로그인 되었습니다.');
         setEmail('');
         setPassword('');
         setLoginModalIsOpen(false);
@@ -62,13 +78,15 @@ export const LoginModal = ({
       .catch((err) => {
         // 오류 메시지 처리
         if (err.message.includes('user-not-found')) {
-          alert('가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.');
+          openAlertModal(
+            '가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.'
+          );
           emailRef?.current?.focus();
           setEmail('');
           setPassword('');
         }
         if (err.message.includes('wrong-password')) {
-          alert('잘못된 비밀번호 입니다.');
+          openAlertModal('잘못된 비밀번호 입니다.');
           passwordRef?.current?.focus();
           setPassword('');
         }
@@ -126,6 +144,9 @@ export const LoginModal = ({
             </BottomWrapper>
           </form>
         </Modal>
+        {alertModalOpen && (
+          <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
+        )}
       </ModalWrapper>
     </>
   );
