@@ -11,8 +11,9 @@ interface RecipeProps {
 }
 
 export const RecipeBox = ({ recipeData }: RecipeProps) => {
-  console.log(recipeData);
-
+  useEffect(() => {
+    console.log(recipeData);
+  }, []);
   // 분류 선택 여닫기
   const [showCategories, setShowCategories] = useState<boolean>(false);
   const showCategoryButton = () => {
@@ -31,43 +32,21 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
       ? recipeData.filter((recipe: Recipe) => recipe.type === selectedCategory)
       : recipeData;
 
-  // 기존 순/가나다 순 상태, 기존 순/저칼로리 순 상태
-  const [sortAlphabetsType, setSortAlphabetsType] =
-    useState<string>('기존 정렬 상태');
-  const [sortCalorieType, setSortCalorieType] =
-    useState<string>('기존 정렬 상태');
+  // 기존 정렬 상태
+  const [sortType, setSortType] = useState<string>('기존 정렬 상태');
 
-  // 가나다 순 <-> 기존 정렬 상태 간 전환
-  const toggleSortType = () => {
-    if (sortAlphabetsType === '기존 정렬 상태') {
-      setSortAlphabetsType('가나다 순');
-    } else if (sortAlphabetsType === '가나다 순') {
-      setSortAlphabetsType('기존 정렬 상태');
-    }
+  // 정렬 상태 전환
+  const handleSortType = (changeSortType: string) => {
+    setSortType(changeSortType);
   };
 
-  // 칼로리 순 <-> 기존 정렬 상태 간 전환
-  const toggleSortCalorieType = () => {
-    if (sortCalorieType === '기존 정렬 상태') {
-      setSortCalorieType('저칼로리 순');
-    } else if (sortCalorieType === '저칼로리 순') {
-      setSortCalorieType('기존 정렬 상태');
-    }
-  };
-
-  // 가나다 순 소팅
-  const sortedRecipesByAlphabets = (recipes: Recipe[]): Recipe[] => {
-    if (sortAlphabetsType === '가나다 순') {
+  // 가나다 순/저칼로리 순 상태 전환
+  const sortedRecipes = (recipes: Recipe[]): Recipe[] => {
+    if (sortType === '가나다 순') {
       return [...recipes].sort((a: Recipe, b: Recipe) =>
         a.name.localeCompare(b.name)
       );
-    }
-    return recipes;
-  };
-
-  // 저칼로리 순 소팅
-  const sortRecipesByLowCalories = (recipes: Recipe[]): Recipe[] => {
-    if (sortCalorieType === '저칼로리 순') {
+    } else if (sortType === '저칼로리 순') {
       return [...recipes].sort(
         (a: Recipe, b: Recipe) => parseFloat(a.calorie) - parseFloat(b.calorie)
       );
@@ -75,16 +54,9 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
     return recipes;
   };
 
-  // 무한스크롤
+  // 무한 스크롤
   const { currentPage } = useInfiniteScroll();
-  // const showRecipes = sortedRecipesByAlphabets(filteredRecipes).slice(
-  //   0,
-  //   currentPage * 8
-  // );
-
-  const showRecipes = sortRecipesByLowCalories(
-    sortedRecipesByAlphabets(filteredRecipes)
-  ).slice(0, currentPage * 8);
+  const showRecipes = sortedRecipes(filteredRecipes).slice(0, currentPage * 8);
 
   return (
     <>
@@ -140,14 +112,22 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
         </CategoriesWrapper>
         <SortingWrapper>
           <SortButton
-            onClick={toggleSortCalorieType}
-            isSelected={sortCalorieType === '저칼로리 순'}
+            onClick={() =>
+              handleSortType(
+                sortType === '저칼로리 순' ? '기존 정렬 상태' : '저칼로리 순'
+              )
+            }
+            isSelected={sortType === '저칼로리 순'}
           >
             저칼로리 순
           </SortButton>
           <SortButton
-            onClick={toggleSortType}
-            isSelected={sortAlphabetsType === '가나다 순'}
+            onClick={() =>
+              handleSortType(
+                sortType === '가나다 순' ? '기존 정렬 상태' : '가나다 순'
+              )
+            }
+            isSelected={sortType === '가나다 순'}
           >
             가나다 순
           </SortButton>
