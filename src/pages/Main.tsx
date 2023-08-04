@@ -3,25 +3,43 @@ import COLORS from '../styles/colors';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { SearchForm } from '../components/common/SearchForm';
+import { AlertModal } from '../components/common/AlertModal';
 
 const Main = () => {
   // 검색창
   const [inputValue, setInputValue] = useState<string>('');
   const navigate = useNavigate();
 
+  // 인풋창
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
+
+  // 얼럿 모달
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [alertModalMessage, setAlertModalMessage] = useState('');
+
   // 폼 제출 함수
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!inputValue.trim()) {
-      alert('검색어 입력 후 버튼을 클릭해주세요.');
+      openAlertModal('키워드를 입력 후 검색해주세요.');
       return;
     }
 
     navigate(`/search/${inputValue}`);
+  };
+
+  // 얼럿 모달 열기
+  const openAlertModal = (message: string) => {
+    setAlertModalOpen(true);
+    setAlertModalMessage(message);
+  };
+
+  // 얼럿 모달 닫기
+  const closeAlertModal = () => {
+    setAlertModalOpen(false);
   };
 
   return (
@@ -36,6 +54,9 @@ const Main = () => {
           />
         </BoxWrapper>
       </PageWrapper>
+      {alertModalOpen && (
+        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
+      )}
     </>
   );
 };

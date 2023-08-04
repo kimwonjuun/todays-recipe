@@ -76,9 +76,6 @@ const Search = () => {
 
   return (
     <>
-      {alertModalOpen && (
-        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
-      )}
       <PageWrapper>
         {loading ? (
           <Loading />
@@ -127,6 +124,9 @@ const Search = () => {
           </BoxWrapper>
         )}
       </PageWrapper>
+      {alertModalOpen && (
+        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
+      )}
     </>
   );
 };
