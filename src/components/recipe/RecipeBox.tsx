@@ -73,7 +73,7 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
   const filteredRecipes =
     selectedCategory && selectedCategory !== '전체 레시피'
       ? recipeData.filter((recipe: Recipe) => {
-          if (selectedCategory === '나의 냉장고') {
+          if (selectedCategory === '나의 냉장고' && myIngredients.length > 0) {
             return canMakeRecipe(recipe.ingredients, myIngredients);
           }
           return recipe.type === selectedCategory;
@@ -82,7 +82,9 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
 
   const noRecipeMessage =
     selectedCategory === '나의 냉장고' && filteredRecipes.length === 0
-      ? '냉장고에 보관된 재료들을 전부 포함해서 만들 수 있는 레시피가 없어요. 🫤'
+      ? isLoggedIn
+        ? '냉장고가 비었거나 냉장고에 보관된 재료들을 전부 포함해서 만들 수 있는 레시피가 없어요. 🫤'
+        : '로그인 후 냉장고에 재료들을 넣어주세요. 🫤'
       : null;
 
   // 저칼로리 순/가나다 순 전 기존 정렬 상태
@@ -193,17 +195,12 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
         </SortingWrapper>
       </TypeWrapper>
       <RecipeWrapper>
-        {!isLoggedIn ? (
-          <NoRecipeMessage>
-            로그인 후 냉장고에 재료를 넣은 후 사용할 수 있는 기능입니다.
-          </NoRecipeMessage>
-        ) : noRecipeMessage ? (
+        {showRecipes.length === 0 && noRecipeMessage && (
           <NoRecipeMessage>{noRecipeMessage}</NoRecipeMessage>
-        ) : (
-          showRecipes.map((recipe) => (
-            <RecipeCard recipe={recipe} key={recipe.id} />
-          ))
         )}
+        {showRecipes.map((recipe) => (
+          <RecipeCard recipe={recipe} key={recipe.id} />
+        ))}
       </RecipeWrapper>
     </>
   );
