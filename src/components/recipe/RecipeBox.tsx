@@ -4,6 +4,8 @@ import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import { RecipeCard } from '../common/RecipeCard';
+import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
+import { dbService, firebaseConfig } from '../../apis/firebase';
 
 // import해온 Recipe 타입
 interface RecipeProps {
@@ -11,9 +13,44 @@ interface RecipeProps {
 }
 
 export const RecipeBox = ({ recipeData }: RecipeProps) => {
+  // 로그인 상태 확인
+  const isLoggedIn = sessionStorage.getItem(
+    `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
+  );
+  const user = JSON.parse(isLoggedIn ?? '');
+  const currentUserUid = user.uid;
+
+  // 내가 입력한 재료 출력
+  const [myIngredients, setMyIngredients] = useState([]);
+  const getMyIngredients = async () => {
+    if (!currentUserUid) {
+      return;
+    }
+    const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
+    if (docSnap.exists()) {
+      const ingredientData = docSnap.data();
+      if (ingredientData && ingredientData['users-ingredients']) {
+        setMyIngredients(ingredientData['users-ingredients']);
+      }
+    }
+  };
   useEffect(() => {
-    console.log(recipeData);
+    getMyIngredients();
   }, []);
+
+  console.log('myIngredients: ', myIngredients);
+  console.log('recipeData: ', recipeData);
+
+  // 내 냉장고 재료들로 만들 수 있는 레시피들
+  const canMakeRecipe = (
+    recipeIngredients: string,
+    myIngredients: string[]
+  ): boolean => {
+    return myIngredients.every((ingredient) =>
+      recipeIngredients.includes(ingredient)
+    );
+  };
+
   // 분류 선택 여닫기
   const [showCategories, setShowCategories] = useState<boolean>(false);
   const showCategoryButton = () => {
@@ -26,21 +63,32 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
     setSelectedCategory(category);
   };
 
-  // 필터링된 레시피 뿌려주기
+  // 필터링된 레시피 뿌려주기 (기존)
+  // const filteredRecipes =
+  //   selectedCategory && selectedCategory !== '전체 레시피'
+  //     ? recipeData.filter((recipe: Recipe) => recipe.type === selectedCategory)
+  //     : recipeData;
+
+  // 필터링된 레시피 뿌려주기 (나의 냉장고 추가 후)
   const filteredRecipes =
     selectedCategory && selectedCategory !== '전체 레시피'
-      ? recipeData.filter((recipe: Recipe) => recipe.type === selectedCategory)
+      ? recipeData.filter((recipe: Recipe) => {
+          if (selectedCategory === '나의 냉장고') {
+            return canMakeRecipe(recipe.ingredients, myIngredients);
+          }
+          return recipe.type === selectedCategory;
+        })
       : recipeData;
 
-  // 기존 정렬 상태
+  // 저칼로리 순/가나다 순 전 기존 정렬 상태
   const [sortType, setSortType] = useState<string>('기존 정렬 상태');
 
-  // 정렬 상태 전환
+  // 소팅 상태 전환
   const handleSortType = (changeSortType: string) => {
     setSortType(changeSortType);
   };
 
-  // 가나다 순/저칼로리 순 상태 전환
+  // 저칼로리 순/가나다 순 소팅 전환
   const sortedRecipes = (recipes: Recipe[]): Recipe[] => {
     if (sortType === '가나다 순') {
       return [...recipes].sort((a: Recipe, b: Recipe) =>
@@ -107,6 +155,12 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
               >
                 기타
               </CategoryButton>
+              <CategoryButton
+                onClick={() => handleCategoryButton('나의 냉장고')}
+                isSelected={selectedCategory === '나의 냉장고'}
+              >
+                나의 냉장고
+              </CategoryButton>
             </>
           )}
         </CategoriesWrapper>
@@ -138,15 +192,6 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
           <RecipeCard recipe={recipe} key={recipe.id} />
         ))}
       </RecipeWrapper>
-      {/* {loading ? (
-        <Loading />
-      ) : (
-        <RecipeWrapper>
-          {showRecipes.map((recipe) => (
-            <RecipeCard recipe={recipe} key={recipe.RCP_SEQ} />
-          ))}
-        </RecipeWrapper>
-      )} */}
     </>
   );
 };

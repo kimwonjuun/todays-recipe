@@ -43,7 +43,7 @@ const Input = styled.input`
   height: 2.5rem;
   border-radius: 1rem;
   border: 0.2rem solid ${COLORS.blue1};
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   outline: none;
   text-align: center;
   padding-right: 5rem;
