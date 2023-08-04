@@ -11,6 +11,7 @@ import { RecipeCard } from '../components/common/RecipeCard';
 
 const My = () => {
   // 로그인 상태 확인
+  // 새로고침시 에러X
   const user = authService.currentUser;
   const currentUserUid = user?.uid;
   const isLoggedIn = sessionStorage.getItem(
@@ -23,6 +24,7 @@ const My = () => {
   useEffect(() => {
     if (!isLoggedIn) {
       navigate('/');
+      alert('마이페이지는 로그인 후 접근 가능합니다.');
     }
   }, []);
 
