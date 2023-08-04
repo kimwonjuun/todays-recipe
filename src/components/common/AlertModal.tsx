@@ -42,7 +42,7 @@ const ModalContent = styled.div`
   box-sizing: border-box;
   background-color: #fff;
   padding: 2.5rem;
-  max-width: 45rem;
+  max-width: 55rem;
   height: 12.5rem;
   border-radius: 1rem;
   display: flex;

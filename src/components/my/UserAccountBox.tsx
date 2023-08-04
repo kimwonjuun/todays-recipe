@@ -5,6 +5,7 @@ import { dbService } from '../../apis/firebase';
 import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { RecipeCard } from '../common/RecipeCard';
+import { AlertModal } from '../common/AlertModal';
 
 interface UserAccountBoxProps {
   currentUserUid: string | undefined;
@@ -17,6 +18,22 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
+
+  // 얼럿 모달
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [alertModalMessage, setAlertModalMessage] = useState('');
+
+  // 얼럿 모달 열기
+  const openAlertModal = (message: string) => {
+    setAlertModalOpen(true);
+    setAlertModalMessage(message);
+  };
+
+  // 얼럿 모달 닫기
+  const closeAlertModal = () => {
+    setAlertModalOpen(false);
+  };
+
   // 재료 입력
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,7 +47,7 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
 
     // 한글만 입력되었는지 검사
     if (!koreanOnly.test(inputValue)) {
-      alert('재료는 한글 단어만 입력 가능합니다.');
+      openAlertModal('재료는 한글 단어만 입력 가능합니다.');
       setInputValue('');
       return;
     }
@@ -47,7 +64,7 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
         const ingredients = userDoc.data()['users-ingredients'] || [];
 
         if (ingredients.length >= 20) {
-          alert('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
+          openAlertModal('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
           setInputValue('');
           return;
         }
@@ -55,7 +72,7 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
         if (!ingredients.includes(inputValue)) {
           ingredients.push(inputValue);
         } else {
-          alert('이미 등록된 재료입니다.');
+          openAlertModal('이미 등록된 재료입니다.');
           setInputValue('');
           return;
         }
@@ -75,7 +92,7 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
       getMyIngredients();
     } catch (error) {
       console.error('냉장고에 재료를 추가하지 못했습니다.', error);
-      alert('냉장고에 재료를 추가하지 못했습니다.');
+      openAlertModal('냉장고에 재료를 추가하지 못했습니다.');
     }
   };
 
@@ -230,6 +247,9 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
           </MyLikesWrapper>
         </UserItem>
       </UserAccounttWrapper>
+      {alertModalOpen && (
+        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
+      )}
     </>
   );
 };
