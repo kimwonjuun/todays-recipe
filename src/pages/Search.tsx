@@ -107,7 +107,7 @@ const Search = () => {
             ) : (
               <>
                 <ResultWrapper isFiltered={filteredRecipes.length > 0}>
-                  검색 결과가 없습니다 :(
+                  검색 결과가 없습니다. 🫤
                 </ResultWrapper>
                 <SearchForm
                   value={inputValue}
@@ -120,7 +120,7 @@ const Search = () => {
                     navigate('/recipe');
                   }}
                 >
-                  검색하지 않고 레시피를 구경하고 싶다면?
+                  검색하지 않고 레시피를 구경하고 싶다면? 🔍
                 </Paragraph>
               </>
             )}
