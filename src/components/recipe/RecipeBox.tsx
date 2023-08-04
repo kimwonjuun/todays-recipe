@@ -211,11 +211,8 @@ const TypeWrapper = styled.div`
   height: 2rem;
   display: flex;
   flex-direction: column;
-  /* justify-content: left; */
   flex-wrap: wrap;
   font-size: 1.75rem;
-
-  /* background-color: yellow; */
 `;
 
 const CategoriesWrapper = styled.div`
@@ -267,7 +264,6 @@ const SortButton = styled.p<{ isSelected: boolean }>`
 const RecipeWrapper = styled.div`
   flex-wrap: wrap;
   display: flex;
-  /* justify-content: space-between; */
   margin: 0 auto;
   padding: 5rem 0;
   overflow: hidden;

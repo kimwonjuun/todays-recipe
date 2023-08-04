@@ -127,7 +127,6 @@ const BoxWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
-  /* justify-content: space-around; */
   align-items: center;
 
   background-color: #fff;
@@ -172,37 +171,5 @@ const EditApiButtonWrapper = styled.div`
     height: 100%;
     object-fit: cover;
     cursor: pointer;
-  }
-`;
-
-const FormWrapper = styled.form`
-  position: relative;
-`;
-
-const Input = styled.input`
-  width: 35rem;
-  height: 2.5rem;
-  border-radius: 1rem;
-  border: 0.2rem solid ${COLORS.blue1};
-  font-size: 1.25rem;
-  outline: none;
-  text-align: center;
-`;
-
-const SubmitButton = styled.button`
-  position: absolute;
-  right: 0rem;
-  width: 5rem;
-  height: 3rem;
-  border-radius: 1rem;
-  border: 0.2rem solid ${COLORS.blue1};
-  font-size: 1.25rem;
-  background-color: ${COLORS.blue1};
-  color: white;
-  cursor: pointer;
-  outline: none;
-
-  &:hover {
-    background-color: ${COLORS.blue2};
   }
 `;

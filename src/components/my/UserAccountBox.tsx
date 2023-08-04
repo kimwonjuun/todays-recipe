@@ -286,7 +286,6 @@ const CategoriesWrapper = styled.div`
 `;
 
 const FormWarpper = styled.div`
-  /* height: 4rem; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -380,18 +379,5 @@ const MyLikes = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-`;
-
-const LikedRecipeItem = styled.div`
-  padding: 0.5rem 1rem;
-  margin: 0.5rem;
-  background-color: ${COLORS.blue1};
-  color: #fff;
-  border-radius: 1rem;
-  font-size: 1.25rem;
-  cursor: pointer;
-  &:hover {
-    background-color: ${COLORS.blue2};
   }
 `;

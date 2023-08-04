@@ -80,9 +80,9 @@ export const EditProfileModal = ({
         photoURL: tempFileURL || photoURL, // 사용자가 이미지를 업로드한 경우 tempFileURL을 사용
       })
         .then(() => {
+          openAlertModal('프로필 수정 완료');
           closeModal();
           setPhotoURL(tempFileURL || photoURL); // photoURL 업데이트
-          openAlertModal('프로필 수정 완료');
         })
         .catch((error) => {
           console.log(error);
@@ -210,8 +210,6 @@ const Modal = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
-  /* background-color: yellow; */
 `;
 
 const CloseButtonWrapper = styled.div`
@@ -231,8 +229,6 @@ const BottomWrapper = styled.div`
   width: 18rem;
   display: flex;
   flex-direction: column;
-  /* margin-top: ; */
-  /* justify-content: center; */
   align-items: center;
   height: 40%;
   position: relative;
@@ -288,12 +284,8 @@ const SubmitButton = styled.button`
   border: 0.175rem solid ${COLORS.blue1};
   border-radius: 1rem;
   background-color: ${COLORS.blue1};
-
   color: white;
   cursor: pointer;
-  /* &:hover {
-    background-color: ${COLORS.blue2};
-  } */
 
   border: ${({ disabled }) =>
     disabled ? 'none' : `0.25rem solid ${COLORS.blue1}`};

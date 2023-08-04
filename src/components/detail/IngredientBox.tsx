@@ -81,12 +81,12 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
         setLike(true);
       }
     } catch (error) {
-      console.error('레시피 찜 처리에 실패했습니다.', error);
+      console.error('레시피 찜에 실패했습니다.', error);
+      openAlertModal('레시피 찜에 실패했습니다.');
     }
   };
 
   // 디테일 페이지에서 좋아요 내역 출력하기
-
   const getLike = async () => {
     if (!currentUserUid) {
       return;
@@ -184,10 +184,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
 const TopWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  /* gap: 1rem; */
   margin-bottom: 1rem;
-
-  /* background-color: blue; */
 `;
 
 const CardWrapper = styled.div`
@@ -226,7 +223,6 @@ const Title = styled.div`
 const LikeWrapper = styled.div`
   height: 5.5rem;
   display: flex;
-  /* align-items: center; */
   justify-content: center;
 `;
 
@@ -244,10 +240,7 @@ const Like = styled.div`
 const IngredientWrapper = styled.div`
   width: 53.5rem;
   height: 35rem;
-  /* margin: 1rem 0; */
-  /* display: flex; */
   flex-direction: column;
-  /* justify-content: center; */
 `;
 
 const Ingredient = styled.div`
@@ -269,10 +262,6 @@ const Ingredient = styled.div`
     margin-bottom: 1rem;
   }
 
-  /* &:nth-child(2) {
-    height: 19rem;
-  } */
-
   h1 {
     margin-bottom: 1.5rem;
   }
@@ -284,8 +273,6 @@ const List = styled.div`
 
   display: flex;
   justify-content: space-between;
-
-  /* background-color: yellow; */
 `;
 
 const Item = styled.div`

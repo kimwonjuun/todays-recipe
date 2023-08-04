@@ -58,14 +58,7 @@ const BoxWrapper = styled.div`
   height: 30rem;
   display: flex;
   flex-direction: column;
-  /* justify-content: space-around; */
   align-items: center;
-  /* p {
-    &:hover {
-      color: ${COLORS.blue1};
-      cursor: pointer;
-    }
-  } */
   background-color: #fff;
   border-radius: 1rem;
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
@@ -82,12 +75,10 @@ const Title = styled.div`
 `;
 
 const Contents = styled.div`
-  /* width: inherit; */
   margin: 3.5rem 0;
   height: 27rem;
   display: flex;
   align-items: center;
-  /* justify-content: space-evenly; */
   flex-direction: column;
 `;
 
