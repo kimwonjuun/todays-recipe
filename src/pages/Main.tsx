@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { SearchForm } from '../components/common/SearchForm';
 import { AlertModal } from '../components/common/AlertModal';
+import { koreanOnly } from '../utils/regex';
 
 const Main = () => {
   // 검색창
@@ -34,8 +35,10 @@ const Main = () => {
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!inputValue.trim()) {
-      openAlertModal('키워드를 입력 후 검색해주세요.');
+    // 한글만 입력되었는지 검사
+    if (!inputValue.trim() || !koreanOnly.test(inputValue)) {
+      openAlertModal('재료는 한글 단어만 입력 가능합니다.');
+      setInputValue('');
       return;
     }
 
