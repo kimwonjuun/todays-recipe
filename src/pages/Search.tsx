@@ -8,6 +8,7 @@ import { SearchForm } from '../components/common/SearchForm';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 import { Loading } from '../components/common/Loading';
 import { RecipeCard } from '../components/common/RecipeCard';
+import { AlertModal } from '../components/common/AlertModal';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -21,6 +22,9 @@ const Search = () => {
   const [inputValue, setInputValue] = useState<string>('');
   // 로딩 상태
   const [loading, setLoading] = useState<boolean>(true);
+  // 얼럿 모달
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [alertModalMessage, setAlertModalMessage] = useState('');
 
   useEffect(() => {
     // 아직 레시피 데이터가 없으면 실행하지 않음
@@ -49,7 +53,7 @@ const Search = () => {
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!inputValue.trim()) {
-      alert('검색어 입력 후 버튼을 클릭해주세요.');
+      openAlertModal('키워드를 입력 후 검색해주세요.');
       return;
     }
     navigate(`/search/${inputValue}`);
@@ -59,8 +63,22 @@ const Search = () => {
   const { currentPage } = useInfiniteScroll();
   const showRecipes = filteredRecipes.slice(0, currentPage * 8);
 
+  // 얼럿 모달 열기
+  const openAlertModal = (message: string) => {
+    setAlertModalOpen(true);
+    setAlertModalMessage(message);
+  };
+
+  // 얼럿 모달 닫기
+  const closeAlertModal = () => {
+    setAlertModalOpen(false);
+  };
+
   return (
     <>
+      {alertModalOpen && (
+        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
+      )}
       <PageWrapper>
         {loading ? (
           <Loading />
@@ -138,7 +156,6 @@ const BoxWrapper = styled.div<{ isFiltered: boolean }>`
 const ResultWrapper = styled.div<{ isFiltered: boolean }>`
   flex-wrap: wrap;
   display: flex;
-  /* color: ${COLORS.blue1}; */
   margin-top: ${({ isFiltered }) => (isFiltered ? '5rem' : '')};
 `;
 const RecipeWrapper = styled.div`
@@ -147,8 +164,6 @@ const RecipeWrapper = styled.div`
   margin: 0 auto;
   padding: 5rem 0;
   overflow: hidden;
-
-  /* background-color: yellow; */
 `;
 
 const Paragraph = styled.p`
