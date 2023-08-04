@@ -11,12 +11,11 @@ import { RecipeCard } from '../components/common/RecipeCard';
 
 const My = () => {
   // 로그인 상태 확인
-  // 새로고침시 에러X
-  const user = authService.currentUser;
-  const currentUserUid = user?.uid;
   const isLoggedIn = sessionStorage.getItem(
     `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
   );
+  const user = JSON.parse(isLoggedIn ?? '');
+  const currentUserUid = user.uid;
 
   // 비로그인시 마이페이지 접근 불가 -> 메인으로
   const navigate = useNavigate();
