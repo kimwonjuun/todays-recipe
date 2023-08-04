@@ -7,8 +7,6 @@ import { useRecipeData } from '../hooks/useRecipeData';
 import { Loading } from '../components/common/Loading';
 import { IngredientBox } from '../components/detail/IngredientBox';
 import { StepsBox } from '../components/detail/StepsBox';
-// import { useRecoilValue } from 'recoil';
-// import { RecipeDataAtom } from '../recoil/recipeState';
 
 const Detail = () => {
   // Recipe/RecipeBox, Search에서 받아온 각 레시피가 가지고 있는 고유한 id
@@ -16,7 +14,6 @@ const Detail = () => {
 
   // useRecipeData를 사용하여 레시피 데이터 받아오기
   const recipeData = useRecipeData();
-  // const recipeData2 = useRecoilValue(RecipeDataAtom);
 
   // 특정 레시피를 담아줄 state
   const [recipe, setRecipe] = useState<Recipe | null>(null);

@@ -1,9 +1,22 @@
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { EditHistoryBox } from '../components/admin/EditHistoryBox';
 import { EditFormBox } from '../components/admin/EditFormBox';
+import { firebaseConfig } from '../apis/firebase';
 
 const Admin = () => {
+  const isLoggedIn = sessionStorage.getItem(
+    `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
+  );
+  const user = JSON.parse(isLoggedIn ?? '{}');
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    user.email === 'test@test.com' ? navigate('/admin') : navigate('/');
+  }, []);
+
   return (
     <>
       <PageWrapper>
