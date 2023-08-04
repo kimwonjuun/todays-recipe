@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
@@ -42,7 +42,6 @@ const PageWrapper = styled.div`
   background-color: ${COLORS.backGround};
 `;
 const BoxWrapper = styled.div`
-  /* width: 150rem; */
   width: 100rem;
   height: 40rem;
   display: flex;
@@ -50,7 +49,4 @@ const BoxWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
   font-size: 2rem;
-  /* margin-top: 8rem; */
-
-  /* background-color: yellow; */
 `;
