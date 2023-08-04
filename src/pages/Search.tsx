@@ -97,13 +97,13 @@ const Search = () => {
                   onSubmit={handleSearchSubmit}
                   placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
                 />
-                <CustomP
+                <Paragraph
                   onClick={() => {
                     navigate('/recipe');
                   }}
                 >
                   검색하지 않고 레시피를 구경하고 싶다면?
-                </CustomP>
+                </Paragraph>
               </>
             )}
           </BoxWrapper>
@@ -151,7 +151,7 @@ const RecipeWrapper = styled.div`
   /* background-color: yellow; */
 `;
 
-const CustomP = styled.p`
+const Paragraph = styled.p`
   cursor: pointer;
   &:hover {
     color: ${COLORS.blue2};

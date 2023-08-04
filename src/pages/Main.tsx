@@ -34,13 +34,6 @@ const Main = () => {
             onSubmit={handleSearchSubmit}
             placeholder="처리하고 싶은 재료(ex. 연두부) 또는 하고 싶은 요리(ex. 카프레제)를 검색하세요."
           />
-          {/* <CustomP
-            onClick={() => {
-              navigate('/recipe');
-            }}
-          >
-            검색하지 않고 레시피를 구경하고 싶다면?
-          </CustomP> */}
         </BoxWrapper>
       </PageWrapper>
     </>
