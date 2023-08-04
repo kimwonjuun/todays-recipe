@@ -6,6 +6,7 @@ import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { RecipeCard } from '../common/RecipeCard';
 import { AlertModal } from '../common/AlertModal';
+import { koreanOnly } from '../../utils/regex';
 
 interface UserAccountBoxProps {
   currentUserUid: string | undefined;
@@ -44,7 +45,6 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
     }
 
     // 한글만 입력되었는지 검사
-    const koreanOnly = /^[가-힣]*$/;
     if (!inputValue.trim() || !koreanOnly.test(inputValue)) {
       openAlertModal('재료는 한글 단어만 입력 가능합니다.');
       setInputValue('');
