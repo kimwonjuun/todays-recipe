@@ -70,6 +70,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
   };
 
   // 디테일 페이지에서 좋아요 내역 출력하기
+
   const getLike = async () => {
     if (!currentUserUid) {
       return;
@@ -82,7 +83,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
 
     if (userDoc.exists()) {
       const likes = userDoc.data()['users-likes'] || [];
-      if (likes.includes(recipe.name)) {
+      if (likes.some((item: Recipe) => item.id === recipe.id)) {
         setLike(true);
       }
     }
@@ -90,7 +91,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
 
   useEffect(() => {
     getLike();
-  }, [getLike]);
+  }, []);
 
   return (
     <>
