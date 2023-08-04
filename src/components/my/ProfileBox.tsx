@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { authService } from '../../apis/firebase';
 import { User } from 'firebase/auth';
+import { AlertModal } from '../common/AlertModal';
+import { useState } from 'react';
 
 interface ProfileBoxProps {
   openModal: () => void;
@@ -13,12 +15,27 @@ interface ProfileBoxProps {
 export const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
   const navigate = useNavigate();
 
+  // 얼럿 모달
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [alertModalMessage, setAlertModalMessage] = useState('');
+
+  // 얼럿 모달 열기
+  const openAlertModal = (message: string) => {
+    setAlertModalOpen(true);
+    setAlertModalMessage(message);
+  };
+
+  // 얼럿 모달 닫기
+  const closeAlertModal = () => {
+    setAlertModalOpen(false);
+  };
+
   // 로그아웃
   const handleLogout = () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
       return authService.signOut().then(() => {
         sessionStorage.clear();
-        alert('로그아웃 되었습니다.');
+        openAlertModal('로그아웃 되었습니다.');
         navigate('/', { replace: true });
       });
     } else {
@@ -44,6 +61,9 @@ export const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
           <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
         </LogoutBox>
       </ProfileWrapper>
+      {alertModalOpen && (
+        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
+      )}
     </>
   );
 };
