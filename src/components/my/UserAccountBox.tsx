@@ -313,16 +313,17 @@ const MyRefrigeratorWrapper = styled.div`
 `;
 
 const MyRefrigerator = styled.div`
-  width: 40rem;
+  width: 42.5rem;
+  height: 15rem;
   display: flex;
   align-content: center;
   flex-wrap: wrap;
-  padding: 2rem;
+  padding: 1.5rem;
   gap: 1rem;
   margin: 5rem 2.5rem;
 
   border-radius: 1rem;
-  border: 0.2rem solid ${COLORS.blue1};
+  border: 0.25rem solid ${COLORS.blue1};
 
   > p {
     width: 100%;
@@ -348,7 +349,7 @@ const IngredientItem = styled.div`
 `;
 
 const Img = styled.div`
-  width: 35rem;
+  width: 27.5rem;
   display: flex;
   align-items: center;
   justify-content: end;

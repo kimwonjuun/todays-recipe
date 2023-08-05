@@ -12,7 +12,8 @@ const My = () => {
   const isLoggedIn = sessionStorage.getItem(
     `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
   );
-  // const user = JSON.parse(isLoggedIn ?? ''); 이 코드로 props 내려줄 시 프로필 수정 및 회원 탈퇴 안됨.
+  // 이 코드로 props 내려줄 시 프로필 수정 및 회원 탈퇴 안됨.
+  // const user = JSON.parse(isLoggedIn ?? '');
   const user = authService.currentUser;
   const currentUserUid = user?.uid ?? undefined;
 

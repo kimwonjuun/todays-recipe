@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import COLORS from '../../styles/colors';
 import { useState } from 'react';
 import { collection, orderBy, query, onSnapshot } from 'firebase/firestore';
 import { dbService } from '../../apis/firebase';
