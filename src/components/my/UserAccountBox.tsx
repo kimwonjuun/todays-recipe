@@ -181,13 +181,13 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
           <CategoriesWrapper>
             <Category
               onClick={() => handleTabChange('나의 냉장고')}
-              isSelected={currentTab === '나의 냉장고'}
+              data-is-selected={currentTab === '나의 냉장고'}
             >
               나의 냉장고
             </Category>
             <Category
               onClick={() => handleTabChange('찜한 레시피')}
-              isSelected={currentTab === '찜한 레시피'}
+              data-is-selected={currentTab === '찜한 레시피'}
             >
               찜한 레시피
             </Category>
@@ -297,11 +297,12 @@ const TopWrapper = styled.div`
   display: flex;
 `;
 
-const Category = styled.div<{ isSelected: boolean }>`
+const Category = styled.div<{ 'data-is-selected': boolean }>`
   position: relative;
   height: 2rem;
   cursor: pointer;
-  color: ${({ isSelected }) => (isSelected ? COLORS.blue2 : 'inherit')};
+  color: ${({ 'data-is-selected': isSelected }) =>
+    isSelected ? COLORS.blue2 : 'inherit'};
   &:hover {
     color: ${COLORS.blue2};
   }

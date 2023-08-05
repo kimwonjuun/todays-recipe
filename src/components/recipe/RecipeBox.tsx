@@ -60,12 +60,6 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
     setSelectedCategory(category);
   };
 
-  // 필터링된 레시피 뿌려주기 (기존)
-  // const filteredRecipes =
-  //   selectedCategory && selectedCategory !== '전체 레시피'
-  //     ? recipeData.filter((recipe: Recipe) => recipe.type === selectedCategory)
-  //     : recipeData;
-
   // 필터링된 레시피 뿌려주기 (나의 냉장고 추가 후)
   const filteredRecipes =
     selectedCategory && selectedCategory !== '전체 레시피'
@@ -119,49 +113,49 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
             <>
               <CategoryButton
                 onClick={() => handleCategoryButton('전체 레시피')}
-                isSelected={selectedCategory === '전체 레시피'}
+                data-is-selected={selectedCategory === '전체 레시피'}
               >
                 전체 레시피
               </CategoryButton>
               <CategoryButton
                 onClick={() => handleCategoryButton('밥')}
-                isSelected={selectedCategory === '밥'}
+                data-is-selected={selectedCategory === '밥'}
               >
                 밥
               </CategoryButton>
               <CategoryButton
                 onClick={() => handleCategoryButton('일품')}
-                isSelected={selectedCategory === '일품'}
+                data-is-selected={selectedCategory === '일품'}
               >
                 일품
               </CategoryButton>
               <CategoryButton
                 onClick={() => handleCategoryButton('국&찌개')}
-                isSelected={selectedCategory === '국&찌개'}
+                data-is-selected={selectedCategory === '국&찌개'}
               >
                 국&찌개
               </CategoryButton>
               <CategoryButton
                 onClick={() => handleCategoryButton('반찬')}
-                isSelected={selectedCategory === '반찬'}
+                data-is-selected={selectedCategory === '반찬'}
               >
                 반찬
               </CategoryButton>
               <CategoryButton
                 onClick={() => handleCategoryButton('후식')}
-                isSelected={selectedCategory === '후식'}
+                data-is-selected={selectedCategory === '후식'}
               >
                 후식
               </CategoryButton>
               <CategoryButton
                 onClick={() => handleCategoryButton('기타')}
-                isSelected={selectedCategory === '기타'}
+                data-is-selected={selectedCategory === '기타'}
               >
                 기타
               </CategoryButton>
               <CategoryButton
                 onClick={() => handleCategoryButton('나의 냉장고')}
-                isSelected={selectedCategory === '나의 냉장고'}
+                data-is-selected={selectedCategory === '나의 냉장고'}
               >
                 나의 냉장고
               </CategoryButton>
@@ -175,7 +169,7 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
                 sortType === '저칼로리 순' ? '기존 정렬 상태' : '저칼로리 순'
               )
             }
-            isSelected={sortType === '저칼로리 순'}
+            data-is-selected={sortType === '저칼로리 순'}
           >
             저칼로리 순
           </SortButton>
@@ -185,7 +179,7 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
                 sortType === '가나다 순' ? '기존 정렬 상태' : '가나다 순'
               )
             }
-            isSelected={sortType === '가나다 순'}
+            data-is-selected={sortType === '가나다 순'}
           >
             가나다 순
           </SortButton>
@@ -241,19 +235,22 @@ const SortingWrapper = styled.div`
 const CategoryTitle = styled.p`
   margin-left: 2.25rem;
 `;
-const CategoryButton = styled.p<{ isSelected: boolean }>`
+
+const CategoryButton = styled.p<{ 'data-is-selected': boolean }>`
   font-size: 1.25rem;
   margin-top: 0.5rem;
   cursor: pointer;
-  color: ${({ isSelected }) => (isSelected ? COLORS.blue2 : 'inherit')};
+  color: ${({ 'data-is-selected': isSelected }) =>
+    isSelected ? COLORS.blue2 : 'inherit'};
   &:hover {
     color: ${COLORS.blue2};
   }
 `;
 
-const SortButton = styled.p<{ isSelected: boolean }>`
+const SortButton = styled.p<{ 'data-is-selected': boolean }>`
   cursor: pointer;
-  color: ${({ isSelected }) => (isSelected ? COLORS.blue2 : 'inherit')};
+  color: ${({ 'data-is-selected': isSelected }) =>
+    isSelected ? COLORS.blue2 : 'inherit'};
   &:hover {
     color: ${COLORS.blue2};
   }
