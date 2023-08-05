@@ -19,6 +19,12 @@ const Detail = () => {
   // recoil 도입
   const recipeData = useRecoilValue(RecipeDataState);
 
+  // 선택한 레시피를 담아줄 state
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+
+  // 로딩 상태
+  const [loading, setLoading] = useState<boolean>(true);
+
   // 전체 레시피와 선택한 레시피의 고유한 id가 같다면 출력
   useEffect(() => {
     const selectedRecipe = recipeData.find(
@@ -26,24 +32,21 @@ const Detail = () => {
     );
     if (selectedRecipe) {
       setRecipe(selectedRecipe);
+      setLoading(false);
     }
   }, [recipeData]);
-
-  // 선택한 레시피를 담아줄 state
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-  console.log('recipe: ', recipe);
-
-  if (!recipe) {
-    return <Loading />;
-  }
 
   return (
     <>
       <PageWrapper>
-        <BoxWrapper>
-          <IngredientBox recipe={recipe} />
-          <StepsBox recipe={recipe} />
-        </BoxWrapper>
+        {loading || !recipe ? (
+          <Loading />
+        ) : (
+          <BoxWrapper>
+            <IngredientBox recipe={recipe} />
+            <StepsBox recipe={recipe} />
+          </BoxWrapper>
+        )}
       </PageWrapper>
     </>
   );
