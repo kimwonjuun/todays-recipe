@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { Recipe } from '../types/Recipe';
-import { useRecipeData } from '../hooks/useRecipeData';
 import { Loading } from '../components/common/Loading';
 import { IngredientBox } from '../components/detail/IngredientBox';
 import { StepsBox } from '../components/detail/StepsBox';
@@ -18,7 +17,6 @@ const Detail = () => {
   // const recipeData = useRecipeData();
 
   // recoil 도입
-  useRecipeData();
   const recipeData = useRecoilValue(RecipeDataState);
   console.log('recipeData: ', recipeData);
 

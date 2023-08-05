@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { useRecipeData } from '../hooks/useRecipeData';
 import { Recipe } from '../types/Recipe';
 import { SearchForm } from '../components/common/SearchForm';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
@@ -20,7 +19,6 @@ const Search = () => {
   // const recipeData = useRecipeData();
 
   // recoil 도입
-  useRecipeData();
   const recipeData = useRecoilValue(RecipeDataState);
   console.log('recipeData: ', recipeData);
 
