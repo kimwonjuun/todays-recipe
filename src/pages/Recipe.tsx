@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { RecipeBox } from '../components/recipe/RecipeBox';
+import RecipeBox from '../components/recipe/RecipeBox';
 import { useState, useEffect } from 'react';
-import { Loading } from '../components/common/Loading';
+import Loading from '../components/common/Loading';
 import { RecipeDataState } from '../recoil/recipeState';
 import { useRecoilValue } from 'recoil';
 

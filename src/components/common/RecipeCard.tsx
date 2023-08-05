@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
 
-export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
+const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   const navigate = useNavigate();
   const handleCardClick = () => {
     navigate(`/detail/${recipe.id}`);
@@ -23,6 +23,8 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
     </>
   );
 };
+
+export default RecipeCard;
 
 const RecipeCardWrapper = styled.div`
   border-radius: 1rem;

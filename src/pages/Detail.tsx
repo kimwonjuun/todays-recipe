@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { Recipe } from '../types/Recipe';
-import { Loading } from '../components/common/Loading';
-import { IngredientBox } from '../components/detail/IngredientBox';
-import { StepsBox } from '../components/detail/StepsBox';
+import Loading from '../components/common/Loading';
+import IngredientBox from '../components/detail/IngredientBox';
+import StepsBox from '../components/detail/StepsBox';
 import { RecipeDataState } from '../recoil/recipeState';
 import { useRecoilValue } from 'recoil';
 

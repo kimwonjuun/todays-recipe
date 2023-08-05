@@ -1,18 +1,18 @@
 import { styled } from 'styled-components';
 import COLORS from '../../styles/colors';
-import { SubmitForm } from '../common/SubmitForm';
+import SubmitForm from '../common/SubmitForm';
 import { dbService } from '../../apis/firebase';
 import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
-import { RecipeCard } from '../common/RecipeCard';
-import { AlertModal } from '../common/AlertModal';
+import RecipeCard from '../common/RecipeCard';
+import AlertModal from '../common/AlertModal';
 import { koreanOnly } from '../../utils/regex';
 
 interface UserAccountBoxProps {
   currentUserUid: string | undefined;
 }
 
-export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
+const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
   // 인풋
   const [inputValue, setInputValue] = useState<string>('');
 
@@ -252,6 +252,8 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
     </>
   );
 };
+
+export default UserAccountBox;
 
 const UserAccounttWrapper = styled.div`
   width: 75rem;

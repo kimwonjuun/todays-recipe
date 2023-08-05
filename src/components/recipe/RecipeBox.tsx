@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
-import { RecipeCard } from '../common/RecipeCard';
+import RecipeCard from '../common/RecipeCard';
 import { doc, getDoc } from 'firebase/firestore';
 import { dbService, firebaseConfig } from '../../apis/firebase';
 
@@ -12,7 +12,7 @@ interface RecipeProps {
   recipeData: Recipe[];
 }
 
-export const RecipeBox = ({ recipeData }: RecipeProps) => {
+const RecipeBox = ({ recipeData }: RecipeProps) => {
   // 로그인 상태 확인
   const isLoggedIn = sessionStorage.getItem(
     `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
@@ -202,6 +202,8 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
     </>
   );
 };
+
+export default RecipeBox;
 
 const TypeWrapper = styled.div`
   width: 100%;

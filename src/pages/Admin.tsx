@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { EditHistoryBox } from '../components/admin/EditHistoryBox';
-import { EditFormBox } from '../components/admin/EditFormBox';
+import EditHistoryBox from '../components/admin/EditHistoryBox';
+import EditFormBox from '../components/admin/EditFormBox';
 import { firebaseConfig } from '../apis/firebase';
 
 const Admin = () => {

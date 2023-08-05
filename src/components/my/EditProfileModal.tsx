@@ -5,7 +5,7 @@ import COLORS from '../../styles/colors';
 import { storage } from '../../apis/firebase';
 import { User, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { AlertModal } from '../common/AlertModal';
+import AlertModal from '../common/AlertModal';
 
 interface EditProfileModalProps {
   setIsModalOpen: Function;
@@ -14,7 +14,7 @@ interface EditProfileModalProps {
   setPhotoURL: Function;
 }
 
-export const EditProfileModal = ({
+const EditProfileModal = ({
   setIsModalOpen,
   user,
   photoURL,
@@ -184,6 +184,8 @@ export const EditProfileModal = ({
     </>
   );
 };
+
+export default EditProfileModal;
 
 const ModalWrapper = styled.div`
   position: fixed;

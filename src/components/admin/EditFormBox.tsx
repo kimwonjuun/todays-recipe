@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
 import { dbService } from '../../apis/firebase';
 import axios from 'axios';
-import { SubmitForm } from '../common/SubmitForm';
-import { AlertModal } from '../common/AlertModal';
+import SubmitForm from '../common/SubmitForm';
+import AlertModal from '../common/AlertModal';
 
-export const EditFormBox = () => {
+const EditFormBox = () => {
   // 얼럿 모달
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [alertModalMessage, setAlertModalMessage] = useState('');
@@ -142,6 +142,8 @@ export const EditFormBox = () => {
     </>
   );
 };
+
+export default EditFormBox;
 
 const BoxWrapper = styled.div`
   width: 45rem;

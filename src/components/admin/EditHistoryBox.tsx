@@ -10,7 +10,7 @@ interface EditHistory {
   updatedAt: string;
 }
 
-export const EditHistoryBox = () => {
+const EditHistoryBox = () => {
   const [editHistoryList, setEditHistoryList] = useState<EditHistory[]>([]);
 
   // 수정 사항 가져오기
@@ -57,6 +57,8 @@ export const EditHistoryBox = () => {
     </>
   );
 };
+
+export default EditHistoryBox;
 
 const BoxWrapper = styled.div`
   width: 45rem;

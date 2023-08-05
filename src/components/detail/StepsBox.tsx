@@ -6,7 +6,7 @@ interface RecipeProps {
   recipe: Recipe;
 }
 
-export const StepsBox = ({ recipe }: RecipeProps) => {
+const StepsBox = ({ recipe }: RecipeProps) => {
   return (
     <>
       <BottomWrapper>
@@ -38,6 +38,8 @@ export const StepsBox = ({ recipe }: RecipeProps) => {
     </>
   );
 };
+
+export default StepsBox;
 
 const BottomWrapper = styled.div`
   background-color: #fff;

@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { Recipe } from '../../types/Recipe';
 import { authService, dbService } from '../../apis/firebase';
 import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
-import { AlertModal } from '../common/AlertModal';
+import AlertModal from '../common/AlertModal';
 
 interface RecipeProps {
   recipe: Recipe;
 }
 
-export const IngredientBox = ({ recipe }: RecipeProps) => {
+const IngredientBox = ({ recipe }: RecipeProps) => {
   const user = authService.currentUser;
   const currentUserUid = user?.uid;
   const [like, setLike] = useState(false);
@@ -180,6 +180,8 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
     </>
   );
 };
+
+export default IngredientBox;
 
 const TopWrapper = styled.div`
   display: flex;

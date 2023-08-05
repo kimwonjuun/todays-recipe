@@ -9,9 +9,9 @@ import { authService } from '../../apis/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
 import styled from 'styled-components';
-import { AlertModal } from '../common/AlertModal';
+import AlertModal from '../common/AlertModal';
 
-export const SignUpModal = ({
+const SignUpModal = ({
   setLoginModalIsOpen,
   setSignUpModalIsOpen,
 }: {
@@ -231,6 +231,8 @@ export const SignUpModal = ({
     </>
   );
 };
+
+export default SignUpModal;
 
 const ModalWrapper = styled.div`
   position: fixed;

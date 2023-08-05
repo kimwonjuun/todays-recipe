@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { authService } from '../../apis/firebase';
 import { User } from 'firebase/auth';
-import { AlertModal } from '../common/AlertModal';
+import AlertModal from '../common/AlertModal';
 import { useState } from 'react';
 
 interface ProfileBoxProps {
@@ -12,7 +12,7 @@ interface ProfileBoxProps {
   user: User | null;
 }
 
-export const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
+const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
   const navigate = useNavigate();
 
   // 얼럿 모달
@@ -69,6 +69,8 @@ export const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
     </>
   );
 };
+
+export default ProfileBox;
 
 const ProfileWrapper = styled.div`
   width: 20rem;

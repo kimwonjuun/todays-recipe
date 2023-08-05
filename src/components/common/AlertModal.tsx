@@ -7,7 +7,7 @@ interface AlertModalProps {
   onClose: () => void;
 }
 
-export const AlertModal = ({ message, onClose }: AlertModalProps) => {
+const AlertModal = ({ message, onClose }: AlertModalProps) => {
   const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -23,6 +23,8 @@ export const AlertModal = ({ message, onClose }: AlertModalProps) => {
     </ModalWrapper>
   );
 };
+
+export default AlertModal;
 
 const ModalWrapper = styled.div`
   position: fixed;

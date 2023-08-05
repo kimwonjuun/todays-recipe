@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { SearchForm } from '../components/common/SearchForm';
-import { AlertModal } from '../components/common/AlertModal';
+import SearchForm from '../components/common/SearchForm';
+import AlertModal from '../components/common/AlertModal';
 import { koreanOnly } from '../utils/regex';
 
 const Main = () => {

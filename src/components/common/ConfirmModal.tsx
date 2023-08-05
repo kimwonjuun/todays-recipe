@@ -8,11 +8,7 @@ interface ConfirmModalProps {
   onCancel: () => void;
 }
 
-export const ConfirmModal = ({
-  message,
-  onConfirm,
-  onCancel,
-}: ConfirmModalProps) => {
+const ConfirmModal = ({ message, onConfirm, onCancel }: ConfirmModalProps) => {
   const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onCancel();
@@ -31,6 +27,8 @@ export const ConfirmModal = ({
     </ModalWrapper>
   );
 };
+
+export default ConfirmModal;
 
 const ModalWrapper = styled.div`
   position: fixed;

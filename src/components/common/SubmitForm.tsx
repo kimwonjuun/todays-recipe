@@ -9,7 +9,7 @@ interface SubmitFormProps {
   maxLength: number;
 }
 
-export const SubmitForm = ({
+const SubmitForm = ({
   value,
   onSubmit,
   onChange,
@@ -31,6 +31,8 @@ export const SubmitForm = ({
     </>
   );
 };
+
+export default SubmitForm;
 
 const FormWrapper = styled.form`
   width: 35.6rem;

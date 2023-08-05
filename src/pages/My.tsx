@@ -3,9 +3,9 @@ import COLORS from '../styles/colors';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService, firebaseConfig } from '../apis/firebase';
-import { ProfileBox } from '../components/my/ProfileBox';
-import { EditProfileModal } from '../components/my/EditProfileModal';
-import { UserAccountBox } from '../components/my/UserAccountBox';
+import ProfileBox from '../components/my/ProfileBox';
+import EditProfileModal from '../components/my/EditProfileModal';
+import UserAccountBox from '../components/my/UserAccountBox';
 
 const My = () => {
   // 로그인 상태 확인
