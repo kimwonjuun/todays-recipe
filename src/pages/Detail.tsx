@@ -6,7 +6,7 @@ import { Recipe } from '../types/Recipe';
 import Loading from '../components/common/Loading';
 import IngredientBox from '../components/detail/IngredientBox';
 import StepsBox from '../components/detail/StepsBox';
-import { RecipeDataState } from '../recoil/recipeState';
+import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 
 const Detail = () => {

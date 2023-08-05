@@ -9,7 +9,7 @@ import Loading from '../components/common/Loading';
 import RecipeCard from '../components/common/RecipeCard';
 import AlertModal from '../components/common/AlertModal';
 import { koreanOnly } from '../utils/regex';
-import { RecipeDataState } from '../recoil/recipeState';
+import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 
 const Search = () => {

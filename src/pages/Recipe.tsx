@@ -3,7 +3,7 @@ import COLORS from '../styles/colors';
 import RecipeBox from '../components/recipe/RecipeBox';
 import { useState, useEffect } from 'react';
 import Loading from '../components/common/Loading';
-import { RecipeDataState } from '../recoil/recipeState';
+import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 
 const RecipePage = () => {

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { dbService } from '../apis/firebase';
 import { Recipe } from '../types/Recipe';
 import { collection, getDocs } from 'firebase/firestore';
-import { RecipeDataState } from '../recoil/recipeState';
+import { RecipeDataState } from '../recoil/atoms';
 import { useSetRecoilState } from 'recoil';
 
 export const useRecipeData = () => {
