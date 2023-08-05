@@ -2,15 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 
-interface AlertModalProps {
+interface ConfirmModalProps {
   message: string;
-  onClose: () => void;
+  onConfirm: () => void;
+  onCancel: () => void;
 }
 
-export const AlertModal = ({ message, onClose }: AlertModalProps) => {
+export const ConfirmModal = ({
+  message,
+  onConfirm,
+  onCancel,
+}: ConfirmModalProps) => {
   const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
-      onClose();
+      onCancel();
     }
   };
 
@@ -18,7 +23,10 @@ export const AlertModal = ({ message, onClose }: AlertModalProps) => {
     <ModalWrapper onClick={handleClickOutside}>
       <Content>
         <Text>{message}</Text>
-        <Button onClick={onClose}>확인</Button>
+        <Buttons>
+          <Button onClick={onCancel}>취소</Button>
+          <Button onClick={onConfirm}>확인</Button>
+        </Buttons>
       </Content>
     </ModalWrapper>
   );
@@ -67,4 +75,9 @@ const Button = styled.button`
   &:hover {
     background-color: ${COLORS.blue1};
   }
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  gap: 1rem;
 `;
