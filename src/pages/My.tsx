@@ -7,8 +7,6 @@ import ProfileBox from '../components/my/ProfileBox';
 import EditProfileModal from '../components/my/EditProfileModal';
 import UserAccountBox from '../components/my/UserAccountBox';
 import { User } from 'firebase/auth';
-import { useRecoilState } from 'recoil';
-import { UserDataState } from '../recoil/atoms';
 
 const My = () => {
   const navigate = useNavigate();
@@ -20,10 +18,7 @@ const My = () => {
   // 이 코드로 props 내려줄 시 새로고침 시 user 값 null.
   // const user = authService.currentUser;
 
-  // 기존
-  // const [user, setUser] = useState<User | null>(null);
-  // Recoil: RecipeDataState
-  const [user, setUser] = useRecoilState<User | null>(UserDataState);
+  const [user, setUser] = useState<User | null>(null);
   const currentUserUid = user?.uid ?? undefined;
   const [photoURL, setPhotoURL] = useState<any>(null);
 

@@ -111,7 +111,7 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
   };
   useEffect(() => {
     getMyIngredients();
-  }, []);
+  }, [currentUserUid]);
 
   // 재료 삭제
   const removeIngredient = async (ingredient: string) => {
@@ -172,7 +172,7 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
   };
   useEffect(() => {
     getMyLikedRecipes();
-  }, []);
+  }, [currentUserUid]);
 
   return (
     <>
