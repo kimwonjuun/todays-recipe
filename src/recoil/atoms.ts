@@ -5,3 +5,9 @@ export const RecipeDataState = atom<Recipe[]>({
   key: 'recipeDataState',
   default: [],
 });
+
+// export const UserDataState = atom([
+// key : 'userDataState',
+// default: {},
+
+// ]);

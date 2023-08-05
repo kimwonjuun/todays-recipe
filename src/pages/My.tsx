@@ -6,24 +6,35 @@ import { authService, firebaseConfig } from '../apis/firebase';
 import ProfileBox from '../components/my/ProfileBox';
 import EditProfileModal from '../components/my/EditProfileModal';
 import UserAccountBox from '../components/my/UserAccountBox';
+import { getAuth, User } from 'firebase/auth';
 
 const My = () => {
-  // 로그인 상태 확인
-  const isLoggedIn = sessionStorage.getItem(
-    `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
-  );
-  // 이 코드로 props 내려줄 시 프로필 수정 및 회원 탈퇴 안됨.
-  // const user = JSON.parse(isLoggedIn ?? '');
-  const user = authService.currentUser;
-  const currentUserUid = user?.uid ?? undefined;
-
-  // 비로그인시 마이페이지 접근 불가 -> 메인으로
   const navigate = useNavigate();
+  // 이 코드로 props 내려줄 시 프로필 수정 및 회원 탈퇴 안됨.
+  // const isLoggedIn = sessionStorage.getItem(
+  //   `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
+  // );
+  // const user = JSON.parse(isLoggedIn ?? '{}');
+  // 이 코드로 props 내려줄 시 새로고침 시 user 값 null.
+  // const user = authService.currentUser;
+
+  const [user, setUser] = useState<User | null>(null);
+  const currentUserUid = user?.uid ?? undefined;
+  const [photoURL, setPhotoURL] = useState<any>(null); // 프로필 이미지
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      navigate('/');
-    }
+    // user 객체 존재 시 setUser, setPhoURL 업데이트 아닐 시 메인으로 이동
+    const handleAuthStateChange = authService.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+        setPhotoURL(user.photoURL);
+      } else {
+        navigate('/');
+      }
+    });
+    return () => {
+      handleAuthStateChange();
+    };
   }, []);
 
   // 모달
@@ -31,9 +42,6 @@ const My = () => {
   const openModal = () => {
     setIsModalOpen(true);
   };
-
-  // 프로필 이미지
-  const [photoURL, setPhotoURL] = useState<any>(user?.photoURL);
 
   return (
     <>
