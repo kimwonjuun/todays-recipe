@@ -10,12 +10,19 @@ import { Loading } from '../components/common/Loading';
 import { RecipeCard } from '../components/common/RecipeCard';
 import { AlertModal } from '../components/common/AlertModal';
 import { koreanOnly } from '../utils/regex';
+import { RecipeDataState } from '../recoil/recipeState';
+import { useRecoilValue } from 'recoil';
 
 const Search = () => {
   const navigate = useNavigate();
 
-  // 레시피 데이터
-  const recipeData = useRecipeData();
+  // 기존 레시피 데이터 (훅)
+  // const recipeData = useRecipeData();
+
+  // recoil 도입
+  useRecipeData();
+  const recipeData = useRecoilValue(RecipeDataState);
+  console.log(recipeData);
 
   // main.tsx에서 넘어온 keyword
   const { keyword } = useParams<{ keyword: string }>();

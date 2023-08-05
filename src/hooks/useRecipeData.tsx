@@ -2,9 +2,15 @@ import { useState, useEffect } from 'react';
 import { dbService } from '../apis/firebase';
 import { Recipe } from '../types/Recipe';
 import { collection, getDocs } from 'firebase/firestore';
+import { RecipeDataState } from '../recoil/recipeState';
+import { useSetRecoilState } from 'recoil';
 
 export const useRecipeData = () => {
-  const [recipeData, setRecipeData] = useState<Recipe[]>([]);
+  // 기존 useState
+  // const [recipeData, setRecipeData] = useState<Recipe[]>([]);
+
+  // recoil 도입
+  const setRecipeData = useSetRecoilState(RecipeDataState);
 
   // 파이어베이스에서 Recipe-list 데이터 가져오기
   const getRecipeData = async () => {
@@ -24,5 +30,6 @@ export const useRecipeData = () => {
     getRecipeData();
   }, []);
 
-  return recipeData;
+  // 기존
+  // return recipeData;
 };

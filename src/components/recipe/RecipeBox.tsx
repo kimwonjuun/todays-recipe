@@ -4,7 +4,7 @@ import COLORS from '../../styles/colors';
 import { Recipe } from '../../types/Recipe';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import { RecipeCard } from '../common/RecipeCard';
-import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { dbService, firebaseConfig } from '../../apis/firebase';
 
 // import해온 Recipe 타입

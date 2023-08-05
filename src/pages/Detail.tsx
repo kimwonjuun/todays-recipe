@@ -7,13 +7,20 @@ import { useRecipeData } from '../hooks/useRecipeData';
 import { Loading } from '../components/common/Loading';
 import { IngredientBox } from '../components/detail/IngredientBox';
 import { StepsBox } from '../components/detail/StepsBox';
+import { RecipeDataState } from '../recoil/recipeState';
+import { useRecoilValue } from 'recoil';
 
 const Detail = () => {
   // Recipe/RecipeBox, Search에서 받아온 각 레시피가 가지고 있는 고유한 id
   const { id } = useParams<{ id: string }>();
 
-  // useRecipeData를 사용하여 레시피 데이터 받아오기
-  const recipeData = useRecipeData();
+  // 기존 레시피 데이터 (훅)
+  // const recipeData = useRecipeData();
+
+  // recoil 도입
+  useRecipeData();
+  const recipeData = useRecoilValue(RecipeDataState);
+  console.log(recipeData);
 
   // 특정 레시피를 담아줄 state
   const [recipe, setRecipe] = useState<Recipe | null>(null);
