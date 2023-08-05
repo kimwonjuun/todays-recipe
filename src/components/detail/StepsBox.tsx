@@ -66,10 +66,6 @@ const StepWrapper = styled.div`
   justify-content: space-around;
   height: 30rem;
   margin-bottom: 1rem;
-  /* padding: 1.25rem; */
-  /* gap: 2rem; */
-
-  /* background-color: ${COLORS.backGround}; */
 `;
 
 const StepsImg = styled.div`
@@ -87,8 +83,6 @@ const StepsText = styled.div`
   width: 30rem;
   height: 8rem;
   display: flex;
-  /* align-items: center; */
-  /* justify-content: center; */
   text-align: left;
 `;
 

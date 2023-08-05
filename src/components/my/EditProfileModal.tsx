@@ -5,6 +5,7 @@ import COLORS from '../../styles/colors';
 import { storage } from '../../apis/firebase';
 import { User, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { AlertModal } from '../common/AlertModal';
 
 interface EditProfileModalProps {
   setIsModalOpen: Function;
@@ -56,6 +57,21 @@ export const EditProfileModal = ({
     setDisplayName(editDisplayName);
   };
 
+  // 얼럿 모달
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [alertModalMessage, setAlertModalMessage] = useState('');
+
+  // 얼럿 모달 열기
+  const openAlertModal = (message: string) => {
+    setAlertModalOpen(true);
+    setAlertModalMessage(message);
+  };
+
+  // 얼럿 모달 닫기
+  const closeAlertModal = () => {
+    setAlertModalOpen(false);
+  };
+
   // 프로필 수정하기 버튼
   const handleProfileEdit = async () => {
     if (user) {
@@ -64,15 +80,17 @@ export const EditProfileModal = ({
         photoURL: tempFileURL || photoURL, // 사용자가 이미지를 업로드한 경우 tempFileURL을 사용
       })
         .then(() => {
-          alert('프로필 수정 완료');
+          openAlertModal('프로필 수정 완료');
           closeModal();
           setPhotoURL(tempFileURL || photoURL); // photoURL 업데이트
         })
         .catch((error) => {
-          alert('프로필 수정 실패');
+          console.log(error);
+          openAlertModal('프로필 수정 실패');
         });
     }
   };
+
   // 회원 탈퇴
   const handleDeleteAccount = async () => {
     if (window.confirm('회원 탈퇴를 진행하시겠습니까?')) {
@@ -80,10 +98,11 @@ export const EditProfileModal = ({
         try {
           await user.delete();
           sessionStorage.clear();
-          alert('회원 탈퇴가 완료되었습니다.');
+          openAlertModal('회원 탈퇴가 완료되었습니다.');
           navigate('/', { replace: true });
         } catch (error) {
-          alert(
+          console.log(error);
+          openAlertModal(
             '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
           );
         }
@@ -92,6 +111,7 @@ export const EditProfileModal = ({
       return;
     }
   };
+
   // 모달 닫기
   const closeModal = () => {
     setIsModalOpen(false);
@@ -113,7 +133,7 @@ export const EditProfileModal = ({
                 src={
                   tempPhotoURL ||
                   photoURL ||
-                  require('../../assets/default_image.png')
+                  require('../../assets/my/default_image.png')
                 }
               />
               <input
@@ -131,7 +151,7 @@ export const EditProfileModal = ({
                 onChange={uploadFirebase}
               />
               <ModalCamImg
-                src={require('../../assets/camera.png')}
+                src={require('../../assets/my/camera.png')}
                 onClick={onCameraClick}
               />
             </ModalImg>
@@ -157,6 +177,9 @@ export const EditProfileModal = ({
             </DeleteAccountBox>
           </BottomWrapper>
         </Modal>
+        {alertModalOpen && (
+          <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
+        )}
       </ModalWrapper>
     </>
   );
@@ -187,8 +210,6 @@ const Modal = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
-  /* background-color: yellow; */
 `;
 
 const CloseButtonWrapper = styled.div`
@@ -208,8 +229,6 @@ const BottomWrapper = styled.div`
   width: 18rem;
   display: flex;
   flex-direction: column;
-  /* margin-top: ; */
-  /* justify-content: center; */
   align-items: center;
   height: 40%;
   position: relative;
@@ -265,12 +284,8 @@ const SubmitButton = styled.button`
   border: 0.175rem solid ${COLORS.blue1};
   border-radius: 1rem;
   background-color: ${COLORS.blue1};
-
   color: white;
   cursor: pointer;
-  /* &:hover {
-    background-color: ${COLORS.blue2};
-  } */
 
   border: ${({ disabled }) =>
     disabled ? 'none' : `0.25rem solid ${COLORS.blue1}`};

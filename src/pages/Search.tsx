@@ -8,19 +8,41 @@ import { SearchForm } from '../components/common/SearchForm';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 import { Loading } from '../components/common/Loading';
 import { RecipeCard } from '../components/common/RecipeCard';
+import { AlertModal } from '../components/common/AlertModal';
+import { koreanOnly } from '../utils/regex';
 
 const Search = () => {
   const navigate = useNavigate();
+
   // 레시피 데이터
   const recipeData = useRecipeData();
+
   // main.tsx에서 넘어온 keyword
   const { keyword } = useParams<{ keyword: string }>();
+
   // 검색 결과
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
+
   // 검색창
   const [inputValue, setInputValue] = useState<string>('');
+
   // 로딩 상태
   const [loading, setLoading] = useState<boolean>(true);
+
+  // 얼럿 모달
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [alertModalMessage, setAlertModalMessage] = useState('');
+
+  // 얼럿 모달 열기
+  const openAlertModal = (message: string) => {
+    setAlertModalOpen(true);
+    setAlertModalMessage(message);
+  };
+
+  // 얼럿 모달 닫기
+  const closeAlertModal = () => {
+    setAlertModalOpen(false);
+  };
 
   useEffect(() => {
     // 아직 레시피 데이터가 없으면 실행하지 않음
@@ -48,8 +70,10 @@ const Search = () => {
   };
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!inputValue.trim()) {
-      alert('검색어 입력 후 버튼을 클릭해주세요.');
+    // 한글만 입력되었는지 검사
+    if (!inputValue.trim() || !koreanOnly.test(inputValue)) {
+      openAlertModal('재료는 한글 단어만 입력 가능합니다.');
+      setInputValue('');
       return;
     }
     navigate(`/search/${inputValue}`);
@@ -89,7 +113,7 @@ const Search = () => {
             ) : (
               <>
                 <ResultWrapper isFiltered={filteredRecipes.length > 0}>
-                  검색 결과가 없습니다 :(
+                  검색 결과가 없습니다. 🫤
                 </ResultWrapper>
                 <SearchForm
                   value={inputValue}
@@ -97,18 +121,21 @@ const Search = () => {
                   onSubmit={handleSearchSubmit}
                   placeholder="찾으시는 레시피가 없다면 다시 검색해주세요."
                 />
-                <CustomP
+                <Paragraph
                   onClick={() => {
                     navigate('/recipe');
                   }}
                 >
-                  검색하지 않고 레시피를 구경하고 싶다면?
-                </CustomP>
+                  검색하지 않고 레시피를 구경하고 싶다면? 🔍
+                </Paragraph>
               </>
             )}
           </BoxWrapper>
         )}
       </PageWrapper>
+      {alertModalOpen && (
+        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
+      )}
     </>
   );
 };
@@ -138,7 +165,6 @@ const BoxWrapper = styled.div<{ isFiltered: boolean }>`
 const ResultWrapper = styled.div<{ isFiltered: boolean }>`
   flex-wrap: wrap;
   display: flex;
-  /* color: ${COLORS.blue1}; */
   margin-top: ${({ isFiltered }) => (isFiltered ? '5rem' : '')};
 `;
 const RecipeWrapper = styled.div`
@@ -147,11 +173,9 @@ const RecipeWrapper = styled.div`
   margin: 0 auto;
   padding: 5rem 0;
   overflow: hidden;
-
-  /* background-color: yellow; */
 `;
 
-const CustomP = styled.p`
+const Paragraph = styled.p`
   cursor: pointer;
   &:hover {
     color: ${COLORS.blue2};

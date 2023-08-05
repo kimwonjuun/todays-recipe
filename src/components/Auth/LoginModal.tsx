@@ -1,26 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-
 import {
   browserSessionPersistence,
   setPersistence,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { authService } from '../../apis/firebase';
-import {
-  BottomWrapper,
-  Button,
-  CloseButton,
-  CustomSpan,
-  Input,
-  InputWrapper,
-  LoginText,
-  Logo,
-  LogoImg,
-  Modal,
-  ModalWrapper,
-  TitleWrapper,
-} from '../../styles/authModalStyles';
 import { emailRegex, passwordRegex } from '../../utils/regex';
+import COLORS from '../../styles/colors';
+import { styled } from 'styled-components';
+import { AlertModal } from '../common/AlertModal';
 
 export const LoginModal = ({
   setLoginModalIsOpen,
@@ -59,6 +47,21 @@ export const LoginModal = ({
     setPasswordValid(passwordRegex.test(e.target.value));
   };
 
+  // 얼럿 모달
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [alertModalMessage, setAlertModalMessage] = useState('');
+
+  // 얼럿 모달 열기
+  const openAlertModal = (message: string) => {
+    setAlertModalOpen(true);
+    setAlertModalMessage(message);
+  };
+
+  // 얼럿 모달 닫기
+  const closeAlertModal = () => {
+    setAlertModalOpen(false);
+  };
+
   // 로그인
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +70,7 @@ export const LoginModal = ({
     setPersistence(authService, browserSessionPersistence)
       .then(() => signInWithEmailAndPassword(authService, email, password))
       .then(() => {
-        alert('로그인 되었습니다.');
+        openAlertModal('로그인 되었습니다.');
         setEmail('');
         setPassword('');
         setLoginModalIsOpen(false);
@@ -75,13 +78,15 @@ export const LoginModal = ({
       .catch((err) => {
         // 오류 메시지 처리
         if (err.message.includes('user-not-found')) {
-          alert('가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.');
+          openAlertModal(
+            '가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.'
+          );
           emailRef?.current?.focus();
           setEmail('');
           setPassword('');
         }
         if (err.message.includes('wrong-password')) {
-          alert('잘못된 비밀번호 입니다.');
+          openAlertModal('잘못된 비밀번호 입니다.');
           passwordRef?.current?.focus();
           setPassword('');
         }
@@ -101,7 +106,9 @@ export const LoginModal = ({
           <form onSubmit={handleLoginSubmit}>
             <InputWrapper>
               <Logo>
-                <LogoImg src={require('../../assets/logo.png')}></LogoImg>
+                <LogoImg
+                  src={require('../../assets/common/logo.png')}
+                ></LogoImg>
               </Logo>
               <Input
                 id="email"
@@ -139,7 +146,133 @@ export const LoginModal = ({
             </BottomWrapper>
           </form>
         </Modal>
+        {alertModalOpen && (
+          <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
+        )}
       </ModalWrapper>
     </>
   );
 };
+
+const ModalWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const Modal = styled.div`
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 0.25rem solid ${COLORS.blue1};
+  width: 40rem;
+  height: 50rem;
+  position: relative;
+  text-align: center;
+`;
+
+const TitleWrapper = styled.div`
+  width: inherit;
+  height: 5rem;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const InputWrapper = styled.div`
+  width: inherit;
+  height: 35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  width: 30rem;
+  height: 4rem;
+  border-radius: 1rem;
+  border: 0.25rem solid ${COLORS.blue1};
+  font-size: 1.5rem;
+  outline: none;
+  text-align: left;
+  padding-left: 1rem;
+`;
+
+const BottomWrapper = styled.div`
+  width: inherit;
+  height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+`;
+
+const Button = styled.button`
+  width: 31.5rem;
+  height: 4.5rem;
+  border-radius: 1rem;
+  border: ${({ disabled }) =>
+    disabled ? 'none' : `0.25rem solid ${COLORS.blue1}`};
+  font-size: 2rem;
+  color: #fff;
+  background-color: ${({ disabled }) =>
+    disabled ? COLORS.gray : COLORS.blue1};
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+  outline: none;
+  &:hover {
+    background-color: ${({ disabled }) =>
+      disabled ? COLORS.gray : COLORS.blue2};
+  }
+`;
+
+const LoginText = styled.div`
+  font-size: 1.5rem;
+  cursor: pointer;
+  &:hover {
+    color: ${COLORS.blue2};
+  }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  z-index: 10;
+  &:hover {
+    color: ${COLORS.blue2};
+  }
+`;
+
+const CustomSpan = styled.span`
+  font-size: 1rem;
+  margin: -2.2rem 0;
+  &.success {
+    color: ${COLORS.blue1};
+  }
+  &.error {
+    color: ${COLORS.red};
+  }
+`;
+
+const Logo = styled.div`
+  width: 11rem;
+  height: 11rem;
+`;
+
+const LogoImg = styled.img`
+  width: 100%;
+`;

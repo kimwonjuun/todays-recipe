@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Recipe } from '../../types/Recipe';
 import { authService, dbService } from '../../apis/firebase';
 import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
+import { AlertModal } from '../common/AlertModal';
 
 interface RecipeProps {
   recipe: Recipe;
@@ -13,11 +14,26 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
   const currentUserUid = user?.uid;
   const [like, setLike] = useState(false);
 
+  // 얼럿 모달
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [alertModalMessage, setAlertModalMessage] = useState('');
+
+  // 얼럿 모달 열기
+  const openAlertModal = (message: string) => {
+    setAlertModalOpen(true);
+    setAlertModalMessage(message);
+  };
+
+  // 얼럿 모달 닫기
+  const closeAlertModal = () => {
+    setAlertModalOpen(false);
+  };
+
   // 좋아요
   const handleLikeButtonClick = async () => {
     // 로그인 체크
     if (!currentUserUid) {
-      alert('로그인이 필요합니다.');
+      openAlertModal('로그인이 필요합니다.');
       return;
     }
 
@@ -47,7 +63,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           await updateDoc(userRef, { 'users-likes': updatedLikes });
           setLike(true);
           console.log('좋아요 추가');
-          alert('레시피 찜 완료!');
+          openAlertModal('레시피 찜 완료!');
         } else {
           // 좋아요 취소
           const updatedLikes = likes.filter(
@@ -56,7 +72,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           await updateDoc(userRef, { 'users-likes': updatedLikes });
           setLike(false);
           console.log('좋아요 취소');
-          alert('찜 목록에서 삭제했어요.');
+          openAlertModal('찜 목록에서 삭제했어요.');
         }
       } else {
         // 문서가 존재하지 않으면 새 문서 생성 후 레시피명 추가
@@ -65,12 +81,12 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
         setLike(true);
       }
     } catch (error) {
-      console.error('레시피 찜 처리에 실패했습니다.', error);
+      console.error('레시피 찜에 실패했습니다.', error);
+      openAlertModal('레시피 찜에 실패했습니다.');
     }
   };
 
   // 디테일 페이지에서 좋아요 내역 출력하기
-
   const getLike = async () => {
     if (!currentUserUid) {
       return;
@@ -104,9 +120,9 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           <LikeWrapper>
             <Like onClick={handleLikeButtonClick}>
               {like ? (
-                <img src={require('../../assets/heart.png')} />
+                <img src={require('../../assets/detail/heart.png')} />
               ) : (
-                <img src={require('../../assets/empty-heart.png')} />
+                <img src={require('../../assets/detail/empty-heart.png')} />
               )}
             </Like>
           </LikeWrapper>
@@ -116,35 +132,35 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
             <h1>성분</h1>
             <List>
               <Item>
-                <img src={require('../../assets/ring1.png')} />
+                <img src={require('../../assets/detail/ring1.png')} />
                 <ItemText>
                   <p>열량</p>
                   <p>{recipe.calorie}kcal</p>
                 </ItemText>
               </Item>
               <Item>
-                <img src={require('../../assets/ring2.png')} />
+                <img src={require('../../assets/detail/ring2.png')} />
                 <ItemText>
                   <p>탄수화물</p>
                   <p>{recipe.carbohydrate}g</p>
                 </ItemText>
               </Item>
               <Item>
-                <img src={require('../../assets/ring1.png')} />
+                <img src={require('../../assets/detail/ring1.png')} />
                 <ItemText>
                   <p>단백질</p>
                   <p>{recipe.protein}g</p>
                 </ItemText>
               </Item>
               <Item>
-                <img src={require('../../assets/ring2.png')} />
+                <img src={require('../../assets/detail/ring2.png')} />
                 <ItemText>
                   <p>지방</p>
                   <p>{recipe.fat}g</p>
                 </ItemText>
               </Item>
               <Item>
-                <img src={require('../../assets/ring1.png')} />
+                <img src={require('../../assets/detail/ring1.png')} />
                 <ItemText>
                   <p>나트륨</p>
                   <p>{recipe.sodium}mg</p>
@@ -158,6 +174,9 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
           </Ingredient>
         </IngredientWrapper>
       </TopWrapper>
+      {alertModalOpen && (
+        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
+      )}
     </>
   );
 };
@@ -165,10 +184,7 @@ export const IngredientBox = ({ recipe }: RecipeProps) => {
 const TopWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  /* gap: 1rem; */
   margin-bottom: 1rem;
-
-  /* background-color: blue; */
 `;
 
 const CardWrapper = styled.div`
@@ -207,7 +223,6 @@ const Title = styled.div`
 const LikeWrapper = styled.div`
   height: 5.5rem;
   display: flex;
-  /* align-items: center; */
   justify-content: center;
 `;
 
@@ -225,10 +240,7 @@ const Like = styled.div`
 const IngredientWrapper = styled.div`
   width: 53.5rem;
   height: 35rem;
-  /* margin: 1rem 0; */
-  /* display: flex; */
   flex-direction: column;
-  /* justify-content: center; */
 `;
 
 const Ingredient = styled.div`
@@ -250,10 +262,6 @@ const Ingredient = styled.div`
     margin-bottom: 1rem;
   }
 
-  /* &:nth-child(2) {
-    height: 19rem;
-  } */
-
   h1 {
     margin-bottom: 1.5rem;
   }
@@ -265,8 +273,6 @@ const List = styled.div`
 
   display: flex;
   justify-content: space-between;
-
-  /* background-color: yellow; */
 `;
 
 const Item = styled.div`

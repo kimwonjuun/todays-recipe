@@ -3,21 +3,42 @@ import COLORS from '../styles/colors';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { SearchForm } from '../components/common/SearchForm';
+import { AlertModal } from '../components/common/AlertModal';
+import { koreanOnly } from '../utils/regex';
 
 const Main = () => {
   // 검색창
   const [inputValue, setInputValue] = useState<string>('');
   const navigate = useNavigate();
 
+  // 인풋창
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
+
+  // 얼럿 모달
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [alertModalMessage, setAlertModalMessage] = useState('');
+
+  // 얼럿 모달 열기
+  const openAlertModal = (message: string) => {
+    setAlertModalOpen(true);
+    setAlertModalMessage(message);
+  };
+
+  // 얼럿 모달 닫기
+  const closeAlertModal = () => {
+    setAlertModalOpen(false);
+  };
+
   // 폼 제출 함수
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!inputValue.trim()) {
-      alert('검색어 입력 후 버튼을 클릭해주세요.');
+    // 한글만 입력되었는지 검사
+    if (!inputValue.trim() || !koreanOnly.test(inputValue)) {
+      openAlertModal('재료는 한글 단어만 입력 가능합니다.');
+      setInputValue('');
       return;
     }
 
@@ -34,15 +55,11 @@ const Main = () => {
             onSubmit={handleSearchSubmit}
             placeholder="처리하고 싶은 재료(ex. 연두부) 또는 하고 싶은 요리(ex. 카프레제)를 검색하세요."
           />
-          {/* <CustomP
-            onClick={() => {
-              navigate('/recipe');
-            }}
-          >
-            검색하지 않고 레시피를 구경하고 싶다면?
-          </CustomP> */}
         </BoxWrapper>
       </PageWrapper>
+      {alertModalOpen && (
+        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
+      )}
     </>
   );
 };
@@ -68,11 +85,4 @@ const BoxWrapper = styled.div`
   align-items: center;
   font-size: 2rem;
   margin-top: 8rem;
-`;
-
-const CustomP = styled.p`
-  cursor: pointer;
-  &:hover {
-    color: ${COLORS.blue2};
-  }
 `;

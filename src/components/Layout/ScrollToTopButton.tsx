@@ -24,7 +24,7 @@ export const ScrollToTopButton = () => {
   return (
     <>
       <Button onClick={HandleButton} style={{ opacity: showButton ? 1 : 0 }}>
-        <img src={require('../../assets/top_button.png')} />
+        <img src={require('../../assets/layout/top_button.png')} />
       </Button>
     </>
   );

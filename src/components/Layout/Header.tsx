@@ -27,8 +27,6 @@ export const Header = () => {
   };
 
   // 로그인 상태 확인
-  // const auth = getAuth();
-  // const user = auth.currentUser;
   const isLoggedIn = sessionStorage.getItem(
     `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
   );
@@ -38,7 +36,7 @@ export const Header = () => {
       <HeaderWrapper>
         <Logo>
           <Link to={'/'}>
-            <LogoImg src={require('../../assets/logo.png')}></LogoImg>
+            <LogoImg src={require('../../assets/common/logo.png')}></LogoImg>
           </Link>
         </Logo>
         {isLoggedIn ? (

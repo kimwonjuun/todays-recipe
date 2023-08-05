@@ -30,7 +30,6 @@ const RecipeCardWrapper = styled.div`
 
   width: 17.5rem;
   height: 30rem;
-  /* min-height: 22.5rem; */
   position: relative;
   cursor: pointer;
   overflow: hidden;

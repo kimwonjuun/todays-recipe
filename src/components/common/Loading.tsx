@@ -6,7 +6,7 @@ export const Loading = () => {
     <>
       <Wrapper>
         <LoadingImage
-          src={require('../../assets/loading.png')}
+          src={require('../../assets/common/loading.png')}
           alt="Loading..."
         />
       </Wrapper>

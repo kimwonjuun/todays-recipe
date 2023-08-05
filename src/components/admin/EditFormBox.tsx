@@ -5,8 +5,24 @@ import { addDoc, collection } from 'firebase/firestore';
 import { dbService } from '../../apis/firebase';
 import axios from 'axios';
 import { SubmitForm } from '../common/SubmitForm';
+import { AlertModal } from '../common/AlertModal';
 
 export const EditFormBox = () => {
+  // 얼럿 모달
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [alertModalMessage, setAlertModalMessage] = useState('');
+
+  // 얼럿 모달 열기
+  const openAlertModal = (message: string) => {
+    setAlertModalOpen(true);
+    setAlertModalMessage(message);
+  };
+
+  // 얼럿 모달 닫기
+  const closeAlertModal = () => {
+    setAlertModalOpen(false);
+  };
+
   // 파이어스토어 컬렉션에 데이터 넣기
   const handleGetRecipeList = async () => {
     if (window.confirm('API를 수정하시겠습니까?')) {
@@ -65,9 +81,12 @@ export const EditFormBox = () => {
             ],
           });
         });
-        alert('레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.');
+        openAlertModal(
+          '레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.'
+        );
       } catch (error) {
         console.error('레시피 리스트를 가져오지 못했어요. :', error);
+        openAlertModal('레시피 리스트를 가져오지 못했어요.');
       }
     }
   };
@@ -86,10 +105,10 @@ export const EditFormBox = () => {
         updatedAt: new Date().toString(),
       });
       setInputValue('');
-      alert('수정 사항이 저장되었습니다.');
+      openAlertModal('수정 사항이 저장되었습니다.');
     } catch (error) {
       console.error('수정 사항 저장에 실패했습니다.', error);
-      alert('수정 사항 저장에 실패했습니다.');
+      openAlertModal('수정 사항 저장에 실패했습니다.');
     }
   };
 
@@ -104,7 +123,7 @@ export const EditFormBox = () => {
           </GuideBox>
           <EditApiButtonWrapper>
             <img
-              src={require('../../assets/default_image.png')}
+              src={require('../../assets/my/default_image.png')}
               onClick={handleGetRecipeList}
             />
           </EditApiButtonWrapper>
@@ -117,6 +136,9 @@ export const EditFormBox = () => {
           />
         </Contents>
       </BoxWrapper>
+      {alertModalOpen && (
+        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
+      )}
     </>
   );
 };
@@ -127,7 +149,6 @@ const BoxWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
-  /* justify-content: space-around; */
   align-items: center;
 
   background-color: #fff;
@@ -172,37 +193,5 @@ const EditApiButtonWrapper = styled.div`
     height: 100%;
     object-fit: cover;
     cursor: pointer;
-  }
-`;
-
-const FormWrapper = styled.form`
-  position: relative;
-`;
-
-const Input = styled.input`
-  width: 35rem;
-  height: 2.5rem;
-  border-radius: 1rem;
-  border: 0.2rem solid ${COLORS.blue1};
-  font-size: 1.25rem;
-  outline: none;
-  text-align: center;
-`;
-
-const SubmitButton = styled.button`
-  position: absolute;
-  right: 0rem;
-  width: 5rem;
-  height: 3rem;
-  border-radius: 1rem;
-  border: 0.2rem solid ${COLORS.blue1};
-  font-size: 1.25rem;
-  background-color: ${COLORS.blue1};
-  color: white;
-  cursor: pointer;
-  outline: none;
-
-  &:hover {
-    background-color: ${COLORS.blue2};
   }
 `;

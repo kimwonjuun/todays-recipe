@@ -27,7 +27,7 @@ const Detail = () => {
       setRecipe(selectedRecipe);
     }
     console.log(selectedRecipe);
-  }, [id, recipeData]);
+  }, [recipeData]);
 
   if (!recipe) {
     return <Loading />;
@@ -60,67 +60,9 @@ const BoxWrapper = styled.div`
   width: 80rem;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
+
   font-size: 1.5rem;
   position: relative;
   margin: 4rem 0;
   overflow: hidden;
 `;
-
-//
-
-const CommynityWrapper = styled.div``;
-const BookmarkWrapper = styled.div``;
-
-// <h1>조리법</h1>;
-// {
-//   /* 만드는 방법 최대 길이 20 */
-// }
-// {
-//   Array.from({ length: 20 }, (_, i) => i + 1).map((step) => {
-//     const manual = (recipe as any)[
-//       `MANUAL${step.toString().padStart(2, '0')}`
-//     ];
-//     const manualImg = (recipe as any)[
-//       `MANUAL_IMG${step.toString().padStart(2, '0')}`
-//     ];
-
-//     return manual ? (
-//       <CookingStep key={`step-${step}`}>
-//         {manualImg && (
-//           <img src={manualImg} alt={`Step ${step}`} width="50%" />
-//         )}
-//         <p>
-//           Step {step}: {manual.replace(/^\d+\./g, '').replace('-', ':')}
-//         </p>
-//       </CookingStep>
-//     ) : null;
-//   });
-// }
-{
-  /* <TipWrapper>
-  <h1>저감 조리법 TIP</h1>
-  <p>{recipe.RCP_NA_TIP}</p>
-</TipWrapper>; */
-}
-//
-// const CookingStep = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   margin-bottom: 2rem;
-//   padding: 1rem;
-//   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
-//     0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
-//   border-radius: 1rem;
-//   background-color: #fff;
-
-//   p {
-//     margin-bottom: 1rem;
-//   }
-
-//   img {
-//     border-radius: 1rem;
-//     margin-bottom: 1rem;
-//   }
-// `;
