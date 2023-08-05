@@ -38,9 +38,6 @@ export const RecipeBox = ({ recipeData }: RecipeProps) => {
     getMyIngredients();
   }, []);
 
-  console.log('myIngredients: ', myIngredients);
-  console.log('recipeData: ', recipeData);
-
   // 내 냉장고 재료들로 만들 수 있는 레시피들
   const canMakeRecipe = (
     recipeIngredients: string,

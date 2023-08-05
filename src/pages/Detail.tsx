@@ -20,10 +20,7 @@ const Detail = () => {
   // recoil 도입
   useRecipeData();
   const recipeData = useRecoilValue(RecipeDataState);
-  console.log(recipeData);
-
-  // 특정 레시피를 담아줄 state
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  console.log('recipeData: ', recipeData);
 
   // 전체 레시피와 선택한 레시피의 고유한 id가 같다면 출력
   useEffect(() => {
@@ -33,8 +30,11 @@ const Detail = () => {
     if (selectedRecipe) {
       setRecipe(selectedRecipe);
     }
-    console.log(selectedRecipe);
   }, [recipeData]);
+
+  // 선택한 레시피를 담아줄 state
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  console.log('recipe: ', recipe);
 
   if (!recipe) {
     return <Loading />;

@@ -14,7 +14,7 @@ const RecipePage = () => {
   // recoil 도입
   useRecipeData();
   const recipeData = useRecoilValue(RecipeDataState);
-  console.log(recipeData);
+  console.log('recipeData: ', recipeData);
 
   // 로딩 상태
   const [loading, setLoading] = useState<boolean>(true);
