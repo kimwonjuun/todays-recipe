@@ -18,7 +18,6 @@ const Detail = () => {
 
   // recoil 도입
   const recipeData = useRecoilValue(RecipeDataState);
-  console.log('recipeData: ', recipeData);
 
   // 전체 레시피와 선택한 레시피의 고유한 id가 같다면 출력
   useEffect(() => {

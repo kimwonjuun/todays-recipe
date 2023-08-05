@@ -20,7 +20,6 @@ const Search = () => {
 
   // recoil 도입
   const recipeData = useRecoilValue(RecipeDataState);
-  console.log('recipeData: ', recipeData);
 
   // main.tsx에서 넘어온 keyword
   const { keyword } = useParams<{ keyword: string }>();
