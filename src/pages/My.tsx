@@ -20,7 +20,7 @@ const My = () => {
 
   const [user, setUser] = useState<User | null>(null);
   const currentUserUid = user?.uid ?? undefined;
-  const [photoURL, setPhotoURL] = useState<any>(null); // 프로필 이미지
+  const [photoURL, setPhotoURL] = useState<any>(null);
 
   useEffect(() => {
     // user 객체 존재 시 setUser, setPhoURL 업데이트 아닐 시 메인으로 이동
