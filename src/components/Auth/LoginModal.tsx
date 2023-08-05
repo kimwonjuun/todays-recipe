@@ -107,7 +107,7 @@ export const LoginModal = ({
             <InputWrapper>
               <Logo>
                 <LogoImg
-                  src={require('../../assets/layout/logo.png')}
+                  src={require('../../assets/common/logo.png')}
                 ></LogoImg>
               </Logo>
               <Input
