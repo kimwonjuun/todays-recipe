@@ -9,7 +9,7 @@ export const useRecipeData = () => {
   // 기존 useState
   // const [recipeData, setRecipeData] = useState<Recipe[]>([]);
 
-  // recoil 도입
+  // Recoil: RecipeDataState
   const setRecipeData = useSetRecoilState(RecipeDataState);
 
   // 파이어베이스에서 Recipe-list 데이터 가져오기

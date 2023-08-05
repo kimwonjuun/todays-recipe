@@ -2,11 +2,13 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService, firebaseConfig } from '../apis/firebase';
+import { authService } from '../apis/firebase';
 import ProfileBox from '../components/my/ProfileBox';
 import EditProfileModal from '../components/my/EditProfileModal';
 import UserAccountBox from '../components/my/UserAccountBox';
-import { getAuth, User } from 'firebase/auth';
+import { User } from 'firebase/auth';
+import { useRecoilState } from 'recoil';
+import { UserDataState } from '../recoil/atoms';
 
 const My = () => {
   const navigate = useNavigate();
@@ -18,7 +20,10 @@ const My = () => {
   // 이 코드로 props 내려줄 시 새로고침 시 user 값 null.
   // const user = authService.currentUser;
 
-  const [user, setUser] = useState<User | null>(null);
+  // 기존
+  // const [user, setUser] = useState<User | null>(null);
+  // Recoil: RecipeDataState
+  const [user, setUser] = useRecoilState<User | null>(UserDataState);
   const currentUserUid = user?.uid ?? undefined;
   const [photoURL, setPhotoURL] = useState<any>(null);
 

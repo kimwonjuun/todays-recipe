@@ -18,7 +18,7 @@ const Search = () => {
   // 기존 레시피 데이터 (훅)
   // const recipeData = useRecipeData();
 
-  // recoil 도입
+  // Recoil: RecipeDataState
   const recipeData = useRecoilValue(RecipeDataState);
 
   // main.tsx에서 넘어온 keyword

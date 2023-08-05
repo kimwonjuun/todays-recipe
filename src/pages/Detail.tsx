@@ -16,7 +16,7 @@ const Detail = () => {
   // 기존 레시피 데이터 (훅)
   // const recipeData = useRecipeData();
 
-  // recoil 도입
+  // Recoil: RecipeDataState
   const recipeData = useRecoilValue(RecipeDataState);
 
   // 선택한 레시피를 담아줄 state

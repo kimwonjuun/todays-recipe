@@ -10,7 +10,7 @@ const RecipePage = () => {
   // 기존 레시피 데이터 (훅)
   // const recipeData = useRecipeData();
 
-  // recoil 도입
+  // Recoil: RecipeDataState
   const recipeData = useRecoilValue(RecipeDataState);
 
   // 로딩 상태
