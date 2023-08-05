@@ -7,7 +7,7 @@ export const RecipeDataState = atom<Recipe[]>({
   default: [],
 });
 
-export const UserDataState = atom<User | null>({
-  key: 'userDataState',
-  default: null,
-});
+// export const UserDataState = atom<User | null>({
+//   key: 'userDataState',
+//   default: null,
+// });
