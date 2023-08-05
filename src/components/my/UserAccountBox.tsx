@@ -215,7 +215,7 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
                 )}
               </MyRefrigerator>
               <Img>
-                <img src={require('../../assets/refrigerator.gif')} />
+                <img src={require('../../assets/my/refrigerator.gif')} />
               </Img>
             </TopWrapper>
             <FormWarpper>

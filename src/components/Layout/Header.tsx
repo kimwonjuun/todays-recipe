@@ -36,7 +36,7 @@ export const Header = () => {
       <HeaderWrapper>
         <Logo>
           <Link to={'/'}>
-            <LogoImg src={require('../../assets/logo.png')}></LogoImg>
+            <LogoImg src={require('../../assets/layout/logo.png')}></LogoImg>
           </Link>
         </Logo>
         {isLoggedIn ? (

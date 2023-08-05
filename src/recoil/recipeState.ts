@@ -3,15 +3,15 @@ import { dbService } from '../apis/firebase';
 import { Recipe } from '../types/Recipe';
 import { collection, getDocs } from 'firebase/firestore';
 
-export const RecipeDataAtom = atom<Recipe[]>({
+export const RecipeDataState = atom<Recipe[]>({
   key: 'recipeDataState',
   default: [],
 });
 
-export const UserDataAtom = atom<Recipe[]>({
-  key: 'userDataState',
-  default: [],
-});
+// export const UserDataAtom = atom<Recipe[]>({
+//   key: 'userDataState',
+//   default: [],
+// });
 
 // export const fetchRecipeData = selectorFamily<Recipe[], null>({
 //   key: 'fetchRecipeData',

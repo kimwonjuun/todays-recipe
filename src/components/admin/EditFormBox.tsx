@@ -123,7 +123,7 @@ export const EditFormBox = () => {
           </GuideBox>
           <EditApiButtonWrapper>
             <img
-              src={require('../../assets/default_image.png')}
+              src={require('../../assets/my/default_image.png')}
               onClick={handleGetRecipeList}
             />
           </EditApiButtonWrapper>

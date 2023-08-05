@@ -48,7 +48,9 @@ export const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
       <ProfileWrapper>
         <Profile>
           <ProfileImg>
-            <Img src={photoURL || require('../../assets/default_image.png')} />
+            <Img
+              src={photoURL || require('../../assets/my/default_image.png')}
+            />
           </ProfileImg>
 
           <ProfileText>

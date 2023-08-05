@@ -133,7 +133,7 @@ export const EditProfileModal = ({
                 src={
                   tempPhotoURL ||
                   photoURL ||
-                  require('../../assets/default_image.png')
+                  require('../../assets/my/default_image.png')
                 }
               />
               <input
@@ -151,7 +151,7 @@ export const EditProfileModal = ({
                 onChange={uploadFirebase}
               />
               <ModalCamImg
-                src={require('../../assets/camera.png')}
+                src={require('../../assets/my/camera.png')}
                 onClick={onCameraClick}
               />
             </ModalImg>

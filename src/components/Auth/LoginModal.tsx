@@ -106,7 +106,9 @@ export const LoginModal = ({
           <form onSubmit={handleLoginSubmit}>
             <InputWrapper>
               <Logo>
-                <LogoImg src={require('../../assets/logo.png')}></LogoImg>
+                <LogoImg
+                  src={require('../../assets/layout/logo.png')}
+                ></LogoImg>
               </Logo>
               <Input
                 id="email"

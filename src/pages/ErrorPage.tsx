@@ -9,7 +9,7 @@ const ErrorPage = () => {
       <PageWrapper>
         <BoxWrapper>
           <ImgBox>
-            <Img src={require('../assets/error.png')} />
+            <Img src={require('../assets/error/error.png')} />
           </ImgBox>
           <TextBox>
             <TopText>
