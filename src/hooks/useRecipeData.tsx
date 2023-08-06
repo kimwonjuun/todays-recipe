@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { dbService } from '../apis/firebase';
-import { Recipe } from '../types/Recipe';
 import { collection, getDocs } from 'firebase/firestore';
 import { RecipeDataState } from '../recoil/atoms';
 import { useSetRecoilState } from 'recoil';
@@ -28,6 +27,7 @@ export const useRecipeData = () => {
   };
   useEffect(() => {
     getRecipeData();
+    console.log('잘 되니');
   }, []);
 
   // 기존

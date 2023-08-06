@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { Recipe } from '../types/Recipe';
 import Loading from '../components/common/Loading';
 import IngredientBox from '../components/detail/IngredientBox';
 import StepsBox from '../components/detail/StepsBox';

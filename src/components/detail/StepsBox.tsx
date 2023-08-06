@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import { Recipe } from '../../types/Recipe';
 
 interface RecipeProps {
   recipe: Recipe;

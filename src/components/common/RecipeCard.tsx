@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import { Recipe } from '../../types/Recipe';
 
 const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   const navigate = useNavigate();

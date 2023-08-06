@@ -14,7 +14,6 @@ const EditHistoryBox = () => {
   const [editHistoryList, setEditHistoryList] = useState<EditHistory[]>([]);
 
   // 수정 사항 가져오기
-
   const getEditDataHistory = async () => {
     const editHistoryRef = collection(dbService, 'edit-data-history');
     const sortedEditHistory = query(

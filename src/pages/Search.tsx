@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { Recipe } from '../types/Recipe';
 import SearchForm from '../components/common/SearchForm';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 import Loading from '../components/common/Loading';

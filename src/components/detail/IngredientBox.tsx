@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
-import { Recipe } from '../../types/Recipe';
 import { authService, dbService } from '../../apis/firebase';
 import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import AlertModal from '../common/AlertModal';
@@ -108,6 +107,8 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
   useEffect(() => {
     getLike();
   }, []);
+
+  console.log('user', user);
 
   return (
     <>
