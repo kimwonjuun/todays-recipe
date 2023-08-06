@@ -34,6 +34,7 @@ const SignUpModal = ({
   const [emailValid, setEmailValid] = useState(false); // 회원가입 시 이메일 유효성 결과
   const [passwordValid, setPasswordValid] = useState(false); // 회원가입 시 패스워드 유효성 결과
   const emailRef = useRef<HTMLInputElement | null>(null); // 이메일 입력창 참조
+
   // 회원가입 모달 닫기
   const closeSignUpModal = () => {
     setSignUpModalIsOpen(false);

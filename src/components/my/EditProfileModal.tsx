@@ -119,6 +119,7 @@ const EditProfileModal = ({
     setTempFileURL(null);
     setTempPhotoURL(null);
   };
+
   return (
     <>
       <ModalWrapper>

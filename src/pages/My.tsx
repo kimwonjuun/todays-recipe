@@ -10,13 +10,6 @@ import { User } from 'firebase/auth';
 
 const My = () => {
   const navigate = useNavigate();
-  // 이 코드로 props 내려줄 시 프로필 수정 및 회원 탈퇴 안됨.
-  // const isLoggedIn = sessionStorage.getItem(
-  //   `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
-  // );
-  // const user = JSON.parse(isLoggedIn ?? '{}');
-  // 이 코드로 props 내려줄 시 새로고침 시 user 값 null.
-  // const user = authService.currentUser;
 
   const [user, setUser] = useState<User | null>(null);
   const currentUserUid = user?.uid ?? undefined;
