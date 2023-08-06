@@ -1,10 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 
-interface RecipeProps {
-  recipe: Recipe;
-}
-
 const StepsBox = ({ recipe }: RecipeProps) => {
   return (
     <>

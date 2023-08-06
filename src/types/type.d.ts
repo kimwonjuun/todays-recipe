@@ -13,3 +13,7 @@ interface Recipe {
   make: Array<string>;
   makeImage: Array<string>;
 }
+
+interface RecipeProps {
+  recipe: Recipe;
+}

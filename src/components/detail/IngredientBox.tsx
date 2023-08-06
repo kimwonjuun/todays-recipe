@@ -4,10 +4,6 @@ import { authService, dbService } from '../../apis/firebase';
 import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import AlertModal from '../common/AlertModal';
 
-interface RecipeProps {
-  recipe: Recipe;
-}
-
 const IngredientBox = ({ recipe }: RecipeProps) => {
   const user = authService.currentUser;
   const currentUserUid = user?.uid;

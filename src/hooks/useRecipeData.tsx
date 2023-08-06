@@ -27,7 +27,7 @@ export const useRecipeData = () => {
   };
   useEffect(() => {
     getRecipeData();
-    console.log('잘 되니');
+    console.log('recipe data 들어옴 !');
   }, []);
 
   // 기존
