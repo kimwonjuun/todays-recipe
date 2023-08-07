@@ -93,13 +93,17 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
       const likes = userDoc.data()['users-likes'] || [];
       if (likes.some((item: Recipe) => item.id === recipe.id)) {
         setLike(true);
+      } else {
+        setLike(false);
       }
     }
   };
 
   useEffect(() => {
-    getLike();
-  }, []);
+    if (currentUserUid) {
+      getLike();
+    }
+  }, [currentUserUid]);
 
   console.log('user', user);
 

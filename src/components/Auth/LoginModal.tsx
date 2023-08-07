@@ -58,7 +58,7 @@ const LoginModal = ({
         setEmail('');
         setPassword('');
         setLoginModalIsOpen(false);
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((err) => {
         // 오류 메시지 처리
