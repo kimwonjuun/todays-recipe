@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
-interface InfiniteScrollType {
+interface useInfiniteScrollProps {
   currentPage: number;
-  //   setCurrentPage: Function;
-  //   loadMorePage: () => void;
+  setCurrentPage: Function;
+  loadMorePage: () => void;
 }
 
-export const useInfiniteScroll = (): InfiniteScrollType => {
+export const useInfiniteScroll = (): useInfiniteScrollProps => {
   // 초기 표시할 페이지
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -32,8 +32,7 @@ export const useInfiniteScroll = (): InfiniteScrollType => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  //   return { currentPage, setCurrentPage, loadMorePage };
-  return { currentPage };
+  return { currentPage, setCurrentPage, loadMorePage };
 };
 
 // 기존 컴포넌트에서의 infinite scroll

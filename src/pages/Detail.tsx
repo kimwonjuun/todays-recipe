@@ -2,21 +2,27 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { Recipe } from '../types/Recipe';
-import { useRecipeData } from '../hooks/useRecipeData';
-import { Loading } from '../components/common/Loading';
-import { IngredientBox } from '../components/detail/IngredientBox';
-import { StepsBox } from '../components/detail/StepsBox';
+import Loading from '../components/common/Loading';
+import IngredientBox from '../components/detail/IngredientBox';
+import StepsBox from '../components/detail/StepsBox';
+import { RecipeDataState } from '../recoil/atoms';
+import { useRecoilValue } from 'recoil';
 
 const Detail = () => {
   // Recipe/RecipeBox, Search에서 받아온 각 레시피가 가지고 있는 고유한 id
   const { id } = useParams<{ id: string }>();
 
-  // useRecipeData를 사용하여 레시피 데이터 받아오기
-  const recipeData = useRecipeData();
+  // 기존 레시피 데이터 (훅)
+  // const recipeData = useRecipeData();
 
-  // 특정 레시피를 담아줄 state
+  // recoil 도입
+  const recipeData = useRecoilValue(RecipeDataState);
+
+  // 선택한 레시피를 담아줄 state
   const [recipe, setRecipe] = useState<Recipe | null>(null);
+
+  // 로딩 상태
+  const [loading, setLoading] = useState<boolean>(true);
 
   // 전체 레시피와 선택한 레시피의 고유한 id가 같다면 출력
   useEffect(() => {
@@ -25,21 +31,21 @@ const Detail = () => {
     );
     if (selectedRecipe) {
       setRecipe(selectedRecipe);
+      setLoading(false);
     }
-    console.log(selectedRecipe);
   }, [recipeData]);
-
-  if (!recipe) {
-    return <Loading />;
-  }
 
   return (
     <>
       <PageWrapper>
-        <BoxWrapper>
-          <IngredientBox recipe={recipe} />
-          <StepsBox recipe={recipe} />
-        </BoxWrapper>
+        {loading || !recipe ? (
+          <Loading />
+        ) : (
+          <BoxWrapper>
+            <IngredientBox recipe={recipe} />
+            <StepsBox recipe={recipe} />
+          </BoxWrapper>
+        )}
       </PageWrapper>
     </>
   );

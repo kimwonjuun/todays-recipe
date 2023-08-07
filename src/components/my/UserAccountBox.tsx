@@ -1,38 +1,22 @@
 import { styled } from 'styled-components';
 import COLORS from '../../styles/colors';
-import { SubmitForm } from '../common/SubmitForm';
+import SubmitForm from '../common/SubmitForm';
 import { dbService } from '../../apis/firebase';
 import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
-import { RecipeCard } from '../common/RecipeCard';
-import { AlertModal } from '../common/AlertModal';
+import RecipeCard from '../common/RecipeCard';
 import { koreanOnly } from '../../utils/regex';
 
 interface UserAccountBoxProps {
   currentUserUid: string | undefined;
 }
 
-export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
+const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
   // 인풋
   const [inputValue, setInputValue] = useState<string>('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
-  };
-
-  // 얼럿 모달
-  const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [alertModalMessage, setAlertModalMessage] = useState('');
-
-  // 얼럿 모달 열기
-  const openAlertModal = (message: string) => {
-    setAlertModalOpen(true);
-    setAlertModalMessage(message);
-  };
-
-  // 얼럿 모달 닫기
-  const closeAlertModal = () => {
-    setAlertModalOpen(false);
   };
 
   // 재료 입력
@@ -46,7 +30,7 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
 
     // 한글만 입력되었는지 검사
     if (!inputValue.trim() || !koreanOnly.test(inputValue)) {
-      openAlertModal('재료는 한글 단어만 입력 가능합니다.');
+      alert('재료는 한글 단어만 입력 가능합니다.');
       setInputValue('');
       return;
     }
@@ -63,7 +47,7 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
         const ingredients = userDoc.data()['users-ingredients'] || [];
 
         if (ingredients.length >= 20) {
-          openAlertModal('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
+          alert('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
           setInputValue('');
           return;
         }
@@ -71,7 +55,7 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
         if (!ingredients.includes(inputValue)) {
           ingredients.push(inputValue);
         } else {
-          openAlertModal('이미 등록된 재료입니다.');
+          alert('이미 등록된 재료입니다.');
           setInputValue('');
           return;
         }
@@ -91,7 +75,7 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
       getMyIngredients();
     } catch (error) {
       console.error('냉장고에 재료를 추가하지 못했습니다.', error);
-      openAlertModal('냉장고에 재료를 추가하지 못했습니다.');
+      alert('냉장고에 재료를 추가하지 못했습니다.');
     }
   };
 
@@ -111,7 +95,7 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
   };
   useEffect(() => {
     getMyIngredients();
-  }, []);
+  }, [currentUserUid]);
 
   // 재료 삭제
   const removeIngredient = async (ingredient: string) => {
@@ -172,7 +156,7 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
   };
   useEffect(() => {
     getMyLikedRecipes();
-  }, []);
+  }, [currentUserUid]);
 
   return (
     <>
@@ -181,13 +165,13 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
           <CategoriesWrapper>
             <Category
               onClick={() => handleTabChange('나의 냉장고')}
-              isSelected={currentTab === '나의 냉장고'}
+              data-is-selected={currentTab === '나의 냉장고'}
             >
               나의 냉장고
             </Category>
             <Category
               onClick={() => handleTabChange('찜한 레시피')}
-              isSelected={currentTab === '찜한 레시피'}
+              data-is-selected={currentTab === '찜한 레시피'}
             >
               찜한 레시피
             </Category>
@@ -246,12 +230,11 @@ export const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
           </MyLikesWrapper>
         </UserItem>
       </UserAccounttWrapper>
-      {alertModalOpen && (
-        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
-      )}
     </>
   );
 };
+
+export default UserAccountBox;
 
 const UserAccounttWrapper = styled.div`
   width: 75rem;
@@ -295,11 +278,12 @@ const TopWrapper = styled.div`
   display: flex;
 `;
 
-const Category = styled.div<{ isSelected: boolean }>`
+const Category = styled.div<{ 'data-is-selected': boolean }>`
   position: relative;
   height: 2rem;
   cursor: pointer;
-  color: ${({ isSelected }) => (isSelected ? COLORS.blue2 : 'inherit')};
+  color: ${({ 'data-is-selected': isSelected }) =>
+    isSelected ? COLORS.blue2 : 'inherit'};
   &:hover {
     color: ${COLORS.blue2};
   }

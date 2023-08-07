@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import COLORS from '../../styles/colors';
 
-export const Loading = () => {
+const Loading = () => {
   return (
     <>
       <Wrapper>
@@ -13,6 +13,8 @@ export const Loading = () => {
     </>
   );
 };
+
+export default Loading;
 
 const Wrapper = styled.div`
   position: relative;

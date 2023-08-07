@@ -2,20 +2,22 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { useRecipeData } from '../hooks/useRecipeData';
-import { Recipe } from '../types/Recipe';
-import { SearchForm } from '../components/common/SearchForm';
+import SearchForm from '../components/common/SearchForm';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
-import { Loading } from '../components/common/Loading';
-import { RecipeCard } from '../components/common/RecipeCard';
-import { AlertModal } from '../components/common/AlertModal';
+import Loading from '../components/common/Loading';
+import RecipeCard from '../components/common/RecipeCard';
 import { koreanOnly } from '../utils/regex';
+import { RecipeDataState } from '../recoil/atoms';
+import { useRecoilValue } from 'recoil';
 
 const Search = () => {
   const navigate = useNavigate();
 
-  // 레시피 데이터
-  const recipeData = useRecipeData();
+  // 기존 레시피 데이터 (훅)
+  // const recipeData = useRecipeData();
+
+  // Recoil: RecipeDataState
+  const recipeData = useRecoilValue(RecipeDataState);
 
   // main.tsx에서 넘어온 keyword
   const { keyword } = useParams<{ keyword: string }>();
@@ -28,21 +30,6 @@ const Search = () => {
 
   // 로딩 상태
   const [loading, setLoading] = useState<boolean>(true);
-
-  // 얼럿 모달
-  const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [alertModalMessage, setAlertModalMessage] = useState('');
-
-  // 얼럿 모달 열기
-  const openAlertModal = (message: string) => {
-    setAlertModalOpen(true);
-    setAlertModalMessage(message);
-  };
-
-  // 얼럿 모달 닫기
-  const closeAlertModal = () => {
-    setAlertModalOpen(false);
-  };
 
   useEffect(() => {
     // 아직 레시피 데이터가 없으면 실행하지 않음
@@ -72,7 +59,7 @@ const Search = () => {
     e.preventDefault();
     // 한글만 입력되었는지 검사
     if (!inputValue.trim() || !koreanOnly.test(inputValue)) {
-      openAlertModal('재료는 한글 단어만 입력 가능합니다.');
+      alert('재료는 한글 단어만 입력 가능합니다.');
       setInputValue('');
       return;
     }
@@ -133,9 +120,6 @@ const Search = () => {
           </BoxWrapper>
         )}
       </PageWrapper>
-      {alertModalOpen && (
-        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
-      )}
     </>
   );
 };

@@ -6,8 +6,8 @@ import Detail from '../pages/Detail';
 import My from '../pages/My';
 import Admin from '../pages/Admin';
 import ErrorPage from '../pages/ErrorPage';
-import { Header } from '../components/layout/Header';
-import { ScrollToTopButton } from '../components/layout/ScrollToTopButton';
+import Header from '../components/layout/Header';
+import ScrollToTopButton from '../components/layout/ScrollToTopButton';
 
 const Router = () => {
   return (
@@ -16,8 +16,8 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/search/:keyword" element={<Search />} />
-        <Route path="/detail/:id" element={<Detail />} />
         <Route path="/recipe" element={<Recipe />} />
+        <Route path="/detail/:id" element={<Detail />} />
         <Route path="/my" element={<My />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<ErrorPage />} />
@@ -26,4 +26,5 @@ const Router = () => {
     </BrowserRouter>
   );
 };
+
 export default Router;

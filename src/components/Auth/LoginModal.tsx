@@ -8,9 +8,8 @@ import { authService } from '../../apis/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
 import { styled } from 'styled-components';
-import { AlertModal } from '../common/AlertModal';
 
-export const LoginModal = ({
+const LoginModal = ({
   setLoginModalIsOpen,
   setSignUpModalIsOpen,
 }: {
@@ -47,21 +46,6 @@ export const LoginModal = ({
     setPasswordValid(passwordRegex.test(e.target.value));
   };
 
-  // 얼럿 모달
-  const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [alertModalMessage, setAlertModalMessage] = useState('');
-
-  // 얼럿 모달 열기
-  const openAlertModal = (message: string) => {
-    setAlertModalOpen(true);
-    setAlertModalMessage(message);
-  };
-
-  // 얼럿 모달 닫기
-  const closeAlertModal = () => {
-    setAlertModalOpen(false);
-  };
-
   // 로그인
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,23 +54,22 @@ export const LoginModal = ({
     setPersistence(authService, browserSessionPersistence)
       .then(() => signInWithEmailAndPassword(authService, email, password))
       .then(() => {
-        openAlertModal('로그인 되었습니다.');
+        alert('로그인 되었습니다.');
         setEmail('');
         setPassword('');
         setLoginModalIsOpen(false);
+        window.location.reload();
       })
       .catch((err) => {
         // 오류 메시지 처리
         if (err.message.includes('user-not-found')) {
-          openAlertModal(
-            '가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.'
-          );
+          alert('가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.');
           emailRef?.current?.focus();
           setEmail('');
           setPassword('');
         }
         if (err.message.includes('wrong-password')) {
-          openAlertModal('잘못된 비밀번호 입니다.');
+          alert('잘못된 비밀번호 입니다.');
           passwordRef?.current?.focus();
           setPassword('');
         }
@@ -146,13 +129,12 @@ export const LoginModal = ({
             </BottomWrapper>
           </form>
         </Modal>
-        {alertModalOpen && (
-          <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
-        )}
       </ModalWrapper>
     </>
   );
 };
+
+export default LoginModal;
 
 const ModalWrapper = styled.div`
   position: fixed;

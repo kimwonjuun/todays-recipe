@@ -5,7 +5,6 @@ import COLORS from '../../styles/colors';
 import { storage } from '../../apis/firebase';
 import { User, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { AlertModal } from '../common/AlertModal';
 
 interface EditProfileModalProps {
   setIsModalOpen: Function;
@@ -14,7 +13,7 @@ interface EditProfileModalProps {
   setPhotoURL: Function;
 }
 
-export const EditProfileModal = ({
+const EditProfileModal = ({
   setIsModalOpen,
   user,
   photoURL,
@@ -57,21 +56,6 @@ export const EditProfileModal = ({
     setDisplayName(editDisplayName);
   };
 
-  // 얼럿 모달
-  const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [alertModalMessage, setAlertModalMessage] = useState('');
-
-  // 얼럿 모달 열기
-  const openAlertModal = (message: string) => {
-    setAlertModalOpen(true);
-    setAlertModalMessage(message);
-  };
-
-  // 얼럿 모달 닫기
-  const closeAlertModal = () => {
-    setAlertModalOpen(false);
-  };
-
   // 프로필 수정하기 버튼
   const handleProfileEdit = async () => {
     if (user) {
@@ -80,13 +64,13 @@ export const EditProfileModal = ({
         photoURL: tempFileURL || photoURL, // 사용자가 이미지를 업로드한 경우 tempFileURL을 사용
       })
         .then(() => {
-          openAlertModal('프로필 수정 완료');
+          alert('프로필 수정 완료');
           closeModal();
           setPhotoURL(tempFileURL || photoURL); // photoURL 업데이트
         })
         .catch((error) => {
           console.log(error);
-          openAlertModal('프로필 수정 실패');
+          alert('프로필 수정 실패');
         });
     }
   };
@@ -98,11 +82,11 @@ export const EditProfileModal = ({
         try {
           await user.delete();
           sessionStorage.clear();
-          openAlertModal('회원 탈퇴가 완료되었습니다.');
+          alert('회원 탈퇴가 완료되었습니다.');
           navigate('/', { replace: true });
         } catch (error) {
           console.log(error);
-          openAlertModal(
+          alert(
             '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
           );
         }
@@ -119,6 +103,7 @@ export const EditProfileModal = ({
     setTempFileURL(null);
     setTempPhotoURL(null);
   };
+
   return (
     <>
       <ModalWrapper>
@@ -177,13 +162,12 @@ export const EditProfileModal = ({
             </DeleteAccountBox>
           </BottomWrapper>
         </Modal>
-        {alertModalOpen && (
-          <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
-        )}
       </ModalWrapper>
     </>
   );
 };
+
+export default EditProfileModal;
 
 const ModalWrapper = styled.div`
   position: fixed;

@@ -8,7 +8,7 @@ interface SearchFormProps {
   placeholder: string;
 }
 
-export const SearchForm = ({
+const SearchForm = ({
   value,
   onChange,
   onSubmit,
@@ -26,6 +26,8 @@ export const SearchForm = ({
     </FormWrapper>
   );
 };
+
+export default SearchForm;
 
 const FormWrapper = styled.form`
   position: relative;

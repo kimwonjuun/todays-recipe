@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 
-export const ScrollToTopButton = () => {
+const ScrollToTopButton = () => {
   const [showButton, setShowButton] = useState<boolean>(false);
 
   const HandleButton = () => {
@@ -29,6 +29,8 @@ export const ScrollToTopButton = () => {
     </>
   );
 };
+
+export default ScrollToTopButton;
 
 const Button = styled.div`
   width: 4.5rem;

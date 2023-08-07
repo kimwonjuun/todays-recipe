@@ -1,13 +1,17 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { RecipeBox } from '../components/recipe/RecipeBox';
+import RecipeBox from '../components/recipe/RecipeBox';
 import { useState, useEffect } from 'react';
-import { useRecipeData } from '../hooks/useRecipeData';
-import { Loading } from '../components/common/Loading';
+import Loading from '../components/common/Loading';
+import { RecipeDataState } from '../recoil/atoms';
+import { useRecoilValue } from 'recoil';
 
 const RecipePage = () => {
-  // 레시피 데이터
-  const recipeData = useRecipeData();
+  // 기존 레시피 데이터 (훅)
+  // const recipeData = useRecipeData();
+
+  // Recoil: RecipeDataState
+  const recipeData = useRecoilValue(RecipeDataState);
 
   // 로딩 상태
   const [loading, setLoading] = useState<boolean>(true);
