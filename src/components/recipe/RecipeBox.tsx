@@ -4,7 +4,8 @@ import COLORS from '../../styles/colors';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import RecipeCard from '../common/RecipeCard';
 import { doc, getDoc } from 'firebase/firestore';
-import { dbService, firebaseConfig } from '../../apis/firebase';
+import { authService, dbService, firebaseConfig } from '../../apis/firebase';
+import { User } from 'firebase/auth';
 
 interface RecipeProps {
   recipeData: Recipe[];
@@ -12,11 +13,20 @@ interface RecipeProps {
 
 const RecipeBox = ({ recipeData }: RecipeProps) => {
   // 로그인 상태 확인
-  const isLoggedIn = sessionStorage.getItem(
-    `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
-  );
-  const user = JSON.parse(isLoggedIn ?? '{}');
-  const currentUserUid = user.uid ?? undefined;
+  const [user, setUser] = useState<User | null>(null);
+  const currentUserUid = user?.uid ?? undefined;
+
+  useEffect(() => {
+    // user 객체 존재 시 setUser 업데이트
+    const handleAuthStateChange = authService.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      }
+    });
+    return () => {
+      handleAuthStateChange();
+    };
+  }, []);
 
   // 내가 입력한 재료 출력
   const [myIngredients, setMyIngredients] = useState([]);
@@ -34,7 +44,7 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
   };
   useEffect(() => {
     getMyIngredients();
-  }, []);
+  }, [currentUserUid]);
 
   // 내 냉장고 재료들로 만들 수 있는 레시피들
   const canMakeRecipe = (
@@ -71,7 +81,7 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
 
   const noRecipeMessage =
     selectedCategory === '나의 냉장고' && filteredRecipes.length === 0
-      ? isLoggedIn
+      ? user
         ? '냉장고가 비었거나 냉장고에 보관된 재료들을 전부 포함해서 만들 수 있는 레시피가 없어요. 🫤'
         : '로그인 후 냉장고에 재료들을 넣어주세요. 🫤'
       : null;

@@ -2,11 +2,24 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { authService, dbService } from '../../apis/firebase';
 import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
+import { User } from 'firebase/auth';
 
 const IngredientBox = ({ recipe }: RecipeProps) => {
-  const user = authService.currentUser;
-  const currentUserUid = user?.uid;
+  const [user, setUser] = useState<User | null>(null);
+  const currentUserUid = user?.uid ?? undefined;
   const [like, setLike] = useState(false);
+
+  useEffect(() => {
+    // user 객체 존재 시 setUser 업데이트
+    const handleAuthStateChange = authService.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      }
+    });
+    return () => {
+      handleAuthStateChange();
+    };
+  }, []);
 
   // 좋아요
   const handleLikeButtonClick = async () => {

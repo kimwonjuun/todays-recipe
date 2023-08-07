@@ -16,7 +16,7 @@ const My = () => {
   const [photoURL, setPhotoURL] = useState<any>(null);
 
   useEffect(() => {
-    // user 객체 존재 시 setUser, setPhoURL 업데이트 아닐 시 메인으로 이동
+    // user 객체 존재 시 setUser, setPhoURL 업데이트. !user 시 메인으로 이동
     const handleAuthStateChange = authService.onAuthStateChanged((user) => {
       if (user) {
         setUser(user);
