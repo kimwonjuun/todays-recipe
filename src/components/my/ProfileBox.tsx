@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { authService } from '../../apis/firebase';
 import { User } from 'firebase/auth';
-import useAlertModal from '../../hooks/useAlertModal';
 
 interface ProfileBoxProps {
   openModal: () => void;
@@ -14,15 +13,12 @@ interface ProfileBoxProps {
 const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
   const navigate = useNavigate();
 
-  // alert modal hook
-  const { alertModal, openAlertModal } = useAlertModal();
-
   // 로그아웃
   const handleLogout = () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
       return authService.signOut().then(() => {
         sessionStorage.clear();
-        openAlertModal('로그아웃 되었습니다.');
+        alert('로그아웃 되었습니다.');
         navigate('/', { replace: true });
       });
     } else {
@@ -50,7 +46,6 @@ const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
           <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
         </LogoutBox>
       </ProfileWrapper>
-      {alertModal}
     </>
   );
 };

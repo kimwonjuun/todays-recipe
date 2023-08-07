@@ -6,7 +6,6 @@ import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import RecipeCard from '../common/RecipeCard';
 import { koreanOnly } from '../../utils/regex';
-import useAlertModal from '../../hooks/useAlertModal';
 
 interface UserAccountBoxProps {
   currentUserUid: string | undefined;
@@ -20,9 +19,6 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
     setInputValue(e.target.value);
   };
 
-  // alert modal hook
-  const { alertModal, openAlertModal } = useAlertModal();
-
   // 재료 입력
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,7 +30,7 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
 
     // 한글만 입력되었는지 검사
     if (!inputValue.trim() || !koreanOnly.test(inputValue)) {
-      openAlertModal('재료는 한글 단어만 입력 가능합니다.');
+      alert('재료는 한글 단어만 입력 가능합니다.');
       setInputValue('');
       return;
     }
@@ -51,7 +47,7 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
         const ingredients = userDoc.data()['users-ingredients'] || [];
 
         if (ingredients.length >= 20) {
-          openAlertModal('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
+          alert('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
           setInputValue('');
           return;
         }
@@ -59,7 +55,7 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
         if (!ingredients.includes(inputValue)) {
           ingredients.push(inputValue);
         } else {
-          openAlertModal('이미 등록된 재료입니다.');
+          alert('이미 등록된 재료입니다.');
           setInputValue('');
           return;
         }
@@ -79,7 +75,7 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
       getMyIngredients();
     } catch (error) {
       console.error('냉장고에 재료를 추가하지 못했습니다.', error);
-      openAlertModal('냉장고에 재료를 추가하지 못했습니다.');
+      alert('냉장고에 재료를 추가하지 못했습니다.');
     }
   };
 
@@ -234,7 +230,6 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
           </MyLikesWrapper>
         </UserItem>
       </UserAccounttWrapper>
-      {alertModal}
     </>
   );
 };

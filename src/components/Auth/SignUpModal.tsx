@@ -9,7 +9,6 @@ import { authService } from '../../apis/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
 import styled from 'styled-components';
-import useAlertModal from '../../hooks/useAlertModal';
 
 const SignUpModal = ({
   setLoginModalIsOpen,
@@ -104,9 +103,6 @@ const SignUpModal = ({
     }
   };
 
-  // alert modal hook
-  const { alertModal, openAlertModal } = useAlertModal();
-
   // 회원가입 - 세션스토리지 저장
   const handleSignupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -121,7 +117,7 @@ const SignUpModal = ({
       })
       .then(() => {
         authService.signOut();
-        openAlertModal('회원가입이 완료 되었습니다! 로그인 해주세요.');
+        alert('회원가입이 완료 되었습니다! 로그인 해주세요.');
         setEmail('');
         setPassword('');
         setConfirmPassword('');
@@ -131,7 +127,7 @@ const SignUpModal = ({
       })
       .catch((err) => {
         if (err.message.includes('already-in-use')) {
-          openAlertModal('이미 가입된 계정입니다.');
+          alert('이미 가입된 계정입니다.');
           setEmail('');
         }
       });
@@ -213,7 +209,6 @@ const SignUpModal = ({
             </BottomWrapper>
           </form>
         </Modal>
-        {alertModal}
       </ModalWrapper>
     </>
   );

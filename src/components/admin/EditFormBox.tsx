@@ -4,12 +4,8 @@ import { addDoc, collection } from 'firebase/firestore';
 import { dbService } from '../../apis/firebase';
 import axios from 'axios';
 import SubmitForm from '../common/SubmitForm';
-import useAlertModal from '../../hooks/useAlertModal';
 
 const EditFormBox = () => {
-  // alert modal hook
-  const { alertModal, openAlertModal } = useAlertModal();
-
   // 파이어스토어 컬렉션에 데이터 넣기
   const handleGetRecipeList = async () => {
     if (window.confirm('API를 수정하시겠습니까?')) {
@@ -68,12 +64,10 @@ const EditFormBox = () => {
             ],
           });
         });
-        openAlertModal(
-          '레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.'
-        );
+        alert('레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.');
       } catch (error) {
         console.error('레시피 리스트를 가져오지 못했어요. :', error);
-        openAlertModal('레시피 리스트를 가져오지 못했어요.');
+        alert('레시피 리스트를 가져오지 못했어요.');
       }
     }
   };
@@ -92,10 +86,10 @@ const EditFormBox = () => {
         updatedAt: new Date().toString(),
       });
       setInputValue('');
-      openAlertModal('수정 사항이 저장되었습니다.');
+      alert('수정 사항이 저장되었습니다.');
     } catch (error) {
       console.error('수정 사항 저장에 실패했습니다.', error);
-      openAlertModal('수정 사항 저장에 실패했습니다.');
+      alert('수정 사항 저장에 실패했습니다.');
     }
   };
 
@@ -123,7 +117,6 @@ const EditFormBox = () => {
           />
         </Contents>
       </BoxWrapper>
-      {alertModal}
     </>
   );
 };

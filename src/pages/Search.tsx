@@ -9,7 +9,6 @@ import RecipeCard from '../components/common/RecipeCard';
 import { koreanOnly } from '../utils/regex';
 import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
-import useAlertModal from '../hooks/useAlertModal';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -32,8 +31,6 @@ const Search = () => {
   // 로딩 상태
   const [loading, setLoading] = useState<boolean>(true);
 
-  // alert modal hook
-  const { alertModal, openAlertModal } = useAlertModal();
   useEffect(() => {
     // 아직 레시피 데이터가 없으면 실행하지 않음
     if (recipeData.length === 0) {
@@ -62,7 +59,7 @@ const Search = () => {
     e.preventDefault();
     // 한글만 입력되었는지 검사
     if (!inputValue.trim() || !koreanOnly.test(inputValue)) {
-      openAlertModal('재료는 한글 단어만 입력 가능합니다.');
+      alert('재료는 한글 단어만 입력 가능합니다.');
       setInputValue('');
       return;
     }
@@ -123,7 +120,6 @@ const Search = () => {
           </BoxWrapper>
         )}
       </PageWrapper>
-      {alertModal}
     </>
   );
 };
