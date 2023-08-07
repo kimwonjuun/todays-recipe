@@ -1,30 +1,10 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import axios, { AxiosResponse } from 'axios';
 import SubmitForm from '../common/SubmitForm';
 import styled from 'styled-components';
 import { addDoc, collection } from 'firebase/firestore';
 import { dbService } from '../../apis/firebase';
-
-interface ResponseData {
-  COOKRCP01: {
-    row: any[];
-  };
-}
-
-const fetchAllData = async (): Promise<ResponseData[]> => {
-  const serviceKey = process.env.REACT_APP_FOODSAFETYKOREA_API_KEY;
-  const responses = await axios.all<AxiosResponse<ResponseData>>([
-    axios.get(
-      `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1/1000`
-    ),
-    axios.get(
-      `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1001/2000`
-    ),
-  ]);
-
-  return responses.map((response) => response.data);
-};
+import { fetchAllData } from '../../hooks/useFetchAllData';
 
 const EditFormBox = () => {
   // data: useQuery 훅을 사용, API 요청을 통해 반환된 데이터를 저장한 변수. enabled: false 를 주어 초기 렌더링 시에 데이터를 자동으로 가져오지 않음.
