@@ -1,78 +1,107 @@
+import React, { useState } from 'react';
+import { useQuery } from 'react-query';
+import axios, { AxiosResponse } from 'axios';
+import SubmitForm from '../common/SubmitForm';
 import styled from 'styled-components';
-import { useState } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
 import { dbService } from '../../apis/firebase';
-import axios from 'axios';
-import SubmitForm from '../common/SubmitForm';
+
+interface ResponseData {
+  COOKRCP01: {
+    row: any[];
+  };
+}
+
+const fetchAllData = async (): Promise<ResponseData[]> => {
+  const serviceKey = process.env.REACT_APP_FOODSAFETYKOREA_API_KEY;
+  const responses = await axios.all<AxiosResponse<ResponseData>>([
+    axios.get(
+      `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1/1000`
+    ),
+    axios.get(
+      `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1001/2000`
+    ),
+  ]);
+
+  return responses.map((response) => response.data);
+};
 
 const EditFormBox = () => {
-  // 파이어스토어 컬렉션에 데이터 넣기
+  // data: useQuery 훅을 사용, API 요청을 통해 반환된 데이터를 저장한 변수. enabled: false 를 주어 초기 렌더링 시에 데이터를 자동으로 가져오지 않음.
+  // why? 해당 프로젝트의 데이터는 필요 시 (데이터 가공, 편집 등) 에만 버튼을 클릭해 refetch 를 통한 데이터 호출의 형태로 구현함.
+  // 이미 가공된 데이터를 App 렌더링 시 1회만 호출하여 사용하고 있기에 사실 리액트 쿼리가 필수는 아니었음!
+
+  const { data, refetch } = useQuery<ResponseData[], Error>(
+    'allData',
+    fetchAllData,
+    {
+      enabled: false,
+    }
+  );
+
   const handleGetRecipeList = async () => {
     if (window.confirm('API를 수정하시겠습니까?')) {
       try {
-        const serviceKey = process.env.REACT_APP_FOODSAFETYKOREA_API_KEY;
-        const responses = await axios.all([
-          axios.get(
-            `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1/1000`
-          ),
-          axios.get(
-            `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1001/2000`
-          ),
-        ]);
-        const [firstResponse, secondResponse] = responses;
-        const allData = firstResponse.data.COOKRCP01.row.concat(
-          secondResponse.data.COOKRCP01.row
-        );
-        allData.map((recipe: any) => {
-          addDoc(collection(dbService, 'recipe-list'), {
-            id: recipe.RCP_SEQ,
-            image: recipe.ATT_FILE_NO_MK,
-            name: recipe.RCP_NM,
-            type: recipe.RCP_PAT2,
-            calorie: recipe.INFO_ENG,
-            carbohydrate: recipe.INFO_CAR,
-            protein: recipe.INFO_PRO,
-            fat: recipe.INFO_FAT,
-            sodium: recipe.INFO_NA,
-            ingredients: recipe.RCP_PARTS_DTLS.replace(
-              /재료|소스\s?:\s?|•/g,
-              ''
-            )
-              .replace('파슬리가루(1g)', '파슬리가루(1g),')
-              .split(',')
-              .join(', '),
-            tip: recipe.RCP_NA_TIP.replace(/•/g, ''),
-            make: [
-              recipe.MANUAL01,
-              recipe.MANUAL02,
-              recipe.MANUAL03,
-              recipe.MANUAL04,
-              recipe.MANUAL05,
-              recipe.MANUAL06,
-              recipe.MANUAL07,
-              recipe.MANUAL08,
-            ],
-            makeImage: [
-              recipe.MANUAL_IMG01,
-              recipe.MANUAL_IMG02,
-              recipe.MANUAL_IMG03,
-              recipe.MANUAL_IMG04,
-              recipe.MANUAL_IMG05,
-              recipe.MANUAL_IMG06,
-              recipe.MANUAL_IMG07,
-              recipe.MANUAL_IMG08,
-            ],
+        const responses = await refetch();
+        if (responses && responses.data) {
+          const [firstResponse, secondResponse] = responses.data;
+
+          const allData = firstResponse.COOKRCP01.row.concat(
+            secondResponse.COOKRCP01.row
+          );
+          allData.map((recipe: any) => {
+            addDoc(collection(dbService, 'recipe-list'), {
+              id: recipe.RCP_SEQ,
+              image: recipe.ATT_FILE_NO_MK,
+              name: recipe.RCP_NM,
+              type: recipe.RCP_PAT2,
+              calorie: recipe.INFO_ENG,
+              carbohydrate: recipe.INFO_CAR,
+              protein: recipe.INFO_PRO,
+              fat: recipe.INFO_FAT,
+              sodium: recipe.INFO_NA,
+              ingredients: recipe.RCP_PARTS_DTLS.replace(
+                /재료|소스\s?:\s?|•/g,
+                ''
+              )
+                .replace('파슬리가루(1g)', '파슬리가루(1g),')
+                .split(',')
+                .join(', '),
+              tip: recipe.RCP_NA_TIP.replace(/•/g, ''),
+              make: [
+                recipe.MANUAL01,
+                recipe.MANUAL02,
+                recipe.MANUAL03,
+                recipe.MANUAL04,
+                recipe.MANUAL05,
+                recipe.MANUAL06,
+                recipe.MANUAL07,
+                recipe.MANUAL08,
+              ],
+              makeImage: [
+                recipe.MANUAL_IMG01,
+                recipe.MANUAL_IMG02,
+                recipe.MANUAL_IMG03,
+                recipe.MANUAL_IMG04,
+                recipe.MANUAL_IMG05,
+                recipe.MANUAL_IMG06,
+                recipe.MANUAL_IMG07,
+                recipe.MANUAL_IMG08,
+              ],
+            });
           });
-        });
-        alert('레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.');
+
+          alert(
+            '레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.'
+          );
+        }
       } catch (error) {
-        console.error('레시피 리스트를 가져오지 못했어요. :', error);
-        alert('레시피 리스트를 가져오지 못했어요.');
+        console.error('레시피 리스트를 가져오지 못했습니다. :', error);
+        alert('레시피 리스트를 가져오지 못했습니다.');
       }
     }
   };
 
-  // 수정 사항 기록 폼
   const [inputValue, setInputValue] = useState('');
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -99,20 +128,20 @@ const EditFormBox = () => {
         <Title>수정 사항 제출하기</Title>
         <Contents>
           <GuideBox>
-            <p>1. 데이터를 수정한 후 가운데 버튼을 클릭해주세요.</p>
-            <p>2. 수정 기록을 인풋창에 작성 후 제출 버튼을 클릭해주세요.</p>
+            <p>1. 데이터를 수정한 후 버튼을 클릭해주세요.</p>
+            <p>2. 수정 내역을 인풋창에 작성 후 제출 버튼을 클릭해주세요.</p>
           </GuideBox>
-          <EditApiButtonWrapper>
+          <EditApiButton>
             <img
               src={require('../../assets/my/default_image.png')}
               onClick={handleGetRecipeList}
             />
-          </EditApiButtonWrapper>
+          </EditApiButton>
           <SubmitForm
             value={inputValue}
             onChange={handleInputChange}
             onSubmit={handleEditSubmit}
-            placeholder="수정하신 기록을 입력해주세요."
+            placeholder="수정하신 내역을 입력해주세요."
             maxLength={50}
           />
         </Contents>
@@ -161,7 +190,7 @@ const GuideBox = styled.div`
   font-size: 1.25rem;
 `;
 
-const EditApiButtonWrapper = styled.div`
+const EditApiButton = styled.div`
   width: 7.5rem;
   height: 7.5rem;
   display: flex;
