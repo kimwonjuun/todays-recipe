@@ -181,8 +181,8 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
               display: currentTab === '나의 냉장고' ? 'flex' : 'none',
             }}
           >
-            <TopWrapper>
-              <MyRefrigerator>
+            <MyRefrigerator>
+              <MyIngredients>
                 {myIngredients.length > 0 ? (
                   myIngredients.map((ingredient, index) => (
                     <IngredientItem
@@ -197,20 +197,21 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
                 ) : (
                   <p>아직 냉장고에 넣은 재료가 없습니다! 🫤</p>
                 )}
-              </MyRefrigerator>
-              <Img>
-                <img src={require('../../assets/my/refrigerator.gif')} />
-              </Img>
-            </TopWrapper>
-            <FormWarpper>
-              <SubmitForm
-                value={inputValue}
-                onSubmit={handleSubmit}
-                onChange={handleInputChange}
-                placeholder="처리하고 싶은 냉장고 안의 재료들을 입력하세요."
-                maxLength={6}
-              />
-            </FormWarpper>
+              </MyIngredients>
+              <FormWarpper>
+                <SubmitForm
+                  value={inputValue}
+                  onSubmit={handleSubmit}
+                  onChange={handleInputChange}
+                  placeholder="처리하고 싶은 냉장고 안의 재료들을 입력하세요."
+                  maxLength={6}
+                />
+              </FormWarpper>
+            </MyRefrigerator>
+
+            <Img>
+              <img src={require('../../assets/my/refrigerator.gif')} />
+            </Img>
           </MyRefrigeratorWrapper>
 
           <MyLikesWrapper
@@ -255,7 +256,7 @@ const UserAccounttWrapper = styled.div`
 
 const UserItem = styled.div`
   width: 70rem;
-  height: 37rem;
+  height: 35rem;
 
   display: flex;
   flex-direction: column;
@@ -274,10 +275,6 @@ const FormWarpper = styled.div`
   justify-content: center;
 `;
 
-const TopWrapper = styled.div`
-  display: flex;
-`;
-
 const Category = styled.div<{ 'data-is-selected': boolean }>`
   position: relative;
   height: 2rem;
@@ -292,23 +289,33 @@ const Category = styled.div<{ 'data-is-selected': boolean }>`
 const MyRefrigeratorWrapper = styled.div`
   height: 35rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-evenly;
+
+  /* background-color: yellow; */
 `;
 
 const MyRefrigerator = styled.div`
-  width: 42.5rem;
-  height: 15rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+  /* background-color: red; */
+`;
+
+const MyIngredients = styled.div`
+  width: 32.5rem;
+  height: 17.5rem;
   display: flex;
   align-content: center;
   flex-wrap: wrap;
-  padding: 1.5rem;
+  padding: 1.25rem;
   gap: 1rem;
-  margin: 5rem 2.5rem;
+  /* margin: 1rem; */
 
   border-radius: 1rem;
-  border: 0.25rem solid ${COLORS.blue1};
-
+  border: 0.2rem solid ${COLORS.blue1};
   > p {
     width: 100%;
     text-align: center;
@@ -316,8 +323,8 @@ const MyRefrigerator = styled.div`
 `;
 
 const IngredientItem = styled.div`
-  padding: 0.5rem 1rem;
-  height: 2.5rem;
+  padding: 0.75rem 1rem;
+  height: 2rem;
   border-radius: 1rem;
   background-color: ${COLORS.blue1};
   &:hover {
@@ -333,7 +340,7 @@ const IngredientItem = styled.div`
 `;
 
 const Img = styled.div`
-  width: 27.5rem;
+  width: 35rem;
   display: flex;
   align-items: center;
   justify-content: end;
