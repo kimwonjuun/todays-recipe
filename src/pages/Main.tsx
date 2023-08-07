@@ -3,8 +3,8 @@ import COLORS from '../styles/colors';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import SearchForm from '../components/common/SearchForm';
-import AlertModal from '../components/common/AlertModal';
 import { koreanOnly } from '../utils/regex';
+import useAlertModal from '../hooks/useAlertModal';
 
 const Main = () => {
   // 검색창
@@ -16,20 +16,8 @@ const Main = () => {
     setInputValue(e.target.value);
   };
 
-  // 얼럿 모달
-  const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [alertModalMessage, setAlertModalMessage] = useState('');
-
-  // 얼럿 모달 열기
-  const openAlertModal = (message: string) => {
-    setAlertModalOpen(true);
-    setAlertModalMessage(message);
-  };
-
-  // 얼럿 모달 닫기
-  const closeAlertModal = () => {
-    setAlertModalOpen(false);
-  };
+  // alert modal hook
+  const { alertModal, openAlertModal } = useAlertModal();
 
   // 폼 제출 함수
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -57,9 +45,7 @@ const Main = () => {
           />
         </BoxWrapper>
       </PageWrapper>
-      {alertModalOpen && (
-        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
-      )}
+      {alertModal}
     </>
   );
 };

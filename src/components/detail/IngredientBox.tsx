@@ -2,27 +2,15 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { authService, dbService } from '../../apis/firebase';
 import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
-import AlertModal from '../common/AlertModal';
+import useAlertModal from '../../hooks/useAlertModal';
 
 const IngredientBox = ({ recipe }: RecipeProps) => {
   const user = authService.currentUser;
   const currentUserUid = user?.uid;
   const [like, setLike] = useState(false);
 
-  // 얼럿 모달
-  const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [alertModalMessage, setAlertModalMessage] = useState('');
-
-  // 얼럿 모달 열기
-  const openAlertModal = (message: string) => {
-    setAlertModalOpen(true);
-    setAlertModalMessage(message);
-  };
-
-  // 얼럿 모달 닫기
-  const closeAlertModal = () => {
-    setAlertModalOpen(false);
-  };
+  // alert modal hook
+  const { alertModal, openAlertModal } = useAlertModal();
 
   // 좋아요
   const handleLikeButtonClick = async () => {
@@ -171,9 +159,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           </Ingredient>
         </IngredientWrapper>
       </TopWrapper>
-      {alertModalOpen && (
-        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
-      )}
+      {alertModal}
     </>
   );
 };

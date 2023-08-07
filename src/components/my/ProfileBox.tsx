@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { authService } from '../../apis/firebase';
 import { User } from 'firebase/auth';
-import AlertModal from '../common/AlertModal';
-import { useState } from 'react';
 import useAlertModal from '../../hooks/useAlertModal';
 
 interface ProfileBoxProps {
@@ -16,6 +14,7 @@ interface ProfileBoxProps {
 const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
   const navigate = useNavigate();
 
+  // alert modal hook
   const { alertModal, openAlertModal } = useAlertModal();
 
   // 로그아웃

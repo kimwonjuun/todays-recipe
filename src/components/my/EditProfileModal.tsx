@@ -5,7 +5,7 @@ import COLORS from '../../styles/colors';
 import { storage } from '../../apis/firebase';
 import { User, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import AlertModal from '../common/AlertModal';
+import useAlertModal from '../../hooks/useAlertModal';
 
 interface EditProfileModalProps {
   setIsModalOpen: Function;
@@ -57,20 +57,8 @@ const EditProfileModal = ({
     setDisplayName(editDisplayName);
   };
 
-  // 얼럿 모달
-  const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [alertModalMessage, setAlertModalMessage] = useState('');
-
-  // 얼럿 모달 열기
-  const openAlertModal = (message: string) => {
-    setAlertModalOpen(true);
-    setAlertModalMessage(message);
-  };
-
-  // 얼럿 모달 닫기
-  const closeAlertModal = () => {
-    setAlertModalOpen(false);
-  };
+  // alert modal hook
+  const { alertModal, openAlertModal } = useAlertModal();
 
   // 프로필 수정하기 버튼
   const handleProfileEdit = async () => {
@@ -178,9 +166,7 @@ const EditProfileModal = ({
             </DeleteAccountBox>
           </BottomWrapper>
         </Modal>
-        {alertModalOpen && (
-          <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
-        )}
+        {alertModal}
       </ModalWrapper>
     </>
   );

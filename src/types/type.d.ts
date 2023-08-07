@@ -17,11 +17,3 @@ interface Recipe {
 interface RecipeProps {
   recipe: Recipe;
 }
-
-// interface ModalTypes {
-//   message?: string;
-//   onClose?: () => void;
-//   alertModal: React.ReactNode;
-//   openAlertModal: (message: string) => void;
-//   closeAlertModal: () => void;
-// }

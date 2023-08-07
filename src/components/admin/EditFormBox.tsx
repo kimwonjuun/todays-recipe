@@ -1,27 +1,14 @@
 import styled from 'styled-components';
-import COLORS from '../../styles/colors';
 import { useState } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
 import { dbService } from '../../apis/firebase';
 import axios from 'axios';
 import SubmitForm from '../common/SubmitForm';
-import AlertModal from '../common/AlertModal';
+import useAlertModal from '../../hooks/useAlertModal';
 
 const EditFormBox = () => {
-  // 얼럿 모달
-  const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [alertModalMessage, setAlertModalMessage] = useState('');
-
-  // 얼럿 모달 열기
-  const openAlertModal = (message: string) => {
-    setAlertModalOpen(true);
-    setAlertModalMessage(message);
-  };
-
-  // 얼럿 모달 닫기
-  const closeAlertModal = () => {
-    setAlertModalOpen(false);
-  };
+  // alert modal hook
+  const { alertModal, openAlertModal } = useAlertModal();
 
   // 파이어스토어 컬렉션에 데이터 넣기
   const handleGetRecipeList = async () => {
@@ -136,9 +123,7 @@ const EditFormBox = () => {
           />
         </Contents>
       </BoxWrapper>
-      {alertModalOpen && (
-        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
-      )}
+      {alertModal}
     </>
   );
 };

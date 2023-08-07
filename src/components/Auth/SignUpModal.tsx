@@ -9,7 +9,7 @@ import { authService } from '../../apis/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
 import styled from 'styled-components';
-import AlertModal from '../common/AlertModal';
+import useAlertModal from '../../hooks/useAlertModal';
 
 const SignUpModal = ({
   setLoginModalIsOpen,
@@ -104,20 +104,8 @@ const SignUpModal = ({
     }
   };
 
-  // 얼럿 모달
-  const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [alertModalMessage, setAlertModalMessage] = useState('');
-
-  // 얼럿 모달 열기
-  const openAlertModal = (message: string) => {
-    setAlertModalOpen(true);
-    setAlertModalMessage(message);
-  };
-
-  // 얼럿 모달 닫기
-  const closeAlertModal = () => {
-    setAlertModalOpen(false);
-  };
+  // alert modal hook
+  const { alertModal, openAlertModal } = useAlertModal();
 
   // 회원가입 - 세션스토리지 저장
   const handleSignupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -225,9 +213,7 @@ const SignUpModal = ({
             </BottomWrapper>
           </form>
         </Modal>
-        {alertModalOpen && (
-          <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
-        )}
+        {alertModal}
       </ModalWrapper>
     </>
   );

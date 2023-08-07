@@ -6,10 +6,10 @@ import SearchForm from '../components/common/SearchForm';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
 import Loading from '../components/common/Loading';
 import RecipeCard from '../components/common/RecipeCard';
-import AlertModal from '../components/common/AlertModal';
 import { koreanOnly } from '../utils/regex';
 import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
+import useAlertModal from '../hooks/useAlertModal';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -32,21 +32,8 @@ const Search = () => {
   // 로딩 상태
   const [loading, setLoading] = useState<boolean>(true);
 
-  // 얼럿 모달
-  const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [alertModalMessage, setAlertModalMessage] = useState('');
-
-  // 얼럿 모달 열기
-  const openAlertModal = (message: string) => {
-    setAlertModalOpen(true);
-    setAlertModalMessage(message);
-  };
-
-  // 얼럿 모달 닫기
-  const closeAlertModal = () => {
-    setAlertModalOpen(false);
-  };
-
+  // alert modal hook
+  const { alertModal, openAlertModal } = useAlertModal();
   useEffect(() => {
     // 아직 레시피 데이터가 없으면 실행하지 않음
     if (recipeData.length === 0) {
@@ -136,9 +123,7 @@ const Search = () => {
           </BoxWrapper>
         )}
       </PageWrapper>
-      {alertModalOpen && (
-        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
-      )}
+      {alertModal}
     </>
   );
 };

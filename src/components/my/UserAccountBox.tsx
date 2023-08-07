@@ -5,8 +5,8 @@ import { dbService } from '../../apis/firebase';
 import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import RecipeCard from '../common/RecipeCard';
-import AlertModal from '../common/AlertModal';
 import { koreanOnly } from '../../utils/regex';
+import useAlertModal from '../../hooks/useAlertModal';
 
 interface UserAccountBoxProps {
   currentUserUid: string | undefined;
@@ -20,20 +20,8 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
     setInputValue(e.target.value);
   };
 
-  // 얼럿 모달
-  const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [alertModalMessage, setAlertModalMessage] = useState('');
-
-  // 얼럿 모달 열기
-  const openAlertModal = (message: string) => {
-    setAlertModalOpen(true);
-    setAlertModalMessage(message);
-  };
-
-  // 얼럿 모달 닫기
-  const closeAlertModal = () => {
-    setAlertModalOpen(false);
-  };
+  // alert modal hook
+  const { alertModal, openAlertModal } = useAlertModal();
 
   // 재료 입력
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -246,9 +234,7 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
           </MyLikesWrapper>
         </UserItem>
       </UserAccounttWrapper>
-      {alertModalOpen && (
-        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
-      )}
+      {alertModal}
     </>
   );
 };
