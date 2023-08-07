@@ -154,16 +154,16 @@ const Modal = styled.div`
   padding: 2rem;
   border-radius: 1rem;
   border: 0.25rem solid ${COLORS.blue1};
-  width: 40rem;
-  height: 50rem;
+  width: 25rem;
+  height: 35rem;
   position: relative;
   text-align: center;
 `;
 
 const TitleWrapper = styled.div`
   width: inherit;
-  height: 5rem;
-  font-size: 2.5rem;
+  height: 2.5rem;
+  font-size: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -171,19 +171,20 @@ const TitleWrapper = styled.div`
 
 const InputWrapper = styled.div`
   width: inherit;
-  height: 35rem;
+  height: 25rem;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   flex-direction: column;
+  /* background-color: yellow; */
 `;
 
 const Input = styled.input`
-  width: 30rem;
-  height: 4rem;
+  width: 22.5rem;
+  height: 2.5rem;
   border-radius: 1rem;
   border: 0.25rem solid ${COLORS.blue1};
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   outline: none;
   text-align: left;
   padding-left: 1rem;
@@ -191,7 +192,7 @@ const Input = styled.input`
 
 const BottomWrapper = styled.div`
   width: inherit;
-  height: 10rem;
+  height: 7.5rem;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -199,12 +200,12 @@ const BottomWrapper = styled.div`
 `;
 
 const Button = styled.button`
-  width: 31.5rem;
-  height: 4.5rem;
+  width: 24rem;
+  height: 3rem;
   border-radius: 1rem;
   border: ${({ disabled }) =>
     disabled ? 'none' : `0.25rem solid ${COLORS.blue1}`};
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #fff;
   background-color: ${({ disabled }) =>
     disabled ? COLORS.gray : COLORS.blue1};
@@ -217,7 +218,7 @@ const Button = styled.button`
 `;
 
 const LoginText = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   cursor: pointer;
   &:hover {
     color: ${COLORS.blue2};
@@ -241,7 +242,7 @@ const CloseButton = styled.button`
 
 const CustomSpan = styled.span`
   font-size: 1rem;
-  margin: -2.2rem 0;
+  margin: -1.82rem 0;
   &.success {
     color: ${COLORS.blue1};
   }
@@ -251,8 +252,8 @@ const CustomSpan = styled.span`
 `;
 
 const Logo = styled.div`
-  width: 11rem;
-  height: 11rem;
+  width: 9rem;
+  height: 9rem;
 `;
 
 const LogoImg = styled.img`
