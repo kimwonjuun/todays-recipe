@@ -5,6 +5,7 @@ import { authService } from '../../apis/firebase';
 import { User } from 'firebase/auth';
 import AlertModal from '../common/AlertModal';
 import { useState } from 'react';
+import useAlertModal from '../../hooks/useAlertModal';
 
 interface ProfileBoxProps {
   openModal: () => void;
@@ -15,20 +16,7 @@ interface ProfileBoxProps {
 const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
   const navigate = useNavigate();
 
-  // 얼럿 모달
-  const [alertModalOpen, setAlertModalOpen] = useState(false);
-  const [alertModalMessage, setAlertModalMessage] = useState('');
-
-  // 얼럿 모달 열기
-  const openAlertModal = (message: string) => {
-    setAlertModalOpen(true);
-    setAlertModalMessage(message);
-  };
-
-  // 얼럿 모달 닫기
-  const closeAlertModal = () => {
-    setAlertModalOpen(false);
-  };
+  const { alertModal, openAlertModal } = useAlertModal();
 
   // 로그아웃
   const handleLogout = () => {
@@ -63,9 +51,7 @@ const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
           <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
         </LogoutBox>
       </ProfileWrapper>
-      {alertModalOpen && (
-        <AlertModal message={alertModalMessage} onClose={closeAlertModal} />
-      )}
+      {alertModal}
     </>
   );
 };
