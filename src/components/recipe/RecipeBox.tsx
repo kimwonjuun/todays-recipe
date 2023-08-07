@@ -6,7 +6,6 @@ import RecipeCard from '../common/RecipeCard';
 import { doc, getDoc } from 'firebase/firestore';
 import { dbService, firebaseConfig } from '../../apis/firebase';
 
-// import해온 Recipe 타입
 interface RecipeProps {
   recipeData: Recipe[];
 }

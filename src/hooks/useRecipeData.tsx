@@ -25,6 +25,7 @@ export const useRecipeData = () => {
     });
     setRecipeData(recipeDataBase);
   };
+
   useEffect(() => {
     getRecipeData();
     console.log('recipe data 들어옴 !');
