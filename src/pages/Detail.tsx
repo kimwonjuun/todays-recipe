@@ -11,6 +11,7 @@ import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { authService, dbService } from '../apis/firebase';
 import useAlert from '../hooks/useAlert';
 import { User } from 'firebase/auth';
+import AlertModal from '../components/common/AlertModal';
 
 const Detail = () => {
   // Recipe/RecipeBox, Search에서 받아온 각 레시피가 가지고 있는 고유한 id
@@ -52,8 +53,15 @@ const Detail = () => {
     return () => {
       handleAuthStateChange();
     };
-  }, []);
+  }, [user]);
+
   // custom modal
+  const {
+    openAlert,
+    closeAlert,
+    isOpen: isAlertOpen,
+    alertMessage,
+  } = useAlert();
 
   // 댓글 인풋
   const [inputValue, setInputValue] = useState<string>('');
@@ -67,24 +75,24 @@ const Detail = () => {
   const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      if (!user) {
-        alert('댓글은 로그인 후 작성이 가능합니다.');
+      if (!currentUserUid) {
+        openAlert('댓글은 로그인 후 작성이 가능합니다.');
         return;
       }
 
       if (!inputValue) {
-        alert('댓글을 입력해주세요.');
+        openAlert('댓글을 입력해주세요.');
         return;
       }
 
-      // 사용자 문서를 참조하는 document reference를 생성합니다.
-      const userDocRef = doc(dbService, 'users', user.uid);
+      // 문서 가져오기
+      const userDocRef = doc(dbService, 'users', currentUserUid);
 
-      // 가져온 사용자 문서로부터 데이터를 읽어옵니다.
+      // 문서 데이터 가져오기
       const userDoc = await getDoc(userDocRef);
       const userData = userDoc.data();
 
-      // 댓글 객체를 생성합니다.
+      // 댓글 객체를 생성
       const newComment = {
         id: recipe?.id,
         name: recipe?.name,
@@ -92,7 +100,7 @@ const Detail = () => {
         updatedAt: Date.now(),
       };
 
-      // 'user-comments' 필드에 존재하는 배열에 새 댓글을 추가하고 사용자 문서를 업데이트합니다.
+      // 'user-comments' 필드에 존재하는 배열에 새 댓글을 추가하고 문서 업데이트
       if (userData) {
         await setDoc(userDocRef, {
           ...userData,
@@ -105,30 +113,6 @@ const Detail = () => {
       console.error('댓글 저장에 실패했습니다.', error);
     }
   };
-  // const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   try {
-  //     if (!user) {
-  //       alert('댓글은 로그인 후 작성이 가능합니다.');
-  //       return;
-  //     }
-
-  //     if (!inputValue) {
-  //       alert('댓글을 입력해주세요.');
-  //       return;
-  //     }
-
-  //     await addDoc(collection(dbService, 'comments'), {
-  //       id: recipe?.id,
-  //       name: recipe?.name,
-  //       comment: inputValue,
-  //       updatedAt: Date.now(),
-  //     });
-  //     setInputValue('');
-  //   } catch (error) {
-  //     console.error('댓글 저장에 실패했습니다.', error);
-  //   }
-  // };
 
   return (
     <>
@@ -160,6 +144,11 @@ const Detail = () => {
             </CommentBox>
           </BoxWrapper>
         )}
+        <AlertModal
+          message={alertMessage}
+          isOpen={isAlertOpen}
+          onClose={closeAlert}
+        />
       </PageWrapper>
     </>
   );

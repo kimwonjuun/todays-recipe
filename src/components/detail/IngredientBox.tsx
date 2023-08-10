@@ -4,7 +4,6 @@ import { authService, dbService } from '../../apis/firebase';
 import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { User } from 'firebase/auth';
 import useAlert from '../../hooks/useAlert';
-import AlertModal from '../common/AlertModal';
 
 const IngredientBox = ({ recipe }: RecipeProps) => {
   const [user, setUser] = useState<User | null>(null);
@@ -182,11 +181,6 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           </Ingredient>
         </IngredientWrapper>
       </TopWrapper>
-      <AlertModal
-        message={alertMessage}
-        isOpen={isAlertOpen}
-        onClose={closeAlert}
-      />
     </>
   );
 };
