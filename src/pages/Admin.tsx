@@ -4,18 +4,29 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import EditHistoryBox from '../components/admin/EditHistoryBox';
 import EditFormBox from '../components/admin/EditFormBox';
-import { firebaseConfig } from '../apis/firebase';
+import { useState } from 'react';
+import { authService } from '../apis/firebase';
+import { User } from 'firebase/auth';
 
 const Admin = () => {
-  const isLoggedIn = sessionStorage.getItem(
-    `firebase:authUser:${firebaseConfig.apiKey}:[DEFAULT]`
-  );
-  const user = JSON.parse(isLoggedIn ?? '{}');
+  const [user, setUser] = useState<User | null>(null);
 
   const navigate = useNavigate();
+
   useEffect(() => {
-    user.email === 'test@test.com' ? navigate('/admin') : navigate('/');
-  }, []);
+    const handleAuthStateChange = authService.onAuthStateChanged((user) => {
+      if (user && user.email === 'test@test.com') {
+        setUser(user);
+        navigate('/admin');
+      } else {
+        navigate('/error');
+      }
+    });
+
+    return () => {
+      handleAuthStateChange();
+    };
+  }, [navigate]);
 
   return (
     <>

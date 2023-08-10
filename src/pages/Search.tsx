@@ -76,11 +76,11 @@ const Search = () => {
         {loading ? (
           <Loading />
         ) : (
-          <BoxWrapper isFiltered={filteredRecipes.length > 0}>
+          <BoxWrapper data-is-filtered={filteredRecipes.length > 0}>
             {filteredRecipes.length > 0 ? (
               <>
                 <ResultWrapper
-                  isFiltered={filteredRecipes.length > 0}
+                  data-is-filtered={filteredRecipes.length > 0}
                   style={{ marginBottom: '3rem' }}
                 >
                   "{keyword}" 검색 결과: {filteredRecipes.length}건
@@ -99,7 +99,7 @@ const Search = () => {
               </>
             ) : (
               <>
-                <ResultWrapper isFiltered={filteredRecipes.length > 0}>
+                <ResultWrapper data-is-filtered={filteredRecipes.length > 0}>
                   검색 결과가 없습니다. 🫤
                 </ResultWrapper>
                 <SearchForm
@@ -135,9 +135,10 @@ const PageWrapper = styled.div`
   background-color: ${COLORS.backGround};
 `;
 
-const BoxWrapper = styled.div<{ isFiltered: boolean }>`
+const BoxWrapper = styled.div<{ 'data-is-filtered': boolean }>`
   width: 90rem;
-  height: ${({ isFiltered }) => (isFiltered ? '' : 'calc(100vh - 12.8rem)')};
+  height: ${({ 'data-is-filtered': isFiltered }) =>
+    isFiltered ? '' : 'calc(100vh - 12.8rem)'};
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -146,10 +147,11 @@ const BoxWrapper = styled.div<{ isFiltered: boolean }>`
 
   position: relative;
 `;
-const ResultWrapper = styled.div<{ isFiltered: boolean }>`
+const ResultWrapper = styled.div<{ 'data-is-filtered': boolean }>`
   flex-wrap: wrap;
   display: flex;
-  margin-top: ${({ isFiltered }) => (isFiltered ? '5rem' : '')};
+  margin-top: ${({ 'data-is-filtered': isFiltered }) =>
+    isFiltered ? '5rem' : ''};
 `;
 const RecipeWrapper = styled.div`
   flex-wrap: wrap;

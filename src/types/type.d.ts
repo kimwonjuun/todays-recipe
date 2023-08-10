@@ -1,4 +1,11 @@
-// 초기 호출한 데이터의 타입
+// 기본 데이터 타입
+interface ResponseData {
+  COOKRCP01: {
+    row: any[];
+  };
+}
+
+// 가공된 데이터의 타입
 interface Recipe {
   id: string;
   image: string;

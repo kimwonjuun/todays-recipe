@@ -47,7 +47,6 @@ const EditProfileModal = ({
   // 프로필 닉네임
   const [displayName, setDisplayName] = useState<string>(
     user?.displayName || ''
-    //
   );
 
   // 프로필 닉네임 수정

@@ -1,79 +1,78 @@
+import React, { useState } from 'react';
+import SubmitForm from '../common/SubmitForm';
 import styled from 'styled-components';
-import { useState } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
 import { dbService } from '../../apis/firebase';
-import axios from 'axios';
-import SubmitForm from '../common/SubmitForm';
+import { useFetchRecipes } from '../../hooks/useFetchRecipes';
 
 const EditFormBox = () => {
-  // 파이어스토어 컬렉션에 데이터 넣기
-  const handleGetRecipeList = async () => {
-    if (window.confirm('API를 수정하시겠습니까?')) {
-      try {
-        const serviceKey = process.env.REACT_APP_FOODSAFETYKOREA_API_KEY;
-        const responses = await axios.all([
-          axios.get(
-            `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1/1000`
-          ),
-          axios.get(
-            `http://openapi.foodsafetykorea.go.kr/api/${serviceKey}/COOKRCP01/json/1001/2000`
-          ),
-        ]);
-        const [firstResponse, secondResponse] = responses;
-        const allData = firstResponse.data.COOKRCP01.row.concat(
-          secondResponse.data.COOKRCP01.row
-        );
-        allData.map((recipe: any) => {
-          addDoc(collection(dbService, 'recipe-list'), {
-            id: recipe.RCP_SEQ,
-            image: recipe.ATT_FILE_NO_MK,
-            name: recipe.RCP_NM,
-            type: recipe.RCP_PAT2,
-            calorie: recipe.INFO_ENG,
-            carbohydrate: recipe.INFO_CAR,
-            protein: recipe.INFO_PRO,
-            fat: recipe.INFO_FAT,
-            sodium: recipe.INFO_NA,
-            ingredients: recipe.RCP_PARTS_DTLS.replace(
-              /재료|소스\s?:\s?|•/g,
-              ''
-            )
-              .replace('파슬리가루(1g)', '파슬리가루(1g),')
-              .split(',')
-              .join(', '),
-            tip: recipe.RCP_NA_TIP.replace(/•/g, ''),
-            make: [
-              recipe.MANUAL01,
-              recipe.MANUAL02,
-              recipe.MANUAL03,
-              recipe.MANUAL04,
-              recipe.MANUAL05,
-              recipe.MANUAL06,
-              recipe.MANUAL07,
-              recipe.MANUAL08,
-            ],
-            makeImage: [
-              recipe.MANUAL_IMG01,
-              recipe.MANUAL_IMG02,
-              recipe.MANUAL_IMG03,
-              recipe.MANUAL_IMG04,
-              recipe.MANUAL_IMG05,
-              recipe.MANUAL_IMG06,
-              recipe.MANUAL_IMG07,
-              recipe.MANUAL_IMG08,
-            ],
-          });
+  // 호출한 API 전체 데이터 + 로딩, 에러 상태
+  const { data: recipeData, isLoading, isError } = useFetchRecipes();
+
+  // 파이어스토어에 가공한 데이터 넣기
+  const handleAddRecipeListToFirestore = async (recipeData: any) => {
+    try {
+      recipeData.map((recipe: any) => {
+        addDoc(collection(dbService, 'recipe-list'), {
+          id: recipe.RCP_SEQ,
+          image: recipe.ATT_FILE_NO_MK,
+          name: recipe.RCP_NM,
+          type: recipe.RCP_PAT2,
+          calorie: recipe.INFO_ENG,
+          carbohydrate: recipe.INFO_CAR,
+          protein: recipe.INFO_PRO,
+          fat: recipe.INFO_FAT,
+          sodium: recipe.INFO_NA,
+          ingredients: recipe.RCP_PARTS_DTLS.replace(/재료|소스\s?:\s?|•/g, '')
+            .replace('파슬리가루(1g)', '파슬리가루(1g),')
+            .replace('라이스페이퍼 20g[새콤 달콤 소스] ', '라이스페이퍼 20g, ')
+            .split(',')
+            .join(', '),
+          tip: recipe.RCP_NA_TIP.replace(/•/g, ''),
+          make: [
+            recipe.MANUAL01,
+            recipe.MANUAL02,
+            recipe.MANUAL03,
+            recipe.MANUAL04,
+            recipe.MANUAL05,
+            recipe.MANUAL06,
+            recipe.MANUAL07,
+            recipe.MANUAL08,
+          ],
+          makeImage: [
+            recipe.MANUAL_IMG01,
+            recipe.MANUAL_IMG02,
+            recipe.MANUAL_IMG03,
+            recipe.MANUAL_IMG04,
+            recipe.MANUAL_IMG05,
+            recipe.MANUAL_IMG06,
+            recipe.MANUAL_IMG07,
+            recipe.MANUAL_IMG08,
+          ],
         });
-        alert('레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.');
-      } catch (error) {
-        console.error('레시피 리스트를 가져오지 못했어요. :', error);
-        alert('레시피 리스트를 가져오지 못했어요.');
-      }
+      });
+      alert('레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.');
+    } catch (error) {
+      console.error('레시피 데이터를 수정하지 못했어요. :', error);
+      alert('레시피 데이터를 수정하지 못했어요.');
     }
   };
 
-  // 수정 사항 기록 폼
-  const [inputValue, setInputValue] = useState('');
+  // api 저장하는 버튼
+  const handleGetRecipeList = () => {
+    if (window.confirm('API를 수정하시겠습니까?') && !isLoading && recipeData) {
+      handleAddRecipeListToFirestore(recipeData);
+    } else if (isLoading) {
+      alert('레시피 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+    } else if (isError) {
+      alert(
+        '레시피 데이터를 불러오지 못했습니다. 문제가 지속될 경우 관리자에게 문의해주세요.'
+      );
+    }
+  };
+
+  // api 저장 또는 수정 후 수정 내역에 작성할 인풋
+  const [inputValue, setInputValue] = useState<string>('');
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
@@ -99,20 +98,20 @@ const EditFormBox = () => {
         <Title>수정 사항 제출하기</Title>
         <Contents>
           <GuideBox>
-            <p>1. 데이터를 수정한 후 가운데 버튼을 클릭해주세요.</p>
-            <p>2. 수정 기록을 인풋창에 작성 후 제출 버튼을 클릭해주세요.</p>
+            <p>1. 데이터를 수정한 후 버튼을 클릭해주세요.</p>
+            <p>2. 수정 내역을 인풋창에 작성 후 제출 버튼을 클릭해주세요.</p>
           </GuideBox>
-          <EditApiButtonWrapper>
+          <EditApiButton>
             <img
               src={require('../../assets/my/default_image.png')}
               onClick={handleGetRecipeList}
             />
-          </EditApiButtonWrapper>
+          </EditApiButton>
           <SubmitForm
             value={inputValue}
             onChange={handleInputChange}
             onSubmit={handleEditSubmit}
-            placeholder="수정하신 기록을 입력해주세요."
+            placeholder="수정하신 내역을 입력해주세요."
             maxLength={50}
           />
         </Contents>
@@ -161,7 +160,7 @@ const GuideBox = styled.div`
   font-size: 1.25rem;
 `;
 
-const EditApiButtonWrapper = styled.div`
+const EditApiButton = styled.div`
   width: 7.5rem;
   height: 7.5rem;
   display: flex;
