@@ -133,7 +133,7 @@ const LoginModal = ({
               )}
             </InputWrapper>
             <BottomWrapper>
-              <Button type="submit">로그인하기</Button>
+              <Button>로그인하기</Button>
 
               <LinksWrapper>
                 <LoginText onClick={openSignUpModal}>

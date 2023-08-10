@@ -198,7 +198,6 @@ const SignUpModal = ({
             </InputWrapper>
             <BottomWrapper>
               <Button
-                type="submit"
                 disabled={
                   !isEmail || !isPassword || !isPasswordConfirm || !isNickname
                 }
