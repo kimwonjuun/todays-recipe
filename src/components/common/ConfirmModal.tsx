@@ -19,11 +19,11 @@ const ConfirmModal = ({
   return (
     <ModalWrapper>
       <Modal>
-        <p>{message}</p>
-        <ButtonContainer>
+        <Message>{message}</Message>
+        <ButtonWrapper>
           <ConfirmButton onClick={onConfirm}>확인</ConfirmButton>
           <CancelButton onClick={onCancel}>취소</CancelButton>
-        </ButtonContainer>
+        </ButtonWrapper>
       </Modal>
     </ModalWrapper>
   );
@@ -48,7 +48,6 @@ const Modal = styled.div`
   /* z-index: 200; */
   min-width: 20rem;
   min-height: 7.5rem;
-  font-size: 1.75rem;
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
@@ -56,14 +55,14 @@ const Modal = styled.div`
   justify-content: space-around;
   background-color: #fff;
   border-radius: 1rem;
-  border: 0.2rem solid ${COLORS.blue1};
-  > p {
-    width: 100%;
-    text-align: center;
-  }
+  border: 0.25rem solid ${COLORS.blue1};
 `;
 
-const ButtonContainer = styled.div`
+const Message = styled.div`
+  font-size: 1.75rem;
+`;
+
+const ButtonWrapper = styled.div`
   margin-top: 1rem;
   display: flex;
   justify-content: space-around;

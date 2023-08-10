@@ -5,6 +5,7 @@ import { authService } from '../../apis/firebase';
 import { User } from 'firebase/auth';
 import { useConfirm } from '../../hooks/useConfirm';
 import ConfirmModal from '../common/ConfirmModal';
+import useAlert from '../../hooks/useAlert';
 
 interface ProfileBoxProps {
   openModal: () => void;
@@ -16,12 +17,9 @@ const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
   const navigate = useNavigate();
 
   // 로그아웃
-  const handleLogout = () => {
-    authService.signOut().then(() => {
-      sessionStorage.clear();
-      alert('로그아웃 되었습니다.');
-      navigate('/', { replace: true });
-    });
+  const handleLogout = async () => {
+    await authService.signOut();
+    sessionStorage.clear();
   };
 
   // custom window.confirm 훅
