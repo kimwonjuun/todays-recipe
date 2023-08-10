@@ -5,6 +5,8 @@ import { addDoc, collection } from 'firebase/firestore';
 import { dbService } from '../../apis/firebase';
 import { useFetchRecipes } from '../../hooks/useFetchRecipes';
 import AlertModal from '../common/AlertModal';
+import useConfirm from '../../hooks/useConfirm';
+import ConfirmModal from '../common/ConfirmModal';
 import useAlert from '../../hooks/useAlert';
 
 const EditFormBox = () => {
@@ -70,10 +72,20 @@ const EditFormBox = () => {
     }
   };
 
+  const handleConfirmModalConfirm = () => {
+    handleAddRecipeListToFirestore(recipeData);
+    closeConfirm();
+  };
+
+  // custom window.confirm
+  const { openConfirm, closeConfirm, handleConfirm, isOpen } = useConfirm(
+    handleConfirmModalConfirm
+  );
+
   // api 저장하는 버튼
   const handleGetRecipeList = () => {
-    if (window.confirm('API를 수정하시겠습니까?') && !isLoading && recipeData) {
-      handleAddRecipeListToFirestore(recipeData);
+    if (!isLoading && recipeData) {
+      openConfirm();
     } else if (isLoading) {
       openAlert(
         '레시피 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.'
@@ -129,6 +141,12 @@ const EditFormBox = () => {
             maxLength={50}
           />
         </Contents>
+        <ConfirmModal
+          isOpen={isOpen}
+          message="API를 수정하시겠습니까?"
+          onConfirm={handleConfirm}
+          onCancel={closeConfirm}
+        />
         <AlertModal
           message={alertMessage}
           isOpen={isAlertOpen}

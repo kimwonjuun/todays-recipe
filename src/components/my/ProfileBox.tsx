@@ -1,9 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { authService } from '../../apis/firebase';
 import { User } from 'firebase/auth';
-import { useConfirm } from '../../hooks/useConfirm';
+import useConfirm from '../../hooks/useConfirm';
 import ConfirmModal from '../common/ConfirmModal';
 
 interface ProfileBoxProps {

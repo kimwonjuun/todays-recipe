@@ -1,10 +1,11 @@
 import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { storage } from '../../apis/firebase';
 import { User, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import useConfirm from '../../hooks/useConfirm';
+import ConfirmModal from '../common/ConfirmModal';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
 
@@ -21,22 +22,12 @@ const EditProfileModal = ({
   photoURL,
   setPhotoURL,
 }: EditProfileModalProps) => {
-  const navigate = useNavigate();
-
   // 프로필 이미지
   const [tempPhotoURL, setTempPhotoURL] = useState<any>(null); // 임시 photoURL 상태
   const [tempFileURL, setTempFileURL] = useState<any>(null); // 임시 file URL 상태
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // custom modal
-  const {
-    openAlert,
-    closeAlert,
-    isOpen: isAlertOpen,
-    alertMessage,
-  } = useAlert();
-
-  // 이미지 업로드드
+  // 이미지 업로드
   const uploadFirebase = async (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -77,37 +68,45 @@ const EditProfileModal = ({
         photoURL: tempFileURL || photoURL, // 사용자가 이미지를 업로드한 경우 tempFileURL을 사용
       })
         .then(() => {
-          openAlert('프로필 수정 완료');
+          alert('프로필 수정 완료');
           closeModal();
           setPhotoURL(tempFileURL || photoURL); // photoURL 업데이트
         })
         .catch((error) => {
           console.log(error);
-          openAlert('프로필 수정 실패');
+          alert('프로필 수정 실패');
         });
     }
   };
 
-  // 회원 탈퇴
+  // custom modal
+  const {
+    openAlert,
+    closeAlert,
+    isOpen: isAlertOpen,
+    alertMessage,
+  } = useAlert();
+
   const handleDeleteAccount = async () => {
-    if (window.confirm('회원 탈퇴를 진행하시겠습니까?')) {
-      if (user) {
-        try {
-          await user.delete();
-          sessionStorage.clear();
-          openAlert('회원 탈퇴가 완료되었습니다.');
-          navigate('/', { replace: true });
-        } catch (error) {
-          console.log(error);
-          openAlert(
-            '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
-          );
-        }
+    if (user) {
+      try {
+        await user.delete();
+        sessionStorage.clear();
+        openAlert('회원 탈퇴가 완료되었습니다.');
+      } catch (error) {
+        console.log(error);
+        openAlert(
+          '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
+        );
       }
     } else {
       return;
     }
   };
+
+  // custom window.confirm
+  const { openConfirm, closeConfirm, handleConfirm, isOpen } =
+    useConfirm(handleDeleteAccount);
 
   // 모달 닫기
   const closeModal = () => {
@@ -170,11 +169,15 @@ const EditProfileModal = ({
             >
               수정하기
             </SubmitButton>
-            <DeleteAccountBox onClick={handleDeleteAccount}>
-              회원 탈퇴
-            </DeleteAccountBox>
+            <DeleteAccountBox onClick={openConfirm}>회원 탈퇴</DeleteAccountBox>
           </BottomWrapper>
         </Modal>
+        <ConfirmModal
+          message="정말로 회원 탈퇴를 진행하시겠습니까?"
+          isOpen={isOpen}
+          onConfirm={handleConfirm}
+          onCancel={closeConfirm}
+        />
         <AlertModal
           message={alertMessage}
           isOpen={isAlertOpen}

@@ -7,7 +7,7 @@ interface useConfirmProps {
   isOpen: boolean;
 }
 
-export const useConfirm = (onConfirm: () => void): useConfirmProps => {
+const useConfirm = (onConfirm: () => void): useConfirmProps => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openConfirm = () => {
@@ -30,3 +30,5 @@ export const useConfirm = (onConfirm: () => void): useConfirmProps => {
     isOpen,
   };
 };
+
+export default useConfirm;
