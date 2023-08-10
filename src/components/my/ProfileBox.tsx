@@ -132,7 +132,6 @@ const LogoutButton = styled.button`
   background-color: ${COLORS.backGround};
   color: ${COLORS.blue1};
   cursor: pointer;
-  outline: none;
   &:hover {
     background-color: ${COLORS.gray};
   }

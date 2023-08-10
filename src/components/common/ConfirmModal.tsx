@@ -45,12 +45,15 @@ const ModalWrapper = styled.div`
 `;
 
 const Modal = styled.div`
-  z-index: 200;
-  width: 30rem;
-  padding: 2rem;
+  /* z-index: 200; */
+  min-width: 20rem;
+  min-height: 7.5rem;
+  font-size: 1.75rem;
+  padding: 2.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
   background-color: #fff;
   border-radius: 1rem;
   border: 0.2rem solid ${COLORS.blue1};
@@ -67,6 +70,32 @@ const ButtonContainer = styled.div`
   width: 100%;
 `;
 
-const ConfirmButton = styled.button``;
+const ConfirmButton = styled.button`
+  outline: none;
+  width: 5rem;
+  height: 2.5rem;
+  border-radius: 1rem;
+  border: 0.15rem solid ${COLORS.blue1};
+  font-size: 1.25rem;
+  background-color: ${COLORS.blue1};
+  color: #fff;
+  cursor: pointer;
+  &:hover {
+    background-color: ${COLORS.blue2};
+  }
+`;
 
-const CancelButton = styled.button``;
+const CancelButton = styled.button`
+  outline: none;
+  width: 5rem;
+  height: 2.5rem;
+  border-radius: 1rem;
+  border: 0.15rem solid ${COLORS.blue1};
+  font-size: 1.25rem;
+  background-color: ${COLORS.backGround};
+  color: ${COLORS.blue1};
+  cursor: pointer;
+  &:hover {
+    background-color: ${COLORS.gray};
+  }
+`;
