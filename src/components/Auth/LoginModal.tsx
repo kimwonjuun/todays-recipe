@@ -3,6 +3,7 @@ import {
   browserSessionPersistence,
   setPersistence,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { authService } from '../../apis/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
@@ -80,6 +81,15 @@ const LoginModal = ({
     emailRef.current?.focus();
   }, []);
 
+  const handlePasswordReset = async (email: string) => {
+    try {
+      await sendPasswordResetEmail(authService, email);
+      alert('비밀번호 재설정 이메일이 발송되었습니다. 이메일을 확인해주세요.');
+    } catch (error) {
+      alert('오류가 발생했습니다. 이메일 주소가 올바른지 확인해주세요.');
+    }
+  };
+
   return (
     <>
       <ModalWrapper>
@@ -123,9 +133,13 @@ const LoginModal = ({
             </InputWrapper>
             <BottomWrapper>
               <Button type="submit">로그인하기</Button>
+
               <LoginText onClick={openSignUpModal}>
                 아직 회원이 아니신가요?
               </LoginText>
+              <ResetPasswordButton onClick={() => handlePasswordReset(email)}>
+                비밀번호를 잊으셨나요?
+              </ResetPasswordButton>
             </BottomWrapper>
           </form>
         </Modal>
@@ -135,6 +149,16 @@ const LoginModal = ({
 };
 
 export default LoginModal;
+
+const ResetPasswordButton = styled.button`
+  font-size: 1.25rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  &:hover {
+    color: ${COLORS.blue2};
+  }
+`;
 
 const ModalWrapper = styled.div`
   position: fixed;
