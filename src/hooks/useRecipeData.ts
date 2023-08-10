@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { dbService } from '../apis/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { RecipeDataState } from '../recoil/atoms';
 import { useSetRecoilState } from 'recoil';
 
+// 파이어스토어로부터 내가 가공한 데이터 가져오는 훅
 export const useRecipeData = () => {
   // 기존 useState
   // const [recipeData, setRecipeData] = useState<Recipe[]>([]);
