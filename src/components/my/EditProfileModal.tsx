@@ -68,7 +68,7 @@ const EditProfileModal = ({
     alertMessage,
   } = useAlert();
 
-  // 프로필 수정하기 버튼
+  // 프로필 수정
   const handleProfileEdit = async () => {
     if (user) {
       await updateProfile(user, {
@@ -87,6 +87,7 @@ const EditProfileModal = ({
     }
   };
 
+  // 계정 삭제
   const handleDeleteAccount = async () => {
     if (user) {
       try {
