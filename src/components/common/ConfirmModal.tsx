@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import COLORS from '../../styles/colors';
 
 interface ConfirmModalProps {
   message: string;
@@ -47,11 +48,16 @@ const Modal = styled.div`
   z-index: 200;
   width: 30rem;
   padding: 2rem;
-  background-color: white;
-  border-radius: 0.8rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #fff;
+  border-radius: 1rem;
+  border: 0.2rem solid ${COLORS.blue1};
+  > p {
+    width: 100%;
+    text-align: center;
+  }
 `;
 
 const ButtonContainer = styled.div`

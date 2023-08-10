@@ -1,9 +1,10 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { authService } from '../../apis/firebase';
 import { User } from 'firebase/auth';
+import { useConfirm } from '../../hooks/useConfirm';
+import ConfirmModal from '../common/ConfirmModal';
 
 interface ProfileBoxProps {
   openModal: () => void;
@@ -14,31 +15,18 @@ interface ProfileBoxProps {
 const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
   const navigate = useNavigate();
 
-  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-  const openConfirmModal = () => {
-    setConfirmModalOpen(true);
-  };
-
-  const closeConfirmModal = () => {
-    setConfirmModalOpen(false);
-  };
-
-  const handleConfirmLogout = () => {
-    handleLogout();
-    closeConfirmModal();
-  };
   // 로그아웃
   const handleLogout = () => {
-    if (window.confirm('로그아웃 하시겠습니까?')) {
-      return authService.signOut().then(() => {
-        sessionStorage.clear();
-        alert('로그아웃 되었습니다.');
-        navigate('/', { replace: true });
-      });
-    } else {
-      return;
-    }
+    authService.signOut().then(() => {
+      sessionStorage.clear();
+      alert('로그아웃 되었습니다.');
+      navigate('/', { replace: true });
+    });
   };
+
+  // custom window.confirm 훅
+  const { openConfirm, closeConfirm, handleConfirm, isOpen } =
+    useConfirm(handleLogout);
 
   return (
     <>
@@ -57,9 +45,15 @@ const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
         </Profile>
         <LogoutBox>
           <EditButton onClick={openModal}>프로필 수정</EditButton>
-          <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+          <LogoutButton onClick={openConfirm}>로그아웃</LogoutButton>
         </LogoutBox>
       </ProfileWrapper>
+      <ConfirmModal
+        message="로그아웃 하시겠습니까?"
+        isOpen={isOpen}
+        onConfirm={handleConfirm}
+        onCancel={closeConfirm}
+      />
     </>
   );
 };
