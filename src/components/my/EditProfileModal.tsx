@@ -60,6 +60,14 @@ const EditProfileModal = ({
     setDisplayName(editDisplayName);
   };
 
+  // custom modal
+  const {
+    openAlert,
+    closeAlert,
+    isOpen: isAlertOpen,
+    alertMessage,
+  } = useAlert();
+
   // 프로필 수정하기 버튼
   const handleProfileEdit = async () => {
     if (user) {
@@ -68,24 +76,16 @@ const EditProfileModal = ({
         photoURL: tempFileURL || photoURL, // 사용자가 이미지를 업로드한 경우 tempFileURL을 사용
       })
         .then(() => {
-          alert('프로필 수정 완료');
+          openAlert('프로필 수정 완료');
           closeModal();
           setPhotoURL(tempFileURL || photoURL); // photoURL 업데이트
         })
         .catch((error) => {
           console.log(error);
-          alert('프로필 수정 실패');
+          openAlert('프로필 수정 실패');
         });
     }
   };
-
-  // custom modal
-  const {
-    openAlert,
-    closeAlert,
-    isOpen: isAlertOpen,
-    alertMessage,
-  } = useAlert();
 
   const handleDeleteAccount = async () => {
     if (user) {
