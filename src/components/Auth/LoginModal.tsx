@@ -77,18 +77,19 @@ const LoginModal = ({
       });
   };
 
-  useEffect(() => {
-    emailRef.current?.focus();
-  }, []);
-
   const handlePasswordReset = async (email: string) => {
     try {
       await sendPasswordResetEmail(authService, email);
       alert('비밀번호 재설정 이메일이 발송되었습니다. 이메일을 확인해주세요.');
     } catch (error) {
-      alert('오류가 발생했습니다. 이메일 주소가 올바른지 확인해주세요.');
+      alert('이메일 주소창에 이메일을 입력해주세요.');
+      emailRef.current?.focus();
     }
   };
+
+  useEffect(() => {
+    emailRef.current?.focus();
+  }, []);
 
   return (
     <>
@@ -134,12 +135,14 @@ const LoginModal = ({
             <BottomWrapper>
               <Button type="submit">로그인하기</Button>
 
-              <LoginText onClick={openSignUpModal}>
-                아직 회원이 아니신가요?
-              </LoginText>
-              <ResetPasswordButton onClick={() => handlePasswordReset(email)}>
-                비밀번호를 잊으셨나요?
-              </ResetPasswordButton>
+              <LinksWrapper>
+                <LoginText onClick={openSignUpModal}>
+                  아직 회원이 아니신가요?
+                </LoginText>
+                <ResetPasswordButton onClick={() => handlePasswordReset(email)}>
+                  비밀번호를 잊으셨나요?
+                </ResetPasswordButton>
+              </LinksWrapper>
             </BottomWrapper>
           </form>
         </Modal>
@@ -149,16 +152,6 @@ const LoginModal = ({
 };
 
 export default LoginModal;
-
-const ResetPasswordButton = styled.button`
-  font-size: 1.25rem;
-  cursor: pointer;
-  background: none;
-  border: none;
-  &:hover {
-    color: ${COLORS.blue2};
-  }
-`;
 
 const ModalWrapper = styled.div`
   position: fixed;
@@ -200,7 +193,6 @@ const InputWrapper = styled.div`
   align-items: center;
   justify-content: space-evenly;
   flex-direction: column;
-  /* background-color: yellow; */
 `;
 
 const Input = styled.input`
@@ -241,8 +233,24 @@ const Button = styled.button`
   }
 `;
 
+const LinksWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+`;
+
+const ResetPasswordButton = styled.button`
+  font-size: 1rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  &:hover {
+    color: ${COLORS.blue2};
+  }
+`;
+
 const LoginText = styled.div`
-  font-size: 1.25rem;
+  font-size: 1rem;
   cursor: pointer;
   &:hover {
     color: ${COLORS.blue2};
