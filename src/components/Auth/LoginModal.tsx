@@ -102,9 +102,9 @@ const LoginModal = ({
                 ref={emailRef}
               />
               {!emailValid && email.length > 0 && (
-                <CustomSpan className={emailValid ? 'success' : 'error'}>
+                <Span className={emailValid ? 'success' : 'error'}>
                   이메일 양식을 확인해주세요.
-                </CustomSpan>
+                </Span>
               )}
 
               <Input
@@ -116,9 +116,9 @@ const LoginModal = ({
                 ref={passwordRef}
               />
               {!passwordValid && password.length > 0 && (
-                <CustomSpan className={passwordValid ? 'success' : 'error'}>
+                <Span className={passwordValid ? 'success' : 'error'}>
                   비밀번호 양식을 확인해주세요.
-                </CustomSpan>
+                </Span>
               )}
             </InputWrapper>
             <BottomWrapper>
@@ -240,7 +240,7 @@ const CloseButton = styled.button`
   }
 `;
 
-const CustomSpan = styled.span`
+const Span = styled.span`
   font-size: 1rem;
   margin: -1.82rem 0;
   &.success {

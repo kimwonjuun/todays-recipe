@@ -5,7 +5,7 @@ interface ResponseData {
   };
 }
 
-// 초기 호출한 가공된 데이터의 타입
+// 가공된 데이터의 타입
 interface Recipe {
   id: string;
   image: string;

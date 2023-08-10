@@ -154,9 +154,9 @@ const SignUpModal = ({
                 ref={emailRef}
               />
               {email.length > 0 && (
-                <CustomSpan className={emailValid ? 'success' : 'error'}>
+                <Span className={emailValid ? 'success' : 'error'}>
                   {emailMessage}
-                </CustomSpan>
+                </Span>
               )}
               <Input
                 id="password"
@@ -166,9 +166,9 @@ const SignUpModal = ({
                 onChange={changePassword}
               />
               {password.length > 0 && (
-                <CustomSpan className={passwordValid ? 'success' : 'error'}>
+                <Span className={passwordValid ? 'success' : 'error'}>
                   {passwordMessage}
-                </CustomSpan>
+                </Span>
               )}
               <Input
                 id="confirm-password"
@@ -178,9 +178,9 @@ const SignUpModal = ({
                 onChange={changeConfirmPassword}
               />
               {confirmPassword.length > 0 && (
-                <CustomSpan className={isPasswordConfirm ? 'success' : 'error'}>
+                <Span className={isPasswordConfirm ? 'success' : 'error'}>
                   {passwordConfirmMessage}
-                </CustomSpan>
+                </Span>
               )}
               <Input
                 id="nickname"
@@ -191,9 +191,9 @@ const SignUpModal = ({
                 onChange={changeNickname}
               />
               {nickname.length > 0 && (
-                <CustomSpan className={isNickname ? 'success' : 'error'}>
+                <Span className={isNickname ? 'success' : 'error'}>
                   {nicknameMessage}
-                </CustomSpan>
+                </Span>
               )}
             </InputWrapper>
             <BottomWrapper>
@@ -320,7 +320,7 @@ const CloseButton = styled.button`
   }
 `;
 
-const CustomSpan = styled.span`
+const Span = styled.span`
   font-size: 1rem;
   margin: -1.82rem 0;
   &.success {

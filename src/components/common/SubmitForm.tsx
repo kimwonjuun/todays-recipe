@@ -26,7 +26,7 @@ const SubmitForm = ({
           placeholder={placeholder}
           maxLength={maxLength}
         />
-        <SubmitButton type="submit">입력</SubmitButton>
+        <SubmitButton>입력</SubmitButton>
       </FormWrapper>
     </>
   );
