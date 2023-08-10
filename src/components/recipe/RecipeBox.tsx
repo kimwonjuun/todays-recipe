@@ -56,12 +56,6 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
     );
   };
 
-  // 분류 선택 여닫기
-  // const [showCategories, setShowCategories] = useState<boolean>(false);
-  // const showCategoryButton = () => {
-  //   setShowCategories(!showCategories);
-  // };
-
   // 분류 선택 여닫기 후 선택하기
   const [selectedCategory, setSelectedCategory] =
     useState<string>('전체 레시피');

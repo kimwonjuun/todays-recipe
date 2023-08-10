@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
@@ -13,6 +14,19 @@ interface ProfileBoxProps {
 const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
   const navigate = useNavigate();
 
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const openConfirmModal = () => {
+    setConfirmModalOpen(true);
+  };
+
+  const closeConfirmModal = () => {
+    setConfirmModalOpen(false);
+  };
+
+  const handleConfirmLogout = () => {
+    handleLogout();
+    closeConfirmModal();
+  };
   // 로그아웃
   const handleLogout = () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
