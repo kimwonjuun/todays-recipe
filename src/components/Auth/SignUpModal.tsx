@@ -9,6 +9,8 @@ import { authService } from '../../apis/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
 import styled from 'styled-components';
+import useAlert from '../../hooks/useAlert';
+import AlertModal from '../common/AlertModal';
 
 const SignUpModal = ({
   setLoginModalIsOpen,
@@ -33,6 +35,14 @@ const SignUpModal = ({
   const [emailValid, setEmailValid] = useState(false); // 회원가입 시 이메일 유효성 결과
   const [passwordValid, setPasswordValid] = useState(false); // 회원가입 시 패스워드 유효성 결과
   const emailRef = useRef<HTMLInputElement | null>(null); // 이메일 입력창 참조
+
+  // custom modal
+  const {
+    openAlert,
+    closeAlert,
+    isOpen: isAlertOpen,
+    alertMessage,
+  } = useAlert();
 
   // 회원가입 모달 닫기
   const closeSignUpModal = () => {
@@ -117,7 +127,7 @@ const SignUpModal = ({
       })
       .then(() => {
         authService.signOut();
-        alert('회원가입이 완료 되었습니다! 로그인 해주세요.');
+        openAlert('회원가입이 완료 되었습니다! 로그인 해주세요.');
         setEmail('');
         setPassword('');
         setConfirmPassword('');
@@ -127,7 +137,7 @@ const SignUpModal = ({
       })
       .catch((err) => {
         if (err.message.includes('already-in-use')) {
-          alert('이미 가입된 계정입니다.');
+          openAlert('이미 가입된 계정입니다.');
           setEmail('');
         }
       });
@@ -208,6 +218,11 @@ const SignUpModal = ({
             </BottomWrapper>
           </form>
         </Modal>
+        <AlertModal
+          message={alertMessage}
+          isOpen={isAlertOpen}
+          onClose={closeAlert}
+        />
       </ModalWrapper>
     </>
   );

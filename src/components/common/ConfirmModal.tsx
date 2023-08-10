@@ -63,7 +63,7 @@ const Message = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   display: flex;
   justify-content: space-around;
   width: 100%;

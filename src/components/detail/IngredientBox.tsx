@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { authService, dbService } from '../../apis/firebase';
 import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { User } from 'firebase/auth';
+import useAlert from '../../hooks/useAlert';
+import AlertModal from '../common/AlertModal';
 
 const IngredientBox = ({ recipe }: RecipeProps) => {
   const [user, setUser] = useState<User | null>(null);
@@ -21,11 +23,19 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
     };
   }, []);
 
+  // custom modal
+  const {
+    openAlert,
+    closeAlert,
+    isOpen: isAlertOpen,
+    alertMessage,
+  } = useAlert();
+
   // 좋아요
   const handleLikeButtonClick = async () => {
     // 로그인 체크
     if (!currentUserUid) {
-      alert('로그인이 필요합니다.');
+      openAlert('로그인이 필요합니다.');
       return;
     }
 
@@ -55,7 +65,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           await updateDoc(userRef, { 'users-likes': updatedLikes });
           setLike(true);
           console.log('좋아요 추가');
-          alert('레시피 찜 완료!');
+          openAlert('레시피 찜 완료!');
         } else {
           // 좋아요 취소
           const updatedLikes = likes.filter(
@@ -64,7 +74,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           await updateDoc(userRef, { 'users-likes': updatedLikes });
           setLike(false);
           console.log('좋아요 취소');
-          alert('찜 목록에서 삭제했어요.');
+          openAlert('찜 목록에서 삭제했어요.');
         }
       } else {
         // 문서가 존재하지 않으면 새 문서 생성 후 레시피명 추가
@@ -74,7 +84,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
       }
     } catch (error) {
       console.error('레시피 찜에 실패했습니다.', error);
-      alert('레시피 찜에 실패했습니다.');
+      openAlert('레시피 찜에 실패했습니다.');
     }
   };
 
@@ -172,6 +182,11 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           </Ingredient>
         </IngredientWrapper>
       </TopWrapper>
+      <AlertModal
+        message={alertMessage}
+        isOpen={isAlertOpen}
+        onClose={closeAlert}
+      />
     </>
   );
 };

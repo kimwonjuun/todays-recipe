@@ -5,6 +5,8 @@ import COLORS from '../../styles/colors';
 import { storage } from '../../apis/firebase';
 import { User, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import useAlert from '../../hooks/useAlert';
+import AlertModal from '../common/AlertModal';
 
 interface EditProfileModalProps {
   setIsModalOpen: Function;
@@ -25,6 +27,16 @@ const EditProfileModal = ({
   const [tempPhotoURL, setTempPhotoURL] = useState<any>(null); // 임시 photoURL 상태
   const [tempFileURL, setTempFileURL] = useState<any>(null); // 임시 file URL 상태
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // custom modal
+  const {
+    openAlert,
+    closeAlert,
+    isOpen: isAlertOpen,
+    alertMessage,
+  } = useAlert();
+
+  // 이미지 업로드드
   const uploadFirebase = async (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -38,6 +50,8 @@ const EditProfileModal = ({
     );
     setTempFileURL(await getDownloadURL(uploaded_file.ref));
   };
+
+  // 카메라 이미지 클릭하면 동작
   const onCameraClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -63,13 +77,13 @@ const EditProfileModal = ({
         photoURL: tempFileURL || photoURL, // 사용자가 이미지를 업로드한 경우 tempFileURL을 사용
       })
         .then(() => {
-          alert('프로필 수정 완료');
+          openAlert('프로필 수정 완료');
           closeModal();
           setPhotoURL(tempFileURL || photoURL); // photoURL 업데이트
         })
         .catch((error) => {
           console.log(error);
-          alert('프로필 수정 실패');
+          openAlert('프로필 수정 실패');
         });
     }
   };
@@ -81,11 +95,11 @@ const EditProfileModal = ({
         try {
           await user.delete();
           sessionStorage.clear();
-          alert('회원 탈퇴가 완료되었습니다.');
+          openAlert('회원 탈퇴가 완료되었습니다.');
           navigate('/', { replace: true });
         } catch (error) {
           console.log(error);
-          alert(
+          openAlert(
             '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
           );
         }
@@ -161,6 +175,11 @@ const EditProfileModal = ({
             </DeleteAccountBox>
           </BottomWrapper>
         </Modal>
+        <AlertModal
+          message={alertMessage}
+          isOpen={isAlertOpen}
+          onClose={closeAlert}
+        />
       </ModalWrapper>
     </>
   );

@@ -9,6 +9,8 @@ import { authService } from '../../apis/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
 import { styled } from 'styled-components';
+import useAlert from '../../hooks/useAlert';
+import AlertModal from '../common/AlertModal';
 
 const LoginModal = ({
   setLoginModalIsOpen,
@@ -23,6 +25,14 @@ const LoginModal = ({
   const passwordRef = useRef<HTMLInputElement | null>(null); // 패스워드 입력창 참조
   const [emailValid, setEmailValid] = useState(false); // 로그인 시 이메일 유효성 결과
   const [passwordValid, setPasswordValid] = useState(false); // 로그인 시 패스워드 유효성 결과
+
+  // custom modal
+  const {
+    openAlert,
+    closeAlert,
+    isOpen: isAlertOpen,
+    alertMessage,
+  } = useAlert();
 
   // 로그인 모달 닫기
   const closeLoginModal = () => {
@@ -55,7 +65,7 @@ const LoginModal = ({
     setPersistence(authService, browserSessionPersistence)
       .then(() => signInWithEmailAndPassword(authService, email, password))
       .then(() => {
-        alert('로그인 되었습니다.');
+        openAlert('로그인 되었습니다.');
         setEmail('');
         setPassword('');
         setLoginModalIsOpen(false);
@@ -64,25 +74,28 @@ const LoginModal = ({
       .catch((err) => {
         // 오류 메시지 처리
         if (err.message.includes('user-not-found')) {
-          alert('가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.');
+          openAlert('가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.');
           emailRef?.current?.focus();
           setEmail('');
           setPassword('');
         }
         if (err.message.includes('wrong-password')) {
-          alert('잘못된 비밀번호 입니다.');
+          openAlert('잘못된 비밀번호 입니다.');
           passwordRef?.current?.focus();
           setPassword('');
         }
       });
   };
 
+  // 비밀번호 찾기
   const handlePasswordReset = async (email: string) => {
     try {
       await sendPasswordResetEmail(authService, email);
-      alert('비밀번호 재설정 이메일이 발송되었습니다. 이메일을 확인해주세요.');
+      openAlert(
+        '비밀번호 재설정 이메일이 발송되었습니다. 이메일을 확인해주세요.'
+      );
     } catch (error) {
-      alert('이메일 주소창에 이메일을 입력해주세요.');
+      openAlert('이메일 주소창에 이메일을 입력해주세요.');
       emailRef.current?.focus();
     }
   };
@@ -146,6 +159,11 @@ const LoginModal = ({
             </BottomWrapper>
           </form>
         </Modal>
+        <AlertModal
+          message={alertMessage}
+          isOpen={isAlertOpen}
+          onClose={closeAlert}
+        />
       </ModalWrapper>
     </>
   );

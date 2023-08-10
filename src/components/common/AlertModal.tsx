@@ -50,17 +50,19 @@ const Modal = styled.div`
 `;
 
 const Message = styled.p`
-  font-size: 1.25rem;
+  font-size: 1.75rem;
 `;
 
 const CloseButton = styled.button`
-  margin-top: 1rem;
-  font-size: 1rem;
+  margin-top: 1.5rem;
+  outline: none;
+  width: 5rem;
+  height: 2.5rem;
+  border-radius: 1rem;
+  border: 0.15rem solid ${COLORS.blue1};
+  font-size: 1.5rem;
   background-color: ${COLORS.blue1};
   color: #fff;
-  border: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
   cursor: pointer;
   &:hover {
     background-color: ${COLORS.blue2};
