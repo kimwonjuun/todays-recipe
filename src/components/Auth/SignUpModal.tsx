@@ -132,8 +132,6 @@ const SignUpModal = ({
         setPassword('');
         setConfirmPassword('');
         setNickname('');
-        setSignUpModalIsOpen(false);
-        setLoginModalIsOpen(true);
       })
       .catch((err) => {
         if (err.message.includes('already-in-use')) {
