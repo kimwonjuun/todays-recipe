@@ -7,6 +7,10 @@ import IngredientBox from '../components/detail/IngredientBox';
 import StepsBox from '../components/detail/StepsBox';
 import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
+import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
+import { authService, dbService } from '../apis/firebase';
+import useAlert from '../hooks/useAlert';
+import { User } from 'firebase/auth';
 
 const Detail = () => {
   // Recipe/RecipeBox, Search에서 받아온 각 레시피가 가지고 있는 고유한 id
@@ -17,6 +21,8 @@ const Detail = () => {
 
   // 선택한 레시피를 담아줄 state
   const [recipe, setRecipe] = useState<Recipe | null>(null);
+
+  console.log(recipe);
 
   // 로딩 상태
   const [loading, setLoading] = useState<boolean>(true);
@@ -32,6 +38,98 @@ const Detail = () => {
     }
   }, [recipeData]);
 
+  // 유저 상태
+  const [user, setUser] = useState<User | null>(null);
+  const currentUserUid = user?.uid ?? undefined;
+
+  useEffect(() => {
+    // user 객체 존재 시 setUser 업데이트
+    const handleAuthStateChange = authService.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      }
+    });
+    return () => {
+      handleAuthStateChange();
+    };
+  }, []);
+  // custom modal
+
+  // 댓글 인풋
+  const [inputValue, setInputValue] = useState<string>('');
+  // 댓글 리스트
+  const [commentsList, setCommentsList] = useState<any>([]);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  // 댓글 create
+  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      if (!user) {
+        alert('댓글은 로그인 후 작성이 가능합니다.');
+        return;
+      }
+
+      if (!inputValue) {
+        alert('댓글을 입력해주세요.');
+        return;
+      }
+
+      // 사용자 문서를 참조하는 document reference를 생성합니다.
+      const userDocRef = doc(dbService, 'users', user.uid);
+
+      // 가져온 사용자 문서로부터 데이터를 읽어옵니다.
+      const userDoc = await getDoc(userDocRef);
+      const userData = userDoc.data();
+
+      // 댓글 객체를 생성합니다.
+      const newComment = {
+        id: recipe?.id,
+        name: recipe?.name,
+        comment: inputValue,
+        updatedAt: Date.now(),
+      };
+
+      // 'user-comments' 필드에 존재하는 배열에 새 댓글을 추가하고 사용자 문서를 업데이트합니다.
+      if (userData) {
+        await setDoc(userDocRef, {
+          ...userData,
+          'user-comments': [...userData['user-comments'], newComment],
+        });
+      }
+
+      setInputValue('');
+    } catch (error) {
+      console.error('댓글 저장에 실패했습니다.', error);
+    }
+  };
+  // const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   try {
+  //     if (!user) {
+  //       alert('댓글은 로그인 후 작성이 가능합니다.');
+  //       return;
+  //     }
+
+  //     if (!inputValue) {
+  //       alert('댓글을 입력해주세요.');
+  //       return;
+  //     }
+
+  //     await addDoc(collection(dbService, 'comments'), {
+  //       id: recipe?.id,
+  //       name: recipe?.name,
+  //       comment: inputValue,
+  //       updatedAt: Date.now(),
+  //     });
+  //     setInputValue('');
+  //   } catch (error) {
+  //     console.error('댓글 저장에 실패했습니다.', error);
+  //   }
+  // };
+
   return (
     <>
       <PageWrapper>
@@ -43,12 +141,13 @@ const Detail = () => {
             <StepsBox recipe={recipe} />
             <CommentBox>
               <CommentTitle>댓글</CommentTitle>
-              <CommentForm>
+              <CommentForm onSubmit={handleEditSubmit}>
                 <CommentInput
-                  type="text"
+                  value={inputValue}
+                  onChange={handleInputChange}
                   placeholder="댓글을 입력해주세요..."
                 />
-                <CommentButton type="submit">댓글 작성</CommentButton>
+                <CommentButton>작성</CommentButton>
               </CommentForm>
               <CommentList>
                 <CommentItem>
@@ -74,7 +173,7 @@ const CommentBox = styled.div`
     0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
   border-radius: 1rem;
   text-align: center;
-  padding: 2rem;
+  padding: 2.5rem;
 `;
 const CommentTitle = styled.h2`
   margin-bottom: 1rem;
@@ -82,12 +181,12 @@ const CommentTitle = styled.h2`
 
 const CommentForm = styled.form`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin: 2rem 0;
 `;
 
 const CommentInput = styled.input`
-  flex: 1;
+  width: 67.5rem;
   padding: 0.5rem;
   border: none;
   border-bottom: 0.2rem solid ${COLORS.blue2};
