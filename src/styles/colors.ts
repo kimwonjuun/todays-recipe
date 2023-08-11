@@ -4,7 +4,7 @@ const COLORS = {
   violet1: '#a3abd9',
   violet2: '#d4ceea',
   red: '#fc0303',
-  gray: 'lightgray',
+  gray: '#aba9a9',
   backGround: '#f2f2f0',
 };
 

@@ -174,7 +174,7 @@ const EditProfileModal = ({
           </BottomWrapper>
         </Modal>
         <ConfirmModal
-          message="정말로 회원 탈퇴를 진행하시겠습니까?"
+          message="정말 회원 탈퇴를 진행하시겠습니까?"
           isOpen={isOpen}
           onConfirm={handleConfirm}
           onCancel={closeConfirm}

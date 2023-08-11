@@ -88,7 +88,7 @@ const ProfileText = styled.div`
   gap: 0.5rem;
   & > p:last-child {
     font-size: 1rem;
-    color: gray;
+    color: ${COLORS.gray};
   }
 `;
 

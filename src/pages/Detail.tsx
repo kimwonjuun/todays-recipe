@@ -22,6 +22,7 @@ import { User } from 'firebase/auth';
 import AlertModal from '../components/common/AlertModal';
 import { getFormattedDate } from '../utils/date';
 interface UserCommentProps {
+  uid: string;
   nickname: string;
   profilePic: string;
   name: string;
@@ -158,6 +159,7 @@ const Detail = () => {
 
       // 댓글 객체를 생성
       const newComment = {
+        uid: currentUserUid,
         nickname: user?.displayName,
         profilePic: user?.photoURL,
         name: recipe?.name,
@@ -302,31 +304,29 @@ const Detail = () => {
             <IngredientBox recipe={recipe} />
             <StepsBox recipe={recipe} />
             <CommentBox>
-              <CommentTitle>{commentsList.length}개의 댓글</CommentTitle>
-              {user && ( // 로그인한 사용자만 댓글 작성이 가능
-                <CommentForm onSubmit={handleCommentSubmit}>
-                  <UserProfileWrapper>
-                    {user?.photoURL ? (
-                      <UserProfileImg src={user.photoURL} />
-                    ) : (
-                      <UserProfileImg
-                        src={require('../assets/my/default_image.png')}
-                      />
-                    )}
-                  </UserProfileWrapper>
-                  <CommentInputWrapper>
-                    <CommentInput
-                      value={inputValue}
-                      onChange={handleInputChange}
-                      placeholder="댓글을 입력해주세요..."
-                      maxLength={50}
+              <CommentTitle>{commentsList.length} 개의 댓글</CommentTitle>
+              <CommentForm onSubmit={handleCommentSubmit}>
+                <UserProfileWrapper>
+                  {user?.photoURL ? (
+                    <UserProfileImg src={user.photoURL} />
+                  ) : (
+                    <UserProfileImg
+                      src={require('../assets/my/default_image.png')}
                     />
-                  </CommentInputWrapper>
-                  <CommentButtonWrapper>
-                    <CommentButton>작성</CommentButton>
-                  </CommentButtonWrapper>
-                </CommentForm>
-              )}
+                  )}
+                </UserProfileWrapper>
+                <CommentInputWrapper>
+                  <CommentInput
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    placeholder="댓글을 입력해주세요..."
+                    maxLength={50}
+                  />
+                </CommentInputWrapper>
+                <CommentButtonWrapper>
+                  <CommentButton>작성</CommentButton>
+                </CommentButtonWrapper>
+              </CommentForm>
               <CommentList>
                 {commentsList && commentsList.length > 0 ? (
                   commentsList.map((item: UserCommentProps) => (
@@ -339,36 +339,42 @@ const Detail = () => {
                             <UploadedAt>
                               {getFormattedDate(item.updatedAt)}
                             </UploadedAt>
-                            {isEditing && editTarget === item ? (
+                            {currentUserUid === item.uid && (
                               <>
-                                <EditSaveButton onClick={handleCommentUpdate}>
-                                  완료
-                                </EditSaveButton>
-                                <CancelButton
-                                  onClick={() => {
-                                    setIsEditing(false);
-                                    setEditTarget(null);
-                                  }}
-                                >
-                                  취소
-                                </CancelButton>
-                              </>
-                            ) : (
-                              <>
-                                <EditButton
-                                  onClick={() => {
-                                    setIsEditing(true);
-                                    setEditTarget(item);
-                                    setEditedComment(item.comment);
-                                  }}
-                                >
-                                  수정
-                                </EditButton>
-                                <DeleteButton
-                                  onClick={() => handleCommentDelete(item)}
-                                >
-                                  삭제
-                                </DeleteButton>
+                                {isEditing && editTarget === item ? (
+                                  <>
+                                    <CancelButton
+                                      onClick={() => {
+                                        setIsEditing(false);
+                                        setEditTarget(null);
+                                      }}
+                                    >
+                                      취소
+                                    </CancelButton>
+                                    <EditSaveButton
+                                      onClick={handleCommentUpdate}
+                                    >
+                                      완료
+                                    </EditSaveButton>
+                                  </>
+                                ) : (
+                                  <>
+                                    <EditButton
+                                      onClick={() => {
+                                        setIsEditing(true);
+                                        setEditTarget(item);
+                                        setEditedComment(item.comment);
+                                      }}
+                                    >
+                                      수정
+                                    </EditButton>
+                                    <DeleteButton
+                                      onClick={() => handleCommentDelete(item)}
+                                    >
+                                      삭제
+                                    </DeleteButton>
+                                  </>
+                                )}
                               </>
                             )}
                           </CommentTopContent>
