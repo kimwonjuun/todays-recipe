@@ -26,7 +26,7 @@ const Admin = () => {
     return () => {
       handleAuthStateChange();
     };
-  }, [navigate]);
+  }, []);
 
   return (
     <>

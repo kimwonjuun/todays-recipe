@@ -6,6 +6,8 @@ import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import RecipeCard from '../common/RecipeCard';
 import { koreanOnly } from '../../utils/regex';
+import useAlert from '../../hooks/useAlert';
+import AlertModal from '../common/AlertModal';
 
 interface UserAccountBoxProps {
   currentUserUid: string | undefined;
@@ -19,18 +21,28 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
     setInputValue(e.target.value);
   };
 
+  // custom modal
+  const {
+    openAlert,
+    closeAlert,
+    isOpen: isAlertOpen,
+    alertMessage,
+  } = useAlert();
+
   // 재료 입력
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleIngredientsSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
 
     if (!currentUserUid) {
-      alert('유저 정보를 불러오지 못했어요.');
+      openAlert('유저 정보를 불러오지 못했어요.');
       return;
     }
 
     // 한글만 입력되었는지 검사
     if (!inputValue.trim() || !koreanOnly.test(inputValue)) {
-      alert('재료는 한글 단어만 입력 가능합니다.');
+      openAlert('재료는 한글 단어만 입력 가능합니다.');
       setInputValue('');
       return;
     }
@@ -44,10 +56,10 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
 
       // 문서가 존재하면 기존 데이터에 재료 추가
       if (userDoc.exists()) {
-        const ingredients = userDoc.data()['users-ingredients'] || [];
+        const ingredients = userDoc.data()['user-ingredients'] || [];
 
         if (ingredients.length >= 20) {
-          alert('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
+          openAlert('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
           setInputValue('');
           return;
         }
@@ -55,18 +67,18 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
         if (!ingredients.includes(inputValue)) {
           ingredients.push(inputValue);
         } else {
-          alert('이미 등록된 재료입니다.');
+          openAlert('이미 등록된 재료입니다.');
           setInputValue('');
           return;
         }
 
-        await updateDoc(userRef, { 'users-ingredients': ingredients });
+        await updateDoc(userRef, { 'user-ingredients': ingredients });
       } else {
         // 문서가 존재하지 않으면 새 문서를 생성 후 재료 추가
         const ingredients = [inputValue];
 
         await setDoc(userRef, {
-          'users-ingredients': ingredients,
+          'user-ingredients': ingredients,
         });
       }
 
@@ -75,7 +87,7 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
       getMyIngredients();
     } catch (error) {
       console.error('냉장고에 재료를 추가하지 못했습니다.', error);
-      alert('냉장고에 재료를 추가하지 못했습니다.');
+      openAlert('냉장고에 재료를 추가하지 못했습니다.');
     }
   };
 
@@ -88,8 +100,8 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
     if (docSnap.exists()) {
       const ingredientData = docSnap.data();
-      if (ingredientData && ingredientData['users-ingredients']) {
-        setMyIngredients(ingredientData['users-ingredients']);
+      if (ingredientData && ingredientData['user-ingredients']) {
+        setMyIngredients(ingredientData['user-ingredients']);
       }
     }
   };
@@ -99,11 +111,11 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
 
   // 재료 삭제
   const removeIngredient = async (ingredient: string) => {
-    const confirmDelete = window.confirm(
-      `선택한 재료 '${ingredient}'을(를) 삭제하시겠습니까?`
-    );
+    // const confirmDelete = window.confirm(
+    //   `선택한 재료 '${ingredient}'을(를) 삭제하시겠습니까?`
+    // );
 
-    if (!confirmDelete || !currentUserUid) {
+    if (!currentUserUid) {
       return;
     }
 
@@ -116,20 +128,20 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
 
       // 문서가 존재하면 선택한 재료를 제외한 나머지 재료로 업데이트
       if (userDoc.exists()) {
-        const ingredients = userDoc.data()['users-ingredients'] || [];
+        const ingredients = userDoc.data()['user-ingredients'] || [];
         const updatedIngredients = ingredients.filter(
           (item: string) => item !== ingredient
         );
 
         // 선택한 재료만 삭제하기
-        await updateDoc(userRef, { 'users-ingredients': updatedIngredients });
+        await updateDoc(userRef, { 'user-ingredients': updatedIngredients });
 
         // 재료 리스트 갱신
         getMyIngredients();
       }
     } catch (error) {
       console.error('냉장고에서 재료를 삭제하지 못했습니다.', error);
-      alert('냉장고에서 재료를 삭제하지 못했습니다.');
+      openAlert('냉장고에서 재료를 삭제하지 못했습니다.');
     }
   };
 
@@ -149,8 +161,8 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
     if (docSnap.exists()) {
       const likedRecipesData = docSnap.data();
-      if (likedRecipesData && likedRecipesData['users-likes']) {
-        setLikedRecipes(likedRecipesData['users-likes']);
+      if (likedRecipesData && likedRecipesData['user-likes']) {
+        setLikedRecipes(likedRecipesData['user-likes']);
       }
     }
   };
@@ -201,7 +213,7 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
               <FormWarpper>
                 <SubmitForm
                   value={inputValue}
-                  onSubmit={handleSubmit}
+                  onSubmit={handleIngredientsSubmit}
                   onChange={handleInputChange}
                   placeholder="처리하고 싶은 냉장고 안의 재료들을 입력하세요."
                   maxLength={6}
@@ -209,7 +221,11 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
               </FormWarpper>
             </MyRefrigerator>
 
-            <Img>
+            <Img
+              onClick={() => {
+                openAlert('냉장고');
+              }}
+            >
               <img src={require('../../assets/my/refrigerator.gif')} />
             </Img>
           </MyRefrigeratorWrapper>
@@ -231,6 +247,11 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
           </MyLikesWrapper>
         </UserItem>
       </UserAccounttWrapper>
+      <AlertModal
+        message={alertMessage}
+        isOpen={isAlertOpen}
+        onClose={closeAlert}
+      />
     </>
   );
 };
@@ -300,8 +321,7 @@ const MyRefrigerator = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-
-  /* background-color: red; */
+  width: 45rem;
 `;
 
 const MyIngredients = styled.div`
@@ -312,7 +332,6 @@ const MyIngredients = styled.div`
   flex-wrap: wrap;
   padding: 1.25rem;
   gap: 1rem;
-  /* margin: 1rem; */
 
   border-radius: 1rem;
   border: 0.2rem solid ${COLORS.blue1};
@@ -340,7 +359,7 @@ const IngredientItem = styled.div`
 `;
 
 const Img = styled.div`
-  width: 35rem;
+  width: 25rem;
   display: flex;
   align-items: center;
   justify-content: end;

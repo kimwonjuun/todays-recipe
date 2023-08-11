@@ -3,11 +3,14 @@ import {
   browserSessionPersistence,
   setPersistence,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { authService } from '../../apis/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
 import { styled } from 'styled-components';
+import useAlert from '../../hooks/useAlert';
+import AlertModal from '../common/AlertModal';
 
 const LoginModal = ({
   setLoginModalIsOpen,
@@ -22,6 +25,14 @@ const LoginModal = ({
   const passwordRef = useRef<HTMLInputElement | null>(null); // 패스워드 입력창 참조
   const [emailValid, setEmailValid] = useState(false); // 로그인 시 이메일 유효성 결과
   const [passwordValid, setPasswordValid] = useState(false); // 로그인 시 패스워드 유효성 결과
+
+  // custom modal
+  const {
+    openAlert,
+    closeAlert,
+    isOpen: isAlertOpen,
+    alertMessage,
+  } = useAlert();
 
   // 로그인 모달 닫기
   const closeLoginModal = () => {
@@ -54,7 +65,7 @@ const LoginModal = ({
     setPersistence(authService, browserSessionPersistence)
       .then(() => signInWithEmailAndPassword(authService, email, password))
       .then(() => {
-        alert('로그인 되었습니다.');
+        openAlert('로그인 되었습니다.');
         setEmail('');
         setPassword('');
         setLoginModalIsOpen(false);
@@ -63,17 +74,30 @@ const LoginModal = ({
       .catch((err) => {
         // 오류 메시지 처리
         if (err.message.includes('user-not-found')) {
-          alert('가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.');
+          openAlert('가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.');
           emailRef?.current?.focus();
           setEmail('');
           setPassword('');
         }
         if (err.message.includes('wrong-password')) {
-          alert('잘못된 비밀번호 입니다.');
+          openAlert('잘못된 비밀번호 입니다.');
           passwordRef?.current?.focus();
           setPassword('');
         }
       });
+  };
+
+  // 비밀번호 찾기
+  const handlePasswordReset = async (email: string) => {
+    try {
+      await sendPasswordResetEmail(authService, email);
+      openAlert(
+        '비밀번호 재설정 이메일이 발송되었습니다. 이메일을 확인해주세요.'
+      );
+    } catch (error) {
+      openAlert('이메일 주소창에 이메일을 입력해주세요.');
+      emailRef.current?.focus();
+    }
   };
 
   useEffect(() => {
@@ -122,13 +146,24 @@ const LoginModal = ({
               )}
             </InputWrapper>
             <BottomWrapper>
-              <Button type="submit">로그인하기</Button>
-              <LoginText onClick={openSignUpModal}>
-                아직 회원이 아니신가요?
-              </LoginText>
+              <Button>로그인하기</Button>
+
+              <LinksWrapper>
+                <LoginText onClick={openSignUpModal}>
+                  아직 회원이 아니신가요?
+                </LoginText>
+                <ResetPasswordButton onClick={() => handlePasswordReset(email)}>
+                  비밀번호를 잊으셨나요?
+                </ResetPasswordButton>
+              </LinksWrapper>
             </BottomWrapper>
           </form>
         </Modal>
+        <AlertModal
+          message={alertMessage}
+          isOpen={isAlertOpen}
+          onClose={closeAlert}
+        />
       </ModalWrapper>
     </>
   );
@@ -176,7 +211,6 @@ const InputWrapper = styled.div`
   align-items: center;
   justify-content: space-evenly;
   flex-direction: column;
-  /* background-color: yellow; */
 `;
 
 const Input = styled.input`
@@ -217,8 +251,24 @@ const Button = styled.button`
   }
 `;
 
+const LinksWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+`;
+
+const ResetPasswordButton = styled.button`
+  font-size: 1rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  &:hover {
+    color: ${COLORS.blue2};
+  }
+`;
+
 const LoginText = styled.div`
-  font-size: 1.25rem;
+  font-size: 1rem;
   cursor: pointer;
   &:hover {
     color: ${COLORS.blue2};

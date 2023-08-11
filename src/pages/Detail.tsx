@@ -7,22 +7,18 @@ import IngredientBox from '../components/detail/IngredientBox';
 import StepsBox from '../components/detail/StepsBox';
 import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
+import { authService } from '../apis/firebase';
+import useAlert from '../hooks/useAlert';
+import { User } from 'firebase/auth';
+import AlertModal from '../components/common/AlertModal';
+import CommentBox from '../components/detail/CommentBox';
 
 const Detail = () => {
   // Recipe/RecipeBox, Search에서 받아온 각 레시피가 가지고 있는 고유한 id
   const { id } = useParams<{ id: string }>();
 
-  // 기존 레시피 데이터 (훅)
-  // const recipeData = useRecipeData();
-
   // recoil 도입
   const recipeData = useRecoilValue(RecipeDataState);
-
-  // 선택한 레시피를 담아줄 state
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-
-  // 로딩 상태
-  const [loading, setLoading] = useState<boolean>(true);
 
   // 전체 레시피와 선택한 레시피의 고유한 id가 같다면 출력
   useEffect(() => {
@@ -33,7 +29,41 @@ const Detail = () => {
       setRecipe(selectedRecipe);
       setLoading(false);
     }
-  }, [recipeData]);
+  }, [recipeData, id]);
+
+  // 선택한 레시피를 담아줄 state
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  console.log(recipe);
+
+  // 로딩 상태
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // 유저
+  const [user, setUser] = useState<User | null>(null);
+  const currentUserUid = user?.uid ?? undefined;
+
+  useEffect(() => {
+    // user 객체 존재 시 setUser 업데이트
+    const handleAuthStateChange = authService.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      }
+    });
+    return () => {
+      handleAuthStateChange();
+    };
+  }, []);
+
+  // custom modal
+  const {
+    openAlert,
+    closeAlert,
+    isOpen: isAlertOpen,
+    alertMessage,
+  } = useAlert();
+
+  // 댓글 인풋
+  const [inputValue, setInputValue] = useState<string>('');
 
   return (
     <>
@@ -44,8 +74,22 @@ const Detail = () => {
           <BoxWrapper>
             <IngredientBox recipe={recipe} />
             <StepsBox recipe={recipe} />
+            <CommentBox
+              recipe={recipe}
+              user={user}
+              currentUserUid={currentUserUid}
+              id={id}
+              openAlert={openAlert}
+              inputValue={inputValue}
+              setInputValue={setInputValue}
+            />
           </BoxWrapper>
         )}
+        <AlertModal
+          message={alertMessage}
+          isOpen={isAlertOpen}
+          onClose={closeAlert}
+        />
       </PageWrapper>
     </>
   );

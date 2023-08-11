@@ -4,10 +4,22 @@ import styled from 'styled-components';
 import { addDoc, collection } from 'firebase/firestore';
 import { dbService } from '../../apis/firebase';
 import { useFetchRecipes } from '../../hooks/useFetchRecipes';
+import AlertModal from '../common/AlertModal';
+import useConfirm from '../../hooks/useConfirm';
+import ConfirmModal from '../common/ConfirmModal';
+import useAlert from '../../hooks/useAlert';
 
 const EditFormBox = () => {
   // 호출한 API 전체 데이터 + 로딩, 에러 상태
   const { data: recipeData, isLoading, isError } = useFetchRecipes();
+
+  // custom modal
+  const {
+    openAlert,
+    closeAlert,
+    isOpen: isAlertOpen,
+    alertMessage,
+  } = useAlert();
 
   // 파이어스토어에 가공한 데이터 넣기
   const handleAddRecipeListToFirestore = async (recipeData: any) => {
@@ -51,21 +63,35 @@ const EditFormBox = () => {
           ],
         });
       });
-      alert('레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.');
+      openAlert(
+        '레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.'
+      );
     } catch (error) {
       console.error('레시피 데이터를 수정하지 못했어요. :', error);
-      alert('레시피 데이터를 수정하지 못했어요.');
+      openAlert('레시피 데이터를 수정하지 못했어요.');
     }
   };
 
+  const handleConfirmModalConfirm = () => {
+    handleAddRecipeListToFirestore(recipeData);
+    closeConfirm();
+  };
+
+  // custom window.confirm
+  const { openConfirm, closeConfirm, handleConfirm, isOpen } = useConfirm(
+    handleConfirmModalConfirm
+  );
+
   // api 저장하는 버튼
   const handleGetRecipeList = () => {
-    if (window.confirm('API를 수정하시겠습니까?') && !isLoading && recipeData) {
-      handleAddRecipeListToFirestore(recipeData);
+    if (!isLoading && recipeData) {
+      openConfirm();
     } else if (isLoading) {
-      alert('레시피 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+      openAlert(
+        '레시피 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.'
+      );
     } else if (isError) {
-      alert(
+      openAlert(
         '레시피 데이터를 불러오지 못했습니다. 문제가 지속될 경우 관리자에게 문의해주세요.'
       );
     }
@@ -82,13 +108,13 @@ const EditFormBox = () => {
     try {
       await addDoc(collection(dbService, 'edit-data-history'), {
         description: inputValue,
-        updatedAt: new Date().toString(),
+        updatedAt: Date.now(),
       });
       setInputValue('');
-      alert('수정 사항이 저장되었습니다.');
+      openAlert('수정 사항이 저장되었습니다.');
     } catch (error) {
       console.error('수정 사항 저장에 실패했습니다.', error);
-      alert('수정 사항 저장에 실패했습니다.');
+      openAlert('수정 사항 저장에 실패했습니다.');
     }
   };
 
@@ -115,6 +141,17 @@ const EditFormBox = () => {
             maxLength={50}
           />
         </Contents>
+        <ConfirmModal
+          isOpen={isOpen}
+          message="API를 수정하시겠습니까?"
+          onConfirm={handleConfirm}
+          onCancel={closeConfirm}
+        />
+        <AlertModal
+          message={alertMessage}
+          isOpen={isAlertOpen}
+          onClose={closeAlert}
+        />
       </BoxWrapper>
     </>
   );

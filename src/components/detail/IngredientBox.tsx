@@ -1,8 +1,10 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { authService, dbService } from '../../apis/firebase';
 import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { User } from 'firebase/auth';
+import useAlert from '../../hooks/useAlert';
+import AlertModal from '../common/AlertModal';
 
 const IngredientBox = ({ recipe }: RecipeProps) => {
   const [user, setUser] = useState<User | null>(null);
@@ -21,11 +23,19 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
     };
   }, []);
 
-  // 좋아요
+  // custom modal
+  const {
+    openAlert,
+    closeAlert,
+    isOpen: isAlertOpen,
+    alertMessage,
+  } = useAlert();
+
+  // 레시피 찜
   const handleLikeButtonClick = async () => {
     // 로그인 체크
     if (!currentUserUid) {
-      alert('로그인이 필요합니다.');
+      openAlert('로그인이 필요합니다.');
       return;
     }
 
@@ -38,10 +48,10 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
 
       // 문서가 존재하면 기존 데이터에 레시피명 추가 또는 삭제
       if (userDoc.exists()) {
-        const likes = userDoc.data()['users-likes'] || [];
+        const likes = userDoc.data()['user-likes'] || [];
 
         if (!like) {
-          // 좋아요일 경우
+          // 레시피 찜
           const updatedLikes = [
             ...likes,
             // RecipeCard에 필요한 정보들
@@ -52,29 +62,36 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
               image: recipe.image,
             },
           ];
-          await updateDoc(userRef, { 'users-likes': updatedLikes });
+          await updateDoc(userRef, { 'user-likes': updatedLikes });
           setLike(true);
           console.log('좋아요 추가');
-          alert('레시피 찜 완료!');
+          openAlert('레시피 찜 완료!');
         } else {
-          // 좋아요 취소
+          // 레시피 찜 취소
           const updatedLikes = likes.filter(
             (item: Recipe) => item.name !== recipe.name
           );
-          await updateDoc(userRef, { 'users-likes': updatedLikes });
+          await updateDoc(userRef, { 'user-likes': updatedLikes });
           setLike(false);
-          console.log('좋아요 취소');
-          alert('찜 목록에서 삭제했어요.');
+          console.log('레시피 찜 취소');
+          openAlert('찜 목록에서 삭제했어요.');
         }
       } else {
         // 문서가 존재하지 않으면 새 문서 생성 후 레시피명 추가
-        const likes = [recipe.name];
-        await setDoc(userRef, { 'users-likes': likes });
+        const likes = [
+          {
+            id: recipe.id,
+            type: recipe.type,
+            name: recipe.name,
+            image: recipe.image,
+          },
+        ];
+        await setDoc(userRef, { 'user-likes': likes });
         setLike(true);
       }
     } catch (error) {
       console.error('레시피 찜에 실패했습니다.', error);
-      alert('레시피 찜에 실패했습니다.');
+      openAlert('레시피 찜에 실패했습니다.');
     }
   };
 
@@ -90,7 +107,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
     const userDoc = await getDoc(userRef);
 
     if (userDoc.exists()) {
-      const likes = userDoc.data()['users-likes'] || [];
+      const likes = userDoc.data()['user-likes'] || [];
       if (likes.some((item: Recipe) => item.id === recipe.id)) {
         setLike(true);
       } else {
@@ -104,8 +121,6 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
       getLike();
     }
   }, [currentUserUid]);
-
-  console.log('user', user);
 
   return (
     <>
@@ -172,6 +187,11 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           </Ingredient>
         </IngredientWrapper>
       </TopWrapper>
+      <AlertModal
+        message={alertMessage}
+        isOpen={isAlertOpen}
+        onClose={closeAlert}
+      />
     </>
   );
 };

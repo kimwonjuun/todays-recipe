@@ -4,9 +4,8 @@ import COLORS from '../../styles/colors';
 const StepsBox = ({ recipe }: RecipeProps) => {
   return (
     <>
-      <BottomWrapper>
+      <MiddleWrapper>
         <h1>조리 순서</h1>
-
         <StepsWrapper>
           {recipe.make &&
             recipe.make.map((step, index) => {
@@ -29,20 +28,21 @@ const StepsBox = ({ recipe }: RecipeProps) => {
             <p>{recipe.tip}</p>
           </TipWrapper>
         )}
-      </BottomWrapper>
+      </MiddleWrapper>
     </>
   );
 };
 
 export default StepsBox;
 
-const BottomWrapper = styled.div`
+const MiddleWrapper = styled.div`
   background-color: #fff;
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
     0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
   border-radius: 1rem;
   text-align: center;
   padding: 2rem;
+  margin-bottom: 1rem;
 
   h1 {
     margin-bottom: 2.5rem;

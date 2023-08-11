@@ -1,8 +1,9 @@
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { authService } from '../../apis/firebase';
 import { User } from 'firebase/auth';
+import useConfirm from '../../hooks/useConfirm';
+import ConfirmModal from '../common/ConfirmModal';
 
 interface ProfileBoxProps {
   openModal: () => void;
@@ -11,20 +12,15 @@ interface ProfileBoxProps {
 }
 
 const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
-  const navigate = useNavigate();
-
   // 로그아웃
-  const handleLogout = () => {
-    if (window.confirm('로그아웃 하시겠습니까?')) {
-      return authService.signOut().then(() => {
-        sessionStorage.clear();
-        alert('로그아웃 되었습니다.');
-        navigate('/', { replace: true });
-      });
-    } else {
-      return;
-    }
+  const handleLogout = async () => {
+    await authService.signOut();
+    sessionStorage.clear();
   };
+
+  // custom window.confirm
+  const { openConfirm, closeConfirm, handleConfirm, isOpen } =
+    useConfirm(handleLogout);
 
   return (
     <>
@@ -43,9 +39,15 @@ const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
         </Profile>
         <LogoutBox>
           <EditButton onClick={openModal}>프로필 수정</EditButton>
-          <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+          <LogoutButton onClick={openConfirm}>로그아웃</LogoutButton>
         </LogoutBox>
       </ProfileWrapper>
+      <ConfirmModal
+        message="로그아웃 하시겠습니까?"
+        isOpen={isOpen}
+        onConfirm={handleConfirm}
+        onCancel={closeConfirm}
+      />
     </>
   );
 };
@@ -86,7 +88,7 @@ const ProfileText = styled.div`
   gap: 0.5rem;
   & > p:last-child {
     font-size: 1rem;
-    color: gray;
+    color: ${COLORS.gray};
   }
 `;
 
@@ -124,7 +126,6 @@ const LogoutButton = styled.button`
   background-color: ${COLORS.backGround};
   color: ${COLORS.blue1};
   cursor: pointer;
-  outline: none;
   &:hover {
     background-color: ${COLORS.gray};
   }

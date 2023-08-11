@@ -7,28 +7,33 @@ import { formatDate } from '../../utils/date';
 
 interface EditHistory {
   description: string;
-  updatedAt: string;
+  updatedAt: number;
 }
 
 const EditHistoryBox = () => {
   const [editHistoryList, setEditHistoryList] = useState<EditHistory[]>([]);
 
-  // 수정 사항 가져오기
+  // 수정 사항 read
   const getEditDataHistory = async () => {
+    // edit-data-history 컬렉션 참조
     const editHistoryRef = collection(dbService, 'edit-data-history');
+
+    // 수정된 날짜 순 정렬
     const sortedEditHistory = query(
       editHistoryRef,
       orderBy('updatedAt', 'asc')
     );
+
+    // edit-data-history 컬렉션을 돌며 수정된 날짜 순으로 추가
     onSnapshot(sortedEditHistory, (querySnapshot) => {
       const historyList: any = [];
 
       querySnapshot.forEach((doc) => {
-        const newRecipe: any = {
+        const list: any = {
           id: doc.id,
           ...doc.data(),
         };
-        historyList.push(newRecipe);
+        historyList.push(list);
       });
 
       setEditHistoryList(historyList);
@@ -94,7 +99,7 @@ const History = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.75rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
 
   & > p:last-child {
     margin-left: auto;

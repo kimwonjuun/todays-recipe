@@ -9,6 +9,8 @@ import RecipeCard from '../components/common/RecipeCard';
 import { koreanOnly } from '../utils/regex';
 import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
+import AlertModal from '../components/common/AlertModal';
+import useAlert from '../hooks/useAlert';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -51,6 +53,14 @@ const Search = () => {
     console.log('검색 결과: ', filteredData);
   }, [keyword, recipeData]);
 
+  // custom modal
+  const {
+    openAlert,
+    closeAlert,
+    isOpen: isAlertOpen,
+    alertMessage,
+  } = useAlert();
+
   // 검색
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -59,7 +69,7 @@ const Search = () => {
     e.preventDefault();
     // 한글만 입력되었는지 검사
     if (!inputValue.trim() || !koreanOnly.test(inputValue)) {
-      alert('재료는 한글 단어만 입력 가능합니다.');
+      openAlert('재료 또는 요리는 한글 단어로만 검색이 가능합니다.');
       setInputValue('');
       return;
     }
@@ -119,6 +129,11 @@ const Search = () => {
             )}
           </BoxWrapper>
         )}
+        <AlertModal
+          message={alertMessage}
+          isOpen={isAlertOpen}
+          onClose={closeAlert}
+        />
       </PageWrapper>
     </>
   );
