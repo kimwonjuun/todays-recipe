@@ -108,7 +108,7 @@ const EditFormBox = () => {
     try {
       await addDoc(collection(dbService, 'edit-data-history'), {
         description: inputValue,
-        updatedAt: new Date().toString(),
+        updatedAt: Date.now(),
       });
       setInputValue('');
       openAlert('수정 사항이 저장되었습니다.');

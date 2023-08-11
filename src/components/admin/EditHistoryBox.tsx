@@ -7,7 +7,7 @@ import { formatDate } from '../../utils/date';
 
 interface EditHistory {
   description: string;
-  updatedAt: string;
+  updatedAt: number;
 }
 
 const EditHistoryBox = () => {
@@ -99,7 +99,7 @@ const History = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.75rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
 
   & > p:last-child {
     margin-left: auto;

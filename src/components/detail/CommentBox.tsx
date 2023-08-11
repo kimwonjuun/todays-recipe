@@ -11,7 +11,7 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
-import { getFormattedDate } from '../../utils/date';
+import { formatDate } from '../../utils/date';
 
 interface CommentBoxProps {
   recipe: Recipe;
@@ -242,9 +242,7 @@ const CommentBox = ({
                   <CommentContentWrapper>
                     <CommentTopContent>
                       <UserName>{item.nickname}</UserName>
-                      <UploadedAt>
-                        {getFormattedDate(item.updatedAt)}
-                      </UploadedAt>
+                      <UploadedAt>{formatDate(item.updatedAt)}</UploadedAt>
                       {currentUserUid === item.uid && (
                         <>
                           {isEditing && editTarget === item ? (
