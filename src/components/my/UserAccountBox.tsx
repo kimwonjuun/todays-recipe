@@ -219,7 +219,11 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
               </FormWarpper>
             </MyRefrigerator>
 
-            <Img>
+            <Img
+              onClick={() => {
+                openAlert('냉장고');
+              }}
+            >
               <img src={require('../../assets/my/refrigerator.gif')} />
             </Img>
           </MyRefrigeratorWrapper>
@@ -315,8 +319,7 @@ const MyRefrigerator = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-
-  /* background-color: red; */
+  width: 45rem;
 `;
 
 const MyIngredients = styled.div`
@@ -327,7 +330,6 @@ const MyIngredients = styled.div`
   flex-wrap: wrap;
   padding: 1.25rem;
   gap: 1rem;
-  /* margin: 1rem; */
 
   border-radius: 1rem;
   border: 0.2rem solid ${COLORS.blue1};
@@ -355,7 +357,7 @@ const IngredientItem = styled.div`
 `;
 
 const Img = styled.div`
-  width: 35rem;
+  width: 25rem;
   display: flex;
   align-items: center;
   justify-content: end;

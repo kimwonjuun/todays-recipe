@@ -115,8 +115,6 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
     }
   }, [currentUserUid]);
 
-  console.log('user', user);
-
   return (
     <>
       <TopWrapper>

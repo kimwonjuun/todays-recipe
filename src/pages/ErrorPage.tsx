@@ -25,7 +25,11 @@ const ErrorPage = () => {
               </Button>
               <Button
                 onClick={() => {
-                  navigate(-1);
+                  if (window.history.length > 1) {
+                    navigate(-1);
+                  } else {
+                    navigate('/');
+                  }
                 }}
               >
                 이전 페이지로 되돌아가기
