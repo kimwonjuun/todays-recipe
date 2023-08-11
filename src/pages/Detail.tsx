@@ -49,7 +49,7 @@ const Detail = () => {
       setRecipe(selectedRecipe);
       setLoading(false);
     }
-  }, []);
+  }, [recipeData, id]);
 
   // 선택한 레시피를 담아줄 state
   const [recipe, setRecipe] = useState<Recipe | null>(null);
