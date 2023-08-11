@@ -36,6 +36,7 @@ const Button = styled.div`
   width: 4.5rem;
   height: 4.5rem;
   border-radius: 50%;
+  border: 0.25rem solid ${COLORS.blue1};
 
   position: fixed;
   right: 2rem;
@@ -47,7 +48,7 @@ const Button = styled.div`
   cursor: pointer;
   transition: opacity 300ms ease-in-out;
 
-  background-color: ${COLORS.blue1};
+  background-color: #fff;
 
   &:hover {
     opacity: 0.8;
