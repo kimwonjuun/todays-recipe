@@ -31,7 +31,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
     alertMessage,
   } = useAlert();
 
-  // 좋아요
+  // 레시피 찜
   const handleLikeButtonClick = async () => {
     // 로그인 체크
     if (!currentUserUid) {
@@ -51,7 +51,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
         const likes = userDoc.data()['user-likes'] || [];
 
         if (!like) {
-          // 좋아요일 경우
+          // 레시피 찜
           const updatedLikes = [
             ...likes,
             // RecipeCard에 필요한 정보들
@@ -67,18 +67,25 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           console.log('좋아요 추가');
           openAlert('레시피 찜 완료!');
         } else {
-          // 좋아요 취소
+          // 레시피 찜 취소
           const updatedLikes = likes.filter(
             (item: Recipe) => item.name !== recipe.name
           );
           await updateDoc(userRef, { 'user-likes': updatedLikes });
           setLike(false);
-          console.log('좋아요 취소');
+          console.log('레시피 찜 취소');
           openAlert('찜 목록에서 삭제했어요.');
         }
       } else {
         // 문서가 존재하지 않으면 새 문서 생성 후 레시피명 추가
-        const likes = [recipe.name];
+        const likes = [
+          {
+            id: recipe.id,
+            type: recipe.type,
+            name: recipe.name,
+            image: recipe.image,
+          },
+        ];
         await setDoc(userRef, { 'user-likes': likes });
         setLike(true);
       }
