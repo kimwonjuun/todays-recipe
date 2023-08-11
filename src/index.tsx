@@ -7,25 +7,10 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 const queryClient = new QueryClient();
 
 ReactDOM.render(
-  <React.StrictMode>
+  <RecoilRoot>
     <QueryClientProvider client={queryClient}>
-      <RecoilRoot>
-        <App />
-      </RecoilRoot>
+      <App />
     </QueryClientProvider>
-  </React.StrictMode>,
+  </RecoilRoot>,
   document.getElementById('root') as HTMLElement
 );
-
-// const root = ReactDOM.createRoot(
-//   document.getElementById('root') as HTMLElement
-// );
-// root.render(
-//   <React.StrictMode>
-//     <QueryClientProvider client={queryClient}>
-//       <RecoilRoot>
-//         <App />
-//       </RecoilRoot>
-//     </QueryClientProvider>
-//   </React.StrictMode>
-// );

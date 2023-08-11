@@ -50,7 +50,7 @@ const Search = () => {
     );
     setFilteredRecipes(filteredData);
     setLoading(false); // 검색 완료되면 로딩 상태를 비활성화
-    console.log('검색 결과: ', filteredData);
+    // console.log('검색 결과: ', filteredData);
   }, [keyword, recipeData]);
 
   // custom modal

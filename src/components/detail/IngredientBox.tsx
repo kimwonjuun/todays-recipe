@@ -64,7 +64,6 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           ];
           await updateDoc(userRef, { 'user-likes': updatedLikes });
           setLike(true);
-          console.log('좋아요 추가');
           openAlert('레시피 찜 완료!');
         } else {
           // 레시피 찜 취소
@@ -73,7 +72,6 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           );
           await updateDoc(userRef, { 'user-likes': updatedLikes });
           setLike(false);
-          console.log('레시피 찜 취소');
           openAlert('찜 목록에서 삭제했어요.');
         }
       } else {
