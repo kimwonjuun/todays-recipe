@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import Loading from '../components/common/Loading';
@@ -7,11 +7,31 @@ import IngredientBox from '../components/detail/IngredientBox';
 import StepsBox from '../components/detail/StepsBox';
 import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
-import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  updateDoc,
+  doc,
+  getDoc,
+  setDoc,
+  getDocs,
+  collection,
+} from 'firebase/firestore';
 import { authService, dbService } from '../apis/firebase';
 import useAlert from '../hooks/useAlert';
 import { User } from 'firebase/auth';
 import AlertModal from '../components/common/AlertModal';
+
+interface UserComment {
+  nickname: string;
+  profilePic: string;
+  name: string;
+  id: string;
+  comment: string;
+  updatedAt: number;
+}
+
+interface UserData {
+  'user-comments': UserComment[];
+}
 
 const Detail = () => {
   // Recipe/RecipeBox, Search에서 받아온 각 레시피가 가지고 있는 고유한 id
@@ -19,14 +39,6 @@ const Detail = () => {
 
   // recoil 도입
   const recipeData = useRecoilValue(RecipeDataState);
-
-  // 선택한 레시피를 담아줄 state
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-
-  console.log(recipe);
-
-  // 로딩 상태
-  const [loading, setLoading] = useState<boolean>(true);
 
   // 전체 레시피와 선택한 레시피의 고유한 id가 같다면 출력
   useEffect(() => {
@@ -37,9 +49,16 @@ const Detail = () => {
       setRecipe(selectedRecipe);
       setLoading(false);
     }
-  }, [recipeData]);
+  }, []);
 
-  // 유저 상태
+  // 선택한 레시피를 담아줄 state
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  console.log(recipe);
+
+  // 로딩 상태
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // 유저
   const [user, setUser] = useState<User | null>(null);
   const currentUserUid = user?.uid ?? undefined;
 
@@ -53,7 +72,7 @@ const Detail = () => {
     return () => {
       handleAuthStateChange();
     };
-  }, [user]);
+  }, []);
 
   // custom modal
   const {
@@ -65,14 +84,16 @@ const Detail = () => {
 
   // 댓글 인풋
   const [inputValue, setInputValue] = useState<string>('');
+
   // 댓글 리스트
   const [commentsList, setCommentsList] = useState<any>([]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
   // 댓글 create
-  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       if (!currentUserUid) {
@@ -94,25 +115,63 @@ const Detail = () => {
 
       // 댓글 객체를 생성
       const newComment = {
-        id: recipe?.id,
+        nickname: user?.displayName,
+        profilePic: user?.photoURL,
         name: recipe?.name,
+        id: recipe?.id,
         comment: inputValue,
         updatedAt: Date.now(),
       };
 
       // 'user-comments' 필드에 존재하는 배열에 새 댓글을 추가하고 문서 업데이트
       if (userData) {
+        const userComments = userData['user-comments'] ?? [];
+
         await setDoc(userDocRef, {
           ...userData,
-          'user-comments': [...userData['user-comments'], newComment],
+          'user-comments': [...userComments, newComment],
         });
       }
-
       setInputValue('');
     } catch (error) {
       console.error('댓글 저장에 실패했습니다.', error);
     }
   };
+
+  // 댓글 read
+  const getComments = async () => {
+    try {
+      // 레시피에 해당하는 댓글을 저장할 배열
+      const comments: UserComment[] = [];
+
+      // users 컬렉션에서 문서 가져오기
+      const querySnapshot = await getDocs(collection(dbService, 'users'));
+
+      // 각 문서를 순회하며 user-comments에 저장된 댓글 중 레시피 ID와 일치하는 댓글을 geyComments에 추가
+      querySnapshot.forEach((doc) => {
+        const userData = doc.data();
+        const userComments = userData['user-comments'] || [];
+
+        userComments.forEach((comment: any) => {
+          if (comment.id === id) {
+            comments.push(comment);
+          }
+        });
+      });
+
+      comments.sort((a, b) => a.updatedAt - b.updatedAt);
+
+      setCommentsList(comments);
+    } catch (error) {
+      console.error('댓글 가져오기 실패:', error);
+    }
+  };
+
+  useEffect(() => {
+    getComments();
+  }, []);
+
+  console.log(commentsList);
 
   return (
     <>
@@ -125,21 +184,26 @@ const Detail = () => {
             <StepsBox recipe={recipe} />
             <CommentBox>
               <CommentTitle>댓글</CommentTitle>
-              <CommentForm onSubmit={handleEditSubmit}>
+              <CommentForm onSubmit={handleCommentSubmit}>
                 <CommentInput
                   value={inputValue}
                   onChange={handleInputChange}
                   placeholder="댓글을 입력해주세요..."
+                  maxLength={50}
                 />
                 <CommentButton>작성</CommentButton>
               </CommentForm>
               <CommentList>
-                <CommentItem>
-                  <UserName>사용자 이름</UserName>
-                  <CommentText>
-                    댓글 내용 예시입니다. 여기에 댓글이 표시됩니다.
-                  </CommentText>
-                </CommentItem>
+                {commentsList && commentsList.length > 0 ? (
+                  commentsList.map((comment: UserComment) => (
+                    <CommentItem key={comment.updatedAt}>
+                      <UserName>{comment.nickname}</UserName>
+                      <CommentText>{comment.comment}</CommentText>
+                    </CommentItem>
+                  ))
+                ) : (
+                  <p>댓글이 없습니다. 첫 댓글을 남겨보세요!</p>
+                )}
               </CommentList>
             </CommentBox>
           </BoxWrapper>
