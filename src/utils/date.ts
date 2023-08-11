@@ -9,3 +9,8 @@ export const formatDate = (dateStr: string) => {
 
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 };
+
+// Date.now()를 포맷해주는 유틸
+export const getFormattedDate = (time: number): string => {
+  return new Date(time).toLocaleString();
+};

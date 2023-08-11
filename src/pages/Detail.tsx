@@ -20,6 +20,7 @@ import { authService, dbService } from '../apis/firebase';
 import useAlert from '../hooks/useAlert';
 import { User } from 'firebase/auth';
 import AlertModal from '../components/common/AlertModal';
+import { getFormattedDate } from '../utils/date';
 interface UserCommentProps {
   nickname: string;
   profilePic: string;
@@ -235,13 +236,13 @@ const Detail = () => {
                           >
                             <UserName>{item.nickname}</UserName>
                             <UploadedAt>
-                              {new Date(item.updatedAt).toLocaleString()}
+                              {getFormattedDate(item.updatedAt)}
                             </UploadedAt>
                           </div>
                           <div
                             style={{
                               display: 'flex',
-                              marginLeft: '0.5rem',
+                              // marginLeft: '0.25rem',
                             }}
                           >
                             <CommentText>{item.comment}</CommentText>
