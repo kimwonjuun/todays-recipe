@@ -290,25 +290,37 @@ const Detail = () => {
                               {getFormattedDate(item.updatedAt)}
                             </UploadedAt>
                             {isEditing && editTarget === item ? (
-                              <EditSaveButton onClick={handleCommentUpdate}>
-                                저장
-                              </EditSaveButton>
+                              <>
+                                <CancelButton
+                                  onClick={() => {
+                                    setIsEditing(false);
+                                    setEditTarget(null);
+                                  }}
+                                >
+                                  취소
+                                </CancelButton>
+                                <EditSaveButton onClick={handleCommentUpdate}>
+                                  완료
+                                </EditSaveButton>
+                              </>
                             ) : (
-                              <EditButton
-                                onClick={() => {
-                                  setIsEditing(true);
-                                  setEditTarget(item);
-                                  setEditedComment(item.comment);
-                                }}
-                              >
-                                수정
-                              </EditButton>
+                              <>
+                                <EditButton
+                                  onClick={() => {
+                                    setIsEditing(true);
+                                    setEditTarget(item);
+                                    setEditedComment(item.comment);
+                                  }}
+                                >
+                                  수정
+                                </EditButton>
+                                <DeleteButton
+                                  onClick={() => handleCommentDelete(item)}
+                                >
+                                  삭제
+                                </DeleteButton>
+                              </>
                             )}
-                            <DeleteButton
-                              onClick={() => handleCommentDelete(item)}
-                            >
-                              삭제
-                            </DeleteButton>
                           </CommentTopContent>
                           {isEditing && editTarget === item ? (
                             <CommentInput
@@ -487,6 +499,13 @@ const CommentText = styled.p`
 `;
 
 const EditSaveButton = styled.div`
+  font-size: 1rem;
+  margin-right: 1rem;
+  color: ${COLORS.gray};
+  cursor: pointer;
+`;
+
+const CancelButton = styled.div`
   font-size: 1rem;
   margin-right: 1rem;
   color: ${COLORS.gray};
