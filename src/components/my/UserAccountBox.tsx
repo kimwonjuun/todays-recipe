@@ -111,11 +111,11 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
 
   // 재료 삭제
   const removeIngredient = async (ingredient: string) => {
-    const confirmDelete = window.confirm(
-      `선택한 재료 '${ingredient}'을(를) 삭제하시겠습니까?`
-    );
+    // const confirmDelete = window.confirm(
+    //   `선택한 재료 '${ingredient}'을(를) 삭제하시겠습니까?`
+    // );
 
-    if (!confirmDelete || !currentUserUid) {
+    if (!currentUserUid) {
       return;
     }
 

@@ -45,7 +45,6 @@ const ModalWrapper = styled.div`
 `;
 
 const Modal = styled.div`
-  /* z-index: 200; */
   min-width: 20rem;
   min-height: 7.5rem;
   padding: 2.5rem;
