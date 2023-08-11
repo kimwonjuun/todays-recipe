@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
-interface UseAlert {
+interface UseAlertProps {
   alertMessage: string;
   isOpen: boolean;
   openAlert: (message: string) => void;
   closeAlert: () => void;
 }
 
-const useAlert = (): UseAlert => {
+const useAlert = (): UseAlertProps => {
   const [isOpen, setIsOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
