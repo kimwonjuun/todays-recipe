@@ -180,21 +180,72 @@ const Detail = () => {
             <StepsBox recipe={recipe} />
             <CommentBox>
               <CommentTitle>{commentsList.length}개의 댓글</CommentTitle>
+
               <CommentForm onSubmit={handleCommentSubmit}>
-                <CommentInput
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  placeholder="댓글을 입력해주세요..."
-                  maxLength={50}
-                />
-                <CommentButton>작성</CommentButton>
+                <UserProfileWrapper>
+                  {user?.photoURL ? (
+                    <UserProfileImg src={user.photoURL} />
+                  ) : (
+                    <UserProfileImg
+                      src={require('../assets/my/default_image.png')}
+                    />
+                  )}
+                </UserProfileWrapper>
+                <CommentInputWrapper>
+                  <CommentInput
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    placeholder="댓글을 입력해주세요..."
+                    maxLength={50}
+                  />
+                </CommentInputWrapper>
+                <CommentButtonWrapper>
+                  <CommentButton>작성</CommentButton>
+                </CommentButtonWrapper>
               </CommentForm>
               <CommentList>
                 {commentsList && commentsList.length > 0 ? (
                   commentsList.map((item: UserComment) => (
                     <CommentItem key={item.updatedAt}>
-                      <UserName>{item.nickname}</UserName>
-                      <CommentText>{item.comment}</CommentText>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          width: '100%',
+                        }}
+                      >
+                        <UserProfileImg src={item.profilePic} alt="Profile" />
+                        <div
+                          style={{
+                            marginLeft: '1rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            gap: '0.5rem',
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              width: '100%',
+                            }}
+                          >
+                            <UserName>{item.nickname}</UserName>
+                            <UploadedAt>
+                              {new Date(item.updatedAt).toLocaleString()}
+                            </UploadedAt>
+                          </div>
+                          <div
+                            style={{
+                              display: 'flex',
+                              marginLeft: '0.5rem',
+                            }}
+                          >
+                            <CommentText>{item.comment}</CommentText>
+                          </div>
+                        </div>
+                      </div>
                     </CommentItem>
                   ))
                 ) : (
@@ -224,24 +275,50 @@ const CommentBox = styled.div`
   text-align: center;
   padding: 2.5rem;
 `;
+
 const CommentTitle = styled.h2`
   margin-bottom: 1rem;
 `;
-
 const CommentForm = styled.form`
   display: flex;
-  justify-content: center;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
   margin: 2rem 0;
 `;
-
+const UserProfileWrapper = styled.div`
+  height: 4rem;
+  width: 4rem;
+  display: flex;
+  align-items: center;
+`;
+const CommentInputWrapper = styled.div`
+  /* height: 2.5rem; */
+  display: flex;
+  align-items: center;
+  /* margin-left: 1rem; */
+`;
+const CommentButtonWrapper = styled.div`
+  /* height: 2.5rem; */
+  display: flex;
+  align-items: center;
+  /* margin-left: 1rem; */
+`;
+const UserProfileImg = styled.img`
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  margin-right: 1rem;
+  object-fit: cover;
+`;
 const CommentInput = styled.input`
-  width: 67.5rem;
+  width: 60rem;
   padding: 0.5rem;
   border: none;
   border-bottom: 0.2rem solid ${COLORS.blue2};
   border-radius: 0rem;
   outline: none;
-  background: transparent;
+  margin-left: 1rem;
   font-size: 1.25rem;
 
   &:focus {
@@ -249,8 +326,8 @@ const CommentInput = styled.input`
     /* border-bottom: 0.25rem solid ${COLORS.blue1}; */
   }
 `;
-
 const CommentButton = styled.button`
+  width: 5rem;
   background-color: ${COLORS.blue2};
   font-size: 1.25rem;
   color: #fff;
@@ -272,16 +349,25 @@ const CommentList = styled.ul`
 `;
 
 const CommentItem = styled.li`
-  border-bottom: 1px solid ${COLORS.blue1};
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   padding: 1rem 0;
+  width: 100%;
 
   &:last-child {
     border-bottom: none;
   }
 `;
 
+const UploadedAt = styled.div`
+  font-size: 1rem;
+  color: ${COLORS.gray};
+`;
+
 const UserName = styled.p`
   font-weight: bold;
+  margin-right: 1rem;
 `;
 
 const CommentText = styled.p`
