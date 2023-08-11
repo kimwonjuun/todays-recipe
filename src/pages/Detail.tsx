@@ -14,6 +14,7 @@ import {
   setDoc,
   getDocs,
   collection,
+  onSnapshot,
 } from 'firebase/firestore';
 import { authService, dbService } from '../apis/firebase';
 import useAlert from '../hooks/useAlert';
@@ -139,15 +140,14 @@ const Detail = () => {
   };
 
   // 댓글 read
-  const getComments = async () => {
-    try {
-      // 레시피에 해당하는 댓글을 저장할 배열
+  const getComments = () => {
+    // users 컬렉션 참조
+    const usersRef = collection(dbService, 'users');
+
+    // users 컬렉션을 돌며 user-comments에 저장된 댓글 중 레시피 id와 일치하는 댓글을 comments에 추가
+    onSnapshot(usersRef, (querySnapshot) => {
       const comments: UserComment[] = [];
 
-      // users 컬렉션에서 문서 가져오기
-      const querySnapshot = await getDocs(collection(dbService, 'users'));
-
-      // 각 문서를 순회하며 user-comments에 저장된 댓글 중 레시피 ID와 일치하는 댓글을 geyComments에 추가
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
         const userComments = userData['user-comments'] || [];
@@ -159,19 +159,15 @@ const Detail = () => {
         });
       });
 
+      // 댓글 업데이트 시간 순 정렬
       comments.sort((a, b) => a.updatedAt - b.updatedAt);
-
       setCommentsList(comments);
-    } catch (error) {
-      console.error('댓글 가져오기 실패:', error);
-    }
+    });
   };
 
   useEffect(() => {
     getComments();
   }, []);
-
-  console.log(commentsList);
 
   return (
     <>
@@ -183,7 +179,7 @@ const Detail = () => {
             <IngredientBox recipe={recipe} />
             <StepsBox recipe={recipe} />
             <CommentBox>
-              <CommentTitle>댓글</CommentTitle>
+              <CommentTitle>{commentsList.length}개의 댓글</CommentTitle>
               <CommentForm onSubmit={handleCommentSubmit}>
                 <CommentInput
                   value={inputValue}
@@ -195,14 +191,14 @@ const Detail = () => {
               </CommentForm>
               <CommentList>
                 {commentsList && commentsList.length > 0 ? (
-                  commentsList.map((comment: UserComment) => (
-                    <CommentItem key={comment.updatedAt}>
-                      <UserName>{comment.nickname}</UserName>
-                      <CommentText>{comment.comment}</CommentText>
+                  commentsList.map((item: UserComment) => (
+                    <CommentItem key={item.updatedAt}>
+                      <UserName>{item.nickname}</UserName>
+                      <CommentText>{item.comment}</CommentText>
                     </CommentItem>
                   ))
                 ) : (
-                  <p>댓글이 없습니다. 첫 댓글을 남겨보세요!</p>
+                  <p>댓글이 없습니다. 첫 댓글을 남겨보세요! 😎</p>
                 )}
               </CommentList>
             </CommentBox>
