@@ -30,7 +30,9 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
   } = useAlert();
 
   // 재료 입력
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleIngredientsSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
 
     if (!currentUserUid) {
@@ -211,7 +213,7 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
               <FormWarpper>
                 <SubmitForm
                   value={inputValue}
-                  onSubmit={handleSubmit}
+                  onSubmit={handleIngredientsSubmit}
                   onChange={handleInputChange}
                   placeholder="처리하고 싶은 냉장고 안의 재료들을 입력하세요."
                   maxLength={6}
