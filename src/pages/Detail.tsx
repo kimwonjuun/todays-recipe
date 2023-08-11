@@ -20,18 +20,13 @@ import { authService, dbService } from '../apis/firebase';
 import useAlert from '../hooks/useAlert';
 import { User } from 'firebase/auth';
 import AlertModal from '../components/common/AlertModal';
-
-interface UserComment {
+interface UserCommentProps {
   nickname: string;
   profilePic: string;
   name: string;
   id: string;
   comment: string;
   updatedAt: number;
-}
-
-interface UserData {
-  'user-comments': UserComment[];
 }
 
 const Detail = () => {
@@ -96,6 +91,13 @@ const Detail = () => {
   // 댓글 create
   const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!inputValue.trim()) {
+      openAlert('댓글을 1자 이상 입력 하세요.');
+      setInputValue('');
+      return;
+    }
+
     try {
       if (!currentUserUid) {
         openAlert('댓글은 로그인 후 작성이 가능합니다.');
@@ -146,7 +148,7 @@ const Detail = () => {
 
     // users 컬렉션을 돌며 user-comments에 저장된 댓글 중 레시피 id와 일치하는 댓글을 comments에 추가
     onSnapshot(usersRef, (querySnapshot) => {
-      const comments: UserComment[] = [];
+      const comments: UserCommentProps[] = [];
 
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
@@ -205,7 +207,7 @@ const Detail = () => {
               </CommentForm>
               <CommentList>
                 {commentsList && commentsList.length > 0 ? (
-                  commentsList.map((item: UserComment) => (
+                  commentsList.map((item: UserCommentProps) => (
                     <CommentItem key={item.updatedAt}>
                       <div
                         style={{
