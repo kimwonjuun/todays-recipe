@@ -169,6 +169,7 @@ const Detail = () => {
   // 댓글 update
   const [isEditing, setIsEditing] = useState(false);
   const [editTarget, setEditTarget] = useState<UserCommentProps | null>(null);
+
   // 수정 대상 댓글
   const [editedComment, setEditedComment] = useState(''); // 수정된 댓글
 
@@ -297,6 +298,7 @@ const Detail = () => {
                                 onClick={() => {
                                   setIsEditing(true);
                                   setEditTarget(item);
+                                  setEditedComment(item.comment);
                                 }}
                               >
                                 수정
