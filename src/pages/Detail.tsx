@@ -166,6 +166,50 @@ const Detail = () => {
     getComments();
   }, []);
 
+  // 댓글 update
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTarget, setEditTarget] = useState<UserCommentProps | null>(null);
+  // 수정 대상 댓글
+  const [editedComment, setEditedComment] = useState(''); // 수정된 댓글
+
+  const handleCommentEdit = async (comment: UserCommentProps) => {
+    try {
+      if (!currentUserUid) {
+        openAlert('로그인 후 댓글을 수정할 수 있습니다.');
+        return;
+      }
+
+      // 문서 가져오기
+      const userDocRef = doc(dbService, 'users', currentUserUid);
+
+      // 문서 데이터 가져오기
+      const userDoc = await getDoc(userDocRef);
+      const userData = userDoc.data();
+
+      if (userData) {
+        const userComments = userData['user-comments'] ?? [];
+        const updatedComments = userComments.map((item: UserCommentProps) =>
+          item.updatedAt === comment.updatedAt
+            ? { ...item, comment: editedComment }
+            : item
+        );
+
+        // 'user-comments' 필드의 배열에서 수정된 댓글로 업데이트
+        await updateDoc(userDocRef, { 'user-comments': updatedComments });
+
+        // 수정 상태 변경
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.error('댓글 수정 실패', error);
+    }
+  };
+  const handleCommentUpdate = async () => {
+    if (editTarget) {
+      await handleCommentEdit(editTarget);
+    }
+  };
+
   // 댓글 delete
   const handleCommentDelete = async (comment: UserCommentProps) => {
     try {
@@ -208,28 +252,30 @@ const Detail = () => {
             <StepsBox recipe={recipe} />
             <CommentBox>
               <CommentTitle>{commentsList.length}개의 댓글</CommentTitle>
-              <CommentForm onSubmit={handleCommentSubmit}>
-                <UserProfileWrapper>
-                  {user?.photoURL ? (
-                    <UserProfileImg src={user.photoURL} />
-                  ) : (
-                    <UserProfileImg
-                      src={require('../assets/my/default_image.png')}
+              {user && ( // 로그인한 사용자만 댓글 작성이 가능
+                <CommentForm onSubmit={handleCommentSubmit}>
+                  <UserProfileWrapper>
+                    {user?.photoURL ? (
+                      <UserProfileImg src={user.photoURL} />
+                    ) : (
+                      <UserProfileImg
+                        src={require('../assets/my/default_image.png')}
+                      />
+                    )}
+                  </UserProfileWrapper>
+                  <CommentInputWrapper>
+                    <CommentInput
+                      value={inputValue}
+                      onChange={handleInputChange}
+                      placeholder="댓글을 입력해주세요..."
+                      maxLength={50}
                     />
-                  )}
-                </UserProfileWrapper>
-                <CommentInputWrapper>
-                  <CommentInput
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    placeholder="댓글을 입력해주세요..."
-                    maxLength={50}
-                  />
-                </CommentInputWrapper>
-                <CommentButtonWrapper>
-                  <CommentButton>작성</CommentButton>
-                </CommentButtonWrapper>
-              </CommentForm>
+                  </CommentInputWrapper>
+                  <CommentButtonWrapper>
+                    <CommentButton>작성</CommentButton>
+                  </CommentButtonWrapper>
+                </CommentForm>
+              )}
               <CommentList>
                 {commentsList && commentsList.length > 0 ? (
                   commentsList.map((item: UserCommentProps) => (
@@ -242,14 +288,34 @@ const Detail = () => {
                             <UploadedAt>
                               {getFormattedDate(item.updatedAt)}
                             </UploadedAt>
-                            <EditButton>수정</EditButton>
+                            {isEditing && editTarget === item ? (
+                              <EditSaveButton onClick={handleCommentUpdate}>
+                                저장
+                              </EditSaveButton>
+                            ) : (
+                              <EditButton
+                                onClick={() => {
+                                  setIsEditing(true);
+                                  setEditTarget(item);
+                                }}
+                              >
+                                수정
+                              </EditButton>
+                            )}
                             <DeleteButton
                               onClick={() => handleCommentDelete(item)}
                             >
                               삭제
                             </DeleteButton>
                           </CommentTopContent>
-                          <CommentUserText>{item.comment}</CommentUserText>
+                          {isEditing && editTarget === item ? (
+                            <CommentInput
+                              value={editedComment}
+                              onChange={(e) => setEditedComment(e.target.value)}
+                            />
+                          ) : (
+                            <CommentUserText>{item.comment}</CommentUserText>
+                          )}
                         </CommentContentWrapper>
                       </CommentItemInnerWrapper>
                     </CommentItem>
@@ -416,6 +482,13 @@ const UserName = styled.p`
 const CommentText = styled.p`
   margin: 0;
   padding: 0;
+`;
+
+const EditSaveButton = styled.div`
+  font-size: 1rem;
+  margin-right: 1rem;
+  color: ${COLORS.gray};
+  cursor: pointer;
 `;
 
 const PageWrapper = styled.div`
