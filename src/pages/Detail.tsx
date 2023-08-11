@@ -93,19 +93,13 @@ const Detail = () => {
   const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!inputValue.trim()) {
-      openAlert('댓글을 1자 이상 입력 하세요.');
-      setInputValue('');
-      return;
-    }
-
     try {
       if (!currentUserUid) {
         openAlert('댓글은 로그인 후 작성이 가능합니다.');
         return;
       }
 
-      if (!inputValue) {
+      if (!inputValue || !inputValue.trim()) {
         openAlert('댓글을 입력해주세요.');
         return;
       }
@@ -172,6 +166,37 @@ const Detail = () => {
     getComments();
   }, []);
 
+  // 댓글 delete
+  const handleCommentDelete = async (comment: UserCommentProps) => {
+    try {
+      if (!currentUserUid) {
+        openAlert('로그인 후 댓글을 삭제할 수 있습니다.');
+        return;
+      }
+
+      // 문서 가져오기
+      const userDocRef = doc(dbService, 'users', currentUserUid);
+
+      // 문서 데이터 가져오기
+      const userDoc = await getDoc(userDocRef);
+      const userData = userDoc.data();
+
+      if (userData) {
+        const userComments = userData['user-comments'] ?? [];
+        const updatedComments = userComments.filter(
+          (item: UserCommentProps) => item.updatedAt !== comment.updatedAt
+        );
+
+        // 'user-comments' 필드의 배열에서 삭제된 댓글을 제거한 후 문서 업데이트
+        await updateDoc(userDocRef, { 'user-comments': updatedComments });
+
+        openAlert('댓글이 삭제되었습니다.');
+      }
+    } catch (error) {
+      console.error('댓글 삭제 실패', error);
+    }
+  };
+
   return (
     <>
       <PageWrapper>
@@ -183,7 +208,6 @@ const Detail = () => {
             <StepsBox recipe={recipe} />
             <CommentBox>
               <CommentTitle>{commentsList.length}개의 댓글</CommentTitle>
-
               <CommentForm onSubmit={handleCommentSubmit}>
                 <UserProfileWrapper>
                   {user?.photoURL ? (
@@ -210,49 +234,30 @@ const Detail = () => {
                 {commentsList && commentsList.length > 0 ? (
                   commentsList.map((item: UserCommentProps) => (
                     <CommentItem key={item.updatedAt}>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          width: '100%',
-                        }}
-                      >
+                      <CommentItemInnerWrapper>
                         <UserProfileImg src={item.profilePic} alt="Profile" />
-                        <div
-                          style={{
-                            marginLeft: '1rem',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            gap: '0.5rem',
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              width: '100%',
-                            }}
-                          >
+                        <CommentContentWrapper>
+                          <CommentTopContent>
                             <UserName>{item.nickname}</UserName>
                             <UploadedAt>
                               {getFormattedDate(item.updatedAt)}
                             </UploadedAt>
-                          </div>
-                          <div
-                            style={{
-                              display: 'flex',
-                              // marginLeft: '0.25rem',
-                            }}
-                          >
-                            <CommentText>{item.comment}</CommentText>
-                          </div>
-                        </div>
-                      </div>
+                            <EditButton>수정</EditButton>
+                            <DeleteButton
+                              onClick={() => handleCommentDelete(item)}
+                            >
+                              삭제
+                            </DeleteButton>
+                          </CommentTopContent>
+                          <CommentUserText>{item.comment}</CommentUserText>
+                        </CommentContentWrapper>
+                      </CommentItemInnerWrapper>
                     </CommentItem>
                   ))
                 ) : (
-                  <p>댓글이 없습니다. 첫 댓글을 남겨보세요! 😎</p>
+                  <EmptyCommentsMessage>
+                    댓글이 없습니다. 첫 댓글을 남겨보세요! 😎
+                  </EmptyCommentsMessage>
                 )}
               </CommentList>
             </CommentBox>
@@ -344,7 +349,31 @@ const CommentButton = styled.button`
     background-color: ${COLORS.blue1};
   }
 `;
+const CommentItemInnerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
 
+const CommentContentWrapper = styled.div`
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+`;
+
+const CommentTopContent = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+
+const CommentUserText = styled.div`
+  display: flex;
+`;
+
+const EmptyCommentsMessage = styled.p``;
 const CommentList = styled.ul`
   list-style: none;
   padding: 0;
@@ -357,15 +386,26 @@ const CommentItem = styled.li`
   align-items: flex-start;
   padding: 1rem 0;
   width: 100%;
-
-  &:last-child {
-    border-bottom: none;
-  }
 `;
 
 const UploadedAt = styled.div`
   font-size: 1rem;
+  margin-right: 1rem;
   color: ${COLORS.gray};
+`;
+
+const EditButton = styled.div`
+  font-size: 1rem;
+  margin-right: 1rem;
+  color: ${COLORS.gray};
+  cursor: pointer;
+`;
+
+const DeleteButton = styled.div`
+  font-size: 1rem;
+  margin-right: 1rem;
+  color: ${COLORS.gray};
+  cursor: pointer;
 `;
 
 const UserName = styled.p`
