@@ -460,7 +460,9 @@ const CommentUserText = styled.div`
   display: flex;
 `;
 
-const EmptyCommentsMessage = styled.p``;
+const EmptyCommentsMessage = styled.div`
+  margin: 5rem 0 2.5rem 0;
+`;
 const CommentList = styled.ul`
   list-style: none;
   padding: 0;
