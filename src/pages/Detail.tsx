@@ -291,6 +291,9 @@ const Detail = () => {
                             </UploadedAt>
                             {isEditing && editTarget === item ? (
                               <>
+                                <EditSaveButton onClick={handleCommentUpdate}>
+                                  완료
+                                </EditSaveButton>
                                 <CancelButton
                                   onClick={() => {
                                     setIsEditing(false);
@@ -299,9 +302,6 @@ const Detail = () => {
                                 >
                                   취소
                                 </CancelButton>
-                                <EditSaveButton onClick={handleCommentUpdate}>
-                                  완료
-                                </EditSaveButton>
                               </>
                             ) : (
                               <>
@@ -323,10 +323,17 @@ const Detail = () => {
                             )}
                           </CommentTopContent>
                           {isEditing && editTarget === item ? (
-                            <CommentInput
-                              value={editedComment}
-                              onChange={(e) => setEditedComment(e.target.value)}
-                            />
+                            <div>
+                              <CommentInput
+                                value={editedComment}
+                                onChange={(e) =>
+                                  setEditedComment(e.target.value)
+                                }
+                              />
+                              <CommentUserText style={{ display: 'none' }}>
+                                {item.comment}
+                              </CommentUserText>
+                            </div>
                           ) : (
                             <CommentUserText>{item.comment}</CommentUserText>
                           )}
