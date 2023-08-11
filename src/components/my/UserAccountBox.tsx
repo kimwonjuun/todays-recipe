@@ -54,7 +54,7 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
 
       // 문서가 존재하면 기존 데이터에 재료 추가
       if (userDoc.exists()) {
-        const ingredients = userDoc.data()['users-ingredients'] || [];
+        const ingredients = userDoc.data()['user-ingredients'] || [];
 
         if (ingredients.length >= 20) {
           openAlert('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
@@ -70,13 +70,13 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
           return;
         }
 
-        await updateDoc(userRef, { 'users-ingredients': ingredients });
+        await updateDoc(userRef, { 'user-ingredients': ingredients });
       } else {
         // 문서가 존재하지 않으면 새 문서를 생성 후 재료 추가
         const ingredients = [inputValue];
 
         await setDoc(userRef, {
-          'users-ingredients': ingredients,
+          'user-ingredients': ingredients,
         });
       }
 
@@ -98,8 +98,8 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
     if (docSnap.exists()) {
       const ingredientData = docSnap.data();
-      if (ingredientData && ingredientData['users-ingredients']) {
-        setMyIngredients(ingredientData['users-ingredients']);
+      if (ingredientData && ingredientData['user-ingredients']) {
+        setMyIngredients(ingredientData['user-ingredients']);
       }
     }
   };
@@ -126,13 +126,13 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
 
       // 문서가 존재하면 선택한 재료를 제외한 나머지 재료로 업데이트
       if (userDoc.exists()) {
-        const ingredients = userDoc.data()['users-ingredients'] || [];
+        const ingredients = userDoc.data()['user-ingredients'] || [];
         const updatedIngredients = ingredients.filter(
           (item: string) => item !== ingredient
         );
 
         // 선택한 재료만 삭제하기
-        await updateDoc(userRef, { 'users-ingredients': updatedIngredients });
+        await updateDoc(userRef, { 'user-ingredients': updatedIngredients });
 
         // 재료 리스트 갱신
         getMyIngredients();
@@ -159,8 +159,8 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
     if (docSnap.exists()) {
       const likedRecipesData = docSnap.data();
-      if (likedRecipesData && likedRecipesData['users-likes']) {
-        setLikedRecipes(likedRecipesData['users-likes']);
+      if (likedRecipesData && likedRecipesData['user-likes']) {
+        setLikedRecipes(likedRecipesData['user-likes']);
       }
     }
   };

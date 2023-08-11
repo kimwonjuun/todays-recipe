@@ -37,8 +37,8 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
     if (docSnap.exists()) {
       const ingredientData = docSnap.data();
-      if (ingredientData && ingredientData['users-ingredients']) {
-        setMyIngredients(ingredientData['users-ingredients']);
+      if (ingredientData && ingredientData['user-ingredients']) {
+        setMyIngredients(ingredientData['user-ingredients']);
       }
     }
   };
