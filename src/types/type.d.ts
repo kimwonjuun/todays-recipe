@@ -26,3 +26,14 @@ interface Recipe {
 interface RecipeProps {
   recipe: Recipe;
 }
+
+// 디테일페이지 - 댓글 타입
+interface UserCommentProps {
+  uid: string;
+  nickname: string;
+  profilePic: string;
+  name: string;
+  id: string;
+  comment: string;
+  updatedAt: number;
+}

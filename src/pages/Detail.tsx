@@ -33,7 +33,6 @@ const Detail = () => {
 
   // 선택한 레시피를 담아줄 state
   const [recipe, setRecipe] = useState<Recipe | null>(null);
-  console.log(recipe);
 
   // 로딩 상태
   const [loading, setLoading] = useState<boolean>(true);

@@ -69,7 +69,6 @@ const BoxWrapper = styled.div`
   height: 30rem;
   display: flex;
   flex-direction: column;
-  /* justify-content: space-around; */
   align-items: center;
   background-color: #fff;
   border-radius: 1rem;

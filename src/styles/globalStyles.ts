@@ -14,7 +14,6 @@ const GlobalStyles = createGlobalStyle`
   * {
     font-family: 'Pretendard-Regular', sans-serif;
 	line-height: 1.2; // 세로 간격 조절
-	/* letter-spacing: 0.05rem; // 글자 간격 조절 */
 
   }
 
@@ -40,7 +39,6 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	/* font: inherit; */
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */

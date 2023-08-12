@@ -7,14 +7,11 @@ import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 
 const RecipePage = () => {
-  // 기존 레시피 데이터 (훅)
-  // const recipeData = useRecipeData();
-
   // Recoil: RecipeDataState
   const recipeData = useRecoilValue(RecipeDataState);
 
   // 로딩 상태
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(recipeData.length === 0);
 
   useEffect(() => {
     if (recipeData.length > 0) {

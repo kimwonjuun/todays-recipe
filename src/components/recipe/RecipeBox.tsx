@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
+import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import RecipeCard from '../common/RecipeCard';
 import { doc, getDoc } from 'firebase/firestore';
-import { authService, dbService, firebaseConfig } from '../../apis/firebase';
+import { authService, dbService } from '../../apis/firebase';
 import { User } from 'firebase/auth';
 
 interface RecipeProps {
@@ -56,11 +56,18 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
     );
   };
 
-  // 분류 선택 여닫기 후 선택하기
-  const [selectedCategory, setSelectedCategory] =
-    useState<string>('전체 레시피');
+  // 초기 카테고리
+  const initialCategory = () => {
+    const savedCategory = sessionStorage.getItem('selected_category');
+    return savedCategory ? savedCategory : '전체 레시피';
+  };
+
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+
+  // 분류 선택 여닫기 후 선택하기. 세션에 선택된 분류 저장
   const handleCategoryButton = (category: string) => {
     setSelectedCategory(category);
+    sessionStorage.setItem('selected_category', category);
   };
 
   // 필터링된 레시피 뿌려주기 (나의 냉장고 추가 후)
@@ -106,6 +113,21 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
   // 무한 스크롤
   const { currentPage } = useInfiniteScroll();
   const showRecipes = sortedRecipes(filteredRecipes).slice(0, currentPage * 8);
+
+  // 컴포넌트 마운트 시 이전 스크롤 위치를 기억해 이동하는 useEffect
+  useEffect(() => {
+    const lastScrollTop = Number(sessionStorage.getItem('scroll_top'));
+    if (lastScrollTop) {
+      window.scrollTo(0, lastScrollTop);
+    }
+  }, []);
+
+  // 컴포넌트 언마운트 시 현재 스크롤 위치를 세션에 저장하는 useEffect
+  useEffect(() => {
+    return () => {
+      sessionStorage.setItem('scroll_top', window.scrollY.toString());
+    };
+  }, []);
 
   return (
     <>

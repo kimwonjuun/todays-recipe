@@ -14,7 +14,9 @@ const fetchRecipes = async () => {
   return JsonData[0].COOKRCP01.row.concat(JsonData[1].COOKRCP01.row);
 };
 
-export const useFetchRecipes = () => {
+const useFetchRecipes = () => {
   // EditFormBox에서 사용할 훅
   return useQuery('recipes', fetchRecipes);
 };
+
+export default useFetchRecipes;
