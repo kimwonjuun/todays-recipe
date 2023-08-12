@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import COLORS from '../../styles/colors';
 import { User } from 'firebase/auth';
 import { dbService } from '../../apis/firebase';
 import {

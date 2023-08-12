@@ -312,8 +312,6 @@ const MyRefrigeratorWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-
-  /* background-color: yellow; */
 `;
 
 const MyRefrigerator = styled.div`
