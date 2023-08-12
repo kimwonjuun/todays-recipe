@@ -6,13 +6,22 @@ interface useInfiniteScrollProps {
   loadMorePage: () => void;
 }
 
-export const useInfiniteScroll = (): useInfiniteScrollProps => {
-  // 초기 표시할 페이지
-  const [currentPage, setCurrentPage] = useState(1);
+export const useInfiniteScroll = () => {
+  // 초기 페이지를 세션에서 가져옴. 없으면 1로 설정.
+  const initialPage = () => {
+    const savedPage = sessionStorage.getItem('last_page');
+    return savedPage ? Number(savedPage) : 1;
+  };
 
-  // 함수 호출 시 현재 페이지 +1
+  // 현재 페이지를 저장하는 state. 초기값은 initial page
+  const [currentPage, setCurrentPage] = useState(initialPage);
+
+  // 함수 호출 시 현재 페이지 +1. 세션에 저장.
   const loadMorePage = () => {
-    setCurrentPage((prev) => prev + 1);
+    setCurrentPage((prev) => {
+      sessionStorage.setItem('last_page', (prev + 1).toString());
+      return prev + 1;
+    });
   };
 
   // 스크롤 이벤트 발생 시, 스크롤 위치 확인. 스크롤이 맨 아래 위치하면 loadMorePage 함수 호출해 페이지 로드
@@ -27,6 +36,7 @@ export const useInfiniteScroll = (): useInfiniteScrollProps => {
     }
   };
 
+  // 컴포넌트 마운트될 때 이벤트 리스너 등록, 언마운트 시 제거
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
