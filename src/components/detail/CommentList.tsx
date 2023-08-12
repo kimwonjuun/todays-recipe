@@ -104,31 +104,12 @@ const CommentList = ({
 
 export default CommentList;
 
-const CommentTitle = styled.h2`
-  margin-bottom: 1rem;
+const List = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
 `;
 
-const CommentForm = styled.form`
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  width: 100%;
-  margin: 2rem 0;
-`;
-const UserProfileWrapper = styled.div`
-  height: 4rem;
-  width: 4rem;
-  display: flex;
-  align-items: center;
-`;
-const CommentInputWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-const CommentButtonWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
 const UserProfileImg = styled.img`
   width: 5rem;
   height: 5rem;
@@ -136,6 +117,7 @@ const UserProfileImg = styled.img`
   margin-right: 1rem;
   object-fit: cover;
 `;
+
 const CommentInput = styled.input`
   width: 60rem;
   padding: 0.5rem;
@@ -150,21 +132,7 @@ const CommentInput = styled.input`
     border-color: ${COLORS.blue1};
   }
 `;
-const CommentButton = styled.button`
-  width: 5rem;
-  background-color: ${COLORS.blue2};
-  font-size: 1.25rem;
-  color: #fff;
-  margin-left: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
 
-  &:hover {
-    background-color: ${COLORS.blue1};
-  }
-`;
 const CommentItemInnerWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -191,11 +159,6 @@ const CommentUserText = styled.div`
 
 const EmptyCommentsMessage = styled.div`
   margin: 5rem 0 2.5rem 0;
-`;
-const List = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
 `;
 
 const CommentItem = styled.li`

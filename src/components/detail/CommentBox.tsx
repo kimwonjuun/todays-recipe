@@ -11,6 +11,7 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
+import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 
 interface UserCommentProps {
@@ -212,28 +213,12 @@ const CommentBox = ({
     <>
       <BottomWrapper>
         <CommentTitle>{commentsList.length} 개의 댓글</CommentTitle>
-        <CommentForm onSubmit={handleCommentSubmit}>
-          <UserProfileWrapper>
-            {user?.photoURL ? (
-              <UserProfileImg src={user.photoURL} />
-            ) : (
-              <UserProfileImg
-                src={require('../../assets/my/default_image.png')}
-              />
-            )}
-          </UserProfileWrapper>
-          <CommentInputWrapper>
-            <CommentInput
-              value={inputValue}
-              onChange={handleInputChange}
-              placeholder="댓글을 입력해주세요..."
-              maxLength={50}
-            />
-          </CommentInputWrapper>
-          <CommentButtonWrapper>
-            <CommentButton>작성</CommentButton>
-          </CommentButtonWrapper>
-        </CommentForm>
+        <CommentForm
+          user={user}
+          inputValue={inputValue}
+          onInputChange={handleInputChange}
+          onSubmit={handleCommentSubmit}
+        />
         <CommentList
           commentsList={commentsList}
           currentUserUid={currentUserUid}
@@ -264,136 +249,4 @@ const BottomWrapper = styled.div`
 
 const CommentTitle = styled.h2`
   margin-bottom: 1rem;
-`;
-
-const CommentForm = styled.form`
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  width: 100%;
-  margin: 2rem 0;
-`;
-const UserProfileWrapper = styled.div`
-  height: 4rem;
-  width: 4rem;
-  display: flex;
-  align-items: center;
-`;
-const CommentInputWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-const CommentButtonWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-const UserProfileImg = styled.img`
-  width: 5rem;
-  height: 5rem;
-  border-radius: 50%;
-  margin-right: 1rem;
-  object-fit: cover;
-`;
-const CommentInput = styled.input`
-  width: 60rem;
-  padding: 0.5rem;
-  border: none;
-  border-bottom: 0.2rem solid ${COLORS.blue2};
-  border-radius: 0rem;
-  outline: none;
-  margin-left: 1rem;
-  font-size: 1.25rem;
-
-  &:focus {
-    border-color: ${COLORS.blue1};
-  }
-`;
-const CommentButton = styled.button`
-  width: 5rem;
-  background-color: ${COLORS.blue2};
-  font-size: 1.25rem;
-  color: #fff;
-  margin-left: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${COLORS.blue1};
-  }
-`;
-const CommentItemInnerWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-
-const CommentContentWrapper = styled.div`
-  margin-left: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.5rem;
-`;
-
-const CommentTopContent = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-
-const CommentUserText = styled.div`
-  display: flex;
-`;
-
-const EmptyCommentsMessage = styled.div`
-  margin: 5rem 0 2.5rem 0;
-`;
-
-const CommentItem = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 1rem 0;
-  width: 100%;
-`;
-
-const UploadedAt = styled.div`
-  font-size: 1rem;
-  margin-right: 1rem;
-  color: ${COLORS.gray};
-`;
-
-const EditButton = styled.div`
-  font-size: 1rem;
-  margin-right: 1rem;
-  color: ${COLORS.gray};
-  cursor: pointer;
-`;
-
-const DeleteButton = styled.div`
-  font-size: 1rem;
-  margin-right: 1rem;
-  color: ${COLORS.gray};
-  cursor: pointer;
-`;
-
-const UserName = styled.p`
-  font-weight: bold;
-  margin-right: 1rem;
-`;
-
-const EditSaveButton = styled.div`
-  font-size: 1rem;
-  margin-right: 1rem;
-  color: ${COLORS.gray};
-  cursor: pointer;
-`;
-
-const CancelButton = styled.div`
-  font-size: 1rem;
-  margin-right: 1rem;
-  color: ${COLORS.gray};
-  cursor: pointer;
 `;
