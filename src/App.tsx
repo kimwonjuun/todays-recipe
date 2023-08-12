@@ -1,25 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Router from './routes/Router';
+import GlobalStyles from './styles/globalStyles';
+import useRecipeData from './hooks/useRecipeData';
 
 function App() {
+  // 앱 실행 시 1회 호출하는 레시피 데이터
+  useRecipeData();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GlobalStyles />
+      <Router />
+    </>
   );
 }
 
