@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { dbService } from '../apis/firebase';
+import { dbService } from '../api/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { RecipeDataState } from '../recoil/atoms';
 import { useSetRecoilState } from 'recoil';

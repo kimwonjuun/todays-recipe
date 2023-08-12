@@ -7,7 +7,7 @@ import IngredientBox from '../components/detail/IngredientBox';
 import StepsBox from '../components/detail/StepsBox';
 import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
-import { authService } from '../apis/firebase';
+import { authService } from '../api/firebase';
 import useAlert from '../hooks/useAlert';
 import { User } from 'firebase/auth';
 import AlertModal from '../components/common/AlertModal';

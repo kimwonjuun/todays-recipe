@@ -1,6 +1,7 @@
 <img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/c5ca665e-fcbe-45c0-a240-b16cbf9add5a" width="150px" />
 
 # 냉장고에 뭐있지?
+
 <p>냉장고에 보관되어 있는 식재료들을 기록해 이를 기반으로 레시피를 찾아주는 웹사이트입니다.</p>
 <p>레시피의 조리법 및 영양 성분을 확인할 수 있으며, 원하는 레시피명이나 재료명을 검색하여 정보를 얻을 수도 있습니다.</p>
 <br/>
@@ -47,6 +48,7 @@
 ## 💻 기술 스택
 
 #### Environment
+
 <div>
   <img src="https://img.shields.io/badge/visualstudiocode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
   <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
@@ -54,6 +56,7 @@
 </div>
 
 #### Client
+
 <div>
   <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
   <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
@@ -63,11 +66,13 @@
 </div>
 
 #### Baas
+
 <div>
   <img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white">
 </div>
 
 #### Deploy
+
 <div>
   <img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
 </div>
