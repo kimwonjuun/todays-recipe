@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import SubmitForm from '../common/SubmitForm';
 import styled from 'styled-components';
 import { addDoc, collection } from 'firebase/firestore';
-import { dbService } from '../../apis/firebase';
+import { dbService } from '../../api/firebase';
 import AlertModal from '../common/AlertModal';
 import ConfirmModal from '../common/ConfirmModal';
 import useAlert from '../../hooks/useAlert';

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../apis/firebase';
+import { authService } from '../api/firebase';
 import ProfileBox from '../components/my/ProfileBox';
 import EditProfileModal from '../components/my/EditProfileModal';
 import UserAccountBox from '../components/my/UserAccountBox';

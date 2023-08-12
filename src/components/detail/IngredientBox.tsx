@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { authService, dbService } from '../../apis/firebase';
+import { authService, dbService } from '../../api/firebase';
 import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { User } from 'firebase/auth';
 import useAlert from '../../hooks/useAlert';

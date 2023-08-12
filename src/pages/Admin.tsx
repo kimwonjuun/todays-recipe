@@ -5,7 +5,7 @@ import COLORS from '../styles/colors';
 import EditHistoryBox from '../components/admin/EditHistoryBox';
 import EditFormBox from '../components/admin/EditFormBox';
 import { useState } from 'react';
-import { authService } from '../apis/firebase';
+import { authService } from '../api/firebase';
 import { User } from 'firebase/auth';
 
 const Admin = () => {

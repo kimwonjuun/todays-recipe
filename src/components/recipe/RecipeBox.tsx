@@ -4,7 +4,7 @@ import COLORS from '../../styles/colors';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import RecipeCard from '../common/RecipeCard';
 import { doc, getDoc } from 'firebase/firestore';
-import { authService, dbService } from '../../apis/firebase';
+import { authService, dbService } from '../../api/firebase';
 import { User } from 'firebase/auth';
 
 interface RecipeProps {
