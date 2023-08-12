@@ -14,7 +14,6 @@ const GlobalStyles = createGlobalStyle`
   * {
     font-family: 'Pretendard-Regular', sans-serif;
 	line-height: 1.2; // 세로 간격 조절
-	/* letter-spacing: 0.05rem; // 글자 간격 조절 */
 
   }
 

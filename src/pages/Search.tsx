@@ -15,9 +15,6 @@ import useAlert from '../hooks/useAlert';
 const Search = () => {
   const navigate = useNavigate();
 
-  // 기존 레시피 데이터 (훅)
-  // const recipeData = useRecipeData();
-
   // Recoil: RecipeDataState
   const recipeData = useRecoilValue(RecipeDataState);
 
@@ -49,8 +46,7 @@ const Search = () => {
         (recipe.type ?? '').includes(keyword)
     );
     setFilteredRecipes(filteredData);
-    setLoading(false); // 검색 완료되면 로딩 상태를 비활성화
-    // console.log('검색 결과: ', filteredData);
+    setLoading(false); // 검색 완료되면 로딩 상태 비활성화
   }, [keyword, recipeData]);
 
   // custom modal

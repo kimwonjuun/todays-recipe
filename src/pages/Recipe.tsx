@@ -7,9 +7,6 @@ import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 
 const RecipePage = () => {
-  // 기존 레시피 데이터 (훅)
-  // const recipeData = useRecipeData();
-
   // Recoil: RecipeDataState
   const recipeData = useRecoilValue(RecipeDataState);
 

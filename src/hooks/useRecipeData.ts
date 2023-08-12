@@ -6,9 +6,6 @@ import { useSetRecoilState } from 'recoil';
 
 // 파이어스토어로부터 내가 가공한 데이터 가져오는 훅
 export const useRecipeData = () => {
-  // 기존 useState
-  // const [recipeData, setRecipeData] = useState<Recipe[]>([]);
-
   // Recoil: RecipeDataState
   const setRecipeData = useSetRecoilState(RecipeDataState);
 
@@ -31,7 +28,4 @@ export const useRecipeData = () => {
     getRecipeData();
     console.log('recipe data 들어옴 !');
   }, []);
-
-  // 기존
-  // return recipeData;
 };
