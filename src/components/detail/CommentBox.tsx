@@ -11,17 +11,7 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
-import { formatDate } from '../../utils/date';
-
-interface CommentBoxProps {
-  recipe: Recipe;
-  user: User | null;
-  currentUserUid: string | undefined;
-  id: string | undefined;
-  openAlert: (message: string) => void;
-  inputValue: string;
-  setInputValue: (value: string) => void;
-}
+import CommentList from './CommentList';
 
 interface UserCommentProps {
   uid: string;
@@ -31,6 +21,16 @@ interface UserCommentProps {
   id: string;
   comment: string;
   updatedAt: number;
+}
+
+interface CommentBoxProps {
+  recipe: Recipe;
+  user: User | null;
+  currentUserUid: string | undefined;
+  id: string | undefined;
+  openAlert: (message: string) => void;
+  inputValue: string;
+  setInputValue: (value: string) => void;
 }
 
 const CommentBox = ({
@@ -49,6 +49,7 @@ const CommentBox = ({
     setInputValue(e.target.value);
   };
 
+  // 댓글 create
   const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -233,76 +234,18 @@ const CommentBox = ({
             <CommentButton>작성</CommentButton>
           </CommentButtonWrapper>
         </CommentForm>
-        <CommentList>
-          {commentsList && commentsList.length > 0 ? (
-            commentsList.map((item: UserCommentProps) => (
-              <CommentItem key={item.updatedAt}>
-                <CommentItemInnerWrapper>
-                  <UserProfileImg src={item.profilePic} alt="Profile" />
-                  <CommentContentWrapper>
-                    <CommentTopContent>
-                      <UserName>{item.nickname}</UserName>
-                      <UploadedAt>{formatDate(item.updatedAt)}</UploadedAt>
-                      {currentUserUid === item.uid && (
-                        <>
-                          {isEditing && editTarget === item ? (
-                            <>
-                              <CancelButton
-                                onClick={() => {
-                                  setIsEditing(false);
-                                  setEditTarget(null);
-                                }}
-                              >
-                                취소
-                              </CancelButton>
-                              <EditSaveButton onClick={handleCommentUpdate}>
-                                완료
-                              </EditSaveButton>
-                            </>
-                          ) : (
-                            <>
-                              <EditButton
-                                onClick={() => {
-                                  setIsEditing(true);
-                                  setEditTarget(item);
-                                  setEditedComment(item.comment);
-                                }}
-                              >
-                                수정
-                              </EditButton>
-                              <DeleteButton
-                                onClick={() => handleCommentDelete(item)}
-                              >
-                                삭제
-                              </DeleteButton>
-                            </>
-                          )}
-                        </>
-                      )}
-                    </CommentTopContent>
-                    {isEditing && editTarget === item ? (
-                      <div>
-                        <CommentInput
-                          value={editedComment}
-                          onChange={(e) => setEditedComment(e.target.value)}
-                        />
-                        <CommentUserText style={{ display: 'none' }}>
-                          {item.comment}
-                        </CommentUserText>
-                      </div>
-                    ) : (
-                      <CommentUserText>{item.comment}</CommentUserText>
-                    )}
-                  </CommentContentWrapper>
-                </CommentItemInnerWrapper>
-              </CommentItem>
-            ))
-          ) : (
-            <EmptyCommentsMessage>
-              댓글이 없습니다. 첫 댓글을 남겨보세요! 😎
-            </EmptyCommentsMessage>
-          )}
-        </CommentList>
+        <CommentList
+          commentsList={commentsList}
+          currentUserUid={currentUserUid}
+          isEditing={isEditing}
+          editTarget={editTarget}
+          handleCommentUpdate={handleCommentUpdate}
+          handleCommentDelete={handleCommentDelete}
+          setIsEditing={setIsEditing}
+          setEditTarget={setEditTarget}
+          setEditedComment={setEditedComment}
+          editedComment={editedComment}
+        />
       </BottomWrapper>
     </>
   );
@@ -406,11 +349,6 @@ const CommentUserText = styled.div`
 
 const EmptyCommentsMessage = styled.div`
   margin: 5rem 0 2.5rem 0;
-`;
-const CommentList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
 `;
 
 const CommentItem = styled.li`
