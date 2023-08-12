@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import COLORS from '../../styles/colors';
 import SubmitForm from '../common/SubmitForm';
-import { dbService } from '../../apis/firebase';
+import { dbService } from '../../api/firebase';
 import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import RecipeCard from '../common/RecipeCard';

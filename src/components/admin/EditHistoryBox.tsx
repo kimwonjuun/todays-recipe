@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { collection, orderBy, query, onSnapshot } from 'firebase/firestore';
-import { dbService } from '../../apis/firebase';
+import { dbService } from '../../api/firebase';
 import { useEffect } from 'react';
 import { formatDate } from '../../utils/date';
 
