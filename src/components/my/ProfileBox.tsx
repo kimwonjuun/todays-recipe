@@ -4,6 +4,7 @@ import { authService } from '../../apis/firebase';
 import { User } from 'firebase/auth';
 import useConfirm from '../../hooks/useConfirm';
 import ConfirmModal from '../common/ConfirmModal';
+import { useNavigate } from 'react-router-dom';
 
 interface ProfileBoxProps {
   openModal: () => void;
@@ -12,10 +13,12 @@ interface ProfileBoxProps {
 }
 
 const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
+  const navigate = useNavigate();
   // 로그아웃
   const handleLogout = async () => {
     await authService.signOut();
     sessionStorage.clear();
+    navigate('/');
   };
 
   // custom window.confirm
