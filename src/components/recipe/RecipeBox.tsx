@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
+import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import RecipeCard from '../common/RecipeCard';
 import { doc, getDoc } from 'firebase/firestore';
 import { authService, dbService } from '../../apis/firebase';

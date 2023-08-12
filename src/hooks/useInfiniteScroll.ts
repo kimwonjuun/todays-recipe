@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
-interface useInfiniteScrollProps {
-  currentPage: number;
-  setCurrentPage: Function;
-  loadMorePage: () => void;
-}
+// interface useInfiniteScrollProps {
+//   currentPage: number;
+//   setCurrentPage: Function;
+//   loadMorePage: () => void;
+// }
 
-export const useInfiniteScroll = () => {
+const useInfiniteScroll = () => {
   // 초기 페이지를 세션에서 가져옴. 없으면 1로 설정.
   const initialPage = () => {
     const savedPage = sessionStorage.getItem('last_page');
@@ -44,3 +44,5 @@ export const useInfiniteScroll = () => {
 
   return { currentPage, setCurrentPage, loadMorePage };
 };
+
+export default useInfiniteScroll;
