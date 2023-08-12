@@ -5,7 +5,7 @@ import Recipe from '../pages/Recipe';
 import Detail from '../pages/Detail';
 import My from '../pages/My';
 import Admin from '../pages/Admin';
-import ErrorPage from '../pages/ErrorPage';
+import NotFound from '../pages/NotFound';
 import Header from '../components/layout/Header';
 import ScrollToTopButton from '../components/layout/ScrollToTopButton';
 
@@ -20,7 +20,7 @@ const Router = () => {
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/my" element={<My />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="*" element={<ErrorPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <ScrollToTopButton />
     </BrowserRouter>

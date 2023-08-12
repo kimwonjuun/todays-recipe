@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useNavigate } from 'react-router-dom';
 
-const ErrorPage = () => {
+const NotFound = () => {
   const navigate = useNavigate();
   return (
     <>
@@ -42,7 +42,7 @@ const ErrorPage = () => {
   );
 };
 
-export default ErrorPage;
+export default NotFound;
 
 const PageWrapper = styled.div`
   box-sizing: border-box;
