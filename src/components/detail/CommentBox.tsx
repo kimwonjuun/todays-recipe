@@ -211,7 +211,7 @@ const CommentBox = ({
   return (
     <>
       <BottomWrapper>
-        <CommentTitle>{commentsList.length} 개의 댓글</CommentTitle>
+        <CommentTitle>{commentsList.length}개의 댓글</CommentTitle>
         <CommentForm
           user={user}
           inputValue={inputValue}

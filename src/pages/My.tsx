@@ -22,7 +22,7 @@ const My = () => {
         setUser(user);
         setPhotoURL(user.photoURL);
       } else {
-        navigate('/');
+        navigate('/error');
       }
     });
     return () => {
