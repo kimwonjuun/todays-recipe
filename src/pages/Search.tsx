@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import SearchForm from '../components/common/SearchForm';
-import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
+import useInfiniteScroll from '../hooks/useInfiniteScroll';
 import Loading from '../components/common/Loading';
 import RecipeCard from '../components/common/RecipeCard';
 import { koreanOnly } from '../utils/regex';

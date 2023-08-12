@@ -56,11 +56,18 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
     );
   };
 
-  // 분류 선택 여닫기 후 선택하기
-  const [selectedCategory, setSelectedCategory] =
-    useState<string>('전체 레시피');
+  // 초기 카테고리
+  const initialCategory = () => {
+    const savedCategory = sessionStorage.getItem('selected_category');
+    return savedCategory ? savedCategory : '전체 레시피';
+  };
+
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+
+  // 분류 선택 여닫기 후 선택하기. 세션에 선택된 분류 저장
   const handleCategoryButton = (category: string) => {
     setSelectedCategory(category);
+    sessionStorage.setItem('selected_category', category);
   };
 
   // 필터링된 레시피 뿌려주기 (나의 냉장고 추가 후)
