@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { formatDate } from '../../utils/date';
@@ -19,6 +19,7 @@ const CommentList = ({
   // 댓글 update
   const [isEditing, setIsEditing] = useState(false);
   const [editTarget, setEditTarget] = useState<UserCommentProps | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // 수정 대상 댓글
   const [editedComment, setEditedComment] = useState(''); // 수정된 댓글
@@ -55,11 +56,18 @@ const CommentList = ({
       console.error('댓글 수정 실패', error);
     }
   };
+
   const handleCommentUpdate = async () => {
     if (editTarget) {
       await handleCommentEdit(editTarget);
     }
   };
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current?.focus();
+    }
+  }, [isEditing]);
 
   // 댓글 delete
   const handleCommentDelete = async (comment: UserCommentProps) => {
@@ -143,6 +151,7 @@ const CommentList = ({
                 {isEditing && editTarget === item ? (
                   <div>
                     <CommentInput
+                      ref={inputRef}
                       value={editedComment}
                       onChange={(e) => setEditedComment(e.target.value)}
                     />
