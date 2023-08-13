@@ -128,7 +128,9 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           <Img>
             <img src={recipe.image} alt={recipe.name} />
           </Img>
-          <Title>{recipe.name}</Title>
+          <Title fontSize={recipe.name.length >= 22 ? '1.25rem' : '1.5rem'}>
+            {recipe.name}
+          </Title>
           <LikeWrapper>
             <Like onClick={handleLikeButtonClick}>
               {like ? (
@@ -227,12 +229,12 @@ const Img = styled.div`
   }
 `;
 
-const Title = styled.div`
+const Title = styled.div<{ fontSize: string }>`
   height: 4.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: ${(props) => props.fontSize};
   font-weight: bold;
 `;
 
