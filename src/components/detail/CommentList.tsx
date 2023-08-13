@@ -106,7 +106,14 @@ const CommentList = ({
         commentsList.map((item: UserCommentProps) => (
           <CommentItem key={item.updatedAt}>
             <CommentItemInnerWrapper>
-              <UserProfileImg src={item.profilePic} alt="Profile" />
+              <UserProfileImg
+                src={
+                  item.profilePic
+                    ? item.profilePic
+                    : require('../../assets/my/default_image.png')
+                }
+              />
+
               <CommentContentWrapper>
                 <CommentTopContent>
                   <UserName>{item.nickname}</UserName>
