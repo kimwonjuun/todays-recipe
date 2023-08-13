@@ -64,6 +64,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           ];
           await updateDoc(userRef, { 'user-likes': updatedLikes });
           setLike(true);
+          openAlert('레시피 찜 완료!');
         } else {
           // 레시피 찜 취소
           const updatedLikes = likes.filter(
@@ -71,6 +72,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           );
           await updateDoc(userRef, { 'user-likes': updatedLikes });
           setLike(false);
+          openAlert('찜 목록에서 삭제했어요.');
         }
       } else {
         // 문서가 존재하지 않으면 새 문서 생성 후 레시피명 추가
@@ -84,6 +86,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
         ];
         await setDoc(userRef, { 'user-likes': likes });
         setLike(true);
+        openAlert('레시피 찜 완료!');
       }
     } catch (error) {
       console.error('레시피 찜에 실패했습니다.', error);
@@ -118,17 +121,6 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
     }
   }, [currentUserUid]);
 
-  useEffect(() => {
-    // 레시피 찜 상태에 따른 alert
-    if (like !== null) {
-      if (like) {
-        openAlert('레시피 찜 완료!');
-      } else {
-        openAlert('찜 목록에서 삭제했어요.');
-      }
-    }
-  }, [like]);
-
   return (
     <>
       <TopWrapper>
@@ -136,7 +128,9 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           <Img>
             <img src={recipe.image} alt={recipe.name} />
           </Img>
-          <Title>{recipe.name}</Title>
+          <Title fontSize={recipe.name.length >= 22 ? '1.25rem' : '1.5rem'}>
+            {recipe.name}
+          </Title>
           <LikeWrapper>
             <Like onClick={handleLikeButtonClick}>
               {like ? (
@@ -235,12 +229,12 @@ const Img = styled.div`
   }
 `;
 
-const Title = styled.div`
+const Title = styled.div<{ fontSize: string }>`
   height: 4.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: ${(props) => props.fontSize};
   font-weight: bold;
 `;
 

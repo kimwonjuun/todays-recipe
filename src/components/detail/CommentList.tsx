@@ -1,40 +1,119 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { formatDate } from '../../utils/date';
+import { dbService } from '../../api/firebase';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 interface CommentListProps {
   commentsList: UserCommentProps[];
   currentUserUid: string | undefined;
-  isEditing: boolean;
-  editTarget: UserCommentProps | null;
-  handleCommentUpdate: () => void;
-  handleCommentDelete: (comment: UserCommentProps) => void;
-  setIsEditing: (value: boolean) => void;
-  setEditTarget: (item: UserCommentProps | null) => void;
-  setEditedComment: (comment: string) => void;
-  editedComment: string;
+  openAlert: (message: string) => void;
 }
 
 const CommentList = ({
   commentsList,
   currentUserUid,
-  isEditing,
-  editTarget,
-  handleCommentUpdate,
-  handleCommentDelete,
-  setIsEditing,
-  setEditTarget,
-  setEditedComment,
-  editedComment,
+  openAlert,
 }: CommentListProps) => {
+  // 댓글 update
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTarget, setEditTarget] = useState<UserCommentProps | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // 수정 대상 댓글
+  const [editedComment, setEditedComment] = useState(''); // 수정된 댓글
+
+  const handleCommentEdit = async (comment: UserCommentProps) => {
+    try {
+      if (!currentUserUid) {
+        openAlert('로그인 후 댓글을 수정할 수 있습니다.');
+        return;
+      }
+
+      // 문서 가져오기
+      const userDocRef = doc(dbService, 'users', currentUserUid);
+
+      // 문서 데이터 가져오기
+      const userDoc = await getDoc(userDocRef);
+      const userData = userDoc.data();
+
+      if (userData) {
+        const userComments = userData['user-comments'] ?? [];
+        const updatedComments = userComments.map((item: UserCommentProps) =>
+          item.updatedAt === comment.updatedAt
+            ? { ...item, comment: editedComment }
+            : item
+        );
+
+        // 'user-comments' 필드의 배열에서 수정된 댓글로 업데이트
+        await updateDoc(userDocRef, { 'user-comments': updatedComments });
+
+        // 수정 상태 변경
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.error('댓글 수정 실패', error);
+    }
+  };
+
+  const handleCommentUpdate = async () => {
+    if (editTarget) {
+      await handleCommentEdit(editTarget);
+    }
+  };
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current?.focus();
+    }
+  }, [isEditing]);
+
+  // 댓글 delete
+  const handleCommentDelete = async (comment: UserCommentProps) => {
+    try {
+      if (!currentUserUid) {
+        openAlert('로그인 후 댓글을 삭제할 수 있습니다.');
+        return;
+      }
+
+      // 문서 가져오기
+      const userDocRef = doc(dbService, 'users', currentUserUid);
+
+      // 문서 데이터 가져오기
+      const userDoc = await getDoc(userDocRef);
+      const userData = userDoc.data();
+
+      if (userData) {
+        const userComments = userData['user-comments'] ?? [];
+        const updatedComments = userComments.filter(
+          (item: UserCommentProps) => item.updatedAt !== comment.updatedAt
+        );
+
+        // 'user-comments' 필드의 배열에서 삭제된 댓글을 제거한 후 문서 업데이트
+        await updateDoc(userDocRef, { 'user-comments': updatedComments });
+
+        openAlert('댓글이 삭제되었습니다.');
+      }
+    } catch (error) {
+      console.error('댓글 삭제 실패', error);
+    }
+  };
+
   return (
     <List>
       {commentsList && commentsList.length > 0 ? (
         commentsList.map((item: UserCommentProps) => (
           <CommentItem key={item.updatedAt}>
             <CommentItemInnerWrapper>
-              <UserProfileImg src={item.profilePic} alt="Profile" />
+              <UserProfileImg
+                src={
+                  item.profilePic
+                    ? item.profilePic
+                    : require('../../assets/my/default_image.png')
+                }
+              />
+
               <CommentContentWrapper>
                 <CommentTopContent>
                   <UserName>{item.nickname}</UserName>
@@ -79,6 +158,7 @@ const CommentList = ({
                 {isEditing && editTarget === item ? (
                   <div>
                     <CommentInput
+                      ref={inputRef}
                       value={editedComment}
                       onChange={(e) => setEditedComment(e.target.value)}
                     />

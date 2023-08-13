@@ -15,7 +15,7 @@ const Admin = () => {
 
   useEffect(() => {
     const handleAuthStateChange = authService.onAuthStateChanged((user) => {
-      if (user && user.email === 'test@test.com') {
+      if (user && user.email === 'admin@admin.ad') {
         setUser(user);
         navigate('/admin');
       } else {

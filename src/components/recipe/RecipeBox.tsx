@@ -89,10 +89,14 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
       : null;
 
   // 저칼로리 순/가나다 순 전 기존 정렬 상태
-  const [sortType, setSortType] = useState<string>('기존 정렬 상태');
+  const [sortType, setSortType] = useState<string>(
+    () => sessionStorage.getItem('selected_sort_type') || '기존 정렬 상태'
+  );
 
   // 소팅 상태 전환
   const handleSortType = (changeSortType: string) => {
+    sessionStorage.setItem('scroll_top', window.scrollY.toString());
+    sessionStorage.setItem('selected_sort_type', changeSortType);
     setSortType(changeSortType);
   };
 
@@ -120,7 +124,7 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
     if (lastScrollTop) {
       window.scrollTo(0, lastScrollTop);
     }
-  }, []);
+  }, [sortType]);
 
   // 컴포넌트 언마운트 시 현재 스크롤 위치를 세션에 저장하는 useEffect
   useEffect(() => {

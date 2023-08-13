@@ -132,82 +132,6 @@ const CommentBox = ({
     getComments();
   }, []);
 
-  // 댓글 update
-  const [isEditing, setIsEditing] = useState(false);
-  const [editTarget, setEditTarget] = useState<UserCommentProps | null>(null);
-
-  // 수정 대상 댓글
-  const [editedComment, setEditedComment] = useState(''); // 수정된 댓글
-
-  const handleCommentEdit = async (comment: UserCommentProps) => {
-    try {
-      if (!currentUserUid) {
-        openAlert('로그인 후 댓글을 수정할 수 있습니다.');
-        return;
-      }
-
-      // 문서 가져오기
-      const userDocRef = doc(dbService, 'users', currentUserUid);
-
-      // 문서 데이터 가져오기
-      const userDoc = await getDoc(userDocRef);
-      const userData = userDoc.data();
-
-      if (userData) {
-        const userComments = userData['user-comments'] ?? [];
-        const updatedComments = userComments.map((item: UserCommentProps) =>
-          item.updatedAt === comment.updatedAt
-            ? { ...item, comment: editedComment }
-            : item
-        );
-
-        // 'user-comments' 필드의 배열에서 수정된 댓글로 업데이트
-        await updateDoc(userDocRef, { 'user-comments': updatedComments });
-
-        // 수정 상태 변경
-        setIsEditing(false);
-      }
-    } catch (error) {
-      console.error('댓글 수정 실패', error);
-    }
-  };
-  const handleCommentUpdate = async () => {
-    if (editTarget) {
-      await handleCommentEdit(editTarget);
-    }
-  };
-
-  // 댓글 delete
-  const handleCommentDelete = async (comment: UserCommentProps) => {
-    try {
-      if (!currentUserUid) {
-        openAlert('로그인 후 댓글을 삭제할 수 있습니다.');
-        return;
-      }
-
-      // 문서 가져오기
-      const userDocRef = doc(dbService, 'users', currentUserUid);
-
-      // 문서 데이터 가져오기
-      const userDoc = await getDoc(userDocRef);
-      const userData = userDoc.data();
-
-      if (userData) {
-        const userComments = userData['user-comments'] ?? [];
-        const updatedComments = userComments.filter(
-          (item: UserCommentProps) => item.updatedAt !== comment.updatedAt
-        );
-
-        // 'user-comments' 필드의 배열에서 삭제된 댓글을 제거한 후 문서 업데이트
-        await updateDoc(userDocRef, { 'user-comments': updatedComments });
-
-        openAlert('댓글이 삭제되었습니다.');
-      }
-    } catch (error) {
-      console.error('댓글 삭제 실패', error);
-    }
-  };
-
   return (
     <>
       <BottomWrapper>
@@ -221,14 +145,7 @@ const CommentBox = ({
         <CommentList
           commentsList={commentsList}
           currentUserUid={currentUserUid}
-          isEditing={isEditing}
-          editTarget={editTarget}
-          handleCommentUpdate={handleCommentUpdate}
-          handleCommentDelete={handleCommentDelete}
-          setIsEditing={setIsEditing}
-          setEditTarget={setEditTarget}
-          setEditedComment={setEditedComment}
-          editedComment={editedComment}
+          openAlert={openAlert}
         />
       </BottomWrapper>
     </>
