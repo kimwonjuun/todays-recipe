@@ -22,24 +22,24 @@
       <td align="center">검색</td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/9608b7c2-3871-42cb-aa34-4fa33bf0e198.png" /></td>
-      <td align="center"><img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/74b66463-37e7-4dee-9d41-59db6ccce5f5" /></td>
+      <td align="center"><img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/1615c55a-e427-404c-a8b9-0c9fe039d0cc" /></td>
+      <td align="center"><img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/1827929e-996b-442c-9d52-6793ffce72e3" /></td>
     </tr>
     <tr>
       <td align="center">레시피</td>
       <td align="center">디테일</td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/8505be18-ba1b-46df-a42c-cfaf37d51698" /></td>
-      <td align="center"><img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/09e02991-e75b-40ea-ad1a-fa8e7338ea9c" /></td>
+      <td align="center"><img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/72547e66-0be6-4f4a-9472-f992d4f60e55" /></td>
+      <td align="center"><img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/ae473a43-a00c-4f8c-834b-fdb29c0600bd" /></td>
     </tr>
     <tr>
       <td align="center">마이페이지</td>
       <td align="center">관리자페이지</td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/69bfa7ca-73ec-4d88-b542-57db50f22f81" /></td>
-      <td align="center"><img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/dea9af7c-a832-4b17-8b40-2e6ebf37e6b9" /></td>
+      <td align="center"><img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/7ec19843-95c8-440c-9be4-f82b9fa4cac4" /></td>
+      <td align="center"><img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/52361a75-928e-4df2-b34d-92e69d5bd574" /></td>
     </tr>
  </table>
 </br>
