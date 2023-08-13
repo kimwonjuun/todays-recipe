@@ -1,4 +1,4 @@
-<img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/c5ca665e-fcbe-45c0-a240-b16cbf9add5a" width="150px" />
+<img src="https://github.com/kimwonjuun/todays_recipe/assets/117059038/2bf72f6d-99c2-48e1-aeb3-a805f6fbbe6f" width="150px" />
 
 # 냉장고에 뭐있지?
 
