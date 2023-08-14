@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import SubmitForm from '../common/SubmitForm';
 import { dbService } from '../../api/firebase';

@@ -8,7 +8,7 @@ import {
 import { authService } from '../../api/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
 
