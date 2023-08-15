@@ -7,6 +7,8 @@ interface useConfirmProps {
   isOpen: boolean;
 }
 
+// custom window.confirm modal 사용하는 페이지에 사용할 훅
+
 const useConfirm = (onConfirm: () => void): useConfirmProps => {
   const [isOpen, setIsOpen] = useState(false);
 

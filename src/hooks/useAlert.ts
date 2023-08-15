@@ -7,6 +7,8 @@ interface UseAlertProps {
   closeAlert: () => void;
 }
 
+// custom alert modal 사용하는 페이지에 사용할 훅
+
 const useAlert = (): UseAlertProps => {
   const [isOpen, setIsOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');

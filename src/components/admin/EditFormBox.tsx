@@ -8,6 +8,7 @@ import ConfirmModal from '../common/ConfirmModal';
 import useAlert from '../../hooks/useAlert';
 import useFetchRecipes from '../../hooks/useFetchRecipes';
 import useConfirm from '../../hooks/useConfirm';
+import useInput from '../../hooks/useInput';
 
 const EditFormBox = () => {
   // 호출한 API 전체 데이터 + 로딩, 에러 상태
@@ -72,15 +73,15 @@ const EditFormBox = () => {
     }
   };
 
-  const handleConfirmModalConfirm = () => {
+  //
+  const handleConfirmModal = () => {
     handleAddRecipeListToFirestore(recipeData);
     closeConfirm();
   };
 
   // custom window.confirm
-  const { openConfirm, closeConfirm, handleConfirm, isOpen } = useConfirm(
-    handleConfirmModalConfirm
-  );
+  const { openConfirm, closeConfirm, handleConfirm, isOpen } =
+    useConfirm(handleConfirmModal);
 
   // api 저장하는 버튼
   const handleGetRecipeList = () => {
@@ -97,11 +98,10 @@ const EditFormBox = () => {
     }
   };
 
-  // api 저장 또는 수정 후 수정 내역에 작성할 인풋
-  const [inputValue, setInputValue] = useState<string>('');
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
+  // api 저장 또는 수정 후 수정 내역에 작성할 인풋: useInput
+  const { inputValue, setInputValue, handleInputChange } = useInput('');
+
+  // 수정 사항 제출
   const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

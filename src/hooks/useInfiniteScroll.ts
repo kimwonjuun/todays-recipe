@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
 
-// interface useInfiniteScrollProps {
-//   currentPage: number;
-//   setCurrentPage: Function;
-//   loadMorePage: () => void;
-// }
+// 무한스크롤 사용하는 페이지에 적용할 훅
 
 const useInfiniteScroll = () => {
   // 초기 페이지를 세션에서 가져옴. 없으면 1로 설정.
