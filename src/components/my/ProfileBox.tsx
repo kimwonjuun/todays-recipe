@@ -21,7 +21,7 @@ const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
     navigate('/');
   };
 
-  // custom window.confirm
+  // 로그아웃 확인할 때 띄울 custom window.confirm
   const { openConfirm, closeConfirm, handleConfirm, isOpen } =
     useConfirm(handleLogout);
 

@@ -88,24 +88,26 @@ const EditProfileModal = ({
   };
 
   // 계정 삭제
-  const handleDeleteAccount = async () => {
+  const handleDeleteAccount = () => {
     if (user) {
-      try {
-        await user.delete();
-        sessionStorage.clear();
-        openAlert('회원 탈퇴가 완료되었습니다.');
-      } catch (error) {
-        console.log(error);
-        openAlert(
-          '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
-        );
-      }
+      user
+        .delete()
+        .then(() => {
+          sessionStorage.clear();
+          openAlert('회원 탈퇴가 완료되었습니다.');
+        })
+        .catch((error) => {
+          console.log(error);
+          openAlert(
+            '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
+          );
+        });
     } else {
       return;
     }
   };
 
-  // custom window.confirm
+  // 계정 삭제 확인할 때 띄울 custom window.confirm
   const { openConfirm, closeConfirm, handleConfirm, isOpen } =
     useConfirm(handleDeleteAccount);
 

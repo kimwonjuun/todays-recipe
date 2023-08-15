@@ -15,9 +15,6 @@ interface UserAccountBoxProps {
 }
 
 const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
-  // 냉장고 재료 입력하는 인풋: useInput
-  const { inputValue, setInputValue, handleInputChange } = useInput('');
-
   // custom alert modal
   const {
     openAlert,
@@ -26,10 +23,20 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
     alertMessage,
   } = useAlert();
 
+  // 내가 찜한 레시피 목록 출력
+  const [likedRecipes, setLikedRecipes] = useState([]);
+
+  // 탭
+  const [currentTab, setCurrentTab] = useState<string>('나의 냉장고');
+  const handleTabChange = (tabName: string) => {
+    setCurrentTab(tabName);
+  };
+
+  // 냉장고 재료 입력하는 인풋: useInput
+  const { inputValue, setInputValue, handleInputChange } = useInput('');
+
   // 재료 입력
-  const handleIngredientsSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleIngredientsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!currentUserUid) {
@@ -44,48 +51,49 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
       return;
     }
 
-    try {
-      // 문서 참조
-      const userRef = doc(dbService, 'users', currentUserUid);
+    // 문서 참조
+    const userRef = doc(dbService, 'users', currentUserUid);
 
-      // 문서 데이터 가져오기
-      const userDoc = await getDoc(userRef);
+    // 문서 데이터 가져오기
+    getDoc(userRef)
+      .then((userDoc) => {
+        // 문서가 존재하면 기존 데이터에 재료 추가
+        if (userDoc.exists()) {
+          const ingredients = userDoc.data()['user-ingredients'] || [];
 
-      // 문서가 존재하면 기존 데이터에 재료 추가
-      if (userDoc.exists()) {
-        const ingredients = userDoc.data()['user-ingredients'] || [];
+          if (ingredients.length >= 20) {
+            openAlert('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
+            setInputValue('');
+            return;
+          }
 
-        if (ingredients.length >= 20) {
-          openAlert('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
-          setInputValue('');
-          return;
-        }
+          if (!ingredients.includes(inputValue)) {
+            ingredients.push(inputValue);
+          } else {
+            openAlert('이미 등록된 재료입니다.');
+            setInputValue('');
+            return;
+          }
 
-        if (!ingredients.includes(inputValue)) {
-          ingredients.push(inputValue);
+          return updateDoc(userRef, { 'user-ingredients': ingredients });
         } else {
-          openAlert('이미 등록된 재료입니다.');
-          setInputValue('');
-          return;
+          // 문서가 존재하지 않으면 새 문서를 생성 후 재료 추가
+          const ingredients = [inputValue];
+
+          return setDoc(userRef, {
+            'user-ingredients': ingredients,
+          });
         }
-
-        await updateDoc(userRef, { 'user-ingredients': ingredients });
-      } else {
-        // 문서가 존재하지 않으면 새 문서를 생성 후 재료 추가
-        const ingredients = [inputValue];
-
-        await setDoc(userRef, {
-          'user-ingredients': ingredients,
-        });
-      }
-
-      setInputValue('');
-      // 재료 리스트 갱신
-      getMyIngredients();
-    } catch (error) {
-      console.error('냉장고에 재료를 추가하지 못했습니다.', error);
-      openAlert('냉장고에 재료를 추가하지 못했습니다.');
-    }
+      })
+      .then(() => {
+        setInputValue('');
+        // 재료 리스트 갱신
+        getMyIngredients();
+      })
+      .catch((error) => {
+        console.error('냉장고에 재료를 추가하지 못했습니다.', error);
+        openAlert('냉장고에 재료를 추가하지 못했습니다.');
+      });
   };
 
   // 내가 입력한 재료 출력
@@ -107,46 +115,36 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
   }, [currentUserUid]);
 
   // 재료 삭제
-  const removeIngredient = async (ingredient: string) => {
+  const removeIngredient = (ingredient: string) => {
     if (!currentUserUid) {
       return;
     }
 
-    try {
-      // 문서 참조
-      const userRef = doc(dbService, 'users', currentUserUid);
+    // 문서 참조
+    const userRef = doc(dbService, 'users', currentUserUid);
 
-      // 문서 데이터 가져오기
-      const userDoc = await getDoc(userRef);
-
-      // 문서가 존재하면 선택한 재료를 제외한 나머지 재료로 업데이트
-      if (userDoc.exists()) {
-        const ingredients = userDoc.data()['user-ingredients'] || [];
+    // 문서 데이터 가져오기
+    getDoc(userRef)
+      .then((userDoc) => {
+        const ingredients = userDoc.data()?.['user-ingredients'] || [];
         const updatedIngredients = ingredients.filter(
           (item: string) => item !== ingredient
         );
 
         // 선택한 재료만 삭제하기
-        await updateDoc(userRef, { 'user-ingredients': updatedIngredients });
-
+        return updateDoc(userRef, { 'user-ingredients': updatedIngredients });
+      })
+      .then(() => {
         // 재료 리스트 갱신
         getMyIngredients();
-      }
-    } catch (error) {
-      console.error('냉장고에서 재료를 삭제하지 못했습니다.', error);
-      openAlert('냉장고에서 재료를 삭제하지 못했습니다.');
-    }
+      })
+      .catch((error) => {
+        console.error('냉장고에서 재료를 삭제하지 못했습니다.', error);
+        openAlert('냉장고에서 재료를 삭제하지 못했습니다.');
+      });
   };
 
-  // 탭
-  const [currentTab, setCurrentTab] = useState<string>('나의 냉장고');
-  const handleTabChange = (tabName: string) => {
-    setCurrentTab(tabName);
-  };
-
-  // 내가 찜한 레시피 목록 출력
-  const [likedRecipes, setLikedRecipes] = useState([]);
-
+  // 내가 찜한 레시피 불러오기
   const getMyLikedRecipes = async () => {
     if (!currentUserUid) {
       return;

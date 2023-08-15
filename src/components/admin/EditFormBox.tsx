@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SubmitForm from '../common/SubmitForm';
 import styled from 'styled-components';
 import { addDoc, collection } from 'firebase/firestore';
@@ -22,10 +22,10 @@ const EditFormBox = () => {
     alertMessage,
   } = useAlert();
 
-  // 파이어스토어에 가공한 데이터 넣기
-  const handleAddRecipeListToFirestore = async (recipeData: any) => {
-    try {
-      recipeData.map((recipe: any) => {
+  // 파이어스토어에 필요한 데이터만 가공해 올리는 함수
+  const handleAddRecipeListToFirestore = (recipeData: any) => {
+    Promise.all(
+      recipeData.map((recipe: any) =>
         addDoc(collection(dbService, 'recipe-list'), {
           id: recipe.RCP_SEQ,
           image: recipe.ATT_FILE_NO_MK,
@@ -62,18 +62,21 @@ const EditFormBox = () => {
             recipe.MANUAL_IMG07,
             recipe.MANUAL_IMG08,
           ],
-        });
+        })
+      )
+    )
+      .then(() =>
+        openAlert(
+          '레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.'
+        )
+      )
+      .catch((error) => {
+        console.error('레시피 데이터를 수정하지 못했어요. :', error);
+        openAlert('레시피 데이터를 수정하지 못했어요.');
       });
-      openAlert(
-        '레시피 db가 수정되었습니다. 수정 사항을 입력 후 제출해주세요.'
-      );
-    } catch (error) {
-      console.error('레시피 데이터를 수정하지 못했어요. :', error);
-      openAlert('레시피 데이터를 수정하지 못했어요.');
-    }
   };
 
-  //
+  // 가공한 Recipe data를 FireStore에 업로드 전 확인할 때 띄울 custom window.confirm
   const handleConfirmModal = () => {
     handleAddRecipeListToFirestore(recipeData);
     closeConfirm();
@@ -87,11 +90,13 @@ const EditFormBox = () => {
   const handleGetRecipeList = () => {
     if (!isLoading && recipeData) {
       openConfirm();
-    } else if (isLoading) {
+    }
+    if (isLoading) {
       openAlert(
         '레시피 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.'
       );
-    } else if (isError) {
+    }
+    if (isError) {
       openAlert(
         '레시피 데이터를 불러오지 못했습니다. 문제가 지속될 경우 관리자에게 문의해주세요.'
       );
@@ -102,20 +107,21 @@ const EditFormBox = () => {
   const { inputValue, setInputValue, handleInputChange } = useInput('');
 
   // 수정 사항 제출
-  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEditSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      await addDoc(collection(dbService, 'edit-data-history'), {
-        description: inputValue,
-        updatedAt: Date.now(),
+    addDoc(collection(dbService, 'edit-data-history'), {
+      description: inputValue,
+      updatedAt: Date.now(),
+    })
+      .then(() => {
+        setInputValue('');
+        openAlert('수정 사항이 저장되었습니다.');
+      })
+      .catch((error) => {
+        console.error('수정 사항 저장에 실패했습니다.', error);
+        openAlert('수정 사항 저장에 실패했습니다.');
       });
-      setInputValue('');
-      openAlert('수정 사항이 저장되었습니다.');
-    } catch (error) {
-      console.error('수정 사항 저장에 실패했습니다.', error);
-      openAlert('수정 사항 저장에 실패했습니다.');
-    }
   };
 
   return (
