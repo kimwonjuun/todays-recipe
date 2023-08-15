@@ -12,6 +12,7 @@ import useAlert from '../hooks/useAlert';
 import { User } from 'firebase/auth';
 import AlertModal from '../components/common/AlertModal';
 import CommentBox from '../components/detail/CommentBox';
+import useInput from '../hooks/useInput';
 
 const Detail = () => {
   // Recipe/RecipeBox, Search에서 받아온 각 레시피가 가지고 있는 고유한 id
@@ -19,17 +20,6 @@ const Detail = () => {
 
   // recoil 도입
   const recipeData = useRecoilValue(RecipeDataState);
-
-  // 전체 레시피와 선택한 레시피의 고유한 id가 같다면 출력
-  useEffect(() => {
-    const selectedRecipe = recipeData.find(
-      (recipe: Recipe) => recipe.id === id
-    );
-    if (selectedRecipe) {
-      setRecipe(selectedRecipe);
-      setLoading(false);
-    }
-  }, [recipeData, id]);
 
   // 선택한 레시피를 담아줄 state
   const [recipe, setRecipe] = useState<Recipe | null>(null);
@@ -53,16 +43,24 @@ const Detail = () => {
     };
   }, []);
 
-  // custom modal
+  // 전체 레시피와 선택한 레시피의 고유한 id가 같다면 출력
+  useEffect(() => {
+    const selectedRecipe = recipeData.find(
+      (recipe: Recipe) => recipe.id === id
+    );
+    if (selectedRecipe) {
+      setRecipe(selectedRecipe);
+      setLoading(false);
+    }
+  }, [recipeData, id]);
+
+  // custom alert modal
   const {
     openAlert,
     closeAlert,
     isOpen: isAlertOpen,
     alertMessage,
   } = useAlert();
-
-  // 댓글 인풋
-  const [inputValue, setInputValue] = useState<string>('');
 
   return (
     <>
@@ -79,8 +77,6 @@ const Detail = () => {
               currentUserUid={currentUserUid}
               id={id}
               openAlert={openAlert}
-              inputValue={inputValue}
-              setInputValue={setInputValue}
             />
           </BoxWrapper>
         )}

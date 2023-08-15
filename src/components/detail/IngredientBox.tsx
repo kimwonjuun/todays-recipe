@@ -23,7 +23,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
     };
   }, []);
 
-  // custom modal
+  // custom alert modal
   const {
     openAlert,
     closeAlert,

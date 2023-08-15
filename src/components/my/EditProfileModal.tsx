@@ -60,7 +60,7 @@ const EditProfileModal = ({
     setDisplayName(editDisplayName);
   };
 
-  // custom modal
+  // custom alert modal
   const {
     openAlert,
     closeAlert,

@@ -8,20 +8,17 @@ import RecipeCard from '../common/RecipeCard';
 import { koreanOnly } from '../../utils/regex';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
+import useInput from '../../hooks/useInput';
 
 interface UserAccountBoxProps {
   currentUserUid: string | undefined;
 }
 
 const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
-  // 인풋
-  const [inputValue, setInputValue] = useState<string>('');
+  // 냉장고 재료 입력하는 인풋: useInput
+  const { inputValue, setInputValue, handleInputChange } = useInput('');
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-
-  // custom modal
+  // custom alert modal
   const {
     openAlert,
     closeAlert,
@@ -111,10 +108,6 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
 
   // 재료 삭제
   const removeIngredient = async (ingredient: string) => {
-    // const confirmDelete = window.confirm(
-    //   `선택한 재료 '${ingredient}'을(를) 삭제하시겠습니까?`
-    // );
-
     if (!currentUserUid) {
       return;
     }

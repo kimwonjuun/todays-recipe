@@ -14,7 +14,7 @@ const EditFormBox = () => {
   // 호출한 API 전체 데이터 + 로딩, 에러 상태
   const { data: recipeData, isLoading, isError } = useFetchRecipes();
 
-  // custom modal
+  // custom alert modal
   const {
     openAlert,
     closeAlert,

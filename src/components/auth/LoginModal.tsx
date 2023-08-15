@@ -26,7 +26,7 @@ const LoginModal = ({
   const [emailValid, setEmailValid] = useState(false); // 로그인 시 이메일 유효성 결과
   const [passwordValid, setPasswordValid] = useState(false); // 로그인 시 패스워드 유효성 결과
 
-  // custom modal
+  // custom alert modal
   const {
     openAlert,
     closeAlert,

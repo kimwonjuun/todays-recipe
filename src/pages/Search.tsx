@@ -11,6 +11,7 @@ import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 import AlertModal from '../components/common/AlertModal';
 import useAlert from '../hooks/useAlert';
+import useInput from '../hooks/useInput';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -21,11 +22,11 @@ const Search = () => {
   // main.tsx에서 넘어온 keyword
   const { keyword } = useParams<{ keyword: string }>();
 
+  // 서치페이지 검색창: useInput
+  const { inputValue, setInputValue, handleInputChange } = useInput('');
+
   // 검색 결과
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
-
-  // 검색창
-  const [inputValue, setInputValue] = useState<string>('');
 
   // 로딩 상태
   const [loading, setLoading] = useState<boolean>(true);
@@ -49,7 +50,7 @@ const Search = () => {
     setLoading(false); // 검색 완료되면 로딩 상태 비활성화
   }, [keyword, recipeData]);
 
-  // custom modal
+  // custom alert modal
   const {
     openAlert,
     closeAlert,
@@ -57,10 +58,7 @@ const Search = () => {
     alertMessage,
   } = useAlert();
 
-  // 검색
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
+  // 검색 결과 제출
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // 한글만 입력되었는지 검사

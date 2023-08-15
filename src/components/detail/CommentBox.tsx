@@ -12,16 +12,7 @@ import {
 import { useState, useEffect } from 'react';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
-
-interface UserCommentProps {
-  uid: string;
-  nickname: string;
-  profilePic: string;
-  name: string;
-  id: string;
-  comment: string;
-  updatedAt: number;
-}
+import useInput from '../../hooks/useInput';
 
 interface CommentBoxProps {
   recipe: Recipe;
@@ -29,8 +20,6 @@ interface CommentBoxProps {
   currentUserUid: string | undefined;
   id: string | undefined;
   openAlert: (message: string) => void;
-  inputValue: string;
-  setInputValue: (value: string) => void;
 }
 
 const CommentBox = ({
@@ -39,15 +28,12 @@ const CommentBox = ({
   recipe,
   id,
   openAlert,
-  inputValue,
-  setInputValue,
 }: CommentBoxProps) => {
-  // 댓글 리스트
+  // 댓글
   const [commentsList, setCommentsList] = useState<any>([]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
+  // 댓글 인풋: useInput
+  const { inputValue, setInputValue, handleInputChange } = useInput('');
 
   // 댓글 create
   const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
