@@ -15,6 +15,9 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
   const [user, setUser] = useState<User | null>(null);
   const currentUserUid = user?.uid ?? undefined;
 
+  // 마이페이지에서 나의 냉장고에 입력한 재료들
+  const [myIngredients, setMyIngredients] = useState([]);
+
   useEffect(() => {
     // user 객체 존재 시 setUser 업데이트
     const handleAuthStateChange = authService.onAuthStateChanged((user) => {
@@ -28,18 +31,21 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
   }, []);
 
   // 내가 입력한 재료 출력
-  const [myIngredients, setMyIngredients] = useState([]);
   const getMyIngredients = async () => {
     if (!currentUserUid) {
       return;
     }
+
+    // 문서 참조
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
-    if (docSnap.exists()) {
-      const ingredientData = docSnap.data();
-      if (ingredientData && ingredientData['user-ingredients']) {
-        setMyIngredients(ingredientData['user-ingredients']);
-      }
-    }
+    // if (docSnap.exists()) {
+    //   const ingredientData = docSnap.data();
+    //   if (ingredientData && ingredientData['user-ingredients']) {
+    //     setMyIngredients(ingredientData['user-ingredients']);
+    //   }
+    // }
+    // 코드 줄여보기
+    if (docSnap.exists()) setMyIngredients(docSnap.data()['user-ingredients']);
   };
   useEffect(() => {
     getMyIngredients();

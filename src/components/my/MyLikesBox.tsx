@@ -10,7 +10,7 @@ interface MyLikesBoxProps {
 
 const MyLikesBox = ({ currentUserUid }: MyLikesBoxProps) => {
   // 내가 찜한 레시피
-  const [likedRecipes, setLikedRecipes] = useState([]);
+  const [likedRecipes, setLikedRecipes] = useState<Recipe[]>([]);
 
   // 로딩 상태
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -24,12 +24,15 @@ const MyLikesBox = ({ currentUserUid }: MyLikesBoxProps) => {
 
     // 문서 참조
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
-    if (docSnap.exists()) {
-      const likedRecipesData = docSnap.data();
-      if (likedRecipesData && likedRecipesData['user-likes']) {
-        setLikedRecipes(likedRecipesData['user-likes']);
-      }
-    }
+    // if (docSnap.exists()) {
+    //   const likedRecipesData = docSnap.data();
+    //   if (likedRecipesData && likedRecipesData['user-likes']) {
+    //     setLikedRecipes(likedRecipesData['user-likes']);
+    //   }
+    // }
+    // 코드 줄여보기
+    if (docSnap.exists()) setLikedRecipes(docSnap.data()['user-likes']);
+
     setIsLoading(false);
   };
   useEffect(() => {
@@ -43,8 +46,8 @@ const MyLikesBox = ({ currentUserUid }: MyLikesBoxProps) => {
           {isLoading ? (
             <p>찜한 레시피를 불러오는 중 😎</p>
           ) : likedRecipes.length > 0 ? (
-            likedRecipes.map((recipe, index) => (
-              <RecipeCard key={index} recipe={recipe} />
+            likedRecipes.map((recipe) => (
+              <RecipeCard key={recipe.id} recipe={recipe} />
             ))
           ) : (
             <p>아직 보관한 레시피가 없습니다! 🫤</p>

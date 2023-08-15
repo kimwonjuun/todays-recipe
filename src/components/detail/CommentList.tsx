@@ -85,11 +85,12 @@ const CommentList = ({
 
         if (userData) {
           const userComments = userData['user-comments'] ?? [];
+          // 선택한 댓글 필터링
           const updatedComments = userComments.filter(
             (item: UserCommentProps) => item.updatedAt !== comment.updatedAt
           );
 
-          // 'user-comments' 필드의 배열에서 삭제된 댓글을 제거한 후 문서 업데이트
+          // 'user-comments' 필드의 배열에서 선택한 댓글만 필터링 후 업데이트
           return updateDoc(userDocRef, { 'user-comments': updatedComments });
         }
       })
@@ -123,21 +124,19 @@ const CommentList = ({
                     <>
                       {isEditing && editTarget === item ? (
                         <>
-                          <CancelButton
+                          <Button
                             onClick={() => {
                               setIsEditing(false);
                               setEditTarget(null);
                             }}
                           >
                             취소
-                          </CancelButton>
-                          <EditSaveButton onClick={handleCommentUpdate}>
-                            완료
-                          </EditSaveButton>
+                          </Button>
+                          <Button onClick={handleCommentUpdate}>완료</Button>
                         </>
                       ) : (
                         <>
-                          <EditButton
+                          <Button
                             onClick={() => {
                               setIsEditing(true);
                               setEditTarget(item);
@@ -145,12 +144,10 @@ const CommentList = ({
                             }}
                           >
                             수정
-                          </EditButton>
-                          <DeleteButton
-                            onClick={() => handleCommentDelete(item)}
-                          >
+                          </Button>
+                          <Button onClick={() => handleCommentDelete(item)}>
                             삭제
-                          </DeleteButton>
+                          </Button>
                         </>
                       )}
                     </>
@@ -256,14 +253,7 @@ const UploadedAt = styled.div`
   color: ${COLORS.gray};
 `;
 
-const EditButton = styled.div`
-  font-size: 1rem;
-  margin-right: 1rem;
-  color: ${COLORS.gray};
-  cursor: pointer;
-`;
-
-const DeleteButton = styled.div`
+const Button = styled.div`
   font-size: 1rem;
   margin-right: 1rem;
   color: ${COLORS.gray};
@@ -273,18 +263,4 @@ const DeleteButton = styled.div`
 const UserName = styled.p`
   font-weight: bold;
   margin-right: 1rem;
-`;
-
-const EditSaveButton = styled.div`
-  font-size: 1rem;
-  margin-right: 1rem;
-  color: ${COLORS.gray};
-  cursor: pointer;
-`;
-
-const CancelButton = styled.div`
-  font-size: 1rem;
-  margin-right: 1rem;
-  color: ${COLORS.gray};
-  cursor: pointer;
 `;

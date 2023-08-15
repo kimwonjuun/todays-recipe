@@ -103,12 +103,15 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
     // 문서 참조
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
 
-    if (docSnap.exists()) {
-      const ingredientData = docSnap.data();
-      if (ingredientData && ingredientData['user-ingredients']) {
-        setMyIngredients(ingredientData['user-ingredients']);
-      }
-    }
+    // if (docSnap.exists()) {
+    //   const ingredientData = docSnap.data();
+    //   if (ingredientData && ingredientData['user-ingredients']) {
+    //     setMyIngredients(ingredientData['user-ingredients']);
+    //   }
+    // }
+    // 코드 줄여보기
+    if (docSnap.exists()) setMyIngredients(docSnap.data()['user-ingredients']);
+
     setIsLoading(false);
   };
   useEffect(() => {
@@ -128,11 +131,12 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
     getDoc(userRef)
       .then((userDoc) => {
         const ingredients = userDoc.data()?.['user-ingredients'] || [];
+        // 선택한 재료 필터링
         const updatedIngredients = ingredients.filter(
           (item: string) => item !== ingredient
         );
 
-        // 선택한 재료만 삭제하기
+        // 선택한 재료만 필터링 후 업데이트
         return updateDoc(userRef, { 'user-ingredients': updatedIngredients });
       })
       .then(() => {

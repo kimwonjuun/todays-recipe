@@ -26,7 +26,7 @@ const EditHistoryBox = () => {
 
     // edit-data-history 컬렉션을 돌며 수정된 날짜 순으로 추가
     onSnapshot(sortedEditHistory, (querySnapshot) => {
-      const historyList: any = [];
+      const historyList: EditHistory[] = [];
 
       querySnapshot.forEach((doc) => {
         const list: any = {
