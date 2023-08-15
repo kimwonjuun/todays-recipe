@@ -12,7 +12,6 @@ import useAlert from '../hooks/useAlert';
 import { User } from 'firebase/auth';
 import AlertModal from '../components/common/AlertModal';
 import CommentBox from '../components/detail/CommentBox';
-import useInput from '../hooks/useInput';
 
 const Detail = () => {
   // Recipe/RecipeBox, Search에서 받아온 각 레시피가 가지고 있는 고유한 id
@@ -25,7 +24,7 @@ const Detail = () => {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
 
   // 로딩 상태
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // 유저
   const [user, setUser] = useState<User | null>(null);
@@ -50,7 +49,7 @@ const Detail = () => {
     );
     if (selectedRecipe) {
       setRecipe(selectedRecipe);
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [recipeData, id]);
 
@@ -65,7 +64,7 @@ const Detail = () => {
   return (
     <>
       <PageWrapper>
-        {loading || !recipe ? (
+        {isLoading || !recipe ? (
           <Loading />
         ) : (
           <BoxWrapper>

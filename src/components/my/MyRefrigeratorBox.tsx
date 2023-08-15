@@ -30,7 +30,7 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
   const [myIngredients, setMyIngredients] = useState([]);
 
   // 로딩 상태
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // 재료 입력
   const handleIngredientsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -98,7 +98,7 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
     if (!currentUserUid) {
       return;
     }
-    setIsLoading(true);
+    setIsLoading(false);
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
     if (docSnap.exists()) {
       const ingredientData = docSnap.data();

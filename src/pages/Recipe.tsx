@@ -11,18 +11,18 @@ const RecipePage = () => {
   const recipeData = useRecoilValue(RecipeDataState);
 
   // 로딩 상태
-  const [loading, setLoading] = useState<boolean>(recipeData.length === 0);
+  const [isLoading, setIsLoading] = useState<boolean>(recipeData.length === 0);
 
   useEffect(() => {
     if (recipeData.length > 0) {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [recipeData]);
 
   return (
     <>
       <PageWrapper>
-        {loading ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <BoxWrapper>

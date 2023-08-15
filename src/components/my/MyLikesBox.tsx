@@ -13,14 +13,14 @@ const MyLikesBox = ({ currentUserUid }: MyLikesBoxProps) => {
   const [likedRecipes, setLikedRecipes] = useState([]);
 
   // 로딩 상태
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // 내가 찜한 레시피 불러오기
   const getMyLikedRecipes = async () => {
     if (!currentUserUid) {
       return;
     }
-    setIsLoading(true);
+    setIsLoading(false);
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
     if (docSnap.exists()) {
       const likedRecipesData = docSnap.data();

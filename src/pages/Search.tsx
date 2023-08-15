@@ -29,16 +29,16 @@ const Search = () => {
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
 
   // 로딩 상태
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // 아직 레시피 데이터가 없으면 실행하지 않음
+    // 아직 레시피 데이터가 로드되지 않았다면 이후 처리 중단
     if (recipeData.length === 0) {
       return;
     }
-    // 검색 키워드가 없으면 로딩 상태를 비활성화하고 실행하지 않음
+    // 검색 키워드가 없으면 로딩 상태를 비활성화하고 이후 처리 중단
     if (!keyword) {
-      setLoading(false);
+      setIsLoading(false);
       return;
     }
     const filteredData = recipeData.filter(
@@ -47,7 +47,7 @@ const Search = () => {
         (recipe.type ?? '').includes(keyword)
     );
     setFilteredRecipes(filteredData);
-    setLoading(false); // 검색 완료되면 로딩 상태 비활성화
+    setIsLoading(false); // 검색 완료되면 로딩 상태 비활성화
   }, [keyword, recipeData]);
 
   // custom alert modal
@@ -77,7 +77,7 @@ const Search = () => {
   return (
     <>
       <PageWrapper>
-        {loading ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <BoxWrapper data-is-filtered={filteredRecipes.length > 0}>
