@@ -9,9 +9,9 @@ import { authService } from '../api/firebase';
 import { User } from 'firebase/auth';
 
 const Admin = () => {
-  const [user, setUser] = useState<User | null>(null);
-
   const navigate = useNavigate();
+
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const handleAuthStateChange = authService.onAuthStateChanged((user) => {

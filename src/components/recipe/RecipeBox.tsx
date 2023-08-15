@@ -12,7 +12,6 @@ interface RecipeProps {
 }
 
 const RecipeBox = ({ recipeData }: RecipeProps) => {
-  // 로그인 상태 확인
   const [user, setUser] = useState<User | null>(null);
   const currentUserUid = user?.uid ?? undefined;
 
