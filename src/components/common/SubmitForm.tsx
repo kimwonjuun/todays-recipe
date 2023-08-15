@@ -3,8 +3,8 @@ import COLORS from '../../styles/colors';
 
 interface SubmitFormProps {
   value: string;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   placeholder: string;
   maxLength: number;
 }

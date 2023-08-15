@@ -1,147 +1,23 @@
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import SubmitForm from '../common/SubmitForm';
 import { dbService } from '../../api/firebase';
-import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import RecipeCard from '../common/RecipeCard';
-import { koreanOnly } from '../../utils/regex';
-import useAlert from '../../hooks/useAlert';
-import AlertModal from '../common/AlertModal';
-import useInput from '../../hooks/useInput';
+import MyRefrigeratorBox from './MyRefrigeratorBox';
 
 interface UserAccountBoxProps {
   currentUserUid: string | undefined;
 }
 
 const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
-  // custom alert modal
-  const {
-    openAlert,
-    closeAlert,
-    isOpen: isAlertOpen,
-    alertMessage,
-  } = useAlert();
-
-  // 내가 찜한 레시피 목록 출력
+  // 내가 찜한 레시피
   const [likedRecipes, setLikedRecipes] = useState([]);
 
   // 탭
   const [currentTab, setCurrentTab] = useState<string>('나의 냉장고');
   const handleTabChange = (tabName: string) => {
     setCurrentTab(tabName);
-  };
-
-  // 냉장고 재료 입력하는 인풋: useInput
-  const { inputValue, setInputValue, handleInputChange } = useInput('');
-
-  // 재료 입력
-  const handleIngredientsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!currentUserUid) {
-      openAlert('유저 정보를 불러오지 못했어요.');
-      return;
-    }
-
-    // 한글만 입력되었는지 검사
-    if (!inputValue.trim() || !koreanOnly.test(inputValue)) {
-      openAlert('재료는 한글 단어만 입력 가능합니다.');
-      setInputValue('');
-      return;
-    }
-
-    // 문서 참조
-    const userRef = doc(dbService, 'users', currentUserUid);
-
-    // 문서 데이터 가져오기
-    getDoc(userRef)
-      .then((userDoc) => {
-        // 문서가 존재하면 기존 데이터에 재료 추가
-        if (userDoc.exists()) {
-          const ingredients = userDoc.data()['user-ingredients'] || [];
-
-          if (ingredients.length >= 20) {
-            openAlert('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
-            setInputValue('');
-            return;
-          }
-
-          if (!ingredients.includes(inputValue)) {
-            ingredients.push(inputValue);
-          } else {
-            openAlert('이미 등록된 재료입니다.');
-            setInputValue('');
-            return;
-          }
-
-          return updateDoc(userRef, { 'user-ingredients': ingredients });
-        } else {
-          // 문서가 존재하지 않으면 새 문서를 생성 후 재료 추가
-          const ingredients = [inputValue];
-
-          return setDoc(userRef, {
-            'user-ingredients': ingredients,
-          });
-        }
-      })
-      .then(() => {
-        setInputValue('');
-        // 재료 리스트 갱신
-        getMyIngredients();
-      })
-      .catch((error) => {
-        console.error('냉장고에 재료를 추가하지 못했습니다.', error);
-        openAlert('냉장고에 재료를 추가하지 못했습니다.');
-      });
-  };
-
-  // 내가 입력한 재료 출력
-  const [myIngredients, setMyIngredients] = useState([]);
-  const getMyIngredients = async () => {
-    if (!currentUserUid) {
-      return;
-    }
-    const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
-    if (docSnap.exists()) {
-      const ingredientData = docSnap.data();
-      if (ingredientData && ingredientData['user-ingredients']) {
-        setMyIngredients(ingredientData['user-ingredients']);
-      }
-    }
-  };
-  useEffect(() => {
-    getMyIngredients();
-  }, [currentUserUid]);
-
-  // 재료 삭제
-  const removeIngredient = (ingredient: string) => {
-    if (!currentUserUid) {
-      return;
-    }
-
-    // 문서 참조
-    const userRef = doc(dbService, 'users', currentUserUid);
-
-    // 문서 데이터 가져오기
-    getDoc(userRef)
-      .then((userDoc) => {
-        const ingredients = userDoc.data()?.['user-ingredients'] || [];
-        const updatedIngredients = ingredients.filter(
-          (item: string) => item !== ingredient
-        );
-
-        // 선택한 재료만 삭제하기
-        return updateDoc(userRef, { 'user-ingredients': updatedIngredients });
-      })
-      .then(() => {
-        // 재료 리스트 갱신
-        getMyIngredients();
-      })
-      .catch((error) => {
-        console.error('냉장고에서 재료를 삭제하지 못했습니다.', error);
-        openAlert('냉장고에서 재료를 삭제하지 못했습니다.');
-      });
   };
 
   // 내가 찜한 레시피 불러오기
@@ -179,70 +55,24 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
               찜한 레시피
             </Category>
           </CategoriesWrapper>
-          <MyRefrigeratorWrapper
-            style={{
-              display: currentTab === '나의 냉장고' ? 'flex' : 'none',
-            }}
-          >
-            <MyRefrigerator>
-              <MyIngredients>
-                {myIngredients.length > 0 ? (
-                  myIngredients.map((ingredient, index) => (
-                    <IngredientItem
-                      onClick={() => {
-                        removeIngredient(ingredient);
-                      }}
-                      key={index}
-                    >
-                      {ingredient}
-                    </IngredientItem>
+          {currentTab === '나의 냉장고' && (
+            <MyRefrigeratorBox currentUserUid={currentUserUid} />
+          )}
+          {currentTab === '찜한 레시피' && (
+            <MyLikesWrapper>
+              <MyLikes>
+                {likedRecipes.length > 0 ? (
+                  likedRecipes.map((recipe, index) => (
+                    <RecipeCard key={index} recipe={recipe} />
                   ))
                 ) : (
-                  <p>아직 냉장고에 넣은 재료가 없습니다! 🫤</p>
+                  <p>아직 보관한 레시피가 없습니다! 🫤</p>
                 )}
-              </MyIngredients>
-              <FormWarpper>
-                <SubmitForm
-                  value={inputValue}
-                  onSubmit={handleIngredientsSubmit}
-                  onChange={handleInputChange}
-                  placeholder="처리하고 싶은 냉장고 안의 재료들을 입력하세요."
-                  maxLength={6}
-                />
-              </FormWarpper>
-            </MyRefrigerator>
-
-            <Img
-              onClick={() => {
-                openAlert('냉장고');
-              }}
-            >
-              <img src={require('../../assets/my/refrigerator.gif')} />
-            </Img>
-          </MyRefrigeratorWrapper>
-
-          <MyLikesWrapper
-            style={{
-              display: currentTab === '찜한 레시피' ? 'flex' : 'none',
-            }}
-          >
-            <MyLikes>
-              {likedRecipes.length > 0 ? (
-                likedRecipes.map((recipe, index) => (
-                  <RecipeCard key={index} recipe={recipe} />
-                ))
-              ) : (
-                <p>아직 보관한 레시피가 없습니다! 🫤</p>
-              )}
-            </MyLikes>
-          </MyLikesWrapper>
+              </MyLikes>
+            </MyLikesWrapper>
+          )}
         </UserItem>
       </UserAccounttWrapper>
-      <AlertModal
-        message={alertMessage}
-        isOpen={isAlertOpen}
-        onClose={closeAlert}
-      />
     </>
   );
 };
