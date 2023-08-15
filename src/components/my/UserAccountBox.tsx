@@ -48,7 +48,7 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
     }
 
     try {
-      // 문서 가져오기
+      // 문서 참조
       const userRef = doc(dbService, 'users', currentUserUid);
 
       // 문서 데이터 가져오기
@@ -120,10 +120,10 @@ const UserAccountBox = ({ currentUserUid }: UserAccountBoxProps) => {
     }
 
     try {
-      // 문서 가져오기
+      // 문서 참조
       const userRef = doc(dbService, 'users', currentUserUid);
 
-      //문서 데이터 가져오기
+      // 문서 데이터 가져오기
       const userDoc = await getDoc(userRef);
 
       // 문서가 존재하면 선택한 재료를 제외한 나머지 재료로 업데이트

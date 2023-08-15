@@ -40,7 +40,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
     }
 
     try {
-      // 문서 가져오기
+      // 문서 참조
       const userRef = doc(dbService, 'users', currentUserUid);
 
       // 문서 데이터 가져오기
@@ -99,7 +99,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
     if (!currentUserUid) {
       return;
     }
-    // 문서 가져오기
+    // 문서 참조
     const userRef = doc(dbService, 'users', currentUserUid);
 
     // 문서 데이터 가져오기

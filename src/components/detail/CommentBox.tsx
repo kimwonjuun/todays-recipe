@@ -64,7 +64,7 @@ const CommentBox = ({
         return;
       }
 
-      // 문서 가져오기
+      // 문서 참조
       const userDocRef = doc(dbService, 'users', currentUserUid);
 
       // 문서 데이터 가져오기
