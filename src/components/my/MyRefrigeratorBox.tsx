@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import useAlert from '../../hooks/useAlert';
 import { koreanOnly } from '../../utils/regex';
 import AlertModal from '../common/AlertModal';
+import Loading from '../common/Loading';
 
 interface MyRefrigeratorBoxProps {
   currentUserUid: string | undefined;
@@ -24,8 +25,13 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
 
   // 냉장고 재료 입력하는 인풋: useInput
   const { inputValue, setInputValue, handleInputChange } = useInput('');
+
   // 내가 저장한 재료
   const [myIngredients, setMyIngredients] = useState([]);
+
+  // 로딩 상태
+  const [isLoading, setIsLoading] = useState(false);
+
   // 재료 입력
   const handleIngredientsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -92,6 +98,7 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
     if (!currentUserUid) {
       return;
     }
+    setIsLoading(true);
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
     if (docSnap.exists()) {
       const ingredientData = docSnap.data();
@@ -99,6 +106,7 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
         setMyIngredients(ingredientData['user-ingredients']);
       }
     }
+    setIsLoading(false);
   };
   useEffect(() => {
     getMyIngredients();
@@ -139,7 +147,9 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
       <MyRefrigeratorWrapper>
         <MyRefrigerator>
           <MyIngredients>
-            {myIngredients.length > 0 ? (
+            {isLoading ? (
+              <p>재료 데이터를 불러오는 중 😎</p>
+            ) : myIngredients.length > 0 ? (
               myIngredients.map((ingredient, index) => (
                 <IngredientItem
                   onClick={() => {
@@ -219,6 +229,11 @@ const MyIngredients = styled.div`
   > p {
     width: 100%;
     text-align: center;
+  }
+
+  > img {
+    width: 50%;
+    height: 50%;
   }
 `;
 
