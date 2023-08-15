@@ -20,7 +20,9 @@ const MyLikesBox = ({ currentUserUid }: MyLikesBoxProps) => {
     if (!currentUserUid) {
       return;
     }
-    setIsLoading(false);
+    setIsLoading(true);
+
+    // 문서 참조
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
     if (docSnap.exists()) {
       const likedRecipesData = docSnap.data();

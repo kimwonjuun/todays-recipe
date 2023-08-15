@@ -98,8 +98,11 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
     if (!currentUserUid) {
       return;
     }
-    setIsLoading(false);
+    setIsLoading(true);
+
+    // 문서 참조
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
+
     if (docSnap.exists()) {
       const ingredientData = docSnap.data();
       if (ingredientData && ingredientData['user-ingredients']) {
