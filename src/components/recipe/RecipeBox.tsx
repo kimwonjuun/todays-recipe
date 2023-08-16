@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
@@ -6,6 +6,7 @@ import RecipeCard from '../common/RecipeCard';
 import { doc, getDoc } from 'firebase/firestore';
 import { authService, dbService } from '../../api/firebase';
 import { User } from 'firebase/auth';
+import CategoriesBox from './CategoriesBox';
 
 interface RecipeProps {
   recipeData: Recipe[];
@@ -25,41 +26,38 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
         setUser(user);
       }
     });
+
     return () => {
       handleAuthStateChange();
     };
   }, []);
 
   // 내가 입력한 재료 출력
-  const getMyIngredients = async () => {
+  const getMyIngredients = useCallback(async () => {
     if (!currentUserUid) {
       return;
     }
 
     // 문서 참조
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
-    // if (docSnap.exists()) {
-    //   const ingredientData = docSnap.data();
-    //   if (ingredientData && ingredientData['user-ingredients']) {
-    //     setMyIngredients(ingredientData['user-ingredients']);
-    //   }
-    // }
-    // 코드 줄여보기
+
+    // 문서 존재 시 재료 상태 업데이트
     if (docSnap.exists()) setMyIngredients(docSnap.data()['user-ingredients']);
-  };
+  }, [currentUserUid]);
+
   useEffect(() => {
     getMyIngredients();
   }, [currentUserUid]);
 
   // 내 냉장고 재료들로 만들 수 있는 레시피들
-  const canMakeRecipe = (
-    recipeIngredients: string,
-    myIngredients: string[]
-  ): boolean => {
-    return myIngredients.every((ingredient) =>
-      recipeIngredients.includes(ingredient)
-    );
-  };
+  const canMakeRecipe = useCallback(
+    (recipeIngredients: string, myIngredients: string[]): boolean => {
+      return myIngredients.every((ingredient) =>
+        recipeIngredients.includes(ingredient)
+      );
+    },
+    []
+  );
 
   // 초기 카테고리
   const initialCategory = () => {
@@ -70,12 +68,12 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
 
   // 분류 선택 여닫기 후 선택하기. 세션에 선택된 분류 저장
-  const handleCategoryButton = (category: string) => {
+  const handleCategoryButton = useCallback((category: string) => {
     setSelectedCategory(category);
     sessionStorage.setItem('selected_category', category);
-  };
+  }, []);
 
-  // 필터링된 레시피 뿌려주기 (나의 냉장고 추가 후)
+  // 필터링된 레시피 뿌려주기 (나의 냉장고 기능 추가 후 추가 코드 업데이트)
   const filteredRecipes =
     selectedCategory && selectedCategory !== '전체 레시피'
       ? recipeData.filter((recipe: Recipe) => {
@@ -86,6 +84,7 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
         })
       : recipeData;
 
+  // 나의 재료들로 만들 수 있는 레시피가 없을 때 나타낼 조건부 메시지
   const noRecipeMessage =
     selectedCategory === '나의 냉장고' && filteredRecipes.length === 0
       ? user
@@ -106,18 +105,22 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
   };
 
   // 저칼로리 순/가나다 순 소팅 전환
-  const sortedRecipes = (recipes: Recipe[]): Recipe[] => {
-    if (sortType === '가나다 순') {
-      return [...recipes].sort((a: Recipe, b: Recipe) =>
-        a.name.localeCompare(b.name)
-      );
-    } else if (sortType === '저칼로리 순') {
-      return [...recipes].sort(
-        (a: Recipe, b: Recipe) => parseFloat(a.calorie) - parseFloat(b.calorie)
-      );
-    }
-    return recipes;
-  };
+  const sortedRecipes = useCallback(
+    (recipes: Recipe[]): Recipe[] => {
+      if (sortType === '가나다 순') {
+        return [...recipes].sort((a: Recipe, b: Recipe) =>
+          a.name.localeCompare(b.name)
+        );
+      } else if (sortType === '저칼로리 순') {
+        return [...recipes].sort(
+          (a: Recipe, b: Recipe) =>
+            parseFloat(a.calorie) - parseFloat(b.calorie)
+        );
+      }
+      return recipes;
+    },
+    [sortType]
+  );
 
   // 무한 스크롤
   const { currentPage } = useInfiniteScroll();
@@ -140,155 +143,27 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
 
   return (
     <>
-      <TypeWrapper>
-        <CategoriesWrapper>
-          <CategoryButton
-            onClick={() => handleCategoryButton('전체 레시피')}
-            data-is-selected={selectedCategory === '전체 레시피'}
-          >
-            전체 레시피
-          </CategoryButton>
-          <CategoryButton
-            onClick={() => handleCategoryButton('밥')}
-            data-is-selected={selectedCategory === '밥'}
-          >
-            밥
-          </CategoryButton>
-          <CategoryButton
-            onClick={() => handleCategoryButton('일품')}
-            data-is-selected={selectedCategory === '일품'}
-          >
-            일품
-          </CategoryButton>
-          <CategoryButton
-            onClick={() => handleCategoryButton('국&찌개')}
-            data-is-selected={selectedCategory === '국&찌개'}
-          >
-            국&찌개
-          </CategoryButton>
-          <CategoryButton
-            onClick={() => handleCategoryButton('반찬')}
-            data-is-selected={selectedCategory === '반찬'}
-          >
-            반찬
-          </CategoryButton>
-          <CategoryButton
-            onClick={() => handleCategoryButton('후식')}
-            data-is-selected={selectedCategory === '후식'}
-          >
-            후식
-          </CategoryButton>
-          <CategoryButton
-            onClick={() => handleCategoryButton('기타')}
-            data-is-selected={selectedCategory === '기타'}
-          >
-            기타
-          </CategoryButton>
-          <CategoryButton
-            onClick={() => handleCategoryButton('나의 냉장고')}
-            data-is-selected={selectedCategory === '나의 냉장고'}
-          >
-            나의 냉장고
-          </CategoryButton>
-        </CategoriesWrapper>
-        <SortingWrapper>
-          <SortButton
-            onClick={() =>
-              handleSortType(
-                sortType === '저칼로리 순' ? '기존 정렬 상태' : '저칼로리 순'
-              )
-            }
-            data-is-selected={sortType === '저칼로리 순'}
-          >
-            저칼로리 순
-          </SortButton>
-          <SortButton
-            onClick={() =>
-              handleSortType(
-                sortType === '가나다 순' ? '기존 정렬 상태' : '가나다 순'
-              )
-            }
-            data-is-selected={sortType === '가나다 순'}
-          >
-            가나다 순
-          </SortButton>
-        </SortingWrapper>
-      </TypeWrapper>
-      <RecipeWrapper>
+      <CategoriesBox
+        selectedCategory={selectedCategory}
+        handleCategoryButton={handleCategoryButton}
+        sortType={sortType}
+        handleSortType={handleSortType}
+      />
+      <RecipeBoxWrapper>
+        {showRecipes.map((recipe: Recipe) => (
+          <RecipeCard recipe={recipe} key={recipe.id} />
+        ))}
         {showRecipes.length === 0 && noRecipeMessage && (
           <NoRecipeMessage>{noRecipeMessage}</NoRecipeMessage>
         )}
-        {showRecipes.map((recipe) => (
-          <RecipeCard recipe={recipe} key={recipe.id} />
-        ))}
-      </RecipeWrapper>
+      </RecipeBoxWrapper>
     </>
   );
 };
 
-export default RecipeBox;
+export default React.memo(RecipeBox);
 
-const TypeWrapper = styled.div`
-  width: 100%;
-  height: 2rem;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  font-size: 1.5rem;
-`;
-
-const CategoriesWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1.5rem;
-  & > p {
-    cursor: pointer;
-    &:hover {
-      color: ${COLORS.blue2};
-    }
-  }
-
-  & > p:first-of-type {
-    margin-left: 2.25rem;
-  }
-`;
-
-const SortingWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  gap: 1.5rem;
-  & > p {
-    cursor: pointer;
-    &:hover {
-      color: ${COLORS.blue2};
-    }
-  }
-
-  & > p:last-of-type {
-    margin-right: 2.25rem;
-  }
-`;
-
-const CategoryButton = styled.p<{ 'data-is-selected': boolean }>`
-  cursor: pointer;
-  color: ${({ 'data-is-selected': isSelected }) =>
-    isSelected ? COLORS.blue2 : 'inherit'};
-  &:hover {
-    color: ${COLORS.blue2};
-  }
-`;
-
-const SortButton = styled.p<{ 'data-is-selected': boolean }>`
-  cursor: pointer;
-  color: ${({ 'data-is-selected': isSelected }) =>
-    isSelected ? COLORS.blue2 : 'inherit'};
-  &:hover {
-    color: ${COLORS.blue2};
-  }
-`;
-
-const RecipeWrapper = styled.div`
+const RecipeBoxWrapper = styled.div`
   flex-wrap: wrap;
   display: flex;
   margin: 0 auto;

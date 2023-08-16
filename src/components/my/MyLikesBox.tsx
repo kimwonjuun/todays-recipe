@@ -24,13 +24,8 @@ const MyLikesBox = ({ currentUserUid }: MyLikesBoxProps) => {
 
     // 문서 참조
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
-    // if (docSnap.exists()) {
-    //   const likedRecipesData = docSnap.data();
-    //   if (likedRecipesData && likedRecipesData['user-likes']) {
-    //     setLikedRecipes(likedRecipesData['user-likes']);
-    //   }
-    // }
-    // 코드 줄여보기
+
+    // 문서 존재 시 레시피 상태 업데이트
     if (docSnap.exists()) setLikedRecipes(docSnap.data()['user-likes']);
 
     setIsLoading(false);

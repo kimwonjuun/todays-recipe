@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import useAlert from '../../hooks/useAlert';
 import { koreanOnly } from '../../utils/regex';
 import AlertModal from '../common/AlertModal';
-import Loading from '../common/Loading';
 
 interface MyRefrigeratorBoxProps {
   currentUserUid: string | undefined;
@@ -103,13 +102,7 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
     // 문서 참조
     const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
 
-    // if (docSnap.exists()) {
-    //   const ingredientData = docSnap.data();
-    //   if (ingredientData && ingredientData['user-ingredients']) {
-    //     setMyIngredients(ingredientData['user-ingredients']);
-    //   }
-    // }
-    // 코드 줄여보기
+    // 문서 존재 시 재료 상태 업데이트
     if (docSnap.exists()) setMyIngredients(docSnap.data()['user-ingredients']);
 
     setIsLoading(false);
@@ -181,7 +174,6 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
             />
           </FormWarpper>
         </MyRefrigerator>
-
         <Img
           onClick={() => {
             openAlert('냉장고');
