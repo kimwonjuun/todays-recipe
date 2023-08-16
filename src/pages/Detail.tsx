@@ -51,7 +51,7 @@ const Detail = () => {
       setRecipe(selectedRecipe);
       setIsLoading(false);
     }
-  }, [recipeData, id]);
+  }, [recipeData]);
 
   // custom alert modal
   const {
