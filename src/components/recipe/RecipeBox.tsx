@@ -9,11 +9,16 @@ import { User } from 'firebase/auth';
 import Categories from './Categories';
 import { useRecoilValue } from 'recoil';
 import { RecipeDataState } from '../../recoil/atoms';
+import useScrollMemory from '../../hooks/useScrollMemory';
 
 const RecipeBox = () => {
   // Recoil: RecipeDataState
   const recipeData = useRecoilValue(RecipeDataState);
 
+  // useScrollMemory hook
+  useScrollMemory();
+
+  // user
   const [user, setUser] = useState<User | null>(null);
   const currentUserUid = user?.uid ?? undefined;
 
@@ -67,12 +72,6 @@ const RecipeBox = () => {
   };
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
 
-  // 분류 선택 여닫기 후 선택하기. 세션에 선택된 분류 저장
-  const handleCategoryButton = (category: string) => {
-    setSelectedCategory(category);
-    sessionStorage.setItem('selected_category', category);
-  };
-
   // 필터링된 레시피 뿌려주기 (나의 냉장고 기능 추가 후 추가 코드 업데이트)
   const filteredRecipes =
     selectedCategory && selectedCategory !== '전체 레시피'
@@ -118,31 +117,16 @@ const RecipeBox = () => {
     return recipes;
   };
 
-  // 무한 스크롤
+  // infinity scroll hook
   const { currentPage } = useInfiniteScroll();
   const showRecipes = sortedRecipes(filteredRecipes).slice(0, currentPage * 8);
-
-  // 컴포넌트 마운트 시 이전 스크롤 위치를 기억해 이동하는 useEffect
-  useEffect(() => {
-    const lastScrollTop = Number(sessionStorage.getItem('scroll_top'));
-    if (lastScrollTop) {
-      window.scrollTo(0, lastScrollTop);
-    }
-  }, []);
-
-  // 컴포넌트 언마운트 시 현재 스크롤 위치를 세션에 저장하는 useEffect
-  useEffect(() => {
-    return () => {
-      sessionStorage.setItem('scroll_top', window.scrollY.toString());
-    };
-  }, []);
 
   return (
     <>
       <BoxWrapper>
         <Categories
           selectedCategory={selectedCategory}
-          handleCategoryButton={handleCategoryButton}
+          setSelectedCategory={setSelectedCategory}
           sortType={sortType}
           handleSortType={handleSortType}
         />
