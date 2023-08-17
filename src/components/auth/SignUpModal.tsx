@@ -101,7 +101,7 @@ const SignUpModal = ({
   };
 
   // 닉네임 인풋, 유효성 검사
-  const changeNickname = (e: any) => {
+  const changeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentNickname = e.target.value;
     setNickname(currentNickname);
     if (currentNickname.length < 2 || currentNickname.length > 4) {

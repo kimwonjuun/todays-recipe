@@ -72,7 +72,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           return setDoc(userRef, { 'user-likes': likes });
         }
       })
-      .then((_) => {
+      .then(() => {
         setLike(!like);
         openAlert(like ? '찜 목록에서 삭제했어요.' : '레시피 찜 완료!');
       })

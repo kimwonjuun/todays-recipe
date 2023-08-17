@@ -22,13 +22,17 @@ const EditProfileModal = ({
   photoURL,
   setPhotoURL,
 }: EditProfileModalProps) => {
-  // 프로필 이미지
-  const [tempPhotoURL, setTempPhotoURL] = useState<any>(null); // 임시 photoURL 상태
-  const [tempFileURL, setTempFileURL] = useState<any>(null); // 임시 file URL 상태
+  // 임시 이미지 url
+  const [tempPhotoURL, setTempPhotoURL] = useState<any>(null);
+
+  // 임시 파일 url
+  const [tempFileURL, setTempFileURL] = useState<any>(null);
+
+  // 파일 입력 참조
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 이미지 업로드
-  const uploadFirebase = async (e: any) => {
+  const handleUploadImage = async (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -43,10 +47,8 @@ const EditProfileModal = ({
   };
 
   // 카메라 이미지 클릭하면 동작
-  const onCameraClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+  const handleCameraClick = () => {
+    if (fileInputRef.current) fileInputRef.current.click();
   };
 
   // 프로필 닉네임
@@ -148,11 +150,11 @@ const EditProfileModal = ({
                   left: '90%',
                   transform: 'translate(-50%, -50%)',
                 }}
-                onChange={uploadFirebase}
+                onChange={handleUploadImage}
               />
               <ModalCamImg
                 src={require('../../assets/my/camera.png')}
-                onClick={onCameraClick}
+                onClick={handleCameraClick}
               />
             </ModalImg>
           </TopWrapper>

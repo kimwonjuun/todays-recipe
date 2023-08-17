@@ -30,7 +30,7 @@ const CommentBox = ({
   openAlert,
 }: CommentBoxProps) => {
   // 댓글
-  const [commentsList, setCommentsList] = useState<any>([]);
+  const [commentsList, setCommentsList] = useState<UserCommentProps[]>([]);
 
   // 댓글 인풋: useInput
   const { inputValue, setInputValue, handleInputChange } = useInput('');
@@ -104,7 +104,7 @@ const CommentBox = ({
         const userData = doc.data();
         const userComments = userData['user-comments'] || [];
 
-        userComments.forEach((comment: any) => {
+        userComments.forEach((comment: UserCommentProps) => {
           if (comment.id === id) {
             comments.push(comment);
           }
