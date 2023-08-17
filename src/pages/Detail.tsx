@@ -14,7 +14,7 @@ import AlertModal from '../components/common/AlertModal';
 import CommentBox from '../components/detail/CommentBox';
 
 const Detail = () => {
-  // Recipe/RecipeBox, Search에서 받아온 각 레시피가 가지고 있는 고유한 id
+  // 레시피, 서치, 마이페이지에서 받아온 각 레시피가 가지고 있는 고유한 id
   const { id } = useParams<{ id: string }>();
 
   // recoil 도입
@@ -22,9 +22,6 @@ const Detail = () => {
 
   // 선택한 레시피를 담아줄 state
   const [recipe, setRecipe] = useState<Recipe | null>(null);
-
-  // 로딩 상태
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // 유저
   const [user, setUser] = useState<User | null>(null);
@@ -49,9 +46,8 @@ const Detail = () => {
     );
     if (selectedRecipe) {
       setRecipe(selectedRecipe);
-      setIsLoading(false);
     }
-  }, [recipeData]);
+  }, [recipeData, id]);
 
   // custom alert modal
   const {
@@ -64,10 +60,10 @@ const Detail = () => {
   return (
     <>
       <PageWrapper>
-        {isLoading || !recipe ? (
+        {!recipe ? (
           <Loading />
         ) : (
-          <BoxWrapper>
+          <DetailBoxWrapper>
             <IngredientBox recipe={recipe} />
             <StepsBox recipe={recipe} />
             <CommentBox
@@ -77,7 +73,7 @@ const Detail = () => {
               id={id}
               openAlert={openAlert}
             />
-          </BoxWrapper>
+          </DetailBoxWrapper>
         )}
         <AlertModal
           message={alertMessage}
@@ -100,7 +96,7 @@ const PageWrapper = styled.div`
   background-color: ${COLORS.backGround};
 `;
 
-const BoxWrapper = styled.div`
+const DetailBoxWrapper = styled.div`
   width: 80rem;
   display: flex;
   flex-direction: column;
