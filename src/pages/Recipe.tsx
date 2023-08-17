@@ -11,13 +11,7 @@ const RecipePage = () => {
 
   return (
     <PageWrapper>
-      {recipeData.length === 0 ? (
-        <Loading />
-      ) : (
-        <BoxWrapper>
-          <RecipeBox />
-        </BoxWrapper>
-      )}
+      {recipeData.length === 0 ? <Loading /> : <RecipeBox />}
     </PageWrapper>
   );
 };
@@ -31,14 +25,4 @@ const PageWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: ${COLORS.backGround};
-`;
-
-const BoxWrapper = styled.div`
-  width: 90rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  font-size: 2rem;
-  margin-top: 8rem;
 `;

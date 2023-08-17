@@ -139,25 +139,37 @@ const RecipeBox = () => {
 
   return (
     <>
-      <Categories
-        selectedCategory={selectedCategory}
-        handleCategoryButton={handleCategoryButton}
-        sortType={sortType}
-        handleSortType={handleSortType}
-      />
-      <Recipes>
-        {showRecipes.map((recipe: Recipe) => (
-          <RecipeCard recipe={recipe} key={recipe.id} />
-        ))}
-        {showRecipes.length === 0 && noRecipeMessage && (
-          <NoRecipeMessage>{noRecipeMessage}</NoRecipeMessage>
-        )}
-      </Recipes>
+      <BoxWrapper>
+        <Categories
+          selectedCategory={selectedCategory}
+          handleCategoryButton={handleCategoryButton}
+          sortType={sortType}
+          handleSortType={handleSortType}
+        />
+        <Recipes>
+          {showRecipes.map((recipe: Recipe) => (
+            <RecipeCard recipe={recipe} key={recipe.id} />
+          ))}
+          {showRecipes.length === 0 && noRecipeMessage && (
+            <NoRecipeMessage>{noRecipeMessage}</NoRecipeMessage>
+          )}
+        </Recipes>
+      </BoxWrapper>
     </>
   );
 };
 
 export default RecipeBox;
+
+const BoxWrapper = styled.div`
+  width: 90rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 2rem;
+  margin-top: 8rem;
+`;
 
 const Recipes = styled.div`
   flex-wrap: wrap;
