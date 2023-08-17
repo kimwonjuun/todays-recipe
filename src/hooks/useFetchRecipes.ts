@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query';
 
 // 전체 데이터 가져오는 훅
+
 const fetchRecipes = async () => {
   const serviceKey = process.env.REACT_APP_FOODSAFETYKOREA_API_KEY;
   const urls = [

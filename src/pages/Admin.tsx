@@ -7,26 +7,18 @@ import EditFormBox from '../components/admin/EditFormBox';
 import { useState } from 'react';
 import { authService } from '../api/firebase';
 import { User } from 'firebase/auth';
+import useUser from '../hooks/useUser';
 
 const Admin = () => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState<User | null>(null);
+  // 유저 상태 업데이트: useUser hook
+  const { user } = useUser();
 
+  // 관리자 이메일이 아닐 경우 페이지 접근 제한
   useEffect(() => {
-    const handleAuthStateChange = authService.onAuthStateChanged((user) => {
-      if (user && user.email === 'admin@admin.ad') {
-        setUser(user);
-        navigate('/admin');
-      } else {
-        navigate('/error');
-      }
-    });
-
-    return () => {
-      handleAuthStateChange();
-    };
-  }, []);
+    if (!user || user?.email !== 'admin@admin.ad') navigate('/error');
+  }, [user]);
 
   return (
     <>

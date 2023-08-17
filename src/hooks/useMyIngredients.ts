@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { dbService } from '../api/firebase';
 
+// 냉장고에 넣은 재료들이 필요한 페이지에 사용할 훅
+
 const useMyIngredients = (currentUserUid?: string) => {
   // 나의 냉장고에 입력한 재료들
   const [myIngredients, setMyIngredients] = useState([]);

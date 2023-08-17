@@ -1,27 +1,17 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { authService, dbService } from '../../api/firebase';
+import { dbService } from '../../api/firebase';
 import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
-import { User } from 'firebase/auth';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
+import useUser from '../../hooks/useUser';
 
 const IngredientBox = ({ recipe }: RecipeProps) => {
-  const [user, setUser] = useState<User | null>(null);
-  const currentUserUid = user?.uid ?? undefined;
-  const [like, setLike] = useState<boolean | null>(null);
+  // 유저 상태 업데이트: useUser hook
+  const { user, currentUserUid } = useUser();
 
-  useEffect(() => {
-    // user 객체 존재 시 setUser 업데이트
-    const handleAuthStateChange = authService.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      }
-    });
-    return () => {
-      handleAuthStateChange();
-    };
-  }, []);
+  // 좋아요 상태
+  const [like, setLike] = useState<boolean | null>(null);
 
   // custom alert modal
   const {

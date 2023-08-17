@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import RecipeCard from '../common/RecipeCard';
-import { authService } from '../../api/firebase';
-import { User } from 'firebase/auth';
 import Categories from './Categories';
 import { useRecoilValue } from 'recoil';
 import { RecipeDataState } from '../../recoil/atoms';
 import useScrollMemory from '../../hooks/useScrollMemory';
 import useMyIngredients from '../../hooks/useMyIngredients';
+import useUser from '../../hooks/useUser';
 
 const RecipeBox = () => {
   // Recoil: RecipeDataState
@@ -18,25 +17,11 @@ const RecipeBox = () => {
   // 페이지 스크롤 상태 기억: useScrollMemory hook
   useScrollMemory();
 
-  // user
-  const [user, setUser] = useState<User | null>(null);
-  const currentUserUid = user?.uid ?? undefined;
+  // 유저 상태 업데이트: useUser hook
+  const { user, currentUserUid } = useUser();
 
   // 마이페이지에서 나의 냉장고에 입력한 재료들: useMyIngredients hook
   const { myIngredients } = useMyIngredients(currentUserUid);
-
-  useEffect(() => {
-    // user 객체 존재 시 setUser 업데이트
-    const handleAuthStateChange = authService.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      }
-    });
-
-    return () => {
-      handleAuthStateChange();
-    };
-  }, []);
 
   // 내 냉장고 재료들로 만들 수 있는 레시피들
   const canMakeRecipe = (
