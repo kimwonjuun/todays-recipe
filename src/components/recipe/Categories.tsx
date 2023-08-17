@@ -3,29 +3,17 @@ import COLORS from '../../styles/colors';
 
 interface CategoriesProps {
   selectedCategory: string;
-  setSelectedCategory: (category: string) => void;
   sortType: string;
-  setSortType: (sortType: string) => void;
+  handleCategoryType: (category: string) => void;
+  handleSortType: (sortType: string) => void;
 }
 
 const Categories = ({
   selectedCategory,
-  setSelectedCategory,
   sortType,
-  setSortType,
+  handleCategoryType,
+  handleSortType,
 }: CategoriesProps) => {
-  // 레시피 분류 선택하기. 세션에 선택한 분류 저장
-  const handleCategoryType = (category: string) => {
-    setSelectedCategory(category);
-    sessionStorage.setItem('selected_category', category);
-  };
-
-  // 소팅 상태 전환. 세션에 선택한 소팅 상태 저장
-  const handleSortType = (changeSortType: string) => {
-    setSortType(changeSortType);
-    sessionStorage.setItem('selected_sort_type', changeSortType);
-  };
-
   return (
     <>
       <Wrapper>
