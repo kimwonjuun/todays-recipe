@@ -4,10 +4,11 @@ import SubmitForm from '../common/SubmitForm';
 import useInput from '../../hooks/useInput';
 import { dbService } from '../../api/firebase';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
 import useAlert from '../../hooks/useAlert';
 import { koreanOnly } from '../../utils/regex';
 import AlertModal from '../common/AlertModal';
+import useMyIngredients from '../../hooks/useMyIngredients';
+import { useState } from 'react';
 
 interface MyRefrigeratorBoxProps {
   currentUserUid: string | undefined;
@@ -25,11 +26,9 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
   // 냉장고 재료 입력하는 인풋: useInput
   const { inputValue, setInputValue, handleInputChange } = useInput('');
 
-  // 내가 저장한 재료
-  const [myIngredients, setMyIngredients] = useState([]);
-
-  // 로딩 상태
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // 마이페이지에서 나의 냉장고에 입력한 재료들: useMyIngredients hook
+  const { myIngredients, getMyIngredients, isLoading } =
+    useMyIngredients(currentUserUid);
 
   // 재료 입력
   const handleIngredientsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -91,25 +90,6 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
         openAlert('냉장고에 재료를 추가하지 못했습니다.');
       });
   };
-
-  // 내가 입력한 재료 출력
-  const getMyIngredients = async () => {
-    if (!currentUserUid) {
-      return;
-    }
-    setIsLoading(true);
-
-    // 문서 참조
-    const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
-
-    // 문서 존재 시 재료 상태 업데이트
-    if (docSnap.exists()) setMyIngredients(docSnap.data()['user-ingredients']);
-
-    setIsLoading(false);
-  };
-  useEffect(() => {
-    getMyIngredients();
-  }, [currentUserUid]);
 
   // 재료 삭제
   const removeIngredient = (ingredient: string) => {
