@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
@@ -8,7 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { RecipeDataState } from '../../recoil/atoms';
 import useMyIngredients from '../../hooks/useMyIngredients';
 import useUser from '../../hooks/useUser';
-import useMemoScrollPosition from '../../hooks/useScrollMemory';
+import useMemoScrollPosition from '../../hooks/useMemoScrollPosition';
 import useRecipeFilters from '../../hooks/useRecipeFilters';
 
 const RecipeBox = () => {
@@ -36,7 +35,7 @@ const RecipeBox = () => {
   } = useRecipeFilters(recipeData, myIngredients, user);
 
   // infinity scroll hook
-  const { currentPage } = useInfiniteScroll();
+  const { currentPage, isLoading } = useInfiniteScroll();
   const showRecipes = sortedRecipes(filteredRecipes).slice(0, currentPage * 8);
 
   return (
@@ -52,6 +51,9 @@ const RecipeBox = () => {
           {showRecipes.map((recipe: Recipe) => (
             <RecipeCard recipe={recipe} key={recipe.id} />
           ))}
+          {isLoading && (
+            <LoadingMessage>더 많은 레시피를 불러오고 있어요 😎</LoadingMessage>
+          )}
           {showRecipes.length === 0 && noRecipeMessage && (
             <NoRecipeMessage>{noRecipeMessage}</NoRecipeMessage>
           )}
@@ -79,8 +81,15 @@ const Recipes = styled.div`
   margin: 0 auto;
   padding: 5rem 0;
   overflow: hidden;
+  & > p {
+    text-align: center;
+  }
 `;
 
+const LoadingMessage = styled.p`
+  text-align: center;
+  width: 100%;
+`;
 const NoRecipeMessage = styled.div`
   position: relative;
   display: flex;

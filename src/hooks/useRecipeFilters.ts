@@ -1,7 +1,7 @@
 import { User } from 'firebase/auth';
 import { useState } from 'react';
 
-// 레시피 페이지에서 레시피 필터링해주는 함수들이 모여있는 hook
+// 레시피 페이지에서 레시피 필터링해주는 hook
 
 const useRecipeFilters = (
   recipeData: Recipe[],
