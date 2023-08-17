@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { formatDate } from '../../utils/date';
@@ -18,11 +18,14 @@ const CommentList = ({
 }: CommentListProps) => {
   // 댓글 수정 상태
   const [isEditing, setIsEditing] = useState(false);
+
   // 현재 수정중인 댓글
   const [editTarget, setEditTarget] = useState<UserCommentProps | null>(null);
+
   // 수정 대상 댓글
   const [editedComment, setEditedComment] = useState('');
 
+  // 인풋 참조
   const inputRef = useRef<HTMLInputElement>(null);
 
   // 댓글 update

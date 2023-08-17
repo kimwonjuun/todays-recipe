@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
@@ -23,7 +24,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   );
 };
 
-export default RecipeCard;
+export default React.memo(RecipeCard);
 
 const RecipeCardWrapper = styled.div`
   border-radius: 1rem;

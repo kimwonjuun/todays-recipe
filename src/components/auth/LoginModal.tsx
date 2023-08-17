@@ -88,7 +88,6 @@ const LoginModal = ({
   };
 
   // 비밀번호 찾기
-
   const handlePasswordReset = (email: string) => {
     sendPasswordResetEmail(authService, email)
       .then(() => {
