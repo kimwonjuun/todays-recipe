@@ -15,7 +15,7 @@ const RecipePage = () => {
         <Loading />
       ) : (
         <BoxWrapper>
-          <RecipeBox recipeData={recipeData} />
+          <RecipeBox />
         </BoxWrapper>
       )}
     </PageWrapper>

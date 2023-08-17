@@ -1,19 +1,19 @@
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 
-interface CategoriesBoxProps {
+interface CategoriesProps {
   selectedCategory: string;
   handleCategoryButton: (category: string) => void;
   sortType: string;
   handleSortType: (sortType: string) => void;
 }
 
-const CategoriesBox = ({
+const Categories = ({
   selectedCategory,
   handleCategoryButton,
   sortType,
   handleSortType,
-}: CategoriesBoxProps) => {
+}: CategoriesProps) => {
   return (
     <>
       <Wrapper>
@@ -88,7 +88,7 @@ const CategoriesBox = ({
   );
 };
 
-export default CategoriesBox;
+export default Categories;
 
 const Wrapper = styled.div`
   width: 100%;

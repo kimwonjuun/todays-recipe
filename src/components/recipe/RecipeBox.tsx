@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
@@ -6,18 +6,16 @@ import RecipeCard from '../common/RecipeCard';
 import { doc, getDoc } from 'firebase/firestore';
 import { authService, dbService } from '../../api/firebase';
 import { User } from 'firebase/auth';
-import CategoriesBox from './CategoriesBox';
+import Categories from './Categories';
+import { useRecoilValue } from 'recoil';
+import { RecipeDataState } from '../../recoil/atoms';
 
-interface RecipeProps {
-  recipeData: Recipe[];
-}
+const RecipeBox = () => {
+  // Recoil: RecipeDataState
+  const recipeData = useRecoilValue(RecipeDataState);
 
-const RecipeBox = ({ recipeData }: RecipeProps) => {
   const [user, setUser] = useState<User | null>(null);
   const currentUserUid = user?.uid ?? undefined;
-
-  // 마이페이지에서 나의 냉장고에 입력한 재료들
-  const [myIngredients, setMyIngredients] = useState([]);
 
   useEffect(() => {
     // user 객체 존재 시 setUser 업데이트
@@ -32,8 +30,11 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
     };
   }, []);
 
+  // 마이페이지에서 나의 냉장고에 입력한 재료들
+  const [myIngredients, setMyIngredients] = useState([]);
+
   // 내가 입력한 재료 출력
-  const getMyIngredients = useCallback(async () => {
+  const getMyIngredients = async () => {
     if (!currentUserUid) {
       return;
     }
@@ -43,35 +44,34 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
 
     // 문서 존재 시 재료 상태 업데이트
     if (docSnap.exists()) setMyIngredients(docSnap.data()['user-ingredients']);
-  }, [currentUserUid]);
+  };
 
   useEffect(() => {
     getMyIngredients();
   }, [currentUserUid]);
 
   // 내 냉장고 재료들로 만들 수 있는 레시피들
-  const canMakeRecipe = useCallback(
-    (recipeIngredients: string, myIngredients: string[]): boolean => {
-      return myIngredients.every((ingredient) =>
-        recipeIngredients.includes(ingredient)
-      );
-    },
-    []
-  );
+  const canMakeRecipe = (
+    recipeIngredients: string,
+    myIngredients: string[]
+  ): boolean => {
+    return myIngredients.every((ingredient) =>
+      recipeIngredients.includes(ingredient)
+    );
+  };
 
   // 초기 카테고리
   const initialCategory = () => {
     const savedCategory = sessionStorage.getItem('selected_category');
     return savedCategory ? savedCategory : '전체 레시피';
   };
-
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
 
   // 분류 선택 여닫기 후 선택하기. 세션에 선택된 분류 저장
-  const handleCategoryButton = useCallback((category: string) => {
+  const handleCategoryButton = (category: string) => {
     setSelectedCategory(category);
     sessionStorage.setItem('selected_category', category);
-  }, []);
+  };
 
   // 필터링된 레시피 뿌려주기 (나의 냉장고 기능 추가 후 추가 코드 업데이트)
   const filteredRecipes =
@@ -105,22 +105,18 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
   };
 
   // 저칼로리 순/가나다 순 소팅 전환
-  const sortedRecipes = useCallback(
-    (recipes: Recipe[]): Recipe[] => {
-      if (sortType === '가나다 순') {
-        return [...recipes].sort((a: Recipe, b: Recipe) =>
-          a.name.localeCompare(b.name)
-        );
-      } else if (sortType === '저칼로리 순') {
-        return [...recipes].sort(
-          (a: Recipe, b: Recipe) =>
-            parseFloat(a.calorie) - parseFloat(b.calorie)
-        );
-      }
-      return recipes;
-    },
-    [sortType]
-  );
+  const sortedRecipes = (recipes: Recipe[]): Recipe[] => {
+    if (sortType === '가나다 순') {
+      return [...recipes].sort((a: Recipe, b: Recipe) =>
+        a.name.localeCompare(b.name)
+      );
+    } else if (sortType === '저칼로리 순') {
+      return [...recipes].sort(
+        (a: Recipe, b: Recipe) => parseFloat(a.calorie) - parseFloat(b.calorie)
+      );
+    }
+    return recipes;
+  };
 
   // 무한 스크롤
   const { currentPage } = useInfiniteScroll();
@@ -132,7 +128,7 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
     if (lastScrollTop) {
       window.scrollTo(0, lastScrollTop);
     }
-  }, [sortType]);
+  }, []);
 
   // 컴포넌트 언마운트 시 현재 스크롤 위치를 세션에 저장하는 useEffect
   useEffect(() => {
@@ -143,27 +139,27 @@ const RecipeBox = ({ recipeData }: RecipeProps) => {
 
   return (
     <>
-      <CategoriesBox
+      <Categories
         selectedCategory={selectedCategory}
         handleCategoryButton={handleCategoryButton}
         sortType={sortType}
         handleSortType={handleSortType}
       />
-      <RecipeBoxWrapper>
+      <Recipes>
         {showRecipes.map((recipe: Recipe) => (
           <RecipeCard recipe={recipe} key={recipe.id} />
         ))}
         {showRecipes.length === 0 && noRecipeMessage && (
           <NoRecipeMessage>{noRecipeMessage}</NoRecipeMessage>
         )}
-      </RecipeBoxWrapper>
+      </Recipes>
     </>
   );
 };
 
-export default React.memo(RecipeBox);
+export default RecipeBox;
 
-const RecipeBoxWrapper = styled.div`
+const Recipes = styled.div`
   flex-wrap: wrap;
   display: flex;
   margin: 0 auto;
