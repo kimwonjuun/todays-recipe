@@ -63,7 +63,7 @@ const ResultBox = ({ keyword }: ResultBoxProps) => {
     navigate(`/search/${inputValue}`);
   };
 
-  // 무한스크롤 추가
+  // infinity scroll hook
   const { currentPage } = useInfiniteScroll();
   const showRecipes = filteredRecipes.slice(0, currentPage * 8);
 

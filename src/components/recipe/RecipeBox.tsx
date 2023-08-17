@@ -3,24 +3,27 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 import RecipeCard from '../common/RecipeCard';
-import { doc, getDoc } from 'firebase/firestore';
-import { authService, dbService } from '../../api/firebase';
+import { authService } from '../../api/firebase';
 import { User } from 'firebase/auth';
 import Categories from './Categories';
 import { useRecoilValue } from 'recoil';
 import { RecipeDataState } from '../../recoil/atoms';
 import useScrollMemory from '../../hooks/useScrollMemory';
+import useMyIngredients from '../../hooks/useMyIngredients';
 
 const RecipeBox = () => {
   // Recoil: RecipeDataState
   const recipeData = useRecoilValue(RecipeDataState);
 
-  // useScrollMemory hook
+  // 페이지 스크롤 상태 기억: useScrollMemory hook
   useScrollMemory();
 
   // user
   const [user, setUser] = useState<User | null>(null);
   const currentUserUid = user?.uid ?? undefined;
+
+  // 마이페이지에서 나의 냉장고에 입력한 재료들: useMyIngredients hook
+  const { myIngredients } = useMyIngredients(currentUserUid);
 
   useEffect(() => {
     // user 객체 존재 시 setUser 업데이트
@@ -34,26 +37,6 @@ const RecipeBox = () => {
       handleAuthStateChange();
     };
   }, []);
-
-  // 마이페이지에서 나의 냉장고에 입력한 재료들
-  const [myIngredients, setMyIngredients] = useState([]);
-
-  // 내가 입력한 재료 출력
-  const getMyIngredients = async () => {
-    if (!currentUserUid) {
-      return;
-    }
-
-    // 문서 참조
-    const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
-
-    // 문서 존재 시 재료 상태 업데이트
-    if (docSnap.exists()) setMyIngredients(docSnap.data()['user-ingredients']);
-  };
-
-  useEffect(() => {
-    getMyIngredients();
-  }, [currentUserUid]);
 
   // 내 냉장고 재료들로 만들 수 있는 레시피들
   const canMakeRecipe = (
@@ -91,19 +74,12 @@ const RecipeBox = () => {
         : '로그인 후 냉장고에 재료들을 넣어주세요. 🫤'
       : null;
 
-  // 저칼로리 순/가나다 순 전 기존 정렬 상태
+  // 저칼로리 순, 가나다 순 전 기존 정렬 상태
   const [sortType, setSortType] = useState<string>(
     () => sessionStorage.getItem('selected_sort_type') || '기존 정렬 상태'
   );
 
-  // 소팅 상태 전환
-  const handleSortType = (changeSortType: string) => {
-    sessionStorage.setItem('scroll_top', window.scrollY.toString());
-    sessionStorage.setItem('selected_sort_type', changeSortType);
-    setSortType(changeSortType);
-  };
-
-  // 저칼로리 순/가나다 순 소팅 전환
+  // 저칼로리 순, 가나다 순 소팅 전환
   const sortedRecipes = (recipes: Recipe[]): Recipe[] => {
     if (sortType === '가나다 순') {
       return [...recipes].sort((a: Recipe, b: Recipe) =>
@@ -128,7 +104,7 @@ const RecipeBox = () => {
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
           sortType={sortType}
-          handleSortType={handleSortType}
+          setSortType={setSortType}
         />
         <Recipes>
           {showRecipes.map((recipe: Recipe) => (
