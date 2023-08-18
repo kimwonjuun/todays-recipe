@@ -1,28 +1,40 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import EditHistoryBox from '../components/admin/EditHistoryBox';
-import EditFormBox from '../components/admin/EditFormBox';
-import useUser from '../hooks/useUser';
+import ConfirmDataHistoryBox from '../components/admin/ConfirmDataHistoryBox';
+import EditDataFormBox from '../components/admin/EditDataFormBox';
+import { authService } from '../api/firebase';
+import { User } from 'firebase/auth';
 
 const Admin = () => {
   const navigate = useNavigate();
 
-  // 유저 상태 업데이트: useUser hook
-  const { user } = useUser();
-
-  // 관리자 이메일이 아닐 경우 페이지 접근 제한
+  const [user, setUser] = useState<User | null>(null);
+  // 유저 상태 업데이트: !관리자 이메일일 시 페이지 접근 제한
   useEffect(() => {
-    if (!user || user?.email !== 'admin@admin.ad') navigate('/error');
-  }, [user]);
+    // user 객체 존재 시 setUser 업데이트
+
+    const handleAuthStateChange = authService.onAuthStateChanged((user) => {
+      if (user && user.email === 'admin@admin.ad') {
+        setUser(user);
+        navigate('/admin');
+      } else {
+        navigate('/error');
+      }
+    });
+
+    return () => {
+      handleAuthStateChange();
+    };
+  }, []);
 
   return (
     <>
       <PageWrapper>
         <BoxWrapper>
-          <EditHistoryBox />
-          <EditFormBox />
+          <ConfirmDataHistoryBox />
+          <EditDataFormBox />
         </BoxWrapper>
       </PageWrapper>
     </>

@@ -10,7 +10,7 @@ import useFetchRecipes from '../../hooks/useFetchRecipes';
 import useConfirm from '../../hooks/useConfirm';
 import useInput from '../../hooks/useInput';
 
-const EditFormBox = () => {
+const EditDataFormBox = () => {
   // 호출한 API 전체 데이터 + 로딩, 에러 상태
   const { data: recipeData, isLoading, isError } = useFetchRecipes();
 
@@ -110,6 +110,13 @@ const EditFormBox = () => {
   const handleEditSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // 공백문자 없는지 검사
+    if (!inputValue.trim()) {
+      openAlert('수정하신 내역을 정확히 입력해주세요.');
+      setInputValue('');
+      return;
+    }
+
     addDoc(collection(dbService, 'edit-data-history'), {
       description: inputValue,
       updatedAt: Date.now(),
@@ -163,7 +170,7 @@ const EditFormBox = () => {
   );
 };
 
-export default EditFormBox;
+export default EditDataFormBox;
 
 const BoxWrapper = styled.div`
   width: 45rem;
