@@ -8,12 +8,11 @@ import { RecipeDataState } from '../../recoil/atoms';
 import useMyIngredients from '../../hooks/useMyIngredients';
 import useUser from '../../hooks/useUser';
 import useMemoScrollPosition from '../../hooks/useMemoScrollPosition';
-import useRecipeFilters from '../../hooks/useRecipeFilters';
+import useRecipeCategoryFilters from '../../hooks/useRecipeCategoryFilters';
 
 const RecipeBox = () => {
   // Recoil: RecipeDataState
   const recipeData = useRecoilValue(RecipeDataState);
-
   // 페이지 스크롤 상태 기억: useScrollMemory hook
   useMemoScrollPosition();
 
@@ -32,7 +31,7 @@ const RecipeBox = () => {
     noRecipeMessage,
     sortedRecipes,
     filteredRecipes,
-  } = useRecipeFilters(recipeData, myIngredients, user);
+  } = useRecipeCategoryFilters(recipeData, myIngredients, user);
 
   // infinity scroll hook
   const { currentPage, isLoading } = useInfiniteScroll();

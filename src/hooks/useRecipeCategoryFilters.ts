@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 // 레시피 페이지에서 레시피 필터링해주는 hook
 
-const useRecipeFilters = (
+const useRecipeCategoryFilters = (
   recipeData: Recipe[],
   myIngredients: string[],
   user: User | null
@@ -14,7 +14,7 @@ const useRecipeFilters = (
     return savedCategory ? savedCategory : '전체 레시피';
   };
 
-  // 선택된 카테고리 상태
+  // 선택된 카테고리 상태 (out)
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
 
   // 저칼로리 순, 가나다 순 전 기존 정렬 상태
@@ -88,4 +88,4 @@ const useRecipeFilters = (
   };
 };
 
-export default useRecipeFilters;
+export default useRecipeCategoryFilters;
