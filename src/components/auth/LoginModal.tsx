@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
 } from 'firebase/auth';
-import { authService } from '../../api/firebase';
+import { authService } from '../../apis/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
 import styled from 'styled-components';

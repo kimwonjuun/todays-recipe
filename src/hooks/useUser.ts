@@ -1,6 +1,6 @@
 import { User } from 'firebase/auth';
 import { useState, useEffect } from 'react';
-import { authService } from '../api/firebase';
+import { authService } from '../apis/firebase';
 
 // 유저 상태 업데이트해야 하는 페이지에서 사용할 훅
 

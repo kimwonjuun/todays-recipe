@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { doc, getDoc } from 'firebase/firestore';
-import { dbService } from '../../api/firebase';
+import { dbService } from '../../apis/firebase';
 import RecipeCard from '../common/RecipeCard';
 import { useEffect, useState } from 'react';
 

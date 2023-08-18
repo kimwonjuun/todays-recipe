@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import { storage } from '../../api/firebase';
+import { storage } from '../../apis/firebase';
 import { User, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import useConfirm from '../../hooks/useConfirm';

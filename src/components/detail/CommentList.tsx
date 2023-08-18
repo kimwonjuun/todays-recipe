@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { formatDate } from '../../utils/date';
-import { dbService } from '../../api/firebase';
+import { dbService } from '../../apis/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 interface CommentListProps {

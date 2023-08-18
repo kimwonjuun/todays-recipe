@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { dbService } from '../../api/firebase';
+import { dbService } from '../../apis/firebase';
 import { updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';

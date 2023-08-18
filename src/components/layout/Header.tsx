@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import { firebaseConfig } from '../../api/firebase';
+import { firebaseConfig } from '../../apis/firebase';
 import LoginModal from '../auth/LoginModal';
 import SignUpModal from '../auth/SignUpModal';
 

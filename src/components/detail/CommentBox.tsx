@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { User } from 'firebase/auth';
-import { dbService } from '../../api/firebase';
+import { dbService } from '../../apis/firebase';
 import {
   updateDoc,
   doc,

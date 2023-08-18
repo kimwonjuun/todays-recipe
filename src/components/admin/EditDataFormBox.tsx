@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import SubmitForm from '../common/SubmitForm';
 import styled from 'styled-components';
 import { addDoc, collection } from 'firebase/firestore';
-import { dbService } from '../../api/firebase';
 import AlertModal from '../common/AlertModal';
 import ConfirmModal from '../common/ConfirmModal';
 import useAlert from '../../hooks/useAlert';
-import useFetchRecipes from '../../hooks/useFetchRecipes';
 import useConfirm from '../../hooks/useConfirm';
 import useInput from '../../hooks/useInput';
+import { dbService } from '../../apis/firebase';
+import { fetchRecipes } from '../../apis/recipe';
+
+// 기본 데이터 호출해서 가공 후 파이어스토어에 올리는 컴포넌트
 
 const EditDataFormBox = () => {
-  // 호출한 API 전체 데이터 + 로딩, 에러 상태
-  const { data: recipeData, isLoading, isError } = useFetchRecipes();
+  // 식품의약안전처로부터 받은 데이터
+  const [recipeData, setRecipeData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchRecipes();
+      setRecipeData(data);
+    };
+
+    fetchData();
+  }, []);
 
   // custom alert modal
   const {
@@ -71,7 +81,6 @@ const EditDataFormBox = () => {
         )
       )
       .catch((error) => {
-        console.error('레시피 데이터를 수정하지 못했어요. :', error);
         openAlert('레시피 데이터를 수정하지 못했어요.');
       });
   };
@@ -86,27 +95,19 @@ const EditDataFormBox = () => {
   const { openConfirm, closeConfirm, handleConfirm, isOpen } =
     useConfirm(handleConfirmModal);
 
-  // api 저장하는 버튼
-  const handleGetRecipeList = () => {
-    if (!isLoading && recipeData) {
+  // 가공한 데이터 confirm message를 거쳐 파이어스토어에 저장
+  const handleGetProcessingRecipeList = () => {
+    if (recipeData.length > 0) {
       openConfirm();
-    }
-    if (isLoading) {
-      openAlert(
-        '레시피 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.'
-      );
-    }
-    if (isError) {
-      openAlert(
-        '레시피 데이터를 불러오지 못했습니다. 문제가 지속될 경우 관리자에게 문의해주세요.'
-      );
+    } else {
+      openAlert('레시피 데이터를 수정하지 못했습니다.');
     }
   };
 
   // api 저장 또는 수정 후 수정 내역에 작성할 인풋: useInput
   const { inputValue, setInputValue, handleInputChange } = useInput('');
 
-  // 수정 사항 제출
+  // 데이터 가공&수정 사항 제출
   const handleEditSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -143,7 +144,7 @@ const EditDataFormBox = () => {
           <EditApiButton>
             <img
               src={require('../../assets/my/default_image.png')}
-              onClick={handleGetRecipeList}
+              onClick={handleGetProcessingRecipeList}
             />
           </EditApiButton>
           <SubmitForm

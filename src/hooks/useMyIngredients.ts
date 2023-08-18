@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
-import { dbService } from '../api/firebase';
+import { dbService } from '../apis/firebase';
 
 // 냉장고에 넣은 재료들이 필요한 페이지에 사용할 훅
 

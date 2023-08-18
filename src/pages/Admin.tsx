@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import ConfirmDataHistoryBox from '../components/admin/ConfirmDataHistoryBox';
 import EditDataFormBox from '../components/admin/EditDataFormBox';
-import { authService } from '../api/firebase';
+import { authService } from '../apis/firebase';
 import { User } from 'firebase/auth';
 
 const Admin = () => {

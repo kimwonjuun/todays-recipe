@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import SubmitForm from '../common/SubmitForm';
 import useInput from '../../hooks/useInput';
-import { dbService } from '../../api/firebase';
+import { dbService } from '../../apis/firebase';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import useAlert from '../../hooks/useAlert';
 import { koreanOnly } from '../../utils/regex';
