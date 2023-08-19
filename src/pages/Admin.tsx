@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import ConfirmDataHistoryBox from '../components/admin/ConfirmDataHistoryBox';
-import EditDataFormBox from '../components/admin/EditDataFormBox';
+import DataHistoryBox from '../components/admin/DataHistoryBox';
+import DataProcessingFormBox from '../components/admin/DataProccessingFormBox';
 import { authService } from '../apis/firebase';
 import { User } from 'firebase/auth';
 
@@ -14,7 +14,6 @@ const Admin = () => {
   // 유저 상태 업데이트: !관리자 이메일일 시 페이지 접근 제한
   useEffect(() => {
     // user 객체 존재 시 setUser 업데이트
-
     const handleAuthStateChange = authService.onAuthStateChanged((user) => {
       if (user && user.email === 'admin@admin.ad') {
         setUser(user);
@@ -33,8 +32,8 @@ const Admin = () => {
     <>
       <PageWrapper>
         <BoxWrapper>
-          <ConfirmDataHistoryBox />
-          <EditDataFormBox />
+          <DataHistoryBox />
+          <DataProcessingFormBox />
         </BoxWrapper>
       </PageWrapper>
     </>

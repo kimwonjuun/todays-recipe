@@ -5,13 +5,13 @@ import { dbService } from '../../apis/firebase';
 import { useEffect } from 'react';
 import { formatDate } from '../../utils/date';
 
-interface EditDataPostProps {
+interface DataHistoryBoxProps {
   description: string;
   updatedAt: number;
 }
 
-const ConfirmDataHistoryBox = () => {
-  const [editHistoryList, setEditHistoryList] = useState<EditDataPostProps[]>(
+const DataHistoryBox = () => {
+  const [editHistoryList, setEditHistoryList] = useState<DataHistoryBoxProps[]>(
     []
   );
 
@@ -28,7 +28,7 @@ const ConfirmDataHistoryBox = () => {
 
     // edit-data-history 컬렉션을 돌며 수정된 날짜 순으로 추가
     onSnapshot(sortedEditHistory, (querySnapshot) => {
-      const historyList: EditDataPostProps[] = [];
+      const historyList: DataHistoryBoxProps[] = [];
 
       querySnapshot.forEach((doc) => {
         const list: any = {
@@ -66,7 +66,7 @@ const ConfirmDataHistoryBox = () => {
   );
 };
 
-export default ConfirmDataHistoryBox;
+export default DataHistoryBox;
 
 const BoxWrapper = styled.div`
   width: 45rem;
