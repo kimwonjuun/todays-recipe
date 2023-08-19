@@ -19,6 +19,12 @@ const Categories = ({
       <Wrapper>
         <CategoriesWrapper>
           <CategoryButton
+            onClick={() => handleCategoryType('나의 냉장고')}
+            data-is-selected={selectedCategory === '나의 냉장고'}
+          >
+            나의 냉장고
+          </CategoryButton>
+          <CategoryButton
             onClick={() => handleCategoryType('전체 레시피')}
             data-is-selected={selectedCategory === '전체 레시피'}
           >
@@ -53,12 +59,6 @@ const Categories = ({
             data-is-selected={selectedCategory === '후식'}
           >
             후식
-          </CategoryButton>
-          <CategoryButton
-            onClick={() => handleCategoryType('나의 냉장고')}
-            data-is-selected={selectedCategory === '나의 냉장고'}
-          >
-            나의 냉장고
           </CategoryButton>
         </CategoriesWrapper>
         <SortingWrapper>
