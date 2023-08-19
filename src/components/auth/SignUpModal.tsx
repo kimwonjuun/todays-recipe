@@ -11,6 +11,7 @@ import COLORS from '../../styles/colors';
 import styled from 'styled-components';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
+import useAuth from '../../hooks/useAuth';
 
 const SignUpModal = ({
   setLoginModalIsOpen,
@@ -19,22 +20,37 @@ const SignUpModal = ({
   setLoginModalIsOpen: (state: boolean) => void;
   setSignUpModalIsOpen: (state: boolean) => void;
 }) => {
-  const [email, setEmail] = useState<string>(''); // 이메일 입력값
-  const [emailMessage, setEmailMessage] = useState<string>(''); // 이메일 오류 메시지
-  const [isEmail, setIsEmail] = useState<boolean>(false); // 이메일 유효성 검사 통과
-  const [password, setPassword] = useState<string>(''); // 패스워드 입력값
-  const [passwordMessage, setPasswordMessage] = useState<string>(''); // 패스워드 오류 메시지
-  const [isPassword, setIsPassword] = useState<boolean>(false); // 패스워드 유효성 검사 통과
-  const [confirmPassword, setConfirmPassword] = useState<string>(''); // 패스워드 재입력
-  const [passwordConfirmMessage, setPasswordConfirmMessage] =
-    useState<string>(''); // 패스워드 재입력 오류메시지
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false); // 패스워드 재입력 유효성 검사 통과
-  const [nickname, setNickname] = useState<string>(''); // 닉네임 입력값
-  const [nicknameMessage, setNicknameMessage] = useState<string>(''); // 닉네임 오류 메시지
-  const [isNickname, setIsNickname] = useState<boolean>(false); // 닉네임 유효성 검사 통과
-  const [emailValid, setEmailValid] = useState(false); // 회원가입 시 이메일 유효성 결과
-  const [passwordValid, setPasswordValid] = useState(false); // 회원가입 시 패스워드 유효성 결과
-  const emailRef = useRef<HTMLInputElement | null>(null); // 이메일 입력창 참조
+  const {
+    email,
+    setEmail,
+    emailMessage,
+    setEmailMessage,
+    isEmail,
+    setIsEmail,
+    emailValid,
+    setEmailValid,
+    emailRef,
+    password,
+    setPassword,
+    passwordMessage,
+    setPasswordMessage,
+    isPassword,
+    setIsPassword,
+    passwordValid,
+    setPasswordValid,
+    confirmPassword,
+    setConfirmPassword,
+    passwordConfirmMessage,
+    setPasswordConfirmMessage,
+    isPasswordConfirm,
+    setIsPasswordConfirm,
+    nickname,
+    setNickname,
+    nicknameMessage,
+    setNicknameMessage,
+    isNickname,
+    setIsNickname,
+  } = useAuth();
 
   // custom alert modal
   const {
