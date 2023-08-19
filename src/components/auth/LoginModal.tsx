@@ -1,16 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   browserSessionPersistence,
   setPersistence,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
 } from 'firebase/auth';
-import { authService } from '../../api/firebase';
+import { authService } from '../../apis/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
+import useAuthState from '../../hooks/useAuthState';
 
 const LoginModal = ({
   setLoginModalIsOpen,
@@ -19,14 +20,21 @@ const LoginModal = ({
   setLoginModalIsOpen: (state: boolean) => void;
   setSignUpModalIsOpen: (state: boolean) => void;
 }) => {
-  const [email, setEmail] = useState<string>(''); // 이메일 입력값
-  const [password, setPassword] = useState<string>(''); // 패스워드 입력값
-  const emailRef = useRef<HTMLInputElement | null>(null); // 이메일 입력창 참조
-  const passwordRef = useRef<HTMLInputElement | null>(null); // 패스워드 입력창 참조
-  const [emailValid, setEmailValid] = useState(false); // 로그인 시 이메일 유효성 결과
-  const [passwordValid, setPasswordValid] = useState(false); // 로그인 시 패스워드 유효성 결과
+  // useAuthState hook
+  const {
+    email,
+    setEmail,
+    emailValid,
+    setEmailValid,
+    emailRef,
+    password,
+    setPassword,
+    passwordValid,
+    setPasswordValid,
+    passwordRef,
+  } = useAuthState();
 
-  // custom modal
+  // custom alert modal
   const {
     openAlert,
     closeAlert,
@@ -88,16 +96,17 @@ const LoginModal = ({
   };
 
   // 비밀번호 찾기
-  const handlePasswordReset = async (email: string) => {
-    try {
-      await sendPasswordResetEmail(authService, email);
-      openAlert(
-        '비밀번호 재설정 이메일이 발송되었습니다. 이메일을 확인해주세요.'
-      );
-    } catch (error) {
-      openAlert('이메일 주소창에 이메일을 입력해주세요.');
-      emailRef.current?.focus();
-    }
+  const handlePasswordReset = (email: string) => {
+    sendPasswordResetEmail(authService, email)
+      .then(() => {
+        openAlert(
+          '비밀번호 재설정 이메일이 발송되었습니다. 이메일을 확인해주세요.'
+        );
+      })
+      .catch((error) => {
+        openAlert('이메일 주소창에 이메일을 입력해주세요.');
+        emailRef.current?.focus();
+      });
   };
 
   useEffect(() => {

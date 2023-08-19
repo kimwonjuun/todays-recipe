@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { dbService } from '../api/firebase';
-import { collection, getDocs } from 'firebase/firestore';
-import { RecipeDataState } from '../recoil/atoms';
 import { useSetRecoilState } from 'recoil';
+import { RecipeDataState } from '../recoil/atoms';
+import { collection, getDocs } from 'firebase/firestore';
+import { dbService } from './firebase';
 
-// 파이어스토어로부터 내가 가공한 데이터 가져오는 훅
-const useRecipeData = () => {
+// 파이어스토어에 업로드한 가공한 데이터 받아오기
+export const ProcessedRecipeData = () => {
   // Recoil: RecipeDataState
   const setRecipeData = useSetRecoilState(RecipeDataState);
 
@@ -29,5 +29,3 @@ const useRecipeData = () => {
     console.log('recipe data 들어옴 !');
   }, []);
 };
-
-export default useRecipeData;

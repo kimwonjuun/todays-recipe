@@ -7,18 +7,23 @@ import IngredientBox from '../components/detail/IngredientBox';
 import StepsBox from '../components/detail/StepsBox';
 import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
-import { authService } from '../api/firebase';
 import useAlert from '../hooks/useAlert';
-import { User } from 'firebase/auth';
 import AlertModal from '../components/common/AlertModal';
 import CommentBox from '../components/detail/CommentBox';
+import useUser from '../hooks/useUser';
 
 const Detail = () => {
-  // Recipe/RecipeBox, Search에서 받아온 각 레시피가 가지고 있는 고유한 id
+  // 레시피, 서치, 마이페이지에서 받아온 각 레시피가 가지고 있는 고유한 id
   const { id } = useParams<{ id: string }>();
 
   // recoil 도입
   const recipeData = useRecoilValue(RecipeDataState);
+
+  // 선택한 레시피를 담아줄 state
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+
+  // 유저 상태 업데이트: useUser hook
+  const { user, currentUserUid } = useUser();
 
   // 전체 레시피와 선택한 레시피의 고유한 id가 같다면 출력
   useEffect(() => {
@@ -27,33 +32,10 @@ const Detail = () => {
     );
     if (selectedRecipe) {
       setRecipe(selectedRecipe);
-      setLoading(false);
     }
   }, [recipeData, id]);
 
-  // 선택한 레시피를 담아줄 state
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-
-  // 로딩 상태
-  const [loading, setLoading] = useState<boolean>(true);
-
-  // 유저
-  const [user, setUser] = useState<User | null>(null);
-  const currentUserUid = user?.uid ?? undefined;
-
-  useEffect(() => {
-    // user 객체 존재 시 setUser 업데이트
-    const handleAuthStateChange = authService.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      }
-    });
-    return () => {
-      handleAuthStateChange();
-    };
-  }, []);
-
-  // custom modal
+  // custom alert modal
   const {
     openAlert,
     closeAlert,
@@ -61,16 +43,13 @@ const Detail = () => {
     alertMessage,
   } = useAlert();
 
-  // 댓글 인풋
-  const [inputValue, setInputValue] = useState<string>('');
-
   return (
     <>
       <PageWrapper>
-        {loading || !recipe ? (
+        {!recipe ? (
           <Loading />
         ) : (
-          <BoxWrapper>
+          <DetailBoxWrapper>
             <IngredientBox recipe={recipe} />
             <StepsBox recipe={recipe} />
             <CommentBox
@@ -79,10 +58,8 @@ const Detail = () => {
               currentUserUid={currentUserUid}
               id={id}
               openAlert={openAlert}
-              inputValue={inputValue}
-              setInputValue={setInputValue}
             />
-          </BoxWrapper>
+          </DetailBoxWrapper>
         )}
         <AlertModal
           message={alertMessage}
@@ -105,7 +82,7 @@ const PageWrapper = styled.div`
   background-color: ${COLORS.backGround};
 `;
 
-const BoxWrapper = styled.div`
+const DetailBoxWrapper = styled.div`
   width: 80rem;
   display: flex;
   flex-direction: column;

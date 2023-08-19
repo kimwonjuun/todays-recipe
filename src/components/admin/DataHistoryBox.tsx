@@ -1,17 +1,19 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { collection, orderBy, query, onSnapshot } from 'firebase/firestore';
-import { dbService } from '../../api/firebase';
+import { dbService } from '../../apis/firebase';
 import { useEffect } from 'react';
 import { formatDate } from '../../utils/date';
 
-interface EditHistory {
+interface DataHistoryBoxProps {
   description: string;
   updatedAt: number;
 }
 
-const EditHistoryBox = () => {
-  const [editHistoryList, setEditHistoryList] = useState<EditHistory[]>([]);
+const DataHistoryBox = () => {
+  const [editHistoryList, setEditHistoryList] = useState<DataHistoryBoxProps[]>(
+    []
+  );
 
   // 수정 사항 read
   const getEditDataHistory = async () => {
@@ -21,12 +23,12 @@ const EditHistoryBox = () => {
     // 수정된 날짜 순 정렬
     const sortedEditHistory = query(
       editHistoryRef,
-      orderBy('updatedAt', 'asc')
+      orderBy('updatedAt', 'desc')
     );
 
     // edit-data-history 컬렉션을 돌며 수정된 날짜 순으로 추가
     onSnapshot(sortedEditHistory, (querySnapshot) => {
-      const historyList: any = [];
+      const historyList: DataHistoryBoxProps[] = [];
 
       querySnapshot.forEach((doc) => {
         const list: any = {
@@ -53,7 +55,9 @@ const EditHistoryBox = () => {
             <History>
               <p style={{ width: '1rem' }}>{index + 1}.</p>
               <p>{history.description}</p>
-              <p style={{ width: '11rem' }}>{formatDate(history.updatedAt)}</p>
+              <p style={{ width: '12.5rem' }}>
+                {formatDate(history.updatedAt)}
+              </p>
             </History>
           ))}
         </Contents>
@@ -62,7 +66,7 @@ const EditHistoryBox = () => {
   );
 };
 
-export default EditHistoryBox;
+export default DataHistoryBox;
 
 const BoxWrapper = styled.div`
   width: 45rem;

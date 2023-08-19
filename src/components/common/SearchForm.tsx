@@ -38,7 +38,7 @@ const Input = styled.input`
   height: 4rem;
   border-radius: 1rem;
   border: 0.25rem solid ${COLORS.blue1};
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   outline: none;
   text-align: center;
   padding-right: 8rem;

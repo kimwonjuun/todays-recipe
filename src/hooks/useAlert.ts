@@ -1,13 +1,8 @@
 import { useState } from 'react';
 
-interface UseAlertProps {
-  alertMessage: string;
-  isOpen: boolean;
-  openAlert: (message: string) => void;
-  closeAlert: () => void;
-}
+// custom alert modal 사용하는 페이지에 사용할 훅
 
-const useAlert = (): UseAlertProps => {
+const useAlert = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 

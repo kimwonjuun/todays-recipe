@@ -1,36 +1,16 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { authService } from '../api/firebase';
+import { useState } from 'react';
 import ProfileBox from '../components/my/ProfileBox';
 import EditProfileModal from '../components/my/EditProfileModal';
 import UserAccountBox from '../components/my/UserAccountBox';
-import { User } from 'firebase/auth';
+import useUser from '../hooks/useUser';
 
 const My = () => {
-  const navigate = useNavigate();
+  // 유저 상태 업데이트: useUser hook
+  const { user, currentUserUid, photoURL, setPhotoURL } = useUser();
 
-  const [user, setUser] = useState<User | null>(null);
-  const currentUserUid = user?.uid ?? undefined;
-  const [photoURL, setPhotoURL] = useState<any>(null);
-
-  useEffect(() => {
-    // user 객체 존재 시 setUser, setPhoURL 업데이트. !user 시 메인으로 이동
-    const handleAuthStateChange = authService.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-        setPhotoURL(user.photoURL);
-      } else {
-        navigate('/error');
-      }
-    });
-    return () => {
-      handleAuthStateChange();
-    };
-  }, []);
-
-  // 모달
+  // 프로필 수정 클릭 시 나타나는 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);

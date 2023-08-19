@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import { authService } from '../../api/firebase';
+import { authService } from '../../apis/firebase';
 import { User } from 'firebase/auth';
 import useConfirm from '../../hooks/useConfirm';
 import ConfirmModal from '../common/ConfirmModal';
@@ -21,7 +21,7 @@ const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
     navigate('/');
   };
 
-  // custom window.confirm
+  // 로그아웃 확인할 때 띄울 custom window.confirm
   const { openConfirm, closeConfirm, handleConfirm, isOpen } =
     useConfirm(handleLogout);
 

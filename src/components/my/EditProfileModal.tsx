@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import { storage } from '../../api/firebase';
+import { storage } from '../../apis/firebase';
 import { User, updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import useConfirm from '../../hooks/useConfirm';
@@ -22,13 +22,17 @@ const EditProfileModal = ({
   photoURL,
   setPhotoURL,
 }: EditProfileModalProps) => {
-  // 프로필 이미지
-  const [tempPhotoURL, setTempPhotoURL] = useState<any>(null); // 임시 photoURL 상태
-  const [tempFileURL, setTempFileURL] = useState<any>(null); // 임시 file URL 상태
+  // 임시 이미지 url
+  const [tempPhotoURL, setTempPhotoURL] = useState<any>(null);
+
+  // 임시 파일 url
+  const [tempFileURL, setTempFileURL] = useState<any>(null);
+
+  // 파일 입력 참조
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 이미지 업로드
-  const uploadFirebase = async (e: any) => {
+  const handleUploadImage = async (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -43,10 +47,8 @@ const EditProfileModal = ({
   };
 
   // 카메라 이미지 클릭하면 동작
-  const onCameraClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+  const handleCameraClick = () => {
+    if (fileInputRef.current) fileInputRef.current.click();
   };
 
   // 프로필 닉네임
@@ -60,7 +62,7 @@ const EditProfileModal = ({
     setDisplayName(editDisplayName);
   };
 
-  // custom modal
+  // custom alert modal
   const {
     openAlert,
     closeAlert,
@@ -88,24 +90,25 @@ const EditProfileModal = ({
   };
 
   // 계정 삭제
-  const handleDeleteAccount = async () => {
+  const handleDeleteAccount = () => {
     if (user) {
-      try {
-        await user.delete();
-        sessionStorage.clear();
-        openAlert('회원 탈퇴가 완료되었습니다.');
-      } catch (error) {
-        console.log(error);
-        openAlert(
-          '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
-        );
-      }
+      user
+        .delete()
+        .then(() => {
+          sessionStorage.clear();
+          openAlert('회원 탈퇴가 완료되었습니다.');
+        })
+        .catch((error) => {
+          openAlert(
+            '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
+          );
+        });
     } else {
       return;
     }
   };
 
-  // custom window.confirm
+  // 계정 삭제 확인할 때 띄울 custom window.confirm
   const { openConfirm, closeConfirm, handleConfirm, isOpen } =
     useConfirm(handleDeleteAccount);
 
@@ -146,11 +149,11 @@ const EditProfileModal = ({
                   left: '90%',
                   transform: 'translate(-50%, -50%)',
                 }}
-                onChange={uploadFirebase}
+                onChange={handleUploadImage}
               />
               <ModalCamImg
                 src={require('../../assets/my/camera.png')}
-                onClick={onCameraClick}
+                onClick={handleCameraClick}
               />
             </ModalImg>
           </TopWrapper>

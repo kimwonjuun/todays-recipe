@@ -1,24 +1,19 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import SearchForm from '../components/common/SearchForm';
 import { koreanOnly } from '../utils/regex';
 import useAlert from '../hooks/useAlert';
 import AlertModal from '../components/common/AlertModal';
+import useInput from '../hooks/useInput';
 
 const Main = () => {
   const navigate = useNavigate();
 
-  // 검색창
-  const [inputValue, setInputValue] = useState<string>('');
+  // 메인페이지 검색창: useInput
+  const { inputValue, setInputValue, handleInputChange } = useInput('');
 
-  // 인풋창
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-
-  // custom modal
+  // custom alert modal
   const {
     openAlert,
     closeAlert,
@@ -48,7 +43,7 @@ const Main = () => {
             value={inputValue}
             onChange={handleInputChange}
             onSubmit={handleSearchSubmit}
-            placeholder="처리하고 싶은 재료(ex. 연두부) 또는 하고 싶은 요리(ex. 카프레제)를 검색하세요."
+            placeholder="처리하고 싶은 재료 또는 하고 싶은 요리를 검색하세요."
           />
         </BoxWrapper>
         <AlertModal

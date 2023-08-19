@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { formatDate } from '../../utils/date';
-import { dbService } from '../../api/firebase';
+import { dbService } from '../../apis/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 interface CommentListProps {
@@ -16,53 +16,55 @@ const CommentList = ({
   currentUserUid,
   openAlert,
 }: CommentListProps) => {
-  // 댓글 update
+  // 댓글 수정 상태
   const [isEditing, setIsEditing] = useState(false);
+
+  // 현재 수정중인 댓글
   const [editTarget, setEditTarget] = useState<UserCommentProps | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   // 수정 대상 댓글
-  const [editedComment, setEditedComment] = useState(''); // 수정된 댓글
+  const [editedComment, setEditedComment] = useState('');
 
-  const handleCommentEdit = async (comment: UserCommentProps) => {
-    try {
-      if (!currentUserUid) {
-        openAlert('로그인 후 댓글을 수정할 수 있습니다.');
-        return;
-      }
+  // 인풋 참조
+  const inputRef = useRef<HTMLInputElement>(null);
 
-      // 문서 가져오기
-      const userDocRef = doc(dbService, 'users', currentUserUid);
+  // 댓글 update
+  const handleCommentUpdate = () => {
+    if (!currentUserUid) {
+      openAlert('로그인 후 댓글을 수정할 수 있습니다.');
+      return;
+    }
 
-      // 문서 데이터 가져오기
-      const userDoc = await getDoc(userDocRef);
-      const userData = userDoc.data();
+    // 문서 참조
+    const userDocRef = doc(dbService, 'users', currentUserUid);
 
-      if (userData) {
-        const userComments = userData['user-comments'] ?? [];
-        const updatedComments = userComments.map((item: UserCommentProps) =>
-          item.updatedAt === comment.updatedAt
-            ? { ...item, comment: editedComment }
-            : item
-        );
+    // 문서 데이터 가져오기
+    getDoc(userDocRef)
+      .then((userDoc) => {
+        const userData = userDoc.data();
 
-        // 'user-comments' 필드의 배열에서 수정된 댓글로 업데이트
-        await updateDoc(userDocRef, { 'user-comments': updatedComments });
+        if (userData) {
+          const userComments = userData['user-comments'] ?? [];
+          const updatedComments = userComments.map((item: UserCommentProps) =>
+            item.updatedAt === editTarget?.updatedAt
+              ? { ...item, comment: editedComment }
+              : item
+          );
 
+          // "user-comments" 필드의 배열에서 수정된 댓글로 업데이트
+          return updateDoc(userDocRef, { 'user-comments': updatedComments });
+        }
+      })
+      .then(() => {
         // 수정 상태 변경
         setIsEditing(false);
-      }
-    } catch (error) {
-      console.error('댓글 수정 실패', error);
-    }
+      })
+      .catch((error) => {
+        console.error('댓글 수정 실패', error);
+      });
   };
 
-  const handleCommentUpdate = async () => {
-    if (editTarget) {
-      await handleCommentEdit(editTarget);
-    }
-  };
-
+  // 댓글 수정 클릭 시
   useEffect(() => {
     if (isEditing) {
       inputRef.current?.focus();
@@ -70,34 +72,37 @@ const CommentList = ({
   }, [isEditing]);
 
   // 댓글 delete
-  const handleCommentDelete = async (comment: UserCommentProps) => {
-    try {
-      if (!currentUserUid) {
-        openAlert('로그인 후 댓글을 삭제할 수 있습니다.');
-        return;
-      }
-
-      // 문서 가져오기
-      const userDocRef = doc(dbService, 'users', currentUserUid);
-
-      // 문서 데이터 가져오기
-      const userDoc = await getDoc(userDocRef);
-      const userData = userDoc.data();
-
-      if (userData) {
-        const userComments = userData['user-comments'] ?? [];
-        const updatedComments = userComments.filter(
-          (item: UserCommentProps) => item.updatedAt !== comment.updatedAt
-        );
-
-        // 'user-comments' 필드의 배열에서 삭제된 댓글을 제거한 후 문서 업데이트
-        await updateDoc(userDocRef, { 'user-comments': updatedComments });
-
-        openAlert('댓글이 삭제되었습니다.');
-      }
-    } catch (error) {
-      console.error('댓글 삭제 실패', error);
+  const handleCommentDelete = (comment: UserCommentProps) => {
+    if (!currentUserUid) {
+      openAlert('로그인 후 댓글을 삭제할 수 있습니다.');
+      return;
     }
+
+    // 문서 참조
+    const userDocRef = doc(dbService, 'users', currentUserUid);
+
+    // 문서 데이터 가져오기
+    getDoc(userDocRef)
+      .then((userDoc) => {
+        const userData = userDoc.data();
+
+        if (userData) {
+          const userComments = userData['user-comments'] ?? [];
+          // 선택한 댓글 필터링
+          const updatedComments = userComments.filter(
+            (item: UserCommentProps) => item.updatedAt !== comment.updatedAt
+          );
+
+          // 'user-comments' 필드의 배열에서 선택한 댓글만 필터링 후 업데이트
+          return updateDoc(userDocRef, { 'user-comments': updatedComments });
+        }
+      })
+      .then(() => {
+        openAlert('댓글이 삭제되었습니다.');
+      })
+      .catch((error) => {
+        openAlert('댓글 삭제 실패.');
+      });
   };
 
   return (
@@ -122,21 +127,19 @@ const CommentList = ({
                     <>
                       {isEditing && editTarget === item ? (
                         <>
-                          <CancelButton
+                          <Button
                             onClick={() => {
                               setIsEditing(false);
                               setEditTarget(null);
                             }}
                           >
                             취소
-                          </CancelButton>
-                          <EditSaveButton onClick={handleCommentUpdate}>
-                            완료
-                          </EditSaveButton>
+                          </Button>
+                          <Button onClick={handleCommentUpdate}>완료</Button>
                         </>
                       ) : (
                         <>
-                          <EditButton
+                          <Button
                             onClick={() => {
                               setIsEditing(true);
                               setEditTarget(item);
@@ -144,12 +147,10 @@ const CommentList = ({
                             }}
                           >
                             수정
-                          </EditButton>
-                          <DeleteButton
-                            onClick={() => handleCommentDelete(item)}
-                          >
+                          </Button>
+                          <Button onClick={() => handleCommentDelete(item)}>
                             삭제
-                          </DeleteButton>
+                          </Button>
                         </>
                       )}
                     </>
@@ -255,14 +256,7 @@ const UploadedAt = styled.div`
   color: ${COLORS.gray};
 `;
 
-const EditButton = styled.div`
-  font-size: 1rem;
-  margin-right: 1rem;
-  color: ${COLORS.gray};
-  cursor: pointer;
-`;
-
-const DeleteButton = styled.div`
+const Button = styled.div`
   font-size: 1rem;
   margin-right: 1rem;
   color: ${COLORS.gray};
@@ -272,18 +266,4 @@ const DeleteButton = styled.div`
 const UserName = styled.p`
   font-weight: bold;
   margin-right: 1rem;
-`;
-
-const EditSaveButton = styled.div`
-  font-size: 1rem;
-  margin-right: 1rem;
-  color: ${COLORS.gray};
-  cursor: pointer;
-`;
-
-const CancelButton = styled.div`
-  font-size: 1rem;
-  margin-right: 1rem;
-  color: ${COLORS.gray};
-  cursor: pointer;
 `;

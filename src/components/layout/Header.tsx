@@ -2,14 +2,18 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import { firebaseConfig } from '../../api/firebase';
+import { firebaseConfig } from '../../apis/firebase';
 import LoginModal from '../auth/LoginModal';
 import SignUpModal from '../auth/SignUpModal';
 
 const Header = () => {
   const navigate = useNavigate();
-  const [LoginModalIsOpen, setLoginModalIsOpen] = useState(false); // 로그인 모달 상태
-  const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false); // 회원가입 모달 상태
+
+  // 로그인 모달 상태
+  const [LoginModalIsOpen, setLoginModalIsOpen] = useState(false);
+
+  // 회원가입 모달 상태
+  const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false);
 
   // 로그인 모달
   const openLoginModal = () => {
@@ -66,6 +70,16 @@ const Header = () => {
               >
                 마이페이지
               </Text>
+              {JSON.parse(isLoggedIn).email === 'admin@admin.ad' && (
+                <Text
+                  style={NaviSelectedStyle('/admin')}
+                  onClick={() => {
+                    navigate('/admin');
+                  }}
+                >
+                  관리자페이지
+                </Text>
+              )}
             </TextWrapper>
           </>
         ) : (
