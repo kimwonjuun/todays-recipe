@@ -101,7 +101,7 @@ const CommentList = ({
         openAlert('댓글이 삭제되었습니다.');
       })
       .catch((error) => {
-        console.error('댓글 삭제 실패', error);
+        openAlert('댓글 삭제 실패.');
       });
   };
 

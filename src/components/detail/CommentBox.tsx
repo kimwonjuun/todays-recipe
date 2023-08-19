@@ -87,7 +87,7 @@ const CommentBox = ({
         setInputValue('');
       })
       .catch((error) => {
-        console.error('댓글 저장에 실패했습니다.', error);
+        openAlert('댓글 저장 실패.');
       });
   };
 

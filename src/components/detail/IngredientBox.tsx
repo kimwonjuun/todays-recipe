@@ -77,7 +77,6 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
         openAlert(like ? '찜 목록에서 삭제했어요.' : '레시피 찜 완료!');
       })
       .catch((error) => {
-        console.error('레시피 찜에 실패했습니다.', error);
         openAlert('레시피 찜에 실패했습니다.');
       });
   };

@@ -86,7 +86,6 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
         getMyIngredients();
       })
       .catch((error) => {
-        console.error('냉장고에 재료를 추가하지 못했습니다.', error);
         openAlert('냉장고에 재료를 추가하지 못했습니다.');
       });
   };
@@ -117,7 +116,6 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
         getMyIngredients();
       })
       .catch((error) => {
-        console.error('냉장고에서 재료를 삭제하지 못했습니다.', error);
         openAlert('냉장고에서 재료를 삭제하지 못했습니다.');
       });
   };
