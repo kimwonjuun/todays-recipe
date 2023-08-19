@@ -44,7 +44,7 @@ const useInfiniteScroll = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  return { currentPage, setCurrentPage, loadMorePage, isLoading };
+  return { currentPage, isLoading };
 };
 
 export default useInfiniteScroll;

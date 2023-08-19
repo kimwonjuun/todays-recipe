@@ -50,9 +50,13 @@ const RecipeBox = () => {
           {showRecipes.map((recipe: Recipe) => (
             <RecipeCard recipe={recipe} key={recipe.id} />
           ))}
-          {isLoading && !noRecipeMessage && (
-            <LoadingMessage>더 많은 레시피를 불러오고 있어요 😎</LoadingMessage>
-          )}
+          {isLoading &&
+            !noRecipeMessage &&
+            currentPage * 8 < sortedRecipes(filteredRecipes).length && (
+              <LoadingMessage>
+                더 많은 레시피를 불러오고 있어요 😎
+              </LoadingMessage>
+            )}
           {showRecipes.length === 0 && noRecipeMessage && (
             <NoRecipeMessage>{noRecipeMessage}</NoRecipeMessage>
           )}

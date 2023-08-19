@@ -127,7 +127,7 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
           <MyIngredients>
             {isLoading ? (
               <p>재료 데이터를 불러오는 중 😎</p>
-            ) : myIngredients.length > 0 ? (
+            ) : myIngredients && myIngredients.length > 0 ? (
               myIngredients.map((ingredient, index) => (
                 <IngredientItem
                   onClick={() => {

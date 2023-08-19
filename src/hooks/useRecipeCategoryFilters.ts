@@ -48,7 +48,11 @@ const useRecipeCategoryFilters = (
   const filteredRecipes =
     selectedCategory && selectedCategory !== '전체 레시피'
       ? recipeData.filter((recipe: Recipe) => {
-          if (selectedCategory === '나의 냉장고' && myIngredients.length > 0) {
+          if (
+            selectedCategory === '나의 냉장고' &&
+            myIngredients &&
+            myIngredients.length > 0
+          ) {
             return canMakeRecipe(recipe.ingredients, myIngredients);
           }
           return recipe.type === selectedCategory;
