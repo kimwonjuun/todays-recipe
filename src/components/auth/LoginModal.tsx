@@ -11,7 +11,7 @@ import COLORS from '../../styles/colors';
 import styled from 'styled-components';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
-import useAuth from '../../hooks/useAuth';
+import useAuthState from '../../hooks/useAuthState';
 
 const LoginModal = ({
   setLoginModalIsOpen,
@@ -20,7 +20,7 @@ const LoginModal = ({
   setLoginModalIsOpen: (state: boolean) => void;
   setSignUpModalIsOpen: (state: boolean) => void;
 }) => {
-  // useAuth
+  // useAuthState hook
   const {
     email,
     setEmail,
@@ -32,7 +32,7 @@ const LoginModal = ({
     passwordValid,
     setPasswordValid,
     passwordRef,
-  } = useAuth();
+  } = useAuthState();
 
   // custom alert modal
   const {

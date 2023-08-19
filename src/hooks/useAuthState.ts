@@ -1,6 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 
-const useAuth = () => {
+// 로그인, 회원가입 관련 state들을 모아둔 훅
+// 실시간 유효성검사 등이 추가되어 state들이 많아져 관련 코드를 전부 모아둠
+
+const useAuthState = () => {
   // 이메일 관련 state
   const [email, setEmail] = useState<string>(''); // 이메일 입력값
   const [emailMessage, setEmailMessage] = useState<string>(''); // 이메일 오류 메시지
@@ -60,4 +63,4 @@ const useAuth = () => {
   };
 };
 
-export default useAuth;
+export default useAuthState;

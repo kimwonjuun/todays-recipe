@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import {
   browserSessionPersistence,
   createUserWithEmailAndPassword,
@@ -11,7 +11,7 @@ import COLORS from '../../styles/colors';
 import styled from 'styled-components';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
-import useAuth from '../../hooks/useAuth';
+import useAuthState from '../../hooks/useAuthState';
 
 const SignUpModal = ({
   setLoginModalIsOpen,
@@ -20,6 +20,7 @@ const SignUpModal = ({
   setLoginModalIsOpen: (state: boolean) => void;
   setSignUpModalIsOpen: (state: boolean) => void;
 }) => {
+  // useAuthState hook
   const {
     email,
     setEmail,
@@ -50,7 +51,7 @@ const SignUpModal = ({
     setNicknameMessage,
     isNickname,
     setIsNickname,
-  } = useAuth();
+  } = useAuthState();
 
   // custom alert modal
   const {
