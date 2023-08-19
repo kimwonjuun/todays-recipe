@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   browserSessionPersistence,
   setPersistence,
@@ -11,6 +11,7 @@ import COLORS from '../../styles/colors';
 import styled from 'styled-components';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
+import useAuth from '../../hooks/useAuth';
 
 const LoginModal = ({
   setLoginModalIsOpen,
@@ -19,12 +20,19 @@ const LoginModal = ({
   setLoginModalIsOpen: (state: boolean) => void;
   setSignUpModalIsOpen: (state: boolean) => void;
 }) => {
-  const [email, setEmail] = useState<string>(''); // 이메일 입력값
-  const [password, setPassword] = useState<string>(''); // 패스워드 입력값
-  const emailRef = useRef<HTMLInputElement | null>(null); // 이메일 입력창 참조
-  const passwordRef = useRef<HTMLInputElement | null>(null); // 패스워드 입력창 참조
-  const [emailValid, setEmailValid] = useState(false); // 로그인 시 이메일 유효성 결과
-  const [passwordValid, setPasswordValid] = useState(false); // 로그인 시 패스워드 유효성 결과
+  // useAuth
+  const {
+    email,
+    setEmail,
+    emailValid,
+    setEmailValid,
+    emailRef,
+    password,
+    setPassword,
+    passwordValid,
+    setPasswordValid,
+    passwordRef,
+  } = useAuth();
 
   // custom alert modal
   const {
