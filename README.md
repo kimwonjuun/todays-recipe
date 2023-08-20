@@ -146,7 +146,7 @@
  ┣ 📜App.tsx
  ┗ 📜index.tsx
 ```
-- **api**: api 관련 파일
+- **apis**: api 관련 파일
 - **assets**: 로고 및 이미지 파일
 - **components**: 각 페이지에서 생성된 컴포넌트 파일 / common: 2회 이상 재사용되는 공용 컴포넌트 파일
 - **hooks**: 커스텀 훅 파일
