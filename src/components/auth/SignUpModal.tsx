@@ -11,7 +11,7 @@ import COLORS from '../../styles/colors';
 import styled from 'styled-components';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
-import useAuthState from '../../hooks/useAuthState';
+import useAuth from '../../hooks/useAuth';
 
 const SignUpModal = ({
   setLoginModalIsOpen,
@@ -51,7 +51,7 @@ const SignUpModal = ({
     setNicknameMessage,
     isNickname,
     setIsNickname,
-  } = useAuthState();
+  } = useAuth();
 
   // custom alert modal
   const {
