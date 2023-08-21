@@ -13,7 +13,7 @@ const MyLikesBox = ({ currentUserUid }: MyLikesBoxProps) => {
   const [likedRecipes, setLikedRecipes] = useState<Recipe[]>([]);
 
   // 로딩 상태
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // 내가 찜한 레시피 불러오기
   const getMyLikedRecipes = async () => {
