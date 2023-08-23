@@ -1,11 +1,15 @@
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const NotFound = () => {
   const navigate = useNavigate();
   return (
     <>
+      <Helmet>
+        <title>페이지를 찾을 수 없습니다. - todays recipe</title>
+      </Helmet>
       <PageWrapper>
         <BoxWrapper>
           <ImgBox>

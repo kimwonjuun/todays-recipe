@@ -5,6 +5,7 @@ import ProfileBox from '../components/my/ProfileBox';
 import EditProfileModal from '../components/my/EditProfileModal';
 import UserAccountBox from '../components/my/UserAccountBox';
 import useUser from '../hooks/useUser';
+import { Helmet } from 'react-helmet-async';
 
 const My = () => {
   // 유저 상태 업데이트: useUser hook
@@ -18,6 +19,9 @@ const My = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{`${user?.displayName}님의 마이페이지 - todays recipe`}</title>
+      </Helmet>
       <PageWrapper>
         <BoxWrapper>
           <ProfileBox openModal={openModal} photoURL={photoURL} user={user} />
