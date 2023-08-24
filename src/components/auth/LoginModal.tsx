@@ -124,6 +124,7 @@ const LoginModal = ({
               <Logo>
                 <LogoImg
                   src={require('../../assets/common/logo.png')}
+                  alt="logo"
                 ></LogoImg>
               </Logo>
               <Input

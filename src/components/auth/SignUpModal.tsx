@@ -358,12 +358,3 @@ const Span = styled.span`
     color: ${COLORS.red};
   }
 `;
-
-const Logo = styled.div`
-  width: 9rem;
-  height: 9rem;
-`;
-
-const LogoImg = styled.img`
-  width: 100%;
-`;

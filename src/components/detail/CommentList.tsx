@@ -117,6 +117,7 @@ const CommentList = ({
                     ? item.profilePic
                     : require('../../assets/my/default_image.png')
                 }
+                alt="user profile image"
               />
 
               <CommentContentWrapper>

@@ -13,7 +13,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
     <>
       <RecipeCardWrapper onClick={handleCardClick}>
         <RecipeImgWrapper>
-          <img src={recipe.image} />
+          <img src={recipe.image} alt={recipe.name} />
         </RecipeImgWrapper>
         <RecipeTextWrapper>
           <p>{recipe.type}</p>

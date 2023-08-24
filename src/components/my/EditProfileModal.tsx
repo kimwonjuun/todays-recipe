@@ -136,6 +136,7 @@ const EditProfileModal = ({
                   photoURL ||
                   require('../../assets/my/default_image.png')
                 }
+                alt="default image"
               />
               <input
                 type="file"
@@ -153,6 +154,7 @@ const EditProfileModal = ({
               />
               <ModalCamImg
                 src={require('../../assets/my/camera.png')}
+                alt="camera"
                 onClick={handleCameraClick}
               />
             </ModalImg>

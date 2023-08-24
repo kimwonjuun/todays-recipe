@@ -40,7 +40,7 @@ const Header = () => {
       <HeaderWrapper>
         <Logo>
           <Link to={'/'}>
-            <LogoImg src={require('../../assets/common/logo.png')}></LogoImg>
+            <LogoImg src={require('../../assets/common/logo.png')} alt="logo" />
           </Link>
         </Logo>
         {isLoggedIn ? (

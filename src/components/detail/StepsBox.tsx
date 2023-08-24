@@ -15,7 +15,10 @@ const StepsBox = ({ recipe }: RecipeProps) => {
               return (
                 <StepWrapper key={index}>
                   <StepsImg>
-                    <img src={recipe.makeImage[index]} />
+                    <img
+                      src={recipe.makeImage[index]}
+                      alt="cooking process image"
+                    />
                   </StepsImg>
                   <StepsText>{step}</StepsText>
                 </StepWrapper>

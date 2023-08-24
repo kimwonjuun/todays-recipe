@@ -149,6 +149,7 @@ const DataProcessingFormBox = () => {
             <img
               src={require('../../assets/my/default_image.png')}
               onClick={handleProcessRecipeList}
+              alt="data processing button"
             />
           </EditApiButton>
           <SubmitForm
