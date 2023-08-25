@@ -20,7 +20,7 @@ const LoginModal = ({
   setLoginModalIsOpen: (state: boolean) => void;
   setSignUpModalIsOpen: (state: boolean) => void;
 }) => {
-  // useAuthState hook
+  // useAuth hook
   const {
     email,
     setEmail,
