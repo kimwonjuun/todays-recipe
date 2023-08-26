@@ -13,6 +13,7 @@ import useRecipeCategoryFilters from '../../hooks/useRecipeCategoryFilters';
 const RecipeBox = () => {
   // Recoil: RecipeDataState
   const recipeData = useRecoilValue(RecipeDataState);
+
   // 페이지 스크롤 상태 기억: useScrollMemory hook
   useMemoScrollPosition();
 
@@ -35,7 +36,11 @@ const RecipeBox = () => {
 
   // infinity scroll hook
   const { currentPage, isLoading } = useInfiniteScroll();
+
+  // 나타날 레시피
   const showRecipes = sortedRecipes(filteredRecipes).slice(0, currentPage * 8);
+  // 더 이상 나타낼 레시피가 없을 떄
+  const noMoreRecipe = currentPage * 8 >= sortedRecipes(filteredRecipes).length;
 
   return (
     <>
@@ -50,15 +55,14 @@ const RecipeBox = () => {
           {showRecipes.map((recipe: Recipe) => (
             <RecipeCard recipe={recipe} key={recipe.id} />
           ))}
-          {isLoading &&
-            !noRecipeMessage &&
-            currentPage * 8 < sortedRecipes(filteredRecipes).length && (
-              <LoadingMessage>
-                더 많은 레시피를 불러오고 있어요 😎
-              </LoadingMessage>
-            )}
+          {!noMoreRecipe && isLoading && !noRecipeMessage && (
+            <LoadingMessage>더 많은 레시피를 불러오고 있어요 😎</LoadingMessage>
+          )}
+          {noMoreRecipe && (
+            <LoadingMessage>더 이상 표시할 레시피가 없어요 🫤</LoadingMessage>
+          )}
           {showRecipes.length === 0 && noRecipeMessage && (
-            <NoRecipeMessage>{noRecipeMessage}</NoRecipeMessage>
+            <NoRecipeView>{noRecipeMessage}</NoRecipeView>
           )}
         </Recipes>
       </BoxWrapper>
@@ -93,7 +97,8 @@ const LoadingMessage = styled.p`
   text-align: center;
   width: 100%;
 `;
-const NoRecipeMessage = styled.div`
+
+const NoRecipeView = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;

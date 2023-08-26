@@ -19,9 +19,12 @@ const CommentForm = ({
     <Form onSubmit={onSubmit}>
       <UserProfileWrapper>
         {user?.photoURL ? (
-          <UserProfileImg src={user.photoURL} />
+          <UserProfileImg src={user.photoURL} alt="users profile image" />
         ) : (
-          <UserProfileImg src={require('../../assets/my/default_image.png')} />
+          <UserProfileImg
+            src={require('../../assets/my/default_image.webp')}
+            alt="users profile image"
+          />
         )}
       </UserProfileWrapper>
       <CommentInputWrapper>

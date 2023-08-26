@@ -11,6 +11,7 @@ import useAlert from '../hooks/useAlert';
 import AlertModal from '../components/common/AlertModal';
 import CommentBox from '../components/detail/CommentBox';
 import useUser from '../hooks/useUser';
+import { Helmet } from 'react-helmet-async';
 
 const Detail = () => {
   // 레시피, 서치, 마이페이지에서 받아온 각 레시피가 가지고 있는 고유한 id
@@ -45,6 +46,9 @@ const Detail = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{`${recipe?.name} 레시피 정보 - todays recipe`}</title>
+      </Helmet>
       <PageWrapper>
         {!recipe ? (
           <Loading />

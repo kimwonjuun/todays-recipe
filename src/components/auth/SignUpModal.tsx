@@ -11,7 +11,7 @@ import COLORS from '../../styles/colors';
 import styled from 'styled-components';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
-import useAuthState from '../../hooks/useAuthState';
+import useAuth from '../../hooks/useAuth';
 
 const SignUpModal = ({
   setLoginModalIsOpen,
@@ -20,7 +20,7 @@ const SignUpModal = ({
   setLoginModalIsOpen: (state: boolean) => void;
   setSignUpModalIsOpen: (state: boolean) => void;
 }) => {
-  // useAuthState hook
+  // useAuth hook
   const {
     email,
     setEmail,
@@ -51,7 +51,7 @@ const SignUpModal = ({
     setNicknameMessage,
     isNickname,
     setIsNickname,
-  } = useAuthState();
+  } = useAuth();
 
   // custom alert modal
   const {
@@ -357,13 +357,4 @@ const Span = styled.span`
   &.error {
     color: ${COLORS.red};
   }
-`;
-
-const Logo = styled.div`
-  width: 9rem;
-  height: 9rem;
-`;
-
-const LogoImg = styled.img`
-  width: 100%;
 `;

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 const useInfiniteScroll = () => {
   // 로딩 상태
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // 초기 페이지를 세션에서 가져옴. 없으면 1로 설정.
   const initialPage = () => {
