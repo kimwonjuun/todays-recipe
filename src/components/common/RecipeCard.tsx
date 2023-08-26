@@ -13,7 +13,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
     <>
       <RecipeCardWrapper onClick={handleCardClick}>
         <RecipeImgWrapper>
-          <RecipeImg src={recipe.image} alt={recipe.name} loading="lazy" />
+          <img src={recipe.image} alt={recipe.name} loading="lazy" />
         </RecipeImgWrapper>
         <RecipeTextWrapper>
           <p>{recipe.type}</p>
@@ -47,17 +47,18 @@ const RecipeCardWrapper = styled.div`
 `;
 
 const RecipeImgWrapper = styled.div`
-  width: 17.5rem;
+  width: inherit;
   height: 20rem;
   overflow: hidden;
-`;
 
-const RecipeImg = styled.img`
-  width: 17.5rem;
-  height: 20rem;
-  object-fit: cover;
-  transition: transform 0.4s ease-in-out;
-  &:hover {
+  & > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease-in-out;
+  }
+
+  &:hover > img {
     transform: scale(1.1);
   }
 `;
