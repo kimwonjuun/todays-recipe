@@ -13,7 +13,7 @@ const NotFound = () => {
       <PageWrapper>
         <BoxWrapper>
           <ImgBox>
-            <Img src={require('../assets/error/error.png')} alt="error" />
+            <Img src={require('../assets/error/error.webp')} alt="error" />
           </ImgBox>
           <TextBox>
             <TopText>

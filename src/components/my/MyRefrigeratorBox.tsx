@@ -158,7 +158,7 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
           }}
         >
           <img
-            src={require('../../assets/my/refrigerator.gif')}
+            src={require('../../assets/my/refrigerator.webp')}
             alt="refrigerator"
           />
         </Img>

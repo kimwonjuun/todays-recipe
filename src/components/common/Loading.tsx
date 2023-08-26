@@ -6,7 +6,7 @@ const Loading = () => {
     <>
       <Wrapper>
         <LoadingImage
-          src={require('../../assets/common/loading.png')}
+          src={require('../../assets/common/loading.webp')}
           alt="loading"
         />
       </Wrapper>

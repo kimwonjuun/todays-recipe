@@ -31,7 +31,7 @@ const ProfileBox = ({ user, openModal, photoURL }: ProfileBoxProps) => {
         <Profile>
           <ProfileImg>
             <Img
-              src={photoURL || require('../../assets/my/default_image.png')}
+              src={photoURL || require('../../assets/my/default_image.webp')}
               alt="user profile image"
             />
           </ProfileImg>

@@ -122,12 +122,12 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
             <Like onClick={handleLikeButtonClick}>
               {like ? (
                 <img
-                  src={require('../../assets/detail/heart.png')}
+                  src={require('../../assets/detail/heart.webp')}
                   alt="like button"
                 />
               ) : (
                 <img
-                  src={require('../../assets/detail/empty-heart.png')}
+                  src={require('../../assets/detail/empty-heart.webp')}
                   alt="unlike button"
                 />
               )}
@@ -140,7 +140,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
             <List>
               <Item>
                 <img
-                  src={require('../../assets/detail/ring1.png')}
+                  src={require('../../assets/detail/ring1.webp')}
                   alt="ingredients ring"
                 />
                 <ItemText>
@@ -150,7 +150,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
               </Item>
               <Item>
                 <img
-                  src={require('../../assets/detail/ring2.png')}
+                  src={require('../../assets/detail/ring2.webp')}
                   alt="ingredients ring"
                 />
                 <ItemText>
@@ -160,7 +160,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
               </Item>
               <Item>
                 <img
-                  src={require('../../assets/detail/ring1.png')}
+                  src={require('../../assets/detail/ring1.webp')}
                   alt="ingredients ring"
                 />
                 <ItemText>
@@ -170,7 +170,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
               </Item>
               <Item>
                 <img
-                  src={require('../../assets/detail/ring2.png')}
+                  src={require('../../assets/detail/ring2.webp')}
                   alt="ingredients ring"
                 />
                 <ItemText>
@@ -180,7 +180,7 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
               </Item>
               <Item>
                 <img
-                  src={require('../../assets/detail/ring1.png')}
+                  src={require('../../assets/detail/ring1.webp')}
                   alt="ingredients ring"
                 />
                 <ItemText>

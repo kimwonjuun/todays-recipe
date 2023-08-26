@@ -123,7 +123,7 @@ const LoginModal = ({
             <InputWrapper>
               <Logo>
                 <LogoImg
-                  src={require('../../assets/common/logo.png')}
+                  src={require('../../assets/common/logo.webp')}
                   alt="logo"
                 ></LogoImg>
               </Logo>

@@ -13,6 +13,7 @@ import useRecipeCategoryFilters from '../../hooks/useRecipeCategoryFilters';
 const RecipeBox = () => {
   // Recoil: RecipeDataState
   const recipeData = useRecoilValue(RecipeDataState);
+
   // 페이지 스크롤 상태 기억: useScrollMemory hook
   useMemoScrollPosition();
 
@@ -90,6 +91,8 @@ const Recipes = styled.div`
   & > p {
     text-align: center;
   }
+
+  /* background-color: yellow; */
 `;
 
 const LoadingMessage = styled.p`

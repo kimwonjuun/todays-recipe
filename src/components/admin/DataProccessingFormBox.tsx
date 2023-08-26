@@ -147,7 +147,7 @@ const DataProcessingFormBox = () => {
           </GuideBox>
           <EditApiButton>
             <img
-              src={require('../../assets/my/default_image.png')}
+              src={require('../../assets/my/default_image.webp')}
               onClick={handleProcessRecipeList}
               alt="data processing button"
             />

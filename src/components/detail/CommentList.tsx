@@ -115,7 +115,7 @@ const CommentList = ({
                 src={
                   item.profilePic
                     ? item.profilePic
-                    : require('../../assets/my/default_image.png')
+                    : require('../../assets/my/default_image.webp')
                 }
                 alt="user profile image"
               />
