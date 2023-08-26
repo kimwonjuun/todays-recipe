@@ -20,11 +20,11 @@ const Search = () => {
         <title>{`${keyword} 검색 결과 - todays recipe`}</title>
       </Helmet>
       <PageWrapper>
-        {recipeData.length === 0 || !keyword ? (
+        {/* {recipeData.length === 0 || !keyword ? (
           <Loading />
-        ) : (
-          <ResultBox keyword={keyword} />
-        )}
+        ) : ( */}
+        <ResultBox keyword={keyword} />
+        {/* )} */}
       </PageWrapper>
     </>
   );
