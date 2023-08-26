@@ -6,6 +6,7 @@ import DataHistoryBox from '../components/admin/DataHistoryBox';
 import DataProcessingFormBox from '../components/admin/DataProccessingFormBox';
 import { authService } from '../apis/firebase';
 import { User } from 'firebase/auth';
+import { Helmet } from 'react-helmet-async';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -30,6 +31,9 @@ const Admin = () => {
 
   return (
     <>
+      <Helmet>
+        <title>todays recipe</title>
+      </Helmet>
       <PageWrapper>
         <BoxWrapper>
           <DataHistoryBox />

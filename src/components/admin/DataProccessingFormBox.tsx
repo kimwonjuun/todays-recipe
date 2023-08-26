@@ -35,7 +35,7 @@ const DataProcessingFormBox = () => {
       recipeData.map((recipe: any) =>
         addDoc(collection(dbService, 'recipe-list'), {
           id: recipe.RCP_SEQ,
-          image: recipe.ATT_FILE_NO_MK,
+          image: recipe.ATT_FILE_NO_MK.replace('http://', 'https://'),
           name: recipe.RCP_NM,
           type: recipe.RCP_PAT2,
           calorie: recipe.INFO_ENG,
@@ -50,24 +50,24 @@ const DataProcessingFormBox = () => {
             .join(', '),
           tip: recipe.RCP_NA_TIP.replace(/•/g, ''),
           make: [
-            recipe.MANUAL01,
-            recipe.MANUAL02,
-            recipe.MANUAL03,
-            recipe.MANUAL04,
-            recipe.MANUAL05,
-            recipe.MANUAL06,
-            recipe.MANUAL07,
-            recipe.MANUAL08,
+            recipe.MANUAL01.replace('http://', 'https://'),
+            recipe.MANUAL02.replace('http://', 'https://'),
+            recipe.MANUAL03.replace('http://', 'https://'),
+            recipe.MANUAL04.replace('http://', 'https://'),
+            recipe.MANUAL05.replace('http://', 'https://'),
+            recipe.MANUAL06.replace('http://', 'https://'),
+            recipe.MANUAL07.replace('http://', 'https://'),
+            recipe.MANUAL08.replace('http://', 'https://'),
           ],
           makeImage: [
-            recipe.MANUAL_IMG01,
-            recipe.MANUAL_IMG02,
-            recipe.MANUAL_IMG03,
-            recipe.MANUAL_IMG04,
-            recipe.MANUAL_IMG05,
-            recipe.MANUAL_IMG06,
-            recipe.MANUAL_IMG07,
-            recipe.MANUAL_IMG08,
+            recipe.MANUAL_IMG01.replace('http://', 'https://'),
+            recipe.MANUAL_IMG02.replace('http://', 'https://'),
+            recipe.MANUAL_IMG03.replace('http://', 'https://'),
+            recipe.MANUAL_IMG04.replace('http://', 'https://'),
+            recipe.MANUAL_IMG05.replace('http://', 'https://'),
+            recipe.MANUAL_IMG06.replace('http://', 'https://'),
+            recipe.MANUAL_IMG07.replace('http://', 'https://'),
+            recipe.MANUAL_IMG08.replace('http://', 'https://'),
           ],
         })
       )
@@ -147,8 +147,9 @@ const DataProcessingFormBox = () => {
           </GuideBox>
           <EditApiButton>
             <img
-              src={require('../../assets/my/default_image.png')}
+              src={require('../../assets/my/default_image.webp')}
               onClick={handleProcessRecipeList}
+              alt="data processing button"
             />
           </EditApiButton>
           <SubmitForm

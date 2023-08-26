@@ -9,7 +9,7 @@ const useMyIngredients = (currentUserUid?: string) => {
   const [myIngredients, setMyIngredients] = useState([]);
 
   // 로딩 상태
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // 내가 입력한 재료 출력
   const getMyIngredients = async () => {

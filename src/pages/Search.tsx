@@ -5,6 +5,7 @@ import Loading from '../components/common/Loading';
 import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 import ResultBox from '../components/search/ResultBox';
+import { Helmet } from 'react-helmet-async';
 
 const Search = () => {
   // Recoil: RecipeDataState
@@ -15,12 +16,15 @@ const Search = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{`${keyword} 검색 결과 - todays recipe`}</title>
+      </Helmet>
       <PageWrapper>
-        {recipeData.length === 0 || !keyword ? (
+        {/* {recipeData.length === 0 || !keyword ? (
           <Loading />
-        ) : (
-          <ResultBox keyword={keyword} />
-        )}
+        ) : ( */}
+        <ResultBox keyword={keyword} />
+        {/* )} */}
       </PageWrapper>
     </>
   );

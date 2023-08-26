@@ -11,7 +11,7 @@ import COLORS from '../../styles/colors';
 import styled from 'styled-components';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
-import useAuthState from '../../hooks/useAuthState';
+import useAuth from '../../hooks/useAuth';
 
 const LoginModal = ({
   setLoginModalIsOpen,
@@ -20,7 +20,7 @@ const LoginModal = ({
   setLoginModalIsOpen: (state: boolean) => void;
   setSignUpModalIsOpen: (state: boolean) => void;
 }) => {
-  // useAuthState hook
+  // useAuth hook
   const {
     email,
     setEmail,
@@ -32,7 +32,7 @@ const LoginModal = ({
     passwordValid,
     setPasswordValid,
     passwordRef,
-  } = useAuthState();
+  } = useAuth();
 
   // custom alert modal
   const {
@@ -123,7 +123,8 @@ const LoginModal = ({
             <InputWrapper>
               <Logo>
                 <LogoImg
-                  src={require('../../assets/common/logo.png')}
+                  src={require('../../assets/common/logo.webp')}
+                  alt="logo"
                 ></LogoImg>
               </Logo>
               <Input

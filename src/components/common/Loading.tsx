@@ -5,7 +5,10 @@ const Loading = () => {
   return (
     <>
       <Wrapper>
-        <LoadingImage src={require('../../assets/common/loading.png')} />
+        <LoadingImage
+          src={require('../../assets/common/loading.webp')}
+          alt="loading"
+        />
       </Wrapper>
     </>
   );

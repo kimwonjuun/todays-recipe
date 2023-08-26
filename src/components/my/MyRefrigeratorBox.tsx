@@ -157,7 +157,10 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
             openAlert('냉장고');
           }}
         >
-          <img src={require('../../assets/my/refrigerator.gif')} />
+          <img
+            src={require('../../assets/my/refrigerator.webp')}
+            alt="refrigerator"
+          />
         </Img>
       </MyRefrigeratorWrapper>
       <AlertModal

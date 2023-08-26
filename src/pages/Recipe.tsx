@@ -4,15 +4,21 @@ import RecipeBox from '../components/recipe/RecipeBox';
 import Loading from '../components/common/Loading';
 import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
+import { Helmet } from 'react-helmet-async';
 
 const RecipePage = () => {
   // Recoil: RecipeDataState
   const recipeData = useRecoilValue(RecipeDataState);
 
   return (
-    <PageWrapper>
-      {recipeData.length === 0 ? <Loading /> : <RecipeBox />}
-    </PageWrapper>
+    <>
+      <Helmet>
+        <title>todays recipe</title>
+      </Helmet>
+      <PageWrapper>
+        {recipeData.length === 0 ? <Loading /> : <RecipeBox />}
+      </PageWrapper>
+    </>
   );
 };
 

@@ -134,8 +134,9 @@ const EditProfileModal = ({
                 src={
                   tempPhotoURL ||
                   photoURL ||
-                  require('../../assets/my/default_image.png')
+                  require('../../assets/my/default_image.webp')
                 }
+                alt="default image"
               />
               <input
                 type="file"
@@ -152,7 +153,8 @@ const EditProfileModal = ({
                 onChange={handleUploadImage}
               />
               <ModalCamImg
-                src={require('../../assets/my/camera.png')}
+                src={require('../../assets/my/camera.webp')}
+                alt="camera"
                 onClick={handleCameraClick}
               />
             </ModalImg>

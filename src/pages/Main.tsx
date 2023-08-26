@@ -6,6 +6,7 @@ import { koreanOnly } from '../utils/regex';
 import useAlert from '../hooks/useAlert';
 import AlertModal from '../components/common/AlertModal';
 import useInput from '../hooks/useInput';
+import { Helmet } from 'react-helmet-async';
 
 const Main = () => {
   const navigate = useNavigate();
@@ -37,6 +38,9 @@ const Main = () => {
 
   return (
     <>
+      <Helmet>
+        <title>todays recipe</title>
+      </Helmet>
       <PageWrapper>
         <BoxWrapper>
           <SearchForm

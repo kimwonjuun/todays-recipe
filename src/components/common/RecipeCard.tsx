@@ -13,7 +13,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
     <>
       <RecipeCardWrapper onClick={handleCardClick}>
         <RecipeImgWrapper>
-          <img src={recipe.image} />
+          <img src={recipe.image} alt={recipe.name} loading="lazy" />
         </RecipeImgWrapper>
         <RecipeTextWrapper>
           <p>{recipe.type}</p>
@@ -54,6 +54,7 @@ const RecipeImgWrapper = styled.div`
   & > img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
     transition: transform 0.4s ease-in-out;
   }
 

@@ -121,9 +121,15 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
           <LikeWrapper>
             <Like onClick={handleLikeButtonClick}>
               {like ? (
-                <img src={require('../../assets/detail/heart.png')} />
+                <img
+                  src={require('../../assets/detail/heart.webp')}
+                  alt="like button"
+                />
               ) : (
-                <img src={require('../../assets/detail/empty-heart.png')} />
+                <img
+                  src={require('../../assets/detail/empty-heart.webp')}
+                  alt="unlike button"
+                />
               )}
             </Like>
           </LikeWrapper>
@@ -133,35 +139,50 @@ const IngredientBox = ({ recipe }: RecipeProps) => {
             <h1>성분</h1>
             <List>
               <Item>
-                <img src={require('../../assets/detail/ring1.png')} />
+                <img
+                  src={require('../../assets/detail/ring1.webp')}
+                  alt="ingredients ring"
+                />
                 <ItemText>
                   <p>열량</p>
                   <p>{recipe.calorie}kcal</p>
                 </ItemText>
               </Item>
               <Item>
-                <img src={require('../../assets/detail/ring2.png')} />
+                <img
+                  src={require('../../assets/detail/ring2.webp')}
+                  alt="ingredients ring"
+                />
                 <ItemText>
                   <p>탄수화물</p>
                   <p>{recipe.carbohydrate}g</p>
                 </ItemText>
               </Item>
               <Item>
-                <img src={require('../../assets/detail/ring1.png')} />
+                <img
+                  src={require('../../assets/detail/ring1.webp')}
+                  alt="ingredients ring"
+                />
                 <ItemText>
                   <p>단백질</p>
                   <p>{recipe.protein}g</p>
                 </ItemText>
               </Item>
               <Item>
-                <img src={require('../../assets/detail/ring2.png')} />
+                <img
+                  src={require('../../assets/detail/ring2.webp')}
+                  alt="ingredients ring"
+                />
                 <ItemText>
                   <p>지방</p>
                   <p>{recipe.fat}g</p>
                 </ItemText>
               </Item>
               <Item>
-                <img src={require('../../assets/detail/ring1.png')} />
+                <img
+                  src={require('../../assets/detail/ring1.webp')}
+                  alt="ingredients ring"
+                />
                 <ItemText>
                   <p>나트륨</p>
                   <p>{recipe.sodium}mg</p>
