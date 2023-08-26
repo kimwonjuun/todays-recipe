@@ -91,8 +91,6 @@ const Recipes = styled.div`
   & > p {
     text-align: center;
   }
-
-  /* background-color: yellow; */
 `;
 
 const LoadingMessage = styled.p`
