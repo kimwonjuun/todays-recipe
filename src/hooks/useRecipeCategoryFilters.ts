@@ -11,7 +11,7 @@ const useRecipeCategoryFilters = (
   // 초기 카테고리
   const initialCategory = () => {
     const savedCategory = sessionStorage.getItem('selected_category_type');
-    return savedCategory ? savedCategory : '전체 레시피';
+    return savedCategory ? savedCategory : '나의 냉장고';
   };
 
   // 선택된 카테고리 상태 (out)
