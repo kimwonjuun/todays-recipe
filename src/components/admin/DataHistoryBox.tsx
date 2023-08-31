@@ -10,7 +10,7 @@ interface DataHistoryBoxProps {
 }
 
 const DataHistoryBox = () => {
-  // 데이터 수정내역 가져오기 api
+  // 데이터 수정 내역 read API
   const { data: dataHistory } = useQuery<DataHistoryBoxProps[]>({
     queryKey: ['data-history'],
     queryFn: getEditDataHistory,

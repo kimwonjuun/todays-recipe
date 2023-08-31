@@ -9,8 +9,8 @@ import useConfirm from '../../hooks/useConfirm';
 import useInput from '../../hooks/useInput';
 import { dbService } from '../../apis/firebase';
 import { fetchRecipes } from '../../apis/common/originalRecipe';
-import { useQueryClient, useQuery, useMutation } from 'react-query';
 import { addEditDataHistory } from '../../apis/admin/admin';
+import { useQueryClient, useQuery, useMutation } from 'react-query';
 
 // 기본 데이터 호출해서 가공 후 파이어스토어에 올리는 컴포넌트
 
@@ -98,7 +98,7 @@ const DataProcessingFormBox = () => {
   const { openConfirm, closeConfirm, handleConfirm, isOpen } =
     useConfirm(handleConfirmModal);
 
-  // api 가공 후 firebase database에 업데이트하는 버튼
+  // API 가공 후 firebase database에 업데이트하는 버튼
   const handleProcessRecipeList = () => {
     if (!isLoading && recipeData) {
       // "API를 수정하시겠습니까? confirm"
@@ -116,22 +116,22 @@ const DataProcessingFormBox = () => {
     }
   };
 
-  // api 저장 또는 수정 후 수정 내역에 작성할 인풋: useInput
+  // API 저장 또는 수정 후 수정 내역에 작성할 인풋: useInput
   const { inputValue, setInputValue, handleInputChange } = useInput('');
 
-  // 데이터 수정내역 업데이트 api
+  // 데이터 수정 내역 create API
   const addEditDataHistoryMutation = useMutation(addEditDataHistory, {
     onSuccess: () => {
+      queryClient.invalidateQueries('data-history');
       setInputValue('');
       openAlert('수정 사항이 저장되었습니다.');
-      queryClient.invalidateQueries('data-history');
     },
     onError: () => {
       openAlert('수정 사항 저장에 실패했습니다.');
     },
   });
 
-  // 데이터 수정 버튼
+  // 데이터 수정 내역 create 버튼
   const handleEditSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

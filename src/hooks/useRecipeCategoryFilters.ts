@@ -14,8 +14,9 @@ const useRecipeCategoryFilters = (
     return savedCategory ? savedCategory : '나의 냉장고';
   };
 
-  // 선택된 카테고리 상태 (out)
-  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  // 선택된 카테고리 상태
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>(initialCategory);
 
   // 저칼로리 순, 가나다 순 전 기존 정렬 상태
   const [sortType, setSortType] = useState<string>(

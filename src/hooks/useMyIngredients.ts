@@ -6,7 +6,7 @@ import { dbService } from '../apis/firebase';
 
 const useMyIngredients = (currentUserUid?: string) => {
   // 나의 냉장고에 입력한 재료들
-  const [myIngredients, setMyIngredients] = useState([]);
+  const [myIngredients, setMyIngredients] = useState<string[]>([]);
 
   // 로딩 상태
   const [isLoading, setIsLoading] = useState<boolean>(false);

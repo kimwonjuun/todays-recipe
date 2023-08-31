@@ -13,7 +13,7 @@ const useInfiniteScroll = () => {
   };
 
   // 현재 페이지를 저장하는 state. 초기값은 initial page
-  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [currentPage, setCurrentPage] = useState<number>(initialPage);
 
   // 함수 호출 시 현재 페이지 +1. 세션에 저장.
   const loadMorePage = () => {

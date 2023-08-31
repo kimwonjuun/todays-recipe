@@ -12,7 +12,7 @@ const My = () => {
   const { user, currentUserUid, photoURL, setPhotoURL } = useUser();
 
   // 프로필 수정 클릭 시 나타나는 모달
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const openModal = () => {
     setIsModalOpen(true);
   };

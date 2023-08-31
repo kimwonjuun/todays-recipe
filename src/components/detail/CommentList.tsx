@@ -1,75 +1,77 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import { formatDate } from '../../utils/date';
-import { dbService } from '../../apis/firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { useQueryClient, useMutation } from 'react-query';
+import { deleteComment, updateComment } from '../../apis/detail/detail';
 
 interface CommentListProps {
   commentsList: UserCommentProps[];
   currentUserUid: string | undefined;
+  id: string | undefined;
   openAlert: (message: string) => void;
 }
 
 const CommentList = ({
   commentsList,
   currentUserUid,
+  id,
   openAlert,
 }: CommentListProps) => {
+  const queryClient = useQueryClient();
+
   // 댓글 수정 상태
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   // 현재 수정중인 댓글
   const [editTarget, setEditTarget] = useState<UserCommentProps | null>(null);
 
   // 수정 대상 댓글
-  const [editedComment, setEditedComment] = useState('');
+  const [editedComment, setEditedComment] = useState<string>('');
 
   // 인풋 참조
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // 댓글 update
+  // 댓글 update API
+  const updateCommentMutation = useMutation(updateComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['user-comments', id]);
+      setIsEditing(false);
+    },
+    onError: () => {
+      openAlert('댓글 수정에 실패했습니다.');
+    },
+  });
+
+  // 댓글 update 버튼
   const handleCommentUpdate = () => {
-    if (!currentUserUid) {
-      openAlert('로그인 후 댓글을 수정할 수 있습니다.');
+    // 제출 중이면 반환하여 중복 제출 방지
+    if (updateCommentMutation.isLoading) {
       return;
     }
 
-    // 문서 참조
-    const userDocRef = doc(dbService, 'users', currentUserUid);
+    if (!currentUserUid) {
+      openAlert('댓글은 로그인 후 작성이 가능합니다.');
+      return;
+    }
 
-    // 문서 데이터 가져오기
-    getDoc(userDocRef)
-      .then((userDoc) => {
-        const userData = userDoc.data();
-
-        if (userData) {
-          const userComments = userData['user-comments'] ?? [];
-          const updatedComments = userComments.map((item: UserCommentProps) =>
-            item.updatedAt === editTarget?.updatedAt
-              ? { ...item, comment: editedComment }
-              : item
-          );
-
-          // "user-comments" 필드의 배열에서 수정된 댓글로 업데이트
-          return updateDoc(userDocRef, { 'user-comments': updatedComments });
-        }
-      })
-      .then(() => {
-        // 수정 상태 변경
-        setIsEditing(false);
-      })
-      .catch((error) => {
-        console.error('댓글 수정 실패', error);
-      });
+    updateCommentMutation.mutate({
+      currentUserUid,
+      editedComment,
+      targetUpdatedAt: editTarget?.updatedAt,
+    });
   };
 
-  // 댓글 수정 클릭 시
-  useEffect(() => {
-    if (isEditing) {
-      inputRef.current?.focus();
-    }
-  }, [isEditing]);
+  // 댓글 delete API
+  const deleteCommentMutation = useMutation(deleteComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['user-comments', id]);
+      openAlert('댓글을 삭제했어요.');
+    },
+    onError: () => {
+      openAlert('댓글 삭제에 실패했습니다.');
+    },
+  });
 
   // 댓글 delete
   const handleCommentDelete = (comment: UserCommentProps) => {
@@ -78,31 +80,10 @@ const CommentList = ({
       return;
     }
 
-    // 문서 참조
-    const userDocRef = doc(dbService, 'users', currentUserUid);
-
-    // 문서 데이터 가져오기
-    getDoc(userDocRef)
-      .then((userDoc) => {
-        const userData = userDoc.data();
-
-        if (userData) {
-          const userComments = userData['user-comments'] ?? [];
-          // 선택한 댓글 필터링
-          const updatedComments = userComments.filter(
-            (item: UserCommentProps) => item.updatedAt !== comment.updatedAt
-          );
-
-          // 'user-comments' 필드의 배열에서 선택한 댓글만 필터링 후 업데이트
-          return updateDoc(userDocRef, { 'user-comments': updatedComments });
-        }
-      })
-      .then(() => {
-        openAlert('댓글이 삭제되었습니다.');
-      })
-      .catch((error) => {
-        openAlert('댓글 삭제 실패.');
-      });
+    deleteCommentMutation.mutate({
+      currentUserUid,
+      targetUpdatedAt: comment.updatedAt,
+    });
   };
 
   return (

@@ -3,7 +3,7 @@ import { useState } from 'react';
 // custom window.confirm modal 사용하는 페이지에 사용할 훅
 
 const useConfirm = (onConfirm: () => void) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const openConfirm = () => {
     setIsOpen(true);
