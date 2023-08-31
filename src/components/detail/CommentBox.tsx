@@ -23,9 +23,9 @@ interface CommentBoxProps {
 }
 
 const CommentBox = ({
+  recipe,
   user,
   currentUserUid,
-  recipe,
   id,
   openAlert,
 }: CommentBoxProps) => {

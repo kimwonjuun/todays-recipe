@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { RecipeDataState } from '../recoil/atoms';
+import { RecipeDataState } from '../../recoil/atoms';
 import { collection, getDocs } from 'firebase/firestore';
-import { dbService } from './firebase';
+import { dbService } from '../firebase';
 
 // 파이어스토어에 업로드한 가공한 데이터 받아오기
 export const ProcessedRecipeData = () => {
@@ -26,6 +26,5 @@ export const ProcessedRecipeData = () => {
 
   useEffect(() => {
     getRecipeData();
-    console.log('recipe data 들어옴 !');
   }, []);
 };

@@ -1,65 +1,36 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import { collection, orderBy, query, onSnapshot } from 'firebase/firestore';
-import { dbService } from '../../apis/firebase';
-import { useEffect } from 'react';
 import { formatDate } from '../../utils/date';
+import { useQuery } from 'react-query';
+import { getEditDataHistory } from '../../apis/admin/admin';
 
 interface DataHistoryBoxProps {
-  description: string;
-  updatedAt: number;
+  id: string;
+  description?: string;
+  updatedAt?: number;
 }
 
 const DataHistoryBox = () => {
-  const [editHistoryList, setEditHistoryList] = useState<DataHistoryBoxProps[]>(
-    []
-  );
-
-  // 수정 사항 read
-  const getEditDataHistory = async () => {
-    // edit-data-history 컬렉션 참조
-    const editHistoryRef = collection(dbService, 'edit-data-history');
-
-    // 수정된 날짜 순 정렬
-    const sortedEditHistory = query(
-      editHistoryRef,
-      orderBy('updatedAt', 'desc')
-    );
-
-    // edit-data-history 컬렉션을 돌며 수정된 날짜 순으로 추가
-    onSnapshot(sortedEditHistory, (querySnapshot) => {
-      const historyList: DataHistoryBoxProps[] = [];
-
-      querySnapshot.forEach((doc) => {
-        const list: any = {
-          id: doc.id,
-          ...doc.data(),
-        };
-        historyList.push(list);
-      });
-
-      setEditHistoryList(historyList);
-    });
-  };
-
-  useEffect(() => {
-    getEditDataHistory();
-  }, []);
+  // 데이터 수정내역 가져오기 api
+  const { data: dataHistory } = useQuery<DataHistoryBoxProps[]>({
+    queryKey: ['data-history'],
+    queryFn: getEditDataHistory,
+  });
 
   return (
     <>
       <BoxWrapper>
         <Title>수정 내역</Title>
         <Contents>
-          {editHistoryList.map((history, index) => (
-            <History>
-              <p style={{ width: '1rem' }}>{index + 1}.</p>
-              <p>{history.description}</p>
-              <p style={{ width: '12.5rem' }}>
-                {formatDate(history.updatedAt)}
-              </p>
-            </History>
-          ))}
+          {dataHistory &&
+            dataHistory.map((history, index) => (
+              <History key={history.id}>
+                <p style={{ width: '1rem' }}>{index + 1}.</p>
+                <p>{history.description}</p>
+                <p style={{ width: '12.5rem' }}>
+                  {history.updatedAt ? formatDate(history.updatedAt) : ''}
+                </p>
+              </History>
+            ))}
         </Contents>
       </BoxWrapper>
     </>
