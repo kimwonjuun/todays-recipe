@@ -122,7 +122,7 @@ const DataProcessingFormBox = () => {
   // 데이터 수정 내역 create API
   const addEditDataHistoryMutation = useMutation(addEditDataHistory, {
     onSuccess: () => {
-      queryClient.invalidateQueries('data-history');
+      queryClient.invalidateQueries('dataHistory');
       setInputValue('');
       openAlert('수정 사항이 저장되었습니다.');
     },

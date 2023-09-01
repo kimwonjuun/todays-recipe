@@ -3,18 +3,25 @@ import COLORS from '../../styles/colors';
 import SubmitForm from '../common/SubmitForm';
 import useInput from '../../hooks/useInput';
 import { dbService } from '../../apis/firebase';
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import useAlert from '../../hooks/useAlert';
 import { koreanOnly } from '../../utils/regex';
 import AlertModal from '../common/AlertModal';
-import useMyIngredients from '../../hooks/useMyIngredients';
-import { useState } from 'react';
+import { useQueryClient, useMutation, useQuery } from 'react-query';
+import {
+  addIngredient,
+  deleteIngredient,
+  getIngredient,
+} from '../../apis/my/ingredients';
+import { useState, useEffect } from 'react';
 
 interface MyRefrigeratorBoxProps {
   currentUserUid: string | undefined;
 }
 
 const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
+  const queryClient = useQueryClient();
+
   // custom alert modal
   const {
     openAlert,
@@ -26,11 +33,18 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
   // 냉장고 재료 입력하는 인풋: useInput
   const { inputValue, setInputValue, handleInputChange } = useInput('');
 
-  // 마이페이지에서 나의 냉장고에 입력한 재료들: useMyIngredients hook
-  const { myIngredients, getMyIngredients, isLoading } =
-    useMyIngredients(currentUserUid);
+  // 재료 create API
+  const addIngredientMutation = useMutation(addIngredient, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('myIngredients');
+      setInputValue('');
+    },
+    onError: (error: any) => {
+      openAlert(error.message);
+    },
+  });
 
-  // 재료 입력
+  // 재료 create 버튼
   const handleIngredientsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -46,78 +60,30 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
       return;
     }
 
-    // 문서 참조
-    const userRef = doc(dbService, 'users', currentUserUid);
-
-    // 문서 데이터 가져오기
-    getDoc(userRef)
-      .then((userDoc) => {
-        // 문서가 존재하면 기존 데이터에 재료 추가
-        if (userDoc.exists()) {
-          const ingredients = userDoc.data()['user-ingredients'] || [];
-
-          if (ingredients.length >= 20) {
-            openAlert('냉장고에는 최대 20개의 재료만 추가할 수 있습니다.');
-            setInputValue('');
-            return;
-          }
-
-          if (!ingredients.includes(inputValue)) {
-            ingredients.push(inputValue);
-          } else {
-            openAlert('이미 등록된 재료입니다.');
-            setInputValue('');
-            return;
-          }
-
-          return updateDoc(userRef, { 'user-ingredients': ingredients });
-        } else {
-          // 문서가 존재하지 않으면 새 문서를 생성 후 재료 추가
-          const ingredients = [inputValue];
-
-          return setDoc(userRef, {
-            'user-ingredients': ingredients,
-          });
-        }
-      })
-      .then(() => {
-        setInputValue('');
-        // 재료 리스트 갱신
-        getMyIngredients();
-      })
-      .catch((error) => {
-        openAlert('냉장고에 재료를 추가하지 못했습니다.');
-      });
+    addIngredientMutation.mutate({ currentUserUid, inputValue });
   };
 
-  // 재료 삭제
-  const removeIngredient = (ingredient: string) => {
-    if (!currentUserUid) {
-      return;
-    }
+  // 재료 read API
+  const { data: myIngredients, isLoading } = useQuery({
+    queryKey: ['myIngredients', currentUserUid],
+    queryFn: () => getIngredient(currentUserUid || ''),
+    enabled: !!currentUserUid,
+  });
 
-    // 문서 참조
-    const userRef = doc(dbService, 'users', currentUserUid);
+  // 재료 delete API
+  const deleteIngredientMutation = useMutation(deleteIngredient, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('myIngredients');
+      openAlert('재료가 삭제되었습니다.');
+    },
+    onError: (error: any) => {
+      openAlert(error.message);
+    },
+  });
 
-    // 문서 데이터 가져오기
-    getDoc(userRef)
-      .then((userDoc) => {
-        const ingredients = userDoc.data()?.['user-ingredients'] || [];
-        // 선택한 재료 필터링
-        const updatedIngredients = ingredients.filter(
-          (item: string) => item !== ingredient
-        );
-
-        // 선택한 재료만 필터링 후 업데이트
-        return updateDoc(userRef, { 'user-ingredients': updatedIngredients });
-      })
-      .then(() => {
-        // 재료 리스트 갱신
-        getMyIngredients();
-      })
-      .catch((error) => {
-        openAlert('냉장고에서 재료를 삭제하지 못했습니다.');
-      });
+  // 재료 삭제 버튼
+  const handleDeleteIngredientClick = (ingredient: string) => {
+    deleteIngredientMutation.mutate({ currentUserUid, ingredient });
   };
 
   return (
@@ -131,7 +97,7 @@ const MyRefrigeratorBox = ({ currentUserUid }: MyRefrigeratorBoxProps) => {
               myIngredients.map((ingredient, index) => (
                 <IngredientItem
                   onClick={() => {
-                    removeIngredient(ingredient);
+                    handleDeleteIngredientClick(ingredient);
                   }}
                   key={index}
                 >

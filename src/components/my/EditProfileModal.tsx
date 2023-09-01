@@ -1,13 +1,18 @@
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../../styles/colors';
-import { storage } from '../../apis/firebase';
-import { User, updateProfile } from 'firebase/auth';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { User } from 'firebase/auth';
 import useConfirm from '../../hooks/useConfirm';
 import ConfirmModal from '../common/ConfirmModal';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
+import { useMutation, useQueryClient } from 'react-query';
+import {
+  deleteUserAccount,
+  updateUserProfile,
+  uploadUserImage,
+} from '../../apis/my/users';
 
 interface EditProfileModalProps {
   setIsModalOpen: Function;
@@ -22,6 +27,9 @@ const EditProfileModal = ({
   photoURL,
   setPhotoURL,
 }: EditProfileModalProps) => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   // 임시 이미지 url
   const [tempPhotoURL, setTempPhotoURL] = useState<any>(null);
 
@@ -31,36 +39,10 @@ const EditProfileModal = ({
   // 파일 입력 참조
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // 이미지 업로드
-  const handleUploadImage = async (e: any) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setTempPhotoURL(reader.result);
-    };
-    const uploaded_file = await uploadBytes(
-      ref(storage, `images/${e.target.files[0].name}`),
-      e.target.files[0]
-    );
-    setTempFileURL(await getDownloadURL(uploaded_file.ref));
-  };
-
-  // 카메라 이미지 클릭하면 동작
-  const handleCameraClick = () => {
-    if (fileInputRef.current) fileInputRef.current.click();
-  };
-
   // 프로필 닉네임
   const [displayName, setDisplayName] = useState<string>(
     user?.displayName || ''
   );
-
-  // 프로필 닉네임 수정
-  const onChangeDisplayName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const editDisplayName = e.target.value.trim();
-    setDisplayName(editDisplayName);
-  };
 
   // custom alert modal
   const {
@@ -70,41 +52,84 @@ const EditProfileModal = ({
     alertMessage,
   } = useAlert();
 
-  // 프로필 수정
+  // 유저 프로필 이미지 create API
+  const uploadUserImageMutation = useMutation(uploadUserImage, {
+    onSuccess: (result) => {
+      queryClient.invalidateQueries(['userImage']);
+      setTempFileURL(result);
+    },
+    onError: (error) => {
+      openAlert('이미지 업로드에 실패했습니다.');
+    },
+  });
+
+  // 이미지 업로드 버튼
+  const handleImageUpload = (e: any) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      setTempPhotoURL(reader.result);
+
+      uploadUserImageMutation.mutate(file);
+    };
+  };
+
+  // 카메라 이미지 클릭하면 동작
+  const handleCameraClick = () => {
+    if (fileInputRef.current) fileInputRef.current.click();
+  };
+
+  // 프로필 닉네임 수정
+  const onChangeDisplayName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const editDisplayName = e.target.value.trim();
+    setDisplayName(editDisplayName);
+  };
+
+  // 유저 프로필 update API
+  const updateUserProfileMutation = useMutation(updateUserProfile, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['userProfile']);
+      setPhotoURL(tempFileURL || photoURL); // photoURL 업데이트
+      closeModal();
+      openAlert('프로필 업데이트 완료');
+    },
+    onError: () => {
+      openAlert('프로필 업데이트에 실패');
+    },
+  });
+
+  // 프로필 업데이트 버튼
   const handleProfileEdit = async () => {
     if (user) {
-      await updateProfile(user, {
-        displayName: displayName ? displayName : user.displayName,
-        photoURL: tempFileURL || photoURL, // 사용자가 이미지를 업로드한 경우 tempFileURL을 사용
-      })
-        .then(() => {
-          openAlert('프로필 수정 완료');
-          closeModal();
-          setPhotoURL(tempFileURL || photoURL); // photoURL 업데이트
-        })
-        .catch((error) => {
-          console.log(error);
-          openAlert('프로필 수정 실패');
-        });
+      updateUserProfileMutation.mutate({
+        user,
+        displayName,
+        photoURL: tempFileURL || photoURL,
+      });
     }
   };
+
+  // 유저 계정 delete API
+  const deleteUserAccountMutation = useMutation(deleteUserAccount, {
+    onSuccess: () => {
+      sessionStorage.clear();
+      openAlert('회원 탈퇴가 완료되었습니다.');
+      navigate('/');
+    },
+    onError: () => {
+      openAlert(
+        '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
+      );
+    },
+  });
 
   // 계정 삭제
   const handleDeleteAccount = () => {
     if (user) {
-      user
-        .delete()
-        .then(() => {
-          sessionStorage.clear();
-          openAlert('회원 탈퇴가 완료되었습니다.');
-        })
-        .catch((error) => {
-          openAlert(
-            '회원 탈퇴에 실패했습니다. 오류가 지속되는 경우 재로그인 후에 탈퇴해주세요.'
-          );
-        });
-    } else {
-      return;
+      deleteUserAccountMutation.mutate(user);
     }
   };
 
@@ -150,7 +175,7 @@ const EditProfileModal = ({
                   left: '90%',
                   transform: 'translate(-50%, -50%)',
                 }}
-                onChange={handleUploadImage}
+                onChange={handleImageUpload}
               />
               <ModalCamImg
                 src={require('../../assets/my/camera.webp')}

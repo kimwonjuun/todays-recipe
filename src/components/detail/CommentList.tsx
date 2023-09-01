@@ -35,7 +35,7 @@ const CommentList = ({
   // 댓글 update API
   const updateCommentMutation = useMutation(updateComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['user-comments', id]);
+      queryClient.invalidateQueries(['userComments', id]);
       setIsEditing(false);
     },
     onError: () => {
@@ -65,7 +65,7 @@ const CommentList = ({
   // 댓글 delete API
   const deleteCommentMutation = useMutation(deleteComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['user-comments', id]);
+      queryClient.invalidateQueries(['userComments', id]);
       openAlert('댓글을 삭제했어요.');
     },
     onError: () => {
@@ -73,7 +73,7 @@ const CommentList = ({
     },
   });
 
-  // 댓글 delete
+  // 댓글 delete 버튼
   const handleCommentDelete = (comment: UserCommentProps) => {
     if (!currentUserUid) {
       openAlert('로그인 후 댓글을 삭제할 수 있습니다.');

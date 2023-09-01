@@ -29,7 +29,7 @@ const CommentBox = ({
   // 댓글 create API
   const addCommentMutation = useMutation(addComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['user-comments', id]);
+      queryClient.invalidateQueries(['userComments', id]);
       setInputValue('');
     },
     onError: () => {
@@ -66,7 +66,7 @@ const CommentBox = ({
 
   // 댓글 read API
   const { data: commentsList } = useQuery({
-    queryKey: ['user-comments', id],
+    queryKey: ['userComments', id],
     queryFn: () => getComment(id),
     enabled: !!id,
   });
