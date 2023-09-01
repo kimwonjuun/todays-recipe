@@ -20,13 +20,13 @@ const LoginModal = ({
     email,
     setEmail,
     emailValid,
-    setEmailValid,
     emailRef,
     password,
     setPassword,
     passwordValid,
-    setPasswordValid,
     passwordRef,
+    changeLoginEmail,
+    changeLoginPassword,
   } = useAuth();
 
   // custom alert modal
@@ -46,18 +46,6 @@ const LoginModal = ({
   const openSignUpModal = () => {
     setLoginModalIsOpen(false);
     setSignUpModalIsOpen(true);
-  };
-
-  // 이메일 인풋, 유효성 검사
-  const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    setEmailValid(emailRegex.test(e.target.value));
-  };
-
-  // 비밀번호 인풋, 유효성 검사
-  const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    setPasswordValid(passwordRegex.test(e.target.value));
   };
 
   // 로그인 API
@@ -131,7 +119,7 @@ const LoginModal = ({
                 type="email"
                 placeholder="이메일을 입력해주세요."
                 value={email}
-                onChange={changeEmail}
+                onChange={changeLoginEmail}
                 ref={emailRef}
               />
               {!emailValid && email.length > 0 && (
@@ -145,7 +133,7 @@ const LoginModal = ({
                 type="password"
                 placeholder="비밀번호를 입력해주세요."
                 value={password}
-                onChange={changePassword}
+                onChange={changeLoginPassword}
                 ref={passwordRef}
               />
               {!passwordValid && password.length > 0 && (
