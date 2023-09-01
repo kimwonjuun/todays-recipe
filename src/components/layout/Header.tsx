@@ -10,10 +10,10 @@ const Header = () => {
   const navigate = useNavigate();
 
   // 로그인 모달 상태
-  const [LoginModalIsOpen, setLoginModalIsOpen] = useState(false);
+  const [LoginModalIsOpen, setLoginModalIsOpen] = useState<boolean>(false);
 
   // 회원가입 모달 상태
-  const [signUpModalIsOpen, setSignUpModalIsOpen] = useState(false);
+  const [signUpModalIsOpen, setSignUpModalIsOpen] = useState<boolean>(false);
 
   // 로그인 모달
   const openLoginModal = () => {

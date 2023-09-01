@@ -1,17 +1,13 @@
 import { useEffect } from 'react';
-import {
-  browserSessionPersistence,
-  createUserWithEmailAndPassword,
-  setPersistence,
-  updateProfile,
-} from 'firebase/auth';
-import { authService } from '../../apis/firebase';
+
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
 import styled from 'styled-components';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
 import useAuth from '../../hooks/useAuth';
+import { useMutation } from 'react-query';
+import { signup } from '../../apis/auth/auth';
 
 const SignUpModal = ({
   setLoginModalIsOpen,
@@ -25,32 +21,26 @@ const SignUpModal = ({
     email,
     setEmail,
     emailMessage,
-    setEmailMessage,
     isEmail,
-    setIsEmail,
     emailValid,
-    setEmailValid,
     emailRef,
     password,
     setPassword,
     passwordMessage,
-    setPasswordMessage,
     isPassword,
-    setIsPassword,
     passwordValid,
-    setPasswordValid,
     confirmPassword,
     setConfirmPassword,
     passwordConfirmMessage,
-    setPasswordConfirmMessage,
     isPasswordConfirm,
-    setIsPasswordConfirm,
     nickname,
     setNickname,
     nicknameMessage,
-    setNicknameMessage,
     isNickname,
-    setIsNickname,
+    changeSignupEmail,
+    changeSignupPassword,
+    changeSignupConfirmPassword,
+    changeSignupNickname,
   } = useAuth();
 
   // custom alert modal
@@ -72,90 +62,27 @@ const SignUpModal = ({
     setLoginModalIsOpen(true);
   };
 
-  // 이메일 인풋, 유효성 검사
-  const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    const isValid = emailRegex.test(e.target.value);
-    if (isValid) {
-      setEmailValid(true);
-      setEmailMessage('사용 가능한 이메일 형식입니다.');
-      setIsEmail(true);
-    } else {
-      setEmailValid(false);
-      setEmailMessage('이메일 형식을 확인해주세요');
-      setIsEmail(false);
-    }
-  };
+  // 회원가입 API
+  const signupMutation = useMutation(signup, {
+    onSuccess: () => {
+      openAlert('회원가입이 완료 되었습니다! 로그인 해주세요.');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setNickname('');
+    },
+    onError: (err: any) => {
+      if (err.message.includes('already-in-use')) {
+        openAlert('이미 가입된 계정입니다.');
+        setEmail('');
+      }
+    },
+  });
 
-  // 비밀번호 인풋, 유효성 검사
-  const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    const isValid = passwordRegex.test(e.target.value);
-    if (isValid) {
-      setPasswordValid(true);
-      setPasswordMessage('사용 가능한 비밀번호 형식입니다.');
-      setIsPassword(true);
-    } else {
-      setPasswordValid(false);
-      setPasswordMessage(
-        '대소문자, 특수문자를 포함하여 8자리 이상 입력해주세요.'
-      );
-      setIsPassword(false);
-    }
-  };
-
-  // 비밀번호 확인 인풋, 유효성 검사
-  const changeConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const currentPasswordConfirm = e.target.value;
-    setConfirmPassword(currentPasswordConfirm);
-    if (password === currentPasswordConfirm) {
-      setPasswordConfirmMessage('비밀번호가 일치합니다.');
-      setIsPasswordConfirm(true);
-    } else {
-      setPasswordConfirmMessage('비밀번호가 일치하지 않습니다.');
-      setIsPasswordConfirm(false);
-    }
-  };
-
-  // 닉네임 인풋, 유효성 검사
-  const changeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const currentNickname = e.target.value;
-    setNickname(currentNickname);
-    if (currentNickname.length < 2 || currentNickname.length > 4) {
-      setNicknameMessage('닉네임은 2글자 이상, 4글자 이하로 입력해주세요.');
-      setIsNickname(false);
-    } else {
-      setNicknameMessage('사용 가능한 닉네임 형식입니다.');
-      setIsNickname(true);
-    }
-  };
-
-  // 회원가입 - 세션스토리지 저장
+  // 회원가입
   const handleSignupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setPersistence(authService, browserSessionPersistence)
-      .then(() => createUserWithEmailAndPassword(authService, email, password))
-      .then(() => {
-        if (authService.currentUser) {
-          updateProfile(authService?.currentUser, {
-            displayName: nickname,
-          });
-        }
-      })
-      .then(() => {
-        authService.signOut();
-        openAlert('회원가입이 완료 되었습니다! 로그인 해주세요.');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        setNickname('');
-      })
-      .catch((err) => {
-        if (err.message.includes('already-in-use')) {
-          openAlert('이미 가입된 계정입니다.');
-          setEmail('');
-        }
-      });
+    signupMutation.mutate({ email, password, nickname });
   };
 
   useEffect(() => {
@@ -175,7 +102,7 @@ const SignUpModal = ({
                 type="email"
                 placeholder="사용하실 이메일을 입력해주세요."
                 value={email}
-                onChange={changeEmail}
+                onChange={changeSignupEmail}
                 ref={emailRef}
               />
               {email.length > 0 && (
@@ -188,7 +115,7 @@ const SignUpModal = ({
                 type="password"
                 placeholder="사용하실 비밀번호를 입력해주세요."
                 value={password}
-                onChange={changePassword}
+                onChange={changeSignupPassword}
               />
               {password.length > 0 && (
                 <Span className={passwordValid ? 'success' : 'error'}>
@@ -200,7 +127,7 @@ const SignUpModal = ({
                 type="password"
                 placeholder="사용하실 비밀번호를 한 번 더 입력해주세요."
                 value={confirmPassword}
-                onChange={changeConfirmPassword}
+                onChange={changeSignupConfirmPassword}
               />
               {confirmPassword.length > 0 && (
                 <Span className={isPasswordConfirm ? 'success' : 'error'}>
@@ -213,7 +140,7 @@ const SignUpModal = ({
                 maxLength={4}
                 placeholder="사용하실 닉네임을 입력해주세요."
                 value={nickname}
-                onChange={changeNickname}
+                onChange={changeSignupNickname}
               />
               {nickname.length > 0 && (
                 <Span className={isNickname ? 'success' : 'error'}>
