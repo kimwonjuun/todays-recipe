@@ -1,17 +1,12 @@
 import React, { useEffect } from 'react';
-import {
-  browserSessionPersistence,
-  setPersistence,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-} from 'firebase/auth';
-import { authService } from '../../apis/firebase';
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
 import styled from 'styled-components';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
 import useAuth from '../../hooks/useAuth';
+import { useMutation } from 'react-query';
+import { login, resetPassword } from '../../apis/auth/auth';
 
 const LoginModal = ({
   setLoginModalIsOpen,
@@ -25,13 +20,13 @@ const LoginModal = ({
     email,
     setEmail,
     emailValid,
-    setEmailValid,
     emailRef,
     password,
     setPassword,
     passwordValid,
-    setPasswordValid,
     passwordRef,
+    changeLoginEmail,
+    changeLoginPassword,
   } = useAuth();
 
   // custom alert modal
@@ -53,60 +48,52 @@ const LoginModal = ({
     setSignUpModalIsOpen(true);
   };
 
-  // 이메일 인풋, 유효성 검사
-  const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    setEmailValid(emailRegex.test(e.target.value));
-  };
-
-  // 비밀번호 인풋, 유효성 검사
-  const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-    setPasswordValid(passwordRegex.test(e.target.value));
-  };
-
-  // 로그인
-  const handleLoginSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // 사용자 인증 및 로그인
-    setPersistence(authService, browserSessionPersistence)
-      .then(() => signInWithEmailAndPassword(authService, email, password))
-      .then(() => {
-        openAlert('로그인 되었습니다.');
+  // 로그인 API
+  const loginMutation = useMutation(login, {
+    onSuccess: () => {
+      openAlert('로그인 되었습니다.');
+      setEmail('');
+      setPassword('');
+      setLoginModalIsOpen(false);
+    },
+    onError: (err: any) => {
+      // 오류 메시지 처리
+      if (err.message.includes('user-not-found')) {
+        openAlert('가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.');
+        emailRef?.current?.focus();
         setEmail('');
         setPassword('');
-        setLoginModalIsOpen(false);
-        // window.location.reload();
-      })
-      .catch((err) => {
-        // 오류 메시지 처리
-        if (err.message.includes('user-not-found')) {
-          openAlert('가입 정보가 없습니다. 회원가입을 먼저 진행해 주세요.');
-          emailRef?.current?.focus();
-          setEmail('');
-          setPassword('');
-        }
-        if (err.message.includes('wrong-password')) {
-          openAlert('잘못된 비밀번호 입니다.');
-          passwordRef?.current?.focus();
-          setPassword('');
-        }
-      });
+      }
+      if (err.message.includes('wrong-password')) {
+        openAlert('잘못된 비밀번호 입니다.');
+        passwordRef?.current?.focus();
+        setPassword('');
+      }
+    },
+  });
+
+  // 로그인 클릭
+  const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    loginMutation.mutate({ email, password });
   };
 
-  // 비밀번호 찾기
+  // 비밀번호 변경 API
+  const resetPasswordMutation = useMutation(resetPassword, {
+    onSuccess: () => {
+      openAlert(
+        '비밀번호 재설정 이메일이 발송되었습니다. 이메일을 확인해주세요.'
+      );
+    },
+    onError: () => {
+      openAlert('이메일 주소창에 이메일을 입력해주세요.');
+      emailRef.current?.focus();
+    },
+  });
+
+  // 비밀번호 찾기 클릭
   const handlePasswordReset = (email: string) => {
-    sendPasswordResetEmail(authService, email)
-      .then(() => {
-        openAlert(
-          '비밀번호 재설정 이메일이 발송되었습니다. 이메일을 확인해주세요.'
-        );
-      })
-      .catch((error) => {
-        openAlert('이메일 주소창에 이메일을 입력해주세요.');
-        emailRef.current?.focus();
-      });
+    resetPasswordMutation.mutate(email);
   };
 
   useEffect(() => {
@@ -132,7 +119,7 @@ const LoginModal = ({
                 type="email"
                 placeholder="이메일을 입력해주세요."
                 value={email}
-                onChange={changeEmail}
+                onChange={changeLoginEmail}
                 ref={emailRef}
               />
               {!emailValid && email.length > 0 && (
@@ -146,7 +133,7 @@ const LoginModal = ({
                 type="password"
                 placeholder="비밀번호를 입력해주세요."
                 value={password}
-                onChange={changePassword}
+                onChange={changeLoginPassword}
                 ref={passwordRef}
               />
               {!passwordValid && password.length > 0 && (

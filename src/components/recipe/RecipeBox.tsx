@@ -58,9 +58,6 @@ const RecipeBox = () => {
           {!noMoreRecipe && isLoading && !noRecipeMessage && (
             <LoadingMessage>더 많은 레시피를 불러오고 있어요 😎</LoadingMessage>
           )}
-          {noMoreRecipe && (
-            <LoadingMessage>더 이상 표시할 레시피가 없어요 🫤</LoadingMessage>
-          )}
           {showRecipes.length === 0 && noRecipeMessage && (
             <NoRecipeView>{noRecipeMessage}</NoRecipeView>
           )}

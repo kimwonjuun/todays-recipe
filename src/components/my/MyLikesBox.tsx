@@ -1,38 +1,18 @@
 import styled from 'styled-components';
-import { doc, getDoc } from 'firebase/firestore';
-import { dbService } from '../../apis/firebase';
 import RecipeCard from '../common/RecipeCard';
-import { useEffect, useState } from 'react';
-
+import { getMyLikedRecipes } from '../../apis/my/likes';
+import { useQuery } from 'react-query';
 interface MyLikesBoxProps {
   currentUserUid: string | undefined;
 }
 
 const MyLikesBox = ({ currentUserUid }: MyLikesBoxProps) => {
-  // 내가 찜한 레시피
-  const [likedRecipes, setLikedRecipes] = useState<Recipe[]>([]);
-
-  // 로딩 상태
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // 내가 찜한 레시피 불러오기
-  const getMyLikedRecipes = async () => {
-    if (!currentUserUid) {
-      return;
-    }
-    setIsLoading(true);
-
-    // 문서 참조
-    const docSnap = await getDoc(doc(dbService, 'users', currentUserUid));
-
-    // 문서 존재 시 레시피 상태 업데이트
-    if (docSnap.exists()) setLikedRecipes(docSnap.data()['user-likes']);
-
-    setIsLoading(false);
-  };
-  useEffect(() => {
-    getMyLikedRecipes();
-  }, [currentUserUid]);
+  // 좋아요 read API
+  const { data: likedRecipes, isLoading } = useQuery({
+    queryKey: ['likedRecipes', currentUserUid],
+    queryFn: () => getMyLikedRecipes(currentUserUid),
+    enabled: !!currentUserUid,
+  });
 
   return (
     <>
@@ -41,7 +21,7 @@ const MyLikesBox = ({ currentUserUid }: MyLikesBoxProps) => {
           {isLoading ? (
             <p>찜한 레시피를 불러오는 중 😎</p>
           ) : likedRecipes.length > 0 ? (
-            likedRecipes.map((recipe) => (
+            likedRecipes.map((recipe: Recipe) => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))
           ) : (

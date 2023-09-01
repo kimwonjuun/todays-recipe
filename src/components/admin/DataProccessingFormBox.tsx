@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import SubmitForm from '../common/SubmitForm';
 import styled from 'styled-components';
 import { addDoc, collection } from 'firebase/firestore';
@@ -8,18 +8,14 @@ import useAlert from '../../hooks/useAlert';
 import useConfirm from '../../hooks/useConfirm';
 import useInput from '../../hooks/useInput';
 import { dbService } from '../../apis/firebase';
-import { fetchRecipes } from '../../apis/originalRecipe';
-import { useQuery } from 'react-query';
+import { fetchRecipes } from '../../apis/common/originalRecipe';
+import { addEditDataHistory } from '../../apis/admin/admin';
+import { useQueryClient, useQuery, useMutation } from 'react-query';
 
 // 기본 데이터 호출해서 가공 후 파이어스토어에 올리는 컴포넌트
 
 const DataProcessingFormBox = () => {
-  // 조리 식품의 레시피 DB 데이터: 가공해 파이어스토어에 업로드할 초기 데이터
-  const {
-    data: recipeData,
-    isLoading,
-    isError,
-  } = useQuery('recipes', fetchRecipes);
+  const queryClient = useQueryClient();
 
   // custom alert modal
   const {
@@ -28,6 +24,16 @@ const DataProcessingFormBox = () => {
     isOpen: isAlertOpen,
     alertMessage,
   } = useAlert();
+
+  // 초기 레시피 데이터
+  const {
+    data: recipeData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['recipes'],
+    queryFn: fetchRecipes,
+  });
 
   // 파이어스토어에 필요한 데이터만 가공해 올리는 함수
   const handleAddRecipeListToFirestore = (recipeData: any) => {
@@ -92,6 +98,7 @@ const DataProcessingFormBox = () => {
   const { openConfirm, closeConfirm, handleConfirm, isOpen } =
     useConfirm(handleConfirmModal);
 
+  // API 가공 후 firebase database에 업데이트하는 버튼
   const handleProcessRecipeList = () => {
     if (!isLoading && recipeData) {
       // "API를 수정하시겠습니까? confirm"
@@ -99,41 +106,42 @@ const DataProcessingFormBox = () => {
     }
     if (isLoading) {
       openAlert(
-        '레시피 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.'
+        '초기 레시피 데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요.'
       );
     }
     if (isError) {
       openAlert(
-        '레시피 데이터를 불러오지 못했습니다. 문제가 지속될 경우 관리자에게 문의해주세요.'
+        '초기 레시피 데이터를 불러오지 못해 데이터를 가공할 수 없습니다.'
       );
     }
   };
 
-  // api 저장 또는 수정 후 수정 내역에 작성할 인풋: useInput
+  // API 저장 또는 수정 후 수정 내역에 작성할 인풋: useInput
   const { inputValue, setInputValue, handleInputChange } = useInput('');
 
-  // 데이터 가공&수정 사항 폼에 입력 후 제출
+  // 데이터 수정 내역 create API
+  const addEditDataHistoryMutation = useMutation(addEditDataHistory, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('dataHistory');
+      setInputValue('');
+      openAlert('수정 사항이 저장되었습니다.');
+    },
+    onError: () => {
+      openAlert('수정 사항 저장에 실패했습니다.');
+    },
+  });
+
+  // 데이터 수정 내역 create 버튼
   const handleEditSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // 공백문자 없는지 검사
     if (!inputValue.trim()) {
       openAlert('수정하신 내역을 정확히 입력해주세요.');
       setInputValue('');
       return;
     }
 
-    addDoc(collection(dbService, 'edit-data-history'), {
-      description: inputValue,
-      updatedAt: Date.now(),
-    })
-      .then(() => {
-        setInputValue('');
-        openAlert('수정 사항이 저장되었습니다.');
-      })
-      .catch((error) => {
-        openAlert('수정 사항 저장에 실패했습니다.');
-      });
+    addEditDataHistoryMutation.mutate(inputValue);
   };
 
   return (
