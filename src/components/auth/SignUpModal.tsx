@@ -1,17 +1,13 @@
 import { useEffect } from 'react';
-import {
-  browserSessionPersistence,
-  createUserWithEmailAndPassword,
-  setPersistence,
-  updateProfile,
-} from 'firebase/auth';
-import { authService } from '../../apis/firebase';
+
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
 import styled from 'styled-components';
 import useAlert from '../../hooks/useAlert';
 import AlertModal from '../common/AlertModal';
 import useAuth from '../../hooks/useAuth';
+import { useMutation } from 'react-query';
+import { signup } from '../../apis/auth/auth';
 
 const SignUpModal = ({
   setLoginModalIsOpen,
@@ -130,32 +126,27 @@ const SignUpModal = ({
     }
   };
 
-  // 회원가입 - 세션스토리지 저장
+  // 회원가입 API
+  const signupMutation = useMutation(signup, {
+    onSuccess: () => {
+      openAlert('회원가입이 완료 되었습니다! 로그인 해주세요.');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setNickname('');
+    },
+    onError: (err: any) => {
+      if (err.message.includes('already-in-use')) {
+        openAlert('이미 가입된 계정입니다.');
+        setEmail('');
+      }
+    },
+  });
+
+  // 회원가입
   const handleSignupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setPersistence(authService, browserSessionPersistence)
-      .then(() => createUserWithEmailAndPassword(authService, email, password))
-      .then(() => {
-        if (authService.currentUser) {
-          updateProfile(authService?.currentUser, {
-            displayName: nickname,
-          });
-        }
-      })
-      .then(() => {
-        authService.signOut();
-        openAlert('회원가입이 완료 되었습니다! 로그인 해주세요.');
-        setEmail('');
-        setPassword('');
-        setConfirmPassword('');
-        setNickname('');
-      })
-      .catch((err) => {
-        if (err.message.includes('already-in-use')) {
-          openAlert('이미 가입된 계정입니다.');
-          setEmail('');
-        }
-      });
+    signupMutation.mutate({ email, password, nickname });
   };
 
   useEffect(() => {
