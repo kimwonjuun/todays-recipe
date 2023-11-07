@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-
 import { emailRegex, passwordRegex } from '../../utils/regex';
 import COLORS from '../../styles/colors';
 import styled from 'styled-components';

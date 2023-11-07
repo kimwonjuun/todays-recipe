@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import COLORS from '../../styles/colors';
 import SubmitForm from '../common/SubmitForm';
 import useInput from '../../hooks/useInput';
-import { dbService } from '../../apis/firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import useAlert from '../../hooks/useAlert';
 import { koreanOnly } from '../../utils/regex';
 import AlertModal from '../common/AlertModal';
@@ -13,7 +11,6 @@ import {
   deleteIngredient,
   getIngredient,
 } from '../../apis/my/ingredients';
-import { useState, useEffect } from 'react';
 
 interface MyRefrigeratorBoxProps {
   currentUserUid: string | undefined;

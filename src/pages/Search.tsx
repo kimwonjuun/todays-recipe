@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import COLORS from '../styles/colors';
-import Loading from '../components/common/Loading';
 import { RecipeDataState } from '../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 import ResultBox from '../components/search/ResultBox';
