@@ -145,10 +145,6 @@ const Logo = styled.div`
     width: 10rem;
     height: 10rem;
   }
-  @media (max-width: 850px) {
-    width: 9rem;
-    height: 9rem;
-  }
   @media (max-width: 700px) {
     width: 8rem;
     height: 8rem;
