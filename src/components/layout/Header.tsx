@@ -141,7 +141,7 @@ const Logo = styled.div`
   width: 11rem;
   height: 11rem;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1050px) {
     width: 10rem;
     height: 10rem;
   }
@@ -167,9 +167,13 @@ const TextWrapper = styled.div`
   display: flex;
   gap: 1.5rem;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1050px) {
     right: 1.5rem;
     font-size: 1.25rem;
+  }
+  @media (max-width: 700px) {
+    right: 1.25rem;
+    font-size: 1.125rem;
   }
   @media (max-width: 550px) {
     right: 1rem;

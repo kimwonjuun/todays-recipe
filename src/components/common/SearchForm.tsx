@@ -43,7 +43,7 @@ const Input = styled.input`
   text-align: center;
   padding-right: 8rem;
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1050px) {
     width: 30rem;
     height: 3.5rem;
     font-size: 1.2rem;
@@ -86,19 +86,19 @@ const SearchButton = styled.button`
     background-color: ${COLORS.blue2};
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1050px) {
     width: 6rem;
-    height: 4rem;
-    font-size: 1.75rem;
+    height: 4.15rem;
+    font-size: 1.5rem;
   }
   @media (max-width: 700px) {
-    width: 5rem;
+    width: 6rem;
     height: 4rem;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
   @media (max-width: 550px) {
     width: 5rem;
-    height: 3.5rem;
+    height: 3.65rem;
     font-size: 1.25rem;
   }
 `;

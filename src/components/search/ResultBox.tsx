@@ -132,12 +132,32 @@ const BoxWrapper = styled.div`
 
 const ResultWrapper = styled.div`
   margin: 5rem;
+
+  @media (max-width: 1050px) {
+    font-size: 1.75rem;
+  }
+  @media (max-width: 700px) {
+    font-size: 1.5rem;
+  }
+  @media (max-width: 550px) {
+    font-size: 1.25rem;
+  }
 `;
 
 const NoResultWrapper = styled.div`
   flex-wrap: wrap;
   display: flex;
   margin-top: '5rem';
+
+  @media (max-width: 1050px) {
+    font-size: 1.75rem;
+  }
+  @media (max-width: 700px) {
+    font-size: 1.5rem;
+  }
+  @media (max-width: 550px) {
+    font-size: 1.25rem;
+  }
 `;
 
 const RecipeWrapper = styled.div`
@@ -147,11 +167,34 @@ const RecipeWrapper = styled.div`
   padding: 5rem 0;
   overflow: hidden;
   margin-top: 1.5rem;
+
+  @media (max-width: 1400px) {
+    width: 67.5rem;
+  }
+  @media (max-width: 1050px) {
+    width: 45rem;
+  }
+  @media (max-width: 700px) {
+    width: 35rem;
+  }
+  @media (max-width: 550px) {
+    width: 30rem;
+  }
 `;
 
 const Paragraph = styled.p`
   cursor: pointer;
   &:hover {
     color: ${COLORS.blue2};
+  }
+
+  @media (max-width: 1050px) {
+    font-size: 1.75rem;
+  }
+  @media (max-width: 700px) {
+    font-size: 1.5rem;
+  }
+  @media (max-width: 550px) {
+    font-size: 1.25rem;
   }
 `;
