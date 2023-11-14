@@ -168,7 +168,7 @@ const RecipeWrapper = styled.div`
   overflow: hidden;
   margin-top: 1.5rem;
 
-  @media (max-width: 1400px) {
+  @media (max-width: 1450px) {
     width: 67.5rem;
   }
   @media (max-width: 1050px) {
