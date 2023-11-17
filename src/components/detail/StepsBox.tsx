@@ -50,22 +50,51 @@ const MiddleWrapper = styled.div`
   h1 {
     margin-bottom: 2.5rem;
   }
+
+  @media (max-width: 850px) {
+    h1 {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 675px) {
+    width: 30rem;
+    padding: 0;
+    h1 {
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
 `;
 
 const StepsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+
+  @media (max-width: 675px) {
+    justify-content: space-around;
+  }
 `;
 
 const StepWrapper = styled.div`
+  height: 30rem;
+
   width: calc(50% - 2.5rem);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  height: 30rem;
   margin-bottom: 1rem;
+
+  @media (max-width: 850px) {
+    height: 20rem;
+  }
+  @media (max-width: 675px) {
+    height: 12.5rem;
+    margin-bottom: 0.25rem;
+  }
 `;
 
 const StepsImg = styled.div`
@@ -77,6 +106,23 @@ const StepsImg = styled.div`
     height: 100%;
     border-radius: 1rem;
   }
+
+  @media (max-width: 1150px) {
+    width: 18rem;
+    height: 18rem;
+  }
+  @media (max-width: 1000px) {
+    width: 16rem;
+    height: 16rem;
+  }
+  @media (max-width: 850px) {
+    width: 13rem;
+    height: 13rem;
+  }
+  @media (max-width: 675px) {
+    width: 10rem;
+    height: 8rem;
+  }
 `;
 
 const StepsText = styled.div`
@@ -84,6 +130,25 @@ const StepsText = styled.div`
   height: 8rem;
   display: flex;
   text-align: left;
+
+  @media (max-width: 1150px) {
+    width: 22.5rem;
+    height: 6rem;
+  }
+  @media (max-width: 1000px) {
+    width: 20rem;
+    height: 4rem;
+  }
+  @media (max-width: 850px) {
+    width: 15rem;
+    height: 4rem;
+    font-size: 1rem;
+  }
+  @media (max-width: 675px) {
+    width: 10rem;
+    height: 3rem;
+    font-size: 0.7rem;
+  }
 `;
 
 const TipWrapper = styled.div`
@@ -99,5 +164,26 @@ const TipWrapper = styled.div`
   h1 {
     margin-bottom: 2rem;
     font-size: 1.5rem;
+  }
+
+  @media (max-width: 850px) {
+    font-size: 1rem;
+    border: 0.15rem solid ${COLORS.blue1};
+    h1 {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+  }
+  @media (max-width: 675px) {
+    width: 26.5rem;
+    font-size: 0.7rem;
+    padding: 0.5rem;
+    margin: 0.5rem auto;
+
+    border: 0.15rem solid ${COLORS.blue1};
+  }
+  h1 {
+    margin-bottom: 0.5rem;
+    font-size: 0.7rem;
   }
 `;

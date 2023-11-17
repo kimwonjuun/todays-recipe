@@ -171,6 +171,10 @@ const List = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
+
+  @media (max-width: 850px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const UserProfileImg = styled.img`
@@ -179,6 +183,28 @@ const UserProfileImg = styled.img`
   border-radius: 50%;
   margin-right: 1rem;
   object-fit: cover;
+
+  @media (max-width: 1300px) {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+  @media (max-width: 1150px) {
+    width: 4rem;
+    height: 4rem;
+  }
+  @media (max-width: 1000px) {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+  @media (max-width: 850px) {
+    width: 3rem;
+    height: 3rem;
+  }
+  @media (max-width: 675px) {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0;
+  }
 `;
 
 const CommentInput = styled.input`
@@ -236,6 +262,10 @@ const UploadedAt = styled.div`
   font-size: 1rem;
   margin-right: 1rem;
   color: ${COLORS.gray};
+
+  @media (max-width: 850px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const Button = styled.div`
@@ -243,6 +273,10 @@ const Button = styled.div`
   margin-right: 1rem;
   color: ${COLORS.gray};
   cursor: pointer;
+
+  @media (max-width: 850px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const UserName = styled.p`
