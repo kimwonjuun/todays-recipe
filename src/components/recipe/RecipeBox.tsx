@@ -10,11 +10,6 @@ import useUser from '../../hooks/useUser';
 import useMemoScrollPosition from '../../hooks/useMemoScrollPosition';
 import useRecipeCategoryFilters from '../../hooks/useRecipeCategoryFilters';
 
-interface RecipeBoxProps {
-  isLoading: boolean;
-  noRecipeMessage: boolean;
-}
-
 const RecipeBox = () => {
   // Recoil: RecipeDataState
   const recipeData = useRecoilValue(RecipeDataState);
@@ -49,10 +44,7 @@ const RecipeBox = () => {
 
   return (
     <>
-      <BoxWrapper
-        isLoading={!noMoreRecipe && isLoading && !noRecipeMessage}
-        noRecipeMessage={!!(showRecipes.length === 0 && noRecipeMessage)}
-      >
+      <BoxWrapper>
         <Categories
           selectedCategory={selectedCategory}
           sortType={sortType}
@@ -77,12 +69,8 @@ const RecipeBox = () => {
 
 export default RecipeBox;
 
-const BoxWrapper = styled.div<RecipeBoxProps>`
+const BoxWrapper = styled.div`
   width: 90rem;
-  height: ${(props) =>
-    props.isLoading || props.noRecipeMessage
-      ? 'calc(100vh - 20.8rem)'
-      : 'auto'};
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -93,34 +81,18 @@ const BoxWrapper = styled.div<RecipeBoxProps>`
   @media (max-width: 1450px) {
     margin-top: 7rem;
     width: 67.5rem;
-    height: ${(props) =>
-      props.isLoading || props.noRecipeMessage
-        ? 'calc(100vh - 19.8rem)'
-        : 'auto'};
   }
   @media (max-width: 1050px) {
     margin-top: 5.5rem;
     width: 45rem;
-    height: ${(props) =>
-      props.isLoading || props.noRecipeMessage
-        ? 'calc(100vh - 18.3rem)'
-        : 'auto'};
   }
   @media (max-width: 700px) {
     margin-top: 4rem;
     width: 35rem;
-    height: ${(props) =>
-      props.isLoading || props.noRecipeMessage
-        ? 'calc(100vh - 16.8rem)'
-        : 'auto'};
   }
   @media (max-width: 550px) {
     margin-top: 3rem;
     width: 30rem;
-    height: ${(props) =>
-      props.isLoading || props.noRecipeMessage
-        ? 'calc(100vh - 15.8rem)'
-        : 'auto'};
   }
 `;
 
