@@ -46,10 +46,20 @@ const Modal = styled.div`
   background-color: #fff;
   border-radius: 1rem;
   border: 0.25rem solid ${COLORS.blue1};
+
+  @media (max-width: 550px) {
+    min-width: 12.5rem;
+    min-height: 5rem;
+    padding: 2rem;
+  }
 `;
 
 const Message = styled.p`
   font-size: 1.75rem;
+
+  @media (max-width: 550px) {
+    font-size: 1.25rem;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -65,5 +75,11 @@ const CloseButton = styled.button`
   cursor: pointer;
   &:hover {
     background-color: ${COLORS.blue2};
+  }
+
+  @media (max-width: 550px) {
+    width: 4rem;
+    height: 2.25rem;
+    font-size: 1.25rem;
   }
 `;
