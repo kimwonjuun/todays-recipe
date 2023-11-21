@@ -50,18 +50,31 @@ export default UserAccountBox;
 const UserAccounttWrapper = styled.div`
   width: 75rem;
   height: 40rem;
-
-  background-color: #fff;
+  font-size: 1.5rem;
   border-radius: 1rem;
 
+  background-color: #fff;
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
     0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
-
   display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: 1.5rem;
+  @media (max-width: 1750px) {
+    width: 65rem;
+    height: 30rem;
+  }
+  @media (max-width: 1500px) {
+    width: 45rem;
+  }
+  @media (max-width: 1150px) {
+    width: 35rem;
+    height: 25rem;
+  }
+  @media (max-width: 950px) {
+    width: 20rem;
+    height: 25rem;
+  }
 `;
 
 const UserItem = styled.div`
@@ -70,6 +83,22 @@ const UserItem = styled.div`
 
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 1750px) {
+    width: 60rem;
+    height: 25rem;
+  }
+  @media (max-width: 1500px) {
+    width: 45rem;
+  }
+  @media (max-width: 1150px) {
+    width: 30rem;
+    height: 20rem;
+  }
+  @media (max-width: 950px) {
+    width: 17.5rem;
+    height: 22.5rem;
+  }
 `;
 
 const CategoriesWrapper = styled.div`
@@ -77,6 +106,13 @@ const CategoriesWrapper = styled.div`
   display: flex;
   gap: 1.5rem;
   align-items: center;
+
+  @media (max-width: 1750px) {
+    height: 1.5rem;
+  }
+  @media (max-width: 950px) {
+    height: 1rem;
+  }
 `;
 
 const Category = styled.div<{ 'data-is-selected': boolean }>`
@@ -87,5 +123,22 @@ const Category = styled.div<{ 'data-is-selected': boolean }>`
     isSelected ? COLORS.blue2 : 'inherit'};
   &:hover {
     color: ${COLORS.blue2};
+  }
+
+  @media (max-width: 1750px) {
+    height: 1.5rem;
+    font-size: 1rem;
+  }
+  @media (max-width: 1500px) {
+    &:first-child {
+      margin-left: 1.5rem;
+    }
+  }
+  @media (max-width: 950px) {
+    height: 1rem;
+    font-size: 0.75rem;
+    &:first-child {
+      margin-left: 0;
+    }
   }
 `;

@@ -148,14 +148,25 @@ const MyRefrigeratorWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+
+  @media (max-width: 1750px) {
+    height: 25rem;
+  }
 `;
 
 const MyRefrigerator = styled.div`
+  width: 45rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  width: 45rem;
+
+  @media (max-width: 1150px) {
+    width: 30rem;
+  }
+  @media (max-width: 950px) {
+    width: 17.5rem;
+  }
 `;
 
 const MyIngredients = styled.div`
@@ -178,6 +189,17 @@ const MyIngredients = styled.div`
     width: 50%;
     height: 50%;
   }
+
+  @media (max-width: 1750px) {
+    height: 15rem;
+  }
+  @media (max-width: 1150px) {
+    width: 25rem;
+    height: 10rem;
+  }
+  @media (max-width: 950px) {
+    width: 12.5rem;
+  }
 `;
 
 const IngredientItem = styled.div`
@@ -195,6 +217,12 @@ const IngredientItem = styled.div`
   overflow: hidden;
   color: #fff;
   cursor: pointer;
+
+  @media (max-width: 950px) {
+    height: 1.5rem;
+    padding: 0.1rem 0.1rem;
+    font-size: 0.75rem;
+  }
 `;
 
 const Img = styled.div`
@@ -206,5 +234,9 @@ const Img = styled.div`
   img {
     width: 100%;
     height: 100%;
+  }
+
+  @media (max-width: 1500px) {
+    display: none;
   }
 `;
