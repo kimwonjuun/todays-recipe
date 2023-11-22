@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import RecipeCard from '../common/RecipeCard';
 import { getMyLikedRecipes } from '../../apis/my/likes';
 import { useQuery } from 'react-query';
+
 interface MyLikesBoxProps {
   currentUserUid: string | undefined;
 }

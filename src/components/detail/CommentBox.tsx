@@ -103,8 +103,19 @@ const BottomWrapper = styled.div`
   border-radius: 1rem;
   text-align: center;
   padding: 2.5rem;
+
+  @media (max-width: 675px) {
+    width: 25rem;
+  }
 `;
 
 const CommentTitle = styled.h2`
   margin-bottom: 1rem;
+
+  @media (max-width: 850px) {
+    font-size: 1rem;
+  }
+  @media (max-width: 675px) {
+    font-size: 0.8rem;
+  }
 `;

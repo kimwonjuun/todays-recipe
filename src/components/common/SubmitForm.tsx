@@ -38,6 +38,13 @@ const FormWrapper = styled.form`
   width: 35.6rem;
   position: relative;
   display: flex;
+
+  @media (max-width: 1150px) {
+    width: 29rem;
+  }
+  @media (max-width: 950px) {
+    width: 15rem;
+  }
 `;
 
 const Input = styled.input`
@@ -49,6 +56,12 @@ const Input = styled.input`
   outline: none;
   text-align: center;
   padding-right: 5rem;
+
+  @media (max-width: 950px) {
+    width: 9.5rem;
+    height: 1.5rem;
+    font-size: 0.5rem;
+  }
 `;
 
 const SubmitButton = styled.button`
@@ -65,5 +78,15 @@ const SubmitButton = styled.button`
 
   &:hover {
     background-color: ${COLORS.blue2};
+  }
+
+  @media (max-width: 1150px) {
+    margin-left: -3.75rem;
+  }
+  @media (max-width: 950px) {
+    width: 2.5rem;
+    height: 2rem;
+    font-size: 0.75rem;
+    margin-left: -2rem;
   }
 `;

@@ -33,17 +33,26 @@ const RecipeCardWrapper = styled.div`
   width: 17.5rem;
   height: 30rem;
   position: relative;
+  margin: 0 2.25rem 4.5rem 2.25rem;
+
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   transition: color 300ms ease-in-out;
   &:hover {
     color: ${COLORS.blue2};
   }
-  margin: 0 2.25rem 4.5rem 2.25rem;
   background-color: #fff;
 
-  align-items: center;
-  justify-content: center;
+  @media (max-width: 700px) {
+    width: 12.5rem;
+    height: 21rem;
+  }
+  @media (max-width: 550px) {
+    width: 10rem;
+    height: 18rem;
+  }
 `;
 
 const RecipeImgWrapper = styled.div`
@@ -61,22 +70,48 @@ const RecipeImgWrapper = styled.div`
   &:hover > img {
     transform: scale(1.1);
   }
+
+  @media (max-width: 700px) {
+    height: 14rem;
+  }
+  @media (max-width: 550px) {
+    height: 12rem;
+  }
 `;
 
 const RecipeTextWrapper = styled.div`
   width: 100%;
   height: 10rem;
+  padding: 1rem;
+
   box-sizing: border-box;
   display: flex;
   align-items: center;
   text-align: center;
   justify-content: space-evenly;
   flex-direction: column;
+
   & > p {
     font-size: 1.5rem;
   }
   & > h1 {
     font-size: 1.6rem;
   }
-  padding: 1rem;
+
+  @media (max-width: 700px) {
+    height: 8rem;
+
+    & > p,
+    h1 {
+      font-size: 1.1rem;
+    }
+  }
+  @media (max-width: 550px) {
+    height: 7rem;
+
+    & > p,
+    h1 {
+      font-size: 1rem;
+    }
+  }
 `;

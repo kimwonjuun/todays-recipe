@@ -66,6 +66,15 @@ const ProfileWrapper = styled.div`
   border-radius: 1rem;
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
     0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
+
+  @media (max-width: 1750px) {
+    width: 18rem;
+    height: 25rem;
+  }
+  @media (max-width: 950px) {
+    width: 10rem;
+    height: 15rem;
+  }
 `;
 
 const Profile = styled.div`
@@ -75,6 +84,13 @@ const Profile = styled.div`
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
+
+  @media (max-width: 1750px) {
+    height: 16rem;
+  }
+  @media (max-width: 950px) {
+    height: 9.5rem;
+  }
 `;
 
 const ProfileImg = styled.div`
@@ -82,6 +98,15 @@ const ProfileImg = styled.div`
   height: 12.5rem;
   border-radius: 50%;
   overflow: hidden;
+
+  @media (max-width: 1750px) {
+    width: 9rem;
+    height: 9rem;
+  }
+  @media (max-width: 950px) {
+    width: 4rem;
+    height: 4rem;
+  }
 `;
 
 const ProfileText = styled.div`
@@ -95,6 +120,13 @@ const ProfileText = styled.div`
     font-size: 1rem;
     color: ${COLORS.gray};
   }
+
+  @media (max-width: 950px) {
+    font-size: 1rem;
+    & > p:last-child {
+      font-size: 0.5rem;
+    }
+  }
 `;
 
 const LogoutBox = styled.div`
@@ -105,6 +137,13 @@ const LogoutBox = styled.div`
 
   align-items: center;
   flex-direction: column;
+
+  @media (max-width: 1750px) {
+    height: 9rem;
+  }
+  @media (max-width: 950px) {
+    height: 5.5rem;
+  }
 `;
 
 const EditButton = styled.button`
@@ -118,6 +157,16 @@ const EditButton = styled.button`
   cursor: pointer;
   &:hover {
     background-color: ${COLORS.blue2};
+  }
+
+  @media (max-width: 1750px) {
+    width: 15rem;
+    height: 3rem;
+  }
+  @media (max-width: 950px) {
+    width: 5rem;
+    height: 2rem;
+    font-size: 0.75rem;
   }
 `;
 
@@ -133,6 +182,16 @@ const LogoutButton = styled.button`
   cursor: pointer;
   &:hover {
     background-color: ${COLORS.gray};
+  }
+
+  @media (max-width: 1750px) {
+    width: 15rem;
+    height: 3rem;
+  }
+  @media (max-width: 950px) {
+    width: 5rem;
+    height: 2rem;
+    font-size: 0.75rem;
   }
 `;
 

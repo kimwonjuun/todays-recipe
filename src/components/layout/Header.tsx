@@ -8,6 +8,7 @@ import SignUpModal from '../auth/SignUpModal';
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // 로그인 모달 상태
   const [LoginModalIsOpen, setLoginModalIsOpen] = useState<boolean>(false);
@@ -22,7 +23,6 @@ const Header = () => {
   };
 
   // 내가 위치한 라우트에 따라 헤더 내비게이트 텍스트 스타일링
-  const location = useLocation();
   const NaviSelectedStyle = (path: string) => {
     if (location.pathname.includes('/search') && path === '/') {
       return { color: COLORS.blue2 };
@@ -140,6 +140,19 @@ const HeaderWrapper = styled.div`
 const Logo = styled.div`
   width: 11rem;
   height: 11rem;
+
+  @media (max-width: 1050px) {
+    width: 10rem;
+    height: 10rem;
+  }
+  @media (max-width: 700px) {
+    width: 8rem;
+    height: 8rem;
+  }
+  @media (max-width: 550px) {
+    width: 7rem;
+    height: 7rem;
+  }
 `;
 
 const LogoImg = styled.img`
@@ -153,6 +166,19 @@ const TextWrapper = styled.div`
   font-size: 1.5rem;
   display: flex;
   gap: 1.5rem;
+
+  @media (max-width: 1050px) {
+    right: 1.5rem;
+    font-size: 1.25rem;
+  }
+  @media (max-width: 700px) {
+    right: 1.25rem;
+    font-size: 1.125rem;
+  }
+  @media (max-width: 550px) {
+    right: 1rem;
+    font-size: 1rem;
+  }
 `;
 
 const Text = styled.div`

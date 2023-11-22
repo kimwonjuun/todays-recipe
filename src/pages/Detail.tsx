@@ -95,4 +95,20 @@ const DetailBoxWrapper = styled.div`
   position: relative;
   margin: 4rem 0;
   overflow: hidden;
+
+  @media (max-width: 1300px) {
+    width: 70rem;
+  }
+  @media (max-width: 1150px) {
+    width: 60rem;
+  }
+  @media (max-width: 1000px) {
+    width: 50rem;
+  }
+  @media (max-width: 850px) {
+    width: 40rem;
+  }
+  @media (max-width: 675px) {
+    width: 30rem;
+  }
 `;
