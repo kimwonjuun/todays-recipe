@@ -97,21 +97,43 @@ const Wrapper = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   font-size: 1.5rem;
+
+  @media (max-width: 1050px) {
+    height: 1.25rem;
+    font-size: 1rem;
+  }
+  @media (max-width: 700px) {
+    height: 1.25rem;
+    font-size: 0.8rem;
+  }
+  @media (max-width: 550px) {
+    font-size: 0.6rem;
+  }
 `;
 
 const CategoriesWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1.5rem;
+
   & > p {
     cursor: pointer;
     &:hover {
       color: ${COLORS.blue2};
     }
   }
-
   & > p:first-of-type {
     margin-left: 2.25rem;
+  }
+
+  @media (max-width: 1050px) {
+    gap: 1rem;
+  }
+  @media (max-width: 700px) {
+    gap: 0.9rem;
+  }
+  @media (max-width: 550px) {
+    gap: 0.75rem;
   }
 `;
 
@@ -120,15 +142,25 @@ const SortingWrapper = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   gap: 1.5rem;
+
   & > p {
     cursor: pointer;
     &:hover {
       color: ${COLORS.blue2};
     }
   }
-
   & > p:last-of-type {
     margin-right: 2.25rem;
+  }
+
+  @media (max-width: 1050px) {
+    gap: 1rem;
+  }
+  @media (max-width: 700px) {
+    gap: 0.9rem;
+  }
+  @media (max-width: 550px) {
+    gap: 0.75rem;
   }
 `;
 

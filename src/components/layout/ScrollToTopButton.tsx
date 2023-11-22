@@ -60,4 +60,17 @@ const Button = styled.div`
   & > img {
     width: 35%;
   }
+
+  @media (max-width: 1050px) {
+    width: 4rem;
+    height: 4rem;
+  }
+  @media (max-width: 700px) {
+    width: 3rem;
+    height: 3rem;
+  }
+  @media (max-width: 550px) {
+    width: 2rem;
+    height: 2rem;
+  }
 `;

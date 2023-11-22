@@ -59,4 +59,12 @@ const BoxWrapper = styled.div`
   justify-content: space-evenly;
   font-size: 2rem;
   margin: 3rem;
+
+  @media (max-width: 950px) {
+    width: 50%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.5rem;
+  }
 `;

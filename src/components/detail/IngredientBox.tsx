@@ -211,6 +211,10 @@ const TopWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
+
+  @media (max-width: 675px) {
+    width: 30rem;
+  }
 `;
 
 const CardWrapper = styled.div`
@@ -221,6 +225,23 @@ const CardWrapper = styled.div`
     0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
   border-radius: 1rem;
   position: relative;
+
+  @media (max-width: 1300px) {
+    width: 20rem;
+    height: 27.5rem;
+  }
+  @media (max-width: 1150px) {
+    width: 16rem;
+    height: 20rem;
+  }
+  @media (max-width: 850px) {
+    width: 12rem;
+    height: 18rem;
+  }
+  @media (max-width: 675px) {
+    width: 8rem;
+    height: 12rem;
+  }
 `;
 
 const Img = styled.div`
@@ -235,6 +256,19 @@ const Img = styled.div`
     width: 100%;
     height: 100%;
   }
+
+  @media (max-width: 1300px) {
+    height: 20rem;
+  }
+  @media (max-width: 1150px) {
+    height: 14rem;
+  }
+  @media (max-width: 850px) {
+    height: 12rem;
+  }
+  @media (max-width: 675px) {
+    height: 8rem;
+  }
 `;
 
 const Title = styled.div<{ fontSize: string }>`
@@ -244,12 +278,34 @@ const Title = styled.div<{ fontSize: string }>`
   justify-content: center;
   font-size: ${(props) => props.fontSize};
   font-weight: bold;
+
+  @media (max-width: 1300px) {
+    height: 3.5rem;
+  }
+  @media (max-width: 1150px) {
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+  @media (max-width: 675px) {
+    height: 1.75rem;
+    font-size: 0.75rem;
+  }
 `;
 
 const LikeWrapper = styled.div`
   height: 5.5rem;
   display: flex;
   justify-content: center;
+  align-items: center;
+  @media (max-width: 1300px) {
+    height: 4rem;
+  }
+  @media (max-width: 1150px) {
+    height: 3.5rem;
+  }
+  @media (max-width: 675px) {
+    height: 2.25rem;
+  }
 `;
 
 const Like = styled.div`
@@ -261,21 +317,56 @@ const Like = styled.div`
     width: 100%;
     height: 100%;
   }
+
+  @media (max-width: 1300px) {
+    width: 3rem;
+    height: 3rem;
+  }
+  @media (max-width: 1150px) {
+    width: 2rem;
+    height: 2rem;
+  }
+  @media (max-width: 675px) {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
 `;
 
 const IngredientWrapper = styled.div`
   width: 53.5rem;
   height: 35rem;
   flex-direction: column;
+
+  @media (max-width: 1300px) {
+    width: 47.5rem;
+    height: 27.5rem;
+  }
+  @media (max-width: 1150px) {
+    width: 42.5rem;
+    height: 20rem;
+  }
+  @media (max-width: 1000px) {
+    width: 32.5rem;
+    height: 20rem;
+  }
+  @media (max-width: 850px) {
+    width: 27rem;
+    height: 16rem;
+  }
+  @media (max-width: 675px) {
+    width: 20rem;
+    height: 12rem;
+  }
 `;
 
 const Ingredient = styled.div`
+  width: inherit;
+  height: 17rem;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: inherit;
-  height: 17rem;
   padding: 1.25rem;
   border-radius: 1rem;
   box-sizing: border-box;
@@ -284,12 +375,42 @@ const Ingredient = styled.div`
   background-color: #fff;
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.12),
     0 0.25rem 0.5rem rgba(0, 0, 0, 0.24);
+
   &:first-child {
     margin-bottom: 1rem;
   }
-
   h1 {
     margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 1300px) {
+    height: 13.25rem;
+  }
+  @media (max-width: 1150px) {
+    height: 9.5rem;
+    font-size: 1rem;
+    h1 {
+      margin-bottom: 1.25rem;
+    }
+  }
+  @media (max-width: 850px) {
+    height: 8.5rem;
+    h1 {
+      margin-bottom: 1.25rem;
+    }
+    p {
+      font-size: 0.8rem;
+    }
+  }
+  @media (max-width: 675px) {
+    font-size: 0.75rem;
+    height: 5.5rem;
+    h1 {
+      margin-bottom: 0.6rem;
+    }
+    p {
+      font-size: 0.6rem;
+    }
   }
 `;
 
@@ -309,6 +430,13 @@ const Item = styled.div`
     width: 100%;
     height: 100%;
   }
+
+  @media (max-width: 1150px) {
+    width: 6rem;
+  }
+  @media (max-width: 675px) {
+    width: 3rem;
+  }
 `;
 
 const ItemText = styled.div`
@@ -324,9 +452,48 @@ const ItemText = styled.div`
   p {
     margin-bottom: 0.5rem;
   }
-
   p:last-child {
     font-size: 1.4rem;
     font-weight: bold;
+  }
+
+  @media (max-width: 1150px) {
+    width: 5rem;
+    height: 2.5rem;
+    font-size: 0.9rem;
+
+    p {
+      margin-bottom: 0.25rem;
+    }
+    p:last-child {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+  }
+  @media (max-width: 850px) {
+    width: 3rem;
+    height: 2.5rem;
+
+    p {
+      margin-bottom: 0.25rem;
+    }
+    p:last-child {
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+  }
+  @media (max-width: 675px) {
+    width: 2rem;
+    height: 1.5rem;
+    font-size: 0.75rem;
+
+    p {
+      font-size: 0.55rem;
+      margin-bottom: 0.15rem;
+    }
+    p:last-child {
+      font-size: 0.55rem;
+      font-weight: bold;
+    }
   }
 `;

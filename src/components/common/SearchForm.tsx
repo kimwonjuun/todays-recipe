@@ -42,6 +42,31 @@ const Input = styled.input`
   outline: none;
   text-align: center;
   padding-right: 8rem;
+
+  @media (max-width: 1050px) {
+    width: 30rem;
+    height: 3.5rem;
+    font-size: 1.2rem;
+    &::placeholder {
+      font-size: 1.2rem;
+    }
+  }
+  @media (max-width: 700px) {
+    width: 25rem;
+    height: 3.5rem;
+    font-size: 1.1rem;
+    &::placeholder {
+      font-size: 1.1rem;
+    }
+  }
+  @media (max-width: 550px) {
+    width: 20rem;
+    height: 3rem;
+    font-size: 0.9rem;
+    &::placeholder {
+      font-size: 0.9rem;
+    }
+  }
 `;
 
 const SearchButton = styled.button`
@@ -59,5 +84,21 @@ const SearchButton = styled.button`
 
   &:hover {
     background-color: ${COLORS.blue2};
+  }
+
+  @media (max-width: 1050px) {
+    width: 6rem;
+    height: 4.15rem;
+    font-size: 1.5rem;
+  }
+  @media (max-width: 700px) {
+    width: 6rem;
+    height: 4rem;
+    font-size: 1.4rem;
+  }
+  @media (max-width: 550px) {
+    width: 5rem;
+    height: 3.65rem;
+    font-size: 1.25rem;
   }
 `;

@@ -73,10 +73,27 @@ const BoxWrapper = styled.div`
   width: 90rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   font-size: 2rem;
   margin-top: 8rem;
+
+  @media (max-width: 1450px) {
+    margin-top: 7rem;
+    width: 67.5rem;
+  }
+  @media (max-width: 1050px) {
+    margin-top: 5.5rem;
+    width: 45rem;
+  }
+  @media (max-width: 700px) {
+    margin-top: 4rem;
+    width: 35rem;
+  }
+  @media (max-width: 550px) {
+    margin-top: 3rem;
+    width: 30rem;
+  }
 `;
 
 const Recipes = styled.div`
@@ -88,11 +105,31 @@ const Recipes = styled.div`
   & > p {
     text-align: center;
   }
+
+  @media (max-width: 1050px) {
+    padding: 4rem 0;
+  }
+  @media (max-width: 700px) {
+    padding: 3rem 0;
+  }
+  @media (max-width: 550px) {
+    padding: 2rem 0;
+  }
 `;
 
 const LoadingMessage = styled.p`
   text-align: center;
   width: 100%;
+
+  @media (max-width: 1050px) {
+    font-size: 1.25rem;
+  }
+  @media (max-width: 700px) {
+    font-size: 1.125rem;
+  }
+  @media (max-width: 550px) {
+    font-size: 1rem;
+  }
 `;
 
 const NoRecipeView = styled.div`
@@ -103,4 +140,14 @@ const NoRecipeView = styled.div`
   justify-content: center;
   height: calc(100vh - 33rem);
   background-color: ${COLORS.backGround};
+
+  @media (max-width: 1050px) {
+    font-size: 1.25rem;
+  }
+  @media (max-width: 700px) {
+    font-size: 1.125rem;
+  }
+  @media (max-width: 550px) {
+    font-size: 1rem;
+  }
 `;
